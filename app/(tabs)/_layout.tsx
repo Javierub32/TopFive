@@ -1,0 +1,60 @@
+import { Tabs } from 'expo-router';
+import { View, Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { HomeIcon, CameraIcon, CardsIcon, UserIcon } from 'components/Icons';
+
+export default function TabLayout() {
+  const insets = useSafeAreaInsets();
+  
+  return (
+    <Tabs
+      screenOptions={{
+		headerShown: false,
+        tabBarActiveTintColor: '#ffffff',
+        tabBarInactiveTintColor: '#6b7280',
+
+        headerTintColor: '#fff',
+        tabBarStyle: {
+          backgroundColor: '#191022',
+          borderTopColor: '#444049',
+          height: 65 + insets.bottom,
+          paddingBottom: insets.bottom + 8,
+          paddingTop: 8,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+        },
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Home',
+          tabBarIcon: ({color, size}) => (<HomeIcon color={color} size={size} />),
+        }}
+      />
+      <Tabs.Screen
+        name="camera"
+        options={{
+          title: 'Camera',
+          tabBarIcon: ({color, size}) => (<CameraIcon color={color} size={size} />),
+        }}
+      />
+      <Tabs.Screen
+        name="collection"
+        options={{
+          title: 'Cards',
+          tabBarIcon: ({color, size}) => (<CardsIcon color={color} size={size} />),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({color, size}) => (<UserIcon color={color} size={size} />),
+        }}
+      />
+    </Tabs>
+  );
+}
