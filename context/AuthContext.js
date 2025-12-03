@@ -13,18 +13,14 @@ export const AuthProvider = ({ children }) => {
 		supabase.auth.getSession().then(({ data: { session } }) => {
 			setSession(session);
 			setUser(session ? session.user : null);
-            if (!session) {
-                setLoading(false); 
-            }
+			setLoading(false); // SIEMPRE cambiar loading a false, haya o no sesión
 		});
 
 		// Escuchar cambios de sesión
 		const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
 			setSession(session);
 			setUser(session ? session.user : null);
-            if (!session) {
-                setLoading(false);
-            }
+			setLoading(false); // SIEMPRE cambiar loading a false
 		});
 
 	
