@@ -5,6 +5,10 @@ export const SocialIcon = (props) => (
   <FontAwesome name="users" size={24} color="black"  {...props} />
 );
 
+export const SearchIcon = (props) => (
+  <FontAwesome name="search" size={24} color="black" {...props} />
+);
+
 export const UserIcon = (props) => (
 <MaterialCommunityIcons name="account" size={24} color="black" {...props} />
 );
