@@ -22,7 +22,8 @@ export default function Register() {
 
     setLoading(true);
     try {
-      await signUp(email, password, username);
+		console.log('Registering user:', { username, email, password });
+      await signUp(email, password);
       
       Alert.alert(
         'Cuenta Creada', 
@@ -32,7 +33,7 @@ export default function Register() {
         ]
       );
     } catch (error: string | any) {
-      Alert.alert('Error Registro', 'El nombre de usuario o correo ya está registrado.');
+      Alert.alert('Error Registro', error.message || 'El nombre de usuario o correo ya está registrado.');
     } finally {
       setLoading(false);
     }

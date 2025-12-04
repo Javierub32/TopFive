@@ -2,7 +2,7 @@ import { Tabs } from 'expo-router';
 import { View, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { HomeIcon, CameraIcon, CardsIcon, UserIcon } from 'components/Icons';
+import { HomeIcon, CardsIcon, UserIcon, SearchIcon } from 'components/Icons';
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
@@ -36,10 +36,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="camera"
+        name="search"
         options={{
-          title: 'Camera',
-          tabBarIcon: ({color, size}) => (<CameraIcon color={color} size={size} />),
+          title: 'Search',
+          tabBarIcon: ({color, size}) => (<SearchIcon color={color} size={size} />),
         }}
       />
       <Tabs.Screen

@@ -32,16 +32,11 @@ export const AuthProvider = ({ children }) => {
 		if (error) throw error;
 	};
 
-	const signUp = async (email, password, username) => {
+	const signUp = async (email, password) => {
 		// 1. Crear el usuario en el sistema de Autenticación
 		const { data, error: authError } = await supabase.auth.signUp({
 			email,
-			password,
-			options: {
-				data: {
-					username: username // <--- ESTO ES VITAL PARA EL TRIGGER
-				}
-			}
+			password
 		});
 
 		if (authError) throw authError;
