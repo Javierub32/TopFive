@@ -18,7 +18,7 @@ export const SettingsIcon = (props) => (
 );
 
 export const CameraIcon = (props) => (
-<MaterialCommunityIcons name="camera" size={24} color="black" {...props} />
+<MaterialCommunityIcons name="camera" size={24} color="white" {...props} />
 );
 
 export const CardsIcon = (props) => (

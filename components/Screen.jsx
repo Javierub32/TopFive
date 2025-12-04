@@ -14,7 +14,7 @@ export function Screen({ children }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#18122B',
+    backgroundColor: '#0f111a',
 	paddingHorizontal: 5,
   },
 });

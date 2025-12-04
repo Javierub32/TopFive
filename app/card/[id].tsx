@@ -34,7 +34,7 @@ export default function CardDetail() {
 	if (loading) {
 		return (
 			<View className="flex-1 items-center justify-center bg-[#18122B]">
-				<ActivityIndicator size="large" color="#8B2DF0" />
+				<ActivityIndicator size="large" color="#d9d1e0ff" />
 				<Text className="mt-4 font-bold text-white">Cargando carta...</Text>
 			</View>
 		);
