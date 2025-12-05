@@ -17,8 +17,8 @@ export default function HomeScreen() {
     const opciones = ["Libros", "Películas", "Series", "Videojuegos", "Canciones"];
 
     // Funciones de mapeo para normalizar los datos de cada API
-    const mapBookToResult = (book: any) => ({
-        id: book.artistId || Math.random(),
+    const mapBookToResult = (book: any, index: number) => ({
+        id: book.artistId ? `book-${book.artistId}-${index}` : `book-${Math.random()}-${index}`,
         title: book.title || 'Sin título',
         artist: book.artistName || 'Desconocido',
         cover: book.cover || '',
@@ -26,13 +26,11 @@ export default function HomeScreen() {
     });
 
     const mapFilmToResult = (film: any) => ({
-        id: film.id,
+        id: film.id || Math.random().toString(),
         title: film.title || 'Sin título',
         artist: film.director || 'Desconocido',
         cover: film.poster || '',
-        genre: Array.isArray(film.genre) 
-            ? (film.genre.length > 0 ? film.genre[0] : 'Desconocido')
-            : (film.genre || 'Desconocido'),
+        genre: film.genre || 'Desconocido',
     });
 
     const mapGameToResult = (game: any) => ({
@@ -104,7 +102,7 @@ export default function HomeScreen() {
             let resultadosMapeados: any[] = [];
             
             if (tipoRecurso === 'Libros') {
-                resultadosMapeados = resultado.map(mapBookToResult);
+                resultadosMapeados = resultado.map((book: any, index: number) => mapBookToResult(book, index));
             } else if (tipoRecurso === 'Películas') {
                 resultadosMapeados = resultado.map(mapFilmToResult);
             } else if (tipoRecurso === 'Series') {
