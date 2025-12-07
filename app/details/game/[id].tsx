@@ -45,7 +45,7 @@ export default function GameDetail() {
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center px-4 pt-2 pb-4">
           <TouchableOpacity 
-            onPress={() => router.back()}
+            onPress={() => router.push("/search")}
             className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-slate-800 border border-slate-700"
             activeOpacity={0.7}
           >

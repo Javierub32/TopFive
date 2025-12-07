@@ -94,6 +94,7 @@ export default function FilmForm() {
 
       if (existingResource) {
         Alert.alert("Aviso", "Ya tienes esta película en tu colección.");
+		router.back();
         setLoading(false);
         return;
       }
@@ -119,7 +120,6 @@ export default function FilmForm() {
         Alert.alert("¡Éxito!", `Has añadido a ${film.title} a tu colección.`);
         router.back();
       }
-
 
     } catch (error) {
       console.error('Error saving film data:', error);

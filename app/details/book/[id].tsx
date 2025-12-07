@@ -24,6 +24,13 @@ export default function BookDetail() {
   const router = useRouter();
   const book: Book = JSON.parse(bookData as string);
 
+  const openForm = (book: Book) => {
+	router.push({
+	  pathname: '/form/book',
+	  params: { bookData: JSON.stringify(book) },
+	});
+  };
+
   if (!book) {
     return (
       <Screen>
@@ -46,7 +53,7 @@ export default function BookDetail() {
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center px-4 pt-2 pb-4">
           <TouchableOpacity 
-            onPress={() => router.back()}
+            onPress={() => router.push("/search")}
             className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-slate-800 border border-slate-700"
             activeOpacity={0.7}
           >
@@ -141,7 +148,7 @@ export default function BookDetail() {
           )}
 
           <TouchableOpacity 
-            onPress={() => {}} 
+            onPress={() => {openForm(book)}} 
             className="flex-1 bg-[#8B2DF0] py-4 rounded-xl items-center flex-row justify-center"
           >
             <FontAwesome5 name="cloud-upload-alt" size={16} color="white" style={{marginRight: 8}} />
