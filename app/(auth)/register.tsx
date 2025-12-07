@@ -23,7 +23,7 @@ export default function Register() {
     setLoading(true);
     try {
 		console.log('Registering user:', { username, email, password });
-      await signUp(email, password);
+      await signUp(email, password, username);
       
       Alert.alert(
         'Cuenta Creada', 
