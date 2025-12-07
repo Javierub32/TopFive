@@ -94,10 +94,7 @@ export default function FilmForm() {
 
       if (existingResource) {
         Alert.alert("Aviso", "Ya tienes esta película en tu colección.");
-<<<<<<< HEAD
 		router.back();
-=======
->>>>>>> f8bc8b62a7919905930d3852fc1859c27855406b
         setLoading(false);
         return;
       }
@@ -124,10 +121,6 @@ export default function FilmForm() {
         router.back();
       }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> f8bc8b62a7919905930d3852fc1859c27855406b
     } catch (error) {
       console.error('Error saving film data:', error);
     } finally {

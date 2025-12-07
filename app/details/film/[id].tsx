@@ -49,11 +49,7 @@ export default function FilmDetail() {
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center px-4 pt-2 pb-4">
           <TouchableOpacity 
-<<<<<<< HEAD
             onPress={() => router.push("/search")}
-=======
-            onPress={() => router.back()}
->>>>>>> f8bc8b62a7919905930d3852fc1859c27855406b
             className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-slate-800 border border-slate-700"
             activeOpacity={0.7}
           >

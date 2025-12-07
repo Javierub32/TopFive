@@ -25,7 +25,6 @@ export default function Books() {
     fetchPopularBooks();
   }, []);
 
-<<<<<<< HEAD
  // Method to find a book only with its name 
   const searchBooks = async () => {
     if (!searchQuery.trim()) return;
@@ -45,8 +44,6 @@ export default function Books() {
       setLoading(false);
     }
   };
-=======
->>>>>>> f8bc8b62a7919905930d3852fc1859c27855406b
 // Method to fetch popular books
   const fetchPopularBooks
    = async () => {
@@ -82,11 +79,7 @@ export default function Books() {
 
 //To see the book details in the list
   const renderBook = (book: Book) => (
-<<<<<<< HEAD
     <View key={book.trackId} className="bg-gray-800 rounded-xl p-4 mx-4 my-2 border-2 border-purple-500/30">
-=======
-    <View key={book.trackId} className="bg-gray-800 rounded-xl p-4 mx-0 my-2 border-2 border-purple-500/30">
->>>>>>> f8bc8b62a7919905930d3852fc1859c27855406b
       <View className="flex-row">
         <Image 
           source={{ uri: book.artworkUrl100 }} 
@@ -114,7 +107,6 @@ export default function Books() {
       </View>
     </View>
   );
-<<<<<<< HEAD
 // This is the main return of the Books component
   return (
     <View className="flex-1">
@@ -138,13 +130,6 @@ export default function Books() {
 
       {/* Sections */}
       <View className="flex-row mx-4 my-2">
-=======
-  // This is the main return of the Books component
-  return (
-    <View className="flex-1">
-      {/* Sections */}
-      <View className="flex-row mx-0 my-2">
->>>>>>> f8bc8b62a7919905930d3852fc1859c27855406b
         <TouchableOpacity
           onPress={() => setActiveTab('recent')}
           className="flex-1 py-3 rounded-l-xl border-2 border-purple-500/30"
@@ -163,13 +148,9 @@ export default function Books() {
             Populares
           </Text>
         </TouchableOpacity>
-<<<<<<< HEAD
       </View>
 
       {/* Content */}
-=======
-      </View>      {/* Content */}
->>>>>>> f8bc8b62a7919905930d3852fc1859c27855406b
       <ScrollView className="flex-1">
         {loading ? (
           <View className="flex-1 items-center justify-center py-10">

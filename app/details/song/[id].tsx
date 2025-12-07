@@ -23,7 +23,6 @@ export default function SongDetail() {
   const router = useRouter();
   const song: Song = JSON.parse(songData as string);
 
-<<<<<<< HEAD
   const openForm = (song: Song) => {
 	router.push({
 	  pathname: '/form/song',
@@ -31,8 +30,6 @@ export default function SongDetail() {
 	});
   }
 
-=======
->>>>>>> f8bc8b62a7919905930d3852fc1859c27855406b
   if (!song) {
     return (
       <Screen>
@@ -55,11 +52,7 @@ export default function SongDetail() {
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center px-4 pt-2 pb-4">
           <TouchableOpacity 
-<<<<<<< HEAD
             onPress={() => router.push("/search")}
-=======
-            onPress={() => router.back()}
->>>>>>> f8bc8b62a7919905930d3852fc1859c27855406b
             className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-slate-800 border border-slate-700"
             activeOpacity={0.7}
           >
@@ -146,11 +139,7 @@ export default function SongDetail() {
           )}
 
           <TouchableOpacity 
-<<<<<<< HEAD
             onPress={() => {openForm(song);}} 
-=======
-            onPress={() => {}} 
->>>>>>> f8bc8b62a7919905930d3852fc1859c27855406b
             className="flex-1 bg-[#8B2DF0] py-4 rounded-xl items-center flex-row justify-center"
           >
             <FontAwesome5 name="cloud-upload-alt" size={16} color="white" style={{marginRight: 8}} />
