@@ -25,25 +25,6 @@ export default function Books() {
     fetchPopularBooks();
   }, []);
 
- // Method to find a book only with its name 
-  const searchBooks = async () => {
-    if (!searchQuery.trim()) return;
-    
-    setLoading(true);
-    try {
-
-      const response = await fetch(
-        `https://itunes.apple.com/search?term=${encodeURIComponent(searchQuery)}&media=ebook&limit=10`
-      );
-      const data = await response.json();
-      setBooks(data.results || []);
-      setActiveTab('search');
-    } catch (error) {
-      console.error('Error buscando libros:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 // Method to fetch popular books
   const fetchPopularBooks
    = async () => {
@@ -79,7 +60,7 @@ export default function Books() {
 
 //To see the book details in the list
   const renderBook = (book: Book) => (
-    <View key={book.trackId} className="bg-gray-800 rounded-xl p-4 mx-4 my-2 border-2 border-purple-500/30">
+    <View key={book.trackId} className="bg-gray-800 rounded-xl p-4 mx-0 my-2 border-2 border-purple-500/30">
       <View className="flex-row">
         <Image 
           source={{ uri: book.artworkUrl100 }} 
@@ -107,29 +88,11 @@ export default function Books() {
       </View>
     </View>
   );
-// This is the main return of the Books component
+  // This is the main return of the Books component
   return (
     <View className="flex-1">
-      {/* Search */}
-      <View className="mx-4 my-2">
-        <View className="flex-row items-center bg-gray-800 rounded-xl px-4 py-3 border-2 border-purple-500/30">
-          <MaterialCommunityIcons name="book-search" size={24} color="#a78bfa" />
-          <TextInput
-            className="flex-1 ml-3 text-white"
-            placeholder="Buscar libros..."
-            placeholderTextColor="#6b7280"
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            onSubmitEditing={searchBooks}
-          />
-          <TouchableOpacity onPress={searchBooks}>
-            <MaterialCommunityIcons name="magnify" size={24} color="#8b5cf6" />
-          </TouchableOpacity>
-        </View>
-      </View>
-
       {/* Sections */}
-      <View className="flex-row mx-4 my-2">
+      <View className="flex-row mx-0 my-2">
         <TouchableOpacity
           onPress={() => setActiveTab('recent')}
           className="flex-1 py-3 rounded-l-xl border-2 border-purple-500/30"
@@ -148,9 +111,7 @@ export default function Books() {
             Populares
           </Text>
         </TouchableOpacity>
-      </View>
-
-      {/* Content */}
+      </View>      {/* Content */}
       <ScrollView className="flex-1">
         {loading ? (
           <View className="flex-1 items-center justify-center py-10">
