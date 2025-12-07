@@ -22,8 +22,7 @@ export default function Books() {
   // Cargar unos 20 libros recientes al iniciar
   useEffect(() => {
     fetchRecentBooks();
-    fetchPopularBooks
-    ();
+    fetchPopularBooks();
   }, []);
 
  // Method to find a book only with its name 
@@ -32,9 +31,9 @@ export default function Books() {
     
     setLoading(true);
     try {
-      const currentYear = new Date().getFullYear(); // 2025
+
       const response = await fetch(
-        `https://itunes.apple.com/search?term=${encodeURIComponent(searchQuery)}&media=ebook&limit=20`
+        `https://itunes.apple.com/search?term=${encodeURIComponent(searchQuery)}&media=ebook&limit=10`
       );
       const data = await response.json();
       setBooks(data.results || []);
@@ -51,10 +50,10 @@ export default function Books() {
     setLoading(true);
     try {
       const response = await fetch(
-        'https://itunes.apple.com/search?term=fantasy&media=ebook&entity=ebook&limit=20&sort=popular'
+        'https://corsproxy.io/?' + encodeURIComponent('https://rss.applemarketingtools.com/api/v2/us/books/top-paid/10/books.json')
       );
       const data = await response.json();
-      setTopRatedBooks(data.results || []);
+      setTopRatedBooks(data.feed?.results || []);
     } catch (error) {
       console.error('Error cargando libros mejor valorados:', error);
     } finally {
@@ -67,7 +66,7 @@ export default function Books() {
     try {
       const currentYear = new Date().getFullYear(); // 2025
       const response = await fetch( 
-        `https://itunes.apple.com/search?term=${currentYear}&media=ebook&limit=50`
+        `https://itunes.apple.com/search?term=${currentYear}&media=ebook&limit=8` //Don´t know why, but it place 2 more books than expected
       );
       const data = await response.json();
       setRecentBooks(data.results || []);
