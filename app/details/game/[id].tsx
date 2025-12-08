@@ -23,6 +23,13 @@ export default function GameDetail() {
   const router = useRouter();
   const game: Game = JSON.parse(gameData as string);
 
+  const openForm = (game: Game) => {
+	router.push({
+	  pathname: '/form/game',
+	  params: { gameData: JSON.stringify(game) }
+	});
+  }
+
   if (!game) {
     return (
       <Screen>
@@ -166,7 +173,7 @@ export default function GameDetail() {
           )}
 
           <TouchableOpacity 
-            onPress={() => {}} 
+            onPress={() => openForm(game)} 
             className="flex-1 bg-[#8B2DF0] py-4 rounded-xl items-center flex-row justify-center"
           >
             <FontAwesome5 name="cloud-upload-alt" size={16} color="white" style={{marginRight: 8}} />

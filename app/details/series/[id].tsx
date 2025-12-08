@@ -22,6 +22,13 @@ export default function SeriesDetail() {
   const router = useRouter();
   const series: Series = JSON.parse(seriesData as string);
 
+  const openForm = (series: Series) => {
+	router.push({
+	  pathname: '/form/series',
+	  params: { seriesData: JSON.stringify(series) }
+	});
+  }
+
   if (!series) {
     return (
       <Screen>
@@ -144,7 +151,7 @@ export default function SeriesDetail() {
           )}
 
           <TouchableOpacity 
-            onPress={() => {}} 
+            onPress={() => openForm(series)} 
             className="flex-1 bg-[#8B2DF0] py-4 rounded-xl items-center flex-row justify-center"
           >
             <FontAwesome5 name="cloud-upload-alt" size={16} color="white" />

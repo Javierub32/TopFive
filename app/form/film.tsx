@@ -300,12 +300,16 @@ export default function FilmForm() {
             <Text className="mt-1 text-right text-xs text-gray-500">{reseña.length}/500</Text>
           </View>
 
-          <TouchableOpacity
-            onPress={handleSubmit}
-            className="mb-24 mt-4 rounded-lg bg-purple-600 py-3"
-            activeOpacity={0.8}>
-            <Text className="text-center text-lg font-bold text-white ">Guardar</Text>
-          </TouchableOpacity>
+		  {/* Botón Guardar */}
+		  <TouchableOpacity
+			onPress={handleSubmit}
+			disabled={loading}
+			className="mb-24 mt-4 rounded-lg bg-purple-600 py-3"
+			activeOpacity={0.8}>
+			<Text className="text-center text-lg font-bold text-white">
+			  {loading ? 'Guardando...' : 'Guardar'}
+			</Text>
+		  </TouchableOpacity>
         </View>
       </ScrollView>
     </Screen>
