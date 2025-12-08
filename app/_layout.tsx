@@ -4,6 +4,7 @@ import { Slot, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { View, ActivityIndicator } from 'react-native';
+import { ResourceProvider } from 'context/ResourceContext';
 
 const InitialLayout = () => {
   const { session, loading } = useAuth();
@@ -38,7 +39,9 @@ const InitialLayout = () => {
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <InitialLayout />
+		<ResourceProvider>
+      		<InitialLayout />
+		</ResourceProvider>
     </AuthProvider>
   );
 }
