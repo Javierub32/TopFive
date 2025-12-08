@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,222 +7,31 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useResource } from 'context/ResourceContext';
 
-// --- TIPOS Y MOCK DATA ---
+// --- TIPOS ---
 
-type CategoryType = 'Todo' | 'Libros' | 'Películas' | 'Series' | 'Videojuegos' | 'Canciones' | 'Colecciones';
-type StatusType = 'TODOS' | 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO' | 'ABANDONADO';
-type SortType = 'FECHA_DESC' | 'FECHA_ASC' | 'RATING_DESC' | 'TITULO_ASC';
-
-interface LibraryItem {
-  id: string;
-  type: CategoryType; // Simplificado para el ejemplo
-  title: string;
-  subtitle: string; // Autor, Desarrollador, Artista, etc.
-  image: string;
-  rating: number; // 0-5
-  status: StatusType;
-  favorite: boolean;
-  createdAt: string; // ISO Date
-  metadata?: string; // Plataforma, Género, etc.
-}
-
-const MOCK_DATA: LibraryItem[] = [
-  {
-    id: '1',
-    type: 'Videojuegos',
-    title: 'Elden Ring',
-    subtitle: 'FromSoftware',
-    image: 'https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/phvVT0qZfcRms5qDAk0SI3CM.png',
-    rating: 5,
-    status: 'COMPLETADO',
-    favorite: true,
-    createdAt: '2023-01-15',
-    metadata: 'RPG / Soulslike',
-  },
-  {
-    id: '2',
-    type: 'Libros',
-    title: 'El Nombre del Viento',
-    subtitle: 'Patrick Rothfuss',
-    image: 'https://images.booksense.com/images/309/894/9788401352836.jpg',
-    rating: 4.5,
-    status: 'EN_CURSO',
-    favorite: true,
-    createdAt: '2023-02-10',
-    metadata: 'Fantasía',
-  },
-  {
-    id: '3',
-    type: 'Películas',
-    title: 'Dune: Parte Dos',
-    subtitle: 'Denis Villeneuve',
-    image: 'https://m.media-amazon.com/images/M/MV5BN2QyZGU4ZDctOWMzMy00NTc5LThlOGQtODhmNDI1NmY5YzAwXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg',
-    rating: 4.8,
-    status: 'PENDIENTE',
-    favorite: false,
-    createdAt: '2024-03-01',
-    metadata: 'Sci-Fi',
-  },
-  {
-    id: '4',
-    type: 'Series',
-    title: 'Breaking Bad',
-    subtitle: 'Vince Gilligan',
-    image: 'https://m.media-amazon.com/images/M/MV5BYmQ4YWMxYjktNzcxZi00OTJkLWE5NTktYjA3MGY4Y2Q0NDJjXkEyXkFqcGdeQXVyNDIzMzcwNjc@._V1_FMjpg_UX1000_.jpg',
-    rating: 5,
-    status: 'COMPLETADO',
-    favorite: true,
-    createdAt: '2022-11-20',
-    metadata: 'Drama',
-  },
-  {
-    id: '5',
-    type: 'Canciones',
-    title: 'Bohemian Rhapsody',
-    subtitle: 'Queen',
-    image: 'https://upload.wikimedia.org/wikipedia/en/9/9f/Bohemian_Rhapsody.png',
-    rating: 5,
-    status: 'COMPLETADO',
-    favorite: true,
-    createdAt: '2022-05-15',
-    metadata: 'Rock',
-  },
-  {
-    id: '6',
-    type: 'Videojuegos',
-    title: 'Hollow Knight',
-    subtitle: 'Team Cherry',
-    image: 'https://upload.wikimedia.org/wikipedia/en/0/04/Hollow_Knight_first_cover_art.webp',
-    rating: 4.2,
-    status: 'ABANDONADO',
-    favorite: false,
-    createdAt: '2023-06-12',
-    metadata: 'Metroidvania',
-  },
-  {
-    id: '7',
-    type: 'Libros',
-    title: '1984',
-    subtitle: 'George Orwell',
-    image: 'https://m.media-amazon.com/images/I/71kxa1-0mfL.jpg',
-    rating: 4.0,
-    status: 'COMPLETADO',
-    favorite: false,
-    createdAt: '2021-09-01',
-    metadata: 'Distopía',
-  },
-  {
-    id: '8',
-    type: 'Series',
-    title: 'Arcane',
-    subtitle: 'Fortiche',
-    image: 'https://m.media-amazon.com/images/M/MV5BYmU5OWM5ZTAtNjUzOC00NmUyLTgyOWMtMjlkNjdlMDAzMzU1XkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg',
-    rating: 4.9,
-    status: 'EN_CURSO',
-    favorite: true,
-    createdAt: '2024-01-20',
-    metadata: 'Animación',
-  },
-  {
-    id: '9',
-    type: 'Películas',
-    title: 'Inception',
-    subtitle: 'Christopher Nolan',
-    image: 'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg',
-    rating: 4.7,
-    status: 'COMPLETADO',
-    favorite: true,
-    createdAt: '2020-03-15',
-    metadata: 'Sci-Fi',
-  },
-  {
-    id: '10',
-    type: 'Videojuegos',
-    title: 'FIFA 24',
-    subtitle: 'EA Sports',
-    image: 'https://upload.wikimedia.org/wikipedia/en/b/b9/EA_Sports_FC_24_cover.jpg',
-    rating: 3.0,
-    status: 'EN_CURSO',
-    favorite: false,
-    createdAt: '2023-12-25',
-    metadata: 'Deportes',
-  },
-  {
-    id: '11',
-    type: 'Canciones',
-    title: 'Blinding Lights',
-    subtitle: 'The Weeknd',
-    image: 'https://upload.wikimedia.org/wikipedia/en/e/e6/The_Weeknd_-_Blinding_Lights.png',
-    rating: 4.0,
-    status: 'PENDIENTE',
-    favorite: false,
-    createdAt: '2024-02-14',
-    metadata: 'Synth-pop',
-  },
-  {
-    id: '12',
-    type: 'Colecciones',
-    title: 'Saga Harry Potter',
-    subtitle: 'J.K. Rowling',
-    image: 'https://m.media-amazon.com/images/I/71sH3vxziLL._AC_UF1000,1000_QL80_.jpg',
-    rating: 4.5,
-    status: 'COMPLETADO',
-    favorite: true,
-    createdAt: '2019-01-01',
-    metadata: '7 Libros',
-  },
-  {
-    id: '13',
-    type: 'Libros',
-    title: 'Hábitos Atómicos',
-    subtitle: 'James Clear',
-    image: 'https://m.media-amazon.com/images/I/81bgE28aDUL.jpg',
-    rating: 4.8,
-    status: 'PENDIENTE',
-    favorite: false,
-    createdAt: '2024-03-05',
-    metadata: 'Autoayuda',
-  },
-  {
-    id: '14',
-    type: 'Videojuegos',
-    title: 'Cyberpunk 2077',
-    subtitle: 'CD Projekt Red',
-    image: 'https://upload.wikimedia.org/wikipedia/en/9/9f/Cyberpunk_2077_box_art.jpg',
-    rating: 4.1,
-    status: 'COMPLETADO',
-    favorite: false,
-    createdAt: '2023-11-11',
-    metadata: 'RPG / FPS',
-  },
-  {
-    id: '15',
-    type: 'Series',
-    title: 'The Office',
-    subtitle: 'Greg Daniels',
-    image: 'https://m.media-amazon.com/images/M/MV5BMDNkOTE4NDQtMTNmYi00MWE0LWE4ZTktYTc0NzhhNWIzNzJiXkEyXkFqcGdeQXVyMzQ2MDI5NjU@._V1_FMjpg_UX1000_.jpg',
-    rating: 4.6,
-    status: 'ABANDONADO',
-    favorite: false,
-    createdAt: '2021-05-10',
-    metadata: 'Comedia',
-  },
-];
+type CategoryType = 'Libros' | 'Películas' | 'Series' | 'Videojuegos' | 'Canciones';
+type StatusType = 'TODOS' | 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';
+type SortType = 'FECHA_DESC' | 'FECHA_ASC';
 
 export default function LibraryScreen() {
   const router = useRouter();
+  const { fetchPeliculas, fetchSeries, fetchVideojuegos, fetchLibros, fetchCanciones } = useResource();
 
   // --- ESTADOS ---
   const [busqueda, setBusqueda] = useState('');
-  const [categoriaActual, setCategoriaActual] = useState<CategoryType>('Todo');
+  const [categoriaActual, setCategoriaActual] = useState<CategoryType>('Películas');
   const [menuCategoriaAbierto, setMenuCategoriaAbierto] = useState(false);
   const [filtrosAbiertos, setFiltrosAbiertos] = useState(false);
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
   // Estados de Filtros
   const [orden, setOrden] = useState<SortType>('FECHA_DESC');
@@ -230,78 +39,72 @@ export default function LibraryScreen() {
   const [soloFavoritos, setSoloFavoritos] = useState(false);
 
   const opcionesCategoria: CategoryType[] = [
-    'Todo',
     'Libros',
     'Películas',
     'Series',
     'Videojuegos',
     'Canciones',
-    'Colecciones',
   ];
 
-  // --- LÓGICA DE FILTRADO Y ORDENACIÓN ---
-  const dataFiltrada = useMemo(() => {
-    let resultado = MOCK_DATA;
+  // --- CARGAR DATOS ---
+  useEffect(() => {
+    cargarDatos();
+  }, [categoriaActual, busqueda, filtroEstado, orden, soloFavoritos]);
 
-    // 1. Filtrar por Categoría
-    if (categoriaActual !== 'Todo') {
-      resultado = resultado.filter((item) => item.type === categoriaActual);
-    }
-
-    // 2. Filtrar por Texto (Búsqueda local)
-    if (busqueda.trim()) {
-      const term = busqueda.toLowerCase();
-      resultado = resultado.filter(
-        (item) =>
-          item.title.toLowerCase().includes(term) ||
-          item.subtitle.toLowerCase().includes(term)
-      );
-    }
-
-    // 3. Filtrar por Estado
-    if (filtroEstado !== 'TODOS') {
-      resultado = resultado.filter((item) => item.status === filtroEstado);
-    }
-
-    // 4. Filtrar por Favoritos
-    if (soloFavoritos) {
-      resultado = resultado.filter((item) => item.favorite);
-    }
-
-    // 5. Ordenar
-    resultado = [...resultado].sort((a, b) => {
-      switch (orden) {
-        case 'FECHA_DESC':
-          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-        case 'FECHA_ASC':
-          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-        case 'RATING_DESC':
-          return b.rating - a.rating;
-        case 'TITULO_ASC':
-          return a.title.localeCompare(b.title);
+  const cargarDatos = async () => {
+    setLoading(true);
+    try {
+      let fetchFunction;
+      
+      // Seleccionar la función fetch según la categoría
+      switch (categoriaActual) {
+        case 'Películas':
+          fetchFunction = fetchPeliculas;
+          break;
+        case 'Series':
+          fetchFunction = fetchSeries;
+          break;
+        case 'Videojuegos':
+          fetchFunction = fetchVideojuegos;
+          break;
+        case 'Libros':
+          fetchFunction = fetchLibros;
+          break;
+        case 'Canciones':
+          fetchFunction = fetchCanciones;
+          break;
         default:
-          return 0;
+          fetchFunction = fetchPeliculas;
       }
-    });
 
-    return resultado;
-  }, [categoriaActual, busqueda, filtroEstado, soloFavoritos, orden]);
+      const favorito = soloFavoritos ? true : null; // Filtrar por favoritos si está activado
+      const estado = filtroEstado === 'TODOS' ? null : filtroEstado;
+      const cantidad = null; // Sin límite
+      const ordenarPorFecha = orden === 'FECHA_DESC' ? true : (orden === 'FECHA_ASC' ? false : null);
+
+      const resultado = await fetchFunction(busqueda, favorito, estado, cantidad, ordenarPorFecha);
+      setData(resultado || []);
+    } catch (error) {
+      console.error('Error al cargar datos:', error);
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // --- HELPERS VISUALES ---
-  const getStatusColor = (status: StatusType) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case 'PENDIENTE': return 'bg-gray-600';
       case 'EN_CURSO': return 'bg-blue-600';
       case 'COMPLETADO': return 'bg-green-600';
-      case 'ABANDONADO': return 'bg-red-600';
       default: return 'bg-slate-700';
     }
   };
 
-  const getStatusText = (status: StatusType, category: CategoryType) => {
+  const getStatusText = (status: string, category: CategoryType) => {
     if (status === 'PENDIENTE') return 'Pendiente';
     if (status === 'COMPLETADO') return 'Completado';
-    if (status === 'ABANDONADO') return 'Abandonado';
     
     // Texto dinámico para "En curso"
     if (status === 'EN_CURSO') {
@@ -313,21 +116,38 @@ export default function LibraryScreen() {
     return '';
   };
 
+  const getTitle = (item: any) => {
+    // Adaptarse a la estructura de cada recurso
+    if (categoriaActual === 'Películas') return item.contenidopelicula?.titulo || 'Sin título';
+    if (categoriaActual === 'Series') return item.contenidoserie?.titulo || 'Sin título';
+    if (categoriaActual === 'Videojuegos') return item.contenidovideojuego?.titulo || 'Sin título';
+    if (categoriaActual === 'Libros') return item.contenidolibro?.titulo || 'Sin título';
+    if (categoriaActual === 'Canciones') return item.contenidocancion?.titulo || 'Sin título';
+    return 'Sin título';
+  };
+
+  const getImage = (item: any) => {
+    if (categoriaActual === 'Películas') return item.contenidopelicula?.imagenUrl;
+    if (categoriaActual === 'Series') return item.contenidoserie?.imagenUrl;
+    if (categoriaActual === 'Videojuegos') return item.contenidovideojuego?.imagenUrl;
+    if (categoriaActual === 'Libros') return item.contenidolibro?.imagenUrl;
+    if (categoriaActual === 'Canciones') return item.contenidocancion?.imagenUrl;
+    return null;
+  };
+
   // --- RENDERIZADO ---
 
-  const renderItem = ({ item }: { item: LibraryItem }) => (
+  const renderItem = ({ item }: { item: any }) => (
     <TouchableOpacity
       className="mb-3 flex-row overflow-hidden rounded-xl border border-slate-700 bg-slate-800 shadow-sm active:bg-slate-700"
       activeOpacity={0.7}
       onPress={() => {
-        // Navegación (Ejemplo)
-        // router.push(...)
-        console.log(`Abrir ${item.title}`);
+        console.log(`Abrir ${getTitle(item)}`);
       }}
     >
       {/* Imagen */}
       <Image
-        source={{ uri: item.image }}
+        source={{ uri: getImage(item) || 'https://via.placeholder.com/150' }}
         className="h-28 w-20 bg-slate-900"
         resizeMode="cover"
       />
@@ -337,13 +157,15 @@ export default function LibraryScreen() {
         <View>
             <View className="flex-row justify-between items-start">
                 <Text className="text-white font-bold text-lg flex-1 mr-2" numberOfLines={1}>
-                    {item.title}
+                    {getTitle(item)}
                 </Text>
-                {item.favorite && (
+                {item.favorito && (
                     <MaterialCommunityIcons name="heart" size={16} color="#ef4444" />
                 )}
             </View>
-            <Text className="text-gray-400 text-sm" numberOfLines={1}>{item.subtitle}</Text>
+            <Text className="text-gray-400 text-sm" numberOfLines={1}>
+              {new Date(item.fechacreacion).toLocaleDateString()}
+            </Text>
         </View>
         
         <View className="flex-row items-center justify-between mt-2">
@@ -351,21 +173,14 @@ export default function LibraryScreen() {
                 {/* Badge Rating */}
                 <View className="flex-row items-center bg-purple-900/40 px-2 py-1 rounded border border-purple-500/20">
                     <MaterialCommunityIcons name="star" size={12} color="#fbbf24" />
-                    <Text className="text-purple-200 text-xs font-bold ml-1">{item.rating.toFixed(1)}</Text>
+                    <Text className="text-purple-200 text-xs font-bold ml-1">{item.calificacion || 0}</Text>
                 </View>
-                
-                {/* Badge Tipo (Solo si estamos en TODO) */}
-                {categoriaActual === 'Todo' && (
-                    <Text className="text-xs text-gray-500 uppercase font-bold tracking-wider">
-                        {item.type}
-                    </Text>
-                )}
             </View>
 
             {/* Badge Estado */}
-            <View className={`px-2 py-1 rounded ${getStatusColor(item.status)}`}>
+            <View className={`px-2 py-1 rounded ${getStatusColor(item.estado)}`}>
                 <Text className="text-[10px] text-white font-bold uppercase">
-                    {getStatusText(item.status, item.type)}
+                    {getStatusText(item.estado, categoriaActual)}
                 </Text>
             </View>
         </View>
@@ -460,8 +275,6 @@ export default function LibraryScreen() {
                         {[
                             { id: 'FECHA_DESC', label: 'Más recientes' },
                             { id: 'FECHA_ASC', label: 'Más antiguos' },
-                            { id: 'RATING_DESC', label: 'Mejor valorados' },
-                            { id: 'TITULO_ASC', label: 'A - Z' },
                         ].map((opt) => (
                             <TouchableOpacity
                                 key={opt.id}
@@ -484,7 +297,6 @@ export default function LibraryScreen() {
                             { id: 'PENDIENTE', label: 'Pendiente' },
                             { id: 'EN_CURSO', label: 'En curso' },
                             { id: 'COMPLETADO', label: 'Completado' },
-                            { id: 'ABANDONADO', label: 'Abandonado' },
                         ].map((opt) => (
                             <TouchableOpacity
                                 key={opt.id}
@@ -512,20 +324,27 @@ export default function LibraryScreen() {
         )}
 
         {/* --- LISTA DE RESULTADOS --- */}
-        <FlatList
-            className="-z-10 flex-1"
-            data={dataFiltrada}
-            keyExtractor={(item) => item.id}
-            renderItem={renderItem}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 100 }}
-            ListEmptyComponent={
-                <View className="mt-10 items-center justify-center">
-                    <MaterialCommunityIcons name="bookshelf" size={64} color="#334155" />
-                    <Text className="mt-4 text-gray-500 text-center">No se encontraron elementos con estos filtros.</Text>
-                </View>
-            }
-        />
+        {loading ? (
+          <View className="flex-1 items-center justify-center">
+            <ActivityIndicator size="large" color="#a855f7" />
+            <Text className="mt-4 text-gray-400">Cargando...</Text>
+          </View>
+        ) : (
+          <FlatList
+              className="-z-10 flex-1"
+              data={data}
+              keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
+              renderItem={renderItem}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 100 }}
+              ListEmptyComponent={
+                  <View className="mt-10 items-center justify-center">
+                      <MaterialCommunityIcons name="bookshelf" size={64} color="#334155" />
+                      <Text className="mt-4 text-gray-500 text-center">No se encontraron elementos con estos filtros.</Text>
+                  </View>
+              }
+          />
+        )}
 
         {/* BOTÓN FLOTANTE (Opcional, para añadir manual) */}
         <TouchableOpacity 

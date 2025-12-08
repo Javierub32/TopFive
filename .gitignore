@@ -14,7 +14,12 @@ web-build/
 .env
 .env.local
 
+# Build and configuration files
 build-apk.bat
+config-android-sdk.bat
+INSTRUCCIONES-APK.bat
+proguard-rules-custom.pro
+.npmrc
 
 ios
 android

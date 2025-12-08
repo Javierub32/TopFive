@@ -1,9 +1,9 @@
 {
 	"expo": {
-		"name": "CardZenith",
-		"slug": "cardzenith",
+		"name": "TopFive",
+		"slug": "topfive",
 		"version": "1.0.0",
-		"scheme": "cardzenith",
+		"scheme": "topfive",
 		"web": {
 			"favicon": "./assets/favicon.png",
 			"bundler": "metro"
@@ -33,7 +33,7 @@
 				"foregroundImage": "./assets/adaptive-icon.png",
 				"backgroundColor": "#ffffff"
 			},
-			"package": "com.anonymous.cardzenith",
+			"package": "com.anonymous.topfive",
 			"enableProguardInReleaseBuilds": true,
 			"enableShrinkResourcesInReleaseBuilds": true,
 			"versionCode": 1

@@ -40,11 +40,11 @@ export const ResourceProvider = ({ children }) => {
 		}
 	}, [user]);
 
-	const fetchPeliculas = async (cantidad) => {
+	const fetchPeliculas = async (term, favorito, estado, cantidad, ordenarPorFecha) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
 
-			const { data, error } = await supabase
+			let query = supabase
 				.from('recursopelicula') 
 				.select(`
 					*, 
@@ -54,9 +54,37 @@ export const ResourceProvider = ({ children }) => {
 					fechaLanzamiento
 					)
 				`) 
-				.eq('usuarioId', user.id)
-				.order('fechacreacion', { ascending: false }) 
-				.limit(cantidad);
+				.eq('usuarioId', user.id);
+
+			// Solo aplicar filtro de favorito si es true
+			if (favorito === true) {
+				query = query.eq('favorito', true);
+			}
+
+			// Solo aplicar filtro de estado si se proporciona
+			if (estado !== undefined && estado !== null) {
+				query = query.eq('estado', estado);
+			}
+
+			// Solo aplicar filtro de término de búsqueda si se proporciona
+			if (term !== undefined && term !== null && term !== '') {
+				query = query.ilike('contenidopelicula.titulo', `%${term}%`);
+			}
+
+			// Aplicar ordenamiento por fecha si se especifica
+			if (ordenarPorFecha === true) {
+				query = query.order('fechacreacion', { ascending: false }); // Más recientes primero
+			} else if (ordenarPorFecha === false) {
+				query = query.order('fechacreacion', { ascending: true }); // Más antiguos primero
+			}
+			// Si es null o undefined, no se ordena
+
+			// Solo aplicar límite si se proporciona
+			if (cantidad !== undefined && cantidad !== null) {
+				query = query.limit(cantidad);
+			}
+
+			const { data, error } = await query;
 
 			if (error) {
 				throw error;
@@ -68,11 +96,11 @@ export const ResourceProvider = ({ children }) => {
 			return null;
 		}
 	};
-const fetchSeries = async (cantidad) => {
+const fetchSeries = async (term, favorito, estado, cantidad, ordenarPorFecha) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
 
-			const { data, error } = await supabase
+			let query = supabase
 				.from('recursoserie') 
 				.select(`
 					*, 
@@ -82,9 +110,37 @@ const fetchSeries = async (cantidad) => {
 						fechaLanzamiento
 					)
 				`) 
-				.eq('usuarioId', user.id)
-				.order('fechacreacion', { ascending: false }) 
-				.limit(cantidad);
+				.eq('usuarioId', user.id);
+
+			// Solo aplicar filtro de favorito si es true
+			if (favorito === true) {
+				query = query.eq('favorito', true);
+			}
+
+			// Solo aplicar filtro de estado si se proporciona
+			if (estado !== undefined && estado !== null) {
+				query = query.eq('estado', estado);
+			}
+
+			// Solo aplicar filtro de término de búsqueda si se proporciona
+			if (term !== undefined && term !== null && term !== '') {
+				query = query.ilike('contenidoserie.titulo', `%${term}%`);
+			}
+
+			// Aplicar ordenamiento por fecha si se especifica
+			if (ordenarPorFecha === true) {
+				query = query.order('fechacreacion', { ascending: false }); // Más recientes primero
+			} else if (ordenarPorFecha === false) {
+				query = query.order('fechacreacion', { ascending: true }); // Más antiguos primero
+			}
+			// Si es null o undefined, no se ordena
+
+			// Solo aplicar límite si se proporciona
+			if (cantidad !== undefined && cantidad !== null) {
+				query = query.limit(cantidad);
+			}
+
+			const { data, error } = await query;
 
 			if (error) throw error;
 			
@@ -96,11 +152,11 @@ const fetchSeries = async (cantidad) => {
 		}
 	};
 
-	const fetchVideojuegos = async (cantidad) => {
+	const fetchVideojuegos = async (term, favorito, estado, cantidad, ordenarPorFecha) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
 
-			const { data, error } = await supabase
+			let query = supabase
 				.from('recursovideojuego') 
 				.select(`
 					*, 
@@ -110,9 +166,37 @@ const fetchSeries = async (cantidad) => {
 						fechaLanzamiento
 					)
 				`) 
-				.eq('usuarioId', user.id)
-				.order('fechacreacion', { ascending: false }) 
-				.limit(cantidad);
+				.eq('usuarioId', user.id);
+
+			// Solo aplicar filtro de favorito si es true
+			if (favorito === true) {
+				query = query.eq('favorito', true);
+			}
+
+			// Solo aplicar filtro de estado si se proporciona
+			if (estado !== undefined && estado !== null) {
+				query = query.eq('estado', estado);
+			}
+
+			// Solo aplicar filtro de término de búsqueda si se proporciona
+			if (term !== undefined && term !== null && term !== '') {
+				query = query.ilike('contenidovideojuego.titulo', `%${term}%`);
+			}
+
+			// Aplicar ordenamiento por fecha si se especifica
+			if (ordenarPorFecha === true) {
+				query = query.order('fechacreacion', { ascending: false }); // Más recientes primero
+			} else if (ordenarPorFecha === false) {
+				query = query.order('fechacreacion', { ascending: true }); // Más antiguos primero
+			}
+			// Si es null o undefined, no se ordena
+
+			// Solo aplicar límite si se proporciona
+			if (cantidad !== undefined && cantidad !== null) {
+				query = query.limit(cantidad);
+			}
+
+			const { data, error } = await query;
 
 			if (error) throw error;
 
@@ -124,11 +208,11 @@ const fetchSeries = async (cantidad) => {
 		}
 	};
 
-	const fetchLibros = async (cantidad) => {
+	const fetchLibros = async (term, favorito, estado, cantidad, ordenarPorFecha) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
 
-			const { data, error } = await supabase
+			let query = supabase
 				.from('recursolibro')
 				.select(`
 					*, 
@@ -138,9 +222,37 @@ const fetchSeries = async (cantidad) => {
 						fechaLanzamiento
 					)
 				`) 
-				.eq('usuarioId', user.id)
-				.order('fechacreacion', { ascending: false }) 
-				.limit(cantidad);
+				.eq('usuarioId', user.id);
+
+			// Solo aplicar filtro de favorito si es true
+			if (favorito === true) {
+				query = query.eq('favorito', true);
+			}
+
+			// Solo aplicar filtro de estado si se proporciona
+			if (estado !== undefined && estado !== null) {
+				query = query.eq('estado', estado);
+			}
+
+			// Solo aplicar filtro de término de búsqueda si se proporciona
+			if (term !== undefined && term !== null && term !== '') {
+				query = query.ilike('contenidolibro.titulo', `%${term}%`);
+			}
+
+			// Aplicar ordenamiento por fecha si se especifica
+			if (ordenarPorFecha === true) {
+				query = query.order('fechacreacion', { ascending: false }); // Más recientes primero
+			} else if (ordenarPorFecha === false) {
+				query = query.order('fechacreacion', { ascending: true }); // Más antiguos primero
+			}
+			// Si es null o undefined, no se ordena
+
+			// Solo aplicar límite si se proporciona
+			if (cantidad !== undefined && cantidad !== null) {
+				query = query.limit(cantidad);
+			}
+
+			const { data, error } = await query;
 
 			if (error) throw error;
 
@@ -152,11 +264,11 @@ const fetchSeries = async (cantidad) => {
 		}
 	};
 
-	const fetchCanciones = async (cantidad) => {
+	const fetchCanciones = async (term, favorito, estado, cantidad, ordenarPorFecha) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
 
-			const { data, error } = await supabase
+			let query = supabase
 				.from('recursocancion')
 				.select(`
 					*, 
@@ -166,9 +278,37 @@ const fetchSeries = async (cantidad) => {
 						fechaLanzamiento
 					)
 				`) 
-				.eq('usuarioId', user.id)
-				.order('fechacreacion', { ascending: false }) 
-				.limit(cantidad);
+				.eq('usuarioId', user.id);
+
+			// Solo aplicar filtro de favorito si es true
+			if (favorito === true) {
+				query = query.eq('favorito', true);
+			}
+
+			// Solo aplicar filtro de estado si se proporciona
+			if (estado !== undefined && estado !== null) {
+				query = query.eq('estado', estado);
+			}
+
+			// Solo aplicar filtro de término de búsqueda si se proporciona
+			if (term !== undefined && term !== null && term !== '') {
+				query = query.ilike('contenidocancion.titulo', `%${term}%`);
+			}
+
+			// Aplicar ordenamiento por fecha si se especifica
+			if (ordenarPorFecha === true) {
+				query = query.order('fechacreacion', { ascending: false }); // Más recientes primero
+			} else if (ordenarPorFecha === false) {
+				query = query.order('fechacreacion', { ascending: true }); // Más antiguos primero
+			}
+			// Si es null o undefined, no se ordena
+
+			// Solo aplicar límite si se proporciona
+			if (cantidad !== undefined && cantidad !== null) {
+				query = query.limit(cantidad);
+			}
+
+			const { data, error } = await query;
 
 			if (error) throw error;
 
@@ -181,7 +321,13 @@ const fetchSeries = async (cantidad) => {
 	};
 
 	return (
-		<ResourceContext.Provider value={{}}>
+		<ResourceContext.Provider value={{
+			fetchPeliculas,
+			fetchSeries,
+			fetchVideojuegos,
+			fetchLibros,
+			fetchCanciones
+		}}>
 			{children}
 		</ResourceContext.Provider>
 	);

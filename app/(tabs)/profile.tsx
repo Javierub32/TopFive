@@ -192,12 +192,12 @@ export default function HomeScreen() {
 							withInnerLines={false}
 							fromZero={true}
 							withHorizontalLabels={false}
-							showValuesOnTopOfBars={true}
-						/>
-					</View>
+						showValuesOnTopOfBars={true}
+					/>
 				</View>
-			</View>			</ScrollView>
-			
-		</Screen>
+			</View>
+		</View>
+		</ScrollView>
+	</Screen>
 	);
 }
