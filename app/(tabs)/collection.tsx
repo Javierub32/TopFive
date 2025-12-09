@@ -336,9 +336,9 @@ export default function LibraryScreen() {
               keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
               renderItem={renderItem}
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: 100 }}
+              contentContainerStyle={{ paddingBottom: 100, flexGrow: 1 }}
               ListEmptyComponent={
-                  <View className="mt-10 items-center justify-center">
+                  <View className="flex-1 items-center justify-center">
                       <MaterialCommunityIcons name="bookshelf" size={64} color="#334155" />
                       <Text className="mt-4 text-gray-500 text-center">No se encontraron elementos con estos filtros.</Text>
                   </View>
