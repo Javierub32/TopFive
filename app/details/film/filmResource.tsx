@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useResource } from 'context/ResourceContext';
 
 interface FilmResource {
   id: number;
@@ -28,6 +29,7 @@ interface FilmResource {
 
 export default function FilmDetail() {
   const { item } = useLocalSearchParams();
+  const {borrarRecurso} = useResource();
   const router = useRouter();
   
   let filmResource: FilmResource | null = null;
@@ -39,8 +41,12 @@ export default function FilmDetail() {
   }
 
   const handleDelete = () => {
-    // TODO: Implementar eliminación del recurso
-    console.log('Eliminar recurso:', filmResource?.id);
+	if (filmResource) {
+		Alert.alert('Recurso eliminado', 'Estás seguro de que quieres eliminar esta película de tu colección?', [
+			{ text: 'Confirmar', onPress: () => {borrarRecurso(filmResource.id, 'pelicula'); router.push('/collection')} },
+			{ text: 'Cancelar', style: 'cancel' }
+		]);
+	}
   };
 
   if (!filmResource) {

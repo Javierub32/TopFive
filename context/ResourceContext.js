@@ -320,13 +320,40 @@ const fetchSeries = async (term, favorito, estado, cantidad, ordenarPorFecha) =>
 		}
 	};
 
+	const borrarRecurso = async (recursoId, tipoRecurso) => {
+		try {
+			if (!user) throw new Error('User not authenticated');
+			const tableMap = {
+				pelicula: 'recursopelicula',
+				serie: 'recursoserie',
+				videojuego: 'recursovideojuego',
+				libro: 'recursolibro',
+				cancion: 'recursocancion'
+			};
+			const tableName = tableMap[tipoRecurso];
+			if (!tableName) throw new Error('Tipo de recurso inválido');
+			const { data, error } = await supabase
+				.from(tableName)
+				.delete()
+				.eq('usuarioId', user.id)
+				.eq('id', recursoId);
+			if (error) throw error;
+			console.log(`Recurso ${tipoRecurso} borrado:`, data);
+			return data;
+		} catch (error) {
+			console.error(`Error al borrar recurso ${tipoRecurso}:`, error);
+			return null;
+		}
+	};
+
 	return (
 		<ResourceContext.Provider value={{
 			fetchPeliculas,
 			fetchSeries,
 			fetchVideojuegos,
 			fetchLibros,
-			fetchCanciones
+			fetchCanciones,
+			borrarRecurso,
 		}}>
 			{children}
 		</ResourceContext.Provider>

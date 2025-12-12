@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useResource } from 'context/ResourceContext';
 
 interface BookResource {
   id: number;
@@ -31,6 +32,7 @@ interface BookResource {
 
 export default function BookDetail() {
   const { item } = useLocalSearchParams();
+  const { borrarRecurso } = useResource();
   const router = useRouter();
   
   let bookResource: BookResource | null = null;
@@ -42,8 +44,12 @@ export default function BookDetail() {
   }
 
   const handleDelete = () => {
-    // TODO: Implementar eliminación del recurso
-    console.log('Eliminar recurso:', bookResource?.id);
+	if (bookResource) {
+		Alert.alert('Recurso eliminado', 'Estás seguro de que quieres eliminar este libro de tu colección?', [
+			{ text: 'Confirmar', onPress: () => {borrarRecurso(bookResource.id, 'libro'); router.push('/collection')} },
+			{ text: 'Cancelar', style: 'cancel' }
+		]);
+	}
   };
 
   if (!bookResource) {
