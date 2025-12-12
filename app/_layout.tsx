@@ -1,4 +1,4 @@
-import '../global.css'; // <--- ¡ESTA LÍNEA ES LA QUE TE FALTA!
+import '../global.css';
 
 import { Slot, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';

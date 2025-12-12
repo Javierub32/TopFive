@@ -160,10 +160,10 @@ export default function HomeScreen() {
     const paramName = paramMap[recursoBusqueda];
     const itemOriginal = datosOriginales[index];
     
-    console.log(`/details/${type}/${itemOriginal.id}/${itemOriginal.title}`);
+    console.log(`/details/${type}/${type}Content`);
     
     router.push({
-      pathname: `/details/${type}/${item.id}`,
+      pathname: `/details/${type}/${type}Content`,
       params: { [paramName]: JSON.stringify(itemOriginal) },
     });
   };

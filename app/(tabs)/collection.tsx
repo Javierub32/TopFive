@@ -92,6 +92,35 @@ export default function LibraryScreen() {
     }
   };
 
+  const handleItemPress = (item: any) => {
+    // Determinar el tipo de recurso según la categoría actual
+    let resourceType = '';
+
+    switch (categoriaActual) {
+      case 'Películas':
+        resourceType = 'film';
+        break;
+      case 'Series':
+        resourceType = 'series';
+        break;
+      case 'Videojuegos':
+        resourceType = 'game';
+        break;
+      case 'Libros':
+        resourceType = 'book';
+        break;
+      case 'Canciones':
+        resourceType = 'song';
+        break;
+    }
+
+    // Navegar a la página de detalles del recurso pasando el item completo
+    router.push({
+      pathname: `/details/${resourceType}/${resourceType}Resource`,
+      params: { item: JSON.stringify(item) }
+    });
+  };
+
   // --- HELPERS VISUALES ---
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -141,9 +170,7 @@ export default function LibraryScreen() {
     <TouchableOpacity
       className="mb-3 flex-row overflow-hidden rounded-xl border border-slate-700 bg-slate-800 shadow-sm active:bg-slate-700"
       activeOpacity={0.7}
-      onPress={() => {
-        console.log(`Abrir ${getTitle(item)}`);
-      }}
+      onPress={() => handleItemPress(item)}
     >
       {/* Imagen */}
       <Image

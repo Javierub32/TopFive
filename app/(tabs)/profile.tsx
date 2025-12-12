@@ -63,6 +63,8 @@ export default function HomeScreen() {
 	}, [user]);
 
 	const fetchUserProfile = async () => {
+		if (!user) return;
+		
 		try {
 			const { data, error } = await supabase
 				.from('usuario')
@@ -109,6 +111,11 @@ export default function HomeScreen() {
 	};
 
 	const uploadAvatar = async (uri: string) => {
+		if (!user) {
+			Alert.alert('Error', 'Usuario no disponible');
+			return;
+		}
+		
 		try {
 			// Eliminar la foto anterior si existe
 			if (avatarUrl) {
@@ -176,6 +183,17 @@ export default function HomeScreen() {
 			Alert.alert('Error', error.message || 'No se pudo actualizar la foto de perfil');
 		}
 	};
+	
+	if (!user) {
+		return (
+			<Screen>
+				<StatusBar style="light" />
+				<View className="flex-1 items-center justify-center">
+					<Text className="text-white text-lg">Cargando perfil...</Text>
+				</View>
+			</Screen>
+		);
+	}
 	
 	return (
 		<Screen>
