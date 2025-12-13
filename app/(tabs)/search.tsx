@@ -177,7 +177,7 @@ export default function HomeScreen() {
       {/* Imagen de Portada */}
       <Image
         source={{ uri: item.cover || 'https://via.placeholder.com/150' }}
-        className="h-24 w-24 bg-slate-900"
+        className="h-36 w-24 bg-slate-900"
         resizeMode="cover"
       />
 
@@ -231,7 +231,7 @@ export default function HomeScreen() {
             </View>
             <TextInput
               className="h-full flex-1 px-3 text-base text-white"
-              placeholder={`Buscar ${recursoBusqueda.toLowerCase()}...`}
+              placeholder={`Buscar ${recursoBusqueda}...`}
               placeholderTextColor="#64748b"
               value={busqueda}
               onChangeText={setBusqueda}
