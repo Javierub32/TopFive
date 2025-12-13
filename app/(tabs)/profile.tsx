@@ -10,37 +10,40 @@ import { supabase } from '../../lib/supabase';
 import * as ImagePicker from 'expo-image-picker';
 import { decode } from 'base64-arraybuffer';
 
-// Const that we use to make the example
+import { BookResource, SeriesResource, FilmResource, GameResource, SongResource } from 'app/types/Resources';
+import { useResource } from 'context/ResourceContext';
+
+// Data structure to hold statistics for each category
 const categoryData = {
   libros: {
-    title: 'Total Libros Leídos',
-    total: 128,
-    average: 10.7,
-    chartData: [9, 5, 13, 14, 16, 12, 8, 11, 14, 13, 10, 15]
+    title: 'Libros Leídos',
+    total: 0,
+    average: 0.0,
+    chartData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   },
   películas: {
-    title: 'Total Películas Vistas',
-    total: 96,
-    average: 8.0,
-    chartData: [7, 4, 10, 11, 13, 9, 6, 8, 11, 10, 7, 12]
+    title: 'Películas Vistas',
+    total: 0,
+    average: 0.0,
+    chartData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   },
   series: {
-    title: 'Total Series Vistas',
-    total: 72,
-    average: 6.0,
-    chartData: [5, 3, 8, 9, 10, 7, 4, 6, 9, 8, 5, 10]
+    title: 'Series Vistas',
+    total: 0,
+    average: 0.0,
+    chartData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   },
   canciones: {
-    title: 'Total Canciones Escuchadas',
-    total: 450,
-    average: 37.5,
-    chartData: [30, 25, 40, 42, 48, 38, 28, 35, 42, 40, 32, 45]
+    title: 'Canciones Escuchadas',
+    total: 0,
+    average: 0.0,
+    chartData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   },
   videojuegos: {
-    title: 'Total Videojuegos Jugados',
-    total: 48,
-    average: 4.0,
-    chartData: [3, 2, 5, 6, 7, 4, 2, 3, 6, 5, 3, 7]
+    title: 'Videojuegos Jugados',
+    total: 0,
+    average: 0.0,
+    chartData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   }
 };
 
@@ -49,19 +52,84 @@ type CategoryKey = 'libros' | 'películas' | 'series' | 'canciones' | 'videojueg
 // The section that displays the user's profile and statistics
 export default function HomeScreen() {
 	const { signOut, user } = useAuth();
+	const {fetchCanciones, fetchLibros, fetchPeliculas, fetchSeries, fetchVideojuegos} = useResource();
 	const { width: screenWidth } = useWindowDimensions();
 	const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('libros');
 	const [username, setUsername] = useState('Usuario');
 	const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-
 	const [isPressed, setIsPressed] = useState(false);
+	const [data, setData] = useState<Array<BookResource | FilmResource | SeriesResource | GameResource | SongResource>>([]);
 	
+	// Fetch user profile on initial load
 	useEffect(() => {
 		if (user) {
 			fetchUserProfile();
 		}
 	}, [user]);
 
+	// Fetch data when category changes and if whe haven't fetched it yet
+	useEffect(() => {
+		if (categoryData[selectedCategory].total !== 0) return;
+		console.log('Fetching data for category:', selectedCategory);
+		fetchResourceInfo();
+	}, [selectedCategory]);
+
+	// Fetch all resources of the selected category and fill the profile data
+	const fetchResourceInfo = async () =>  {
+		let resourceData: any[] = [];
+		switch (selectedCategory) {
+			case 'libros':
+				resourceData = await fetchLibros() as BookResource[];
+				break;
+			case 'películas':
+				resourceData = await fetchPeliculas() as FilmResource[];
+				break;
+			case 'series':
+				resourceData = await fetchSeries() as SeriesResource[];
+				break;
+			case 'canciones':
+				resourceData = await fetchCanciones() as SongResource[];
+				break;
+			case 'videojuegos':
+				resourceData = await fetchVideojuegos() as GameResource[];
+				break;
+			default:
+				break;
+		}
+		setData(resourceData);
+		fillData(resourceData);
+	};
+
+	// Fill the profile statistics data based on fetched resources
+	// We dont use typed here for simplicity, but if needed we can add it
+	const fillData = (resourses: any[]) => {
+		let total = 0;
+		let months = 0;
+		let resoursesPerMonth = new Array(12).fill(0);
+		resourses.forEach((resourse) => {
+			if (resourse.fechaFin) {
+				const fecha = new Date(resourse.fechaFin);
+				const month = fecha.getMonth();
+				if (fecha.getFullYear() === new Date().getFullYear()) {
+					resoursesPerMonth[month]++;
+					total++;
+				}
+			}
+		});
+		// Total of months we consume a resource to do an average more coherent
+		months = resoursesPerMonth.reduce((acc, resOnMonth) => {
+			if (resOnMonth != 0) return acc + 1;
+			else return acc;
+		}, 0);
+		if (months === 0) months = 1; // Avoid division by zero
+
+		categoryData[selectedCategory].total = total;
+		categoryData[selectedCategory].average = parseFloat((total / months).toFixed(1));
+		categoryData[selectedCategory].chartData = resoursesPerMonth;
+		return resourses;
+	}
+
+	// Fetch user profile information
 	const fetchUserProfile = async () => {
 		if (!user) return;
 		
@@ -83,9 +151,10 @@ export default function HomeScreen() {
 		}
 	};
 
+	// Function to pick an image from the device's gallery
 	const pickImage = async () => {
 		try {
-			// Solicitar permisos
+			// Request permission to access media library
 			const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 			
 			if (status !== 'granted') {
@@ -93,7 +162,7 @@ export default function HomeScreen() {
 				return;
 			}
 
-			// Abrir selector de imágenes
+			// Open image picker
 			const result = await ImagePicker.launchImageLibraryAsync({
 				mediaTypes: ImagePicker.MediaTypeOptions.Images,
 				allowsEditing: true,
@@ -110,6 +179,7 @@ export default function HomeScreen() {
 		}
 	};
 
+	// Function to upload the selected avatar to Supabase Storage
 	const uploadAvatar = async (uri: string) => {
 		if (!user) {
 			Alert.alert('Error', 'Usuario no disponible');
@@ -117,7 +187,7 @@ export default function HomeScreen() {
 		}
 		
 		try {
-			// Eliminar la foto anterior si existe
+			// Delete previous avatar if exists
 			if (avatarUrl) {
 				try {
 					const oldPath = avatarUrl.split('/avatars/')[1];
@@ -129,7 +199,6 @@ export default function HomeScreen() {
 				}
 			}
 
-			// Obtener el archivo como base64
 			const response = await fetch(uri);
 			const blob = await response.blob();
 			const reader = new FileReader();
@@ -142,7 +211,7 @@ export default function HomeScreen() {
 				const fileName = `avatar.${fileExt}`;
 				const filePath = `${user.id}/${fileName}`;
 
-				// Subir a Supabase Storage con upsert true
+				// Upload to Supabase Storage with upsert true
 				const { data, error: uploadError } = await supabase.storage
 					.from('avatars')
 					.upload(filePath, decode(base64String), {
@@ -155,14 +224,14 @@ export default function HomeScreen() {
 					throw uploadError;
 				}
 
-				// Obtener URL pública con timestamp para evitar caché
+				// Get public URL with timestamp to avoid cache
 				const { data: { publicUrl } } = supabase.storage
 					.from('avatars')
 					.getPublicUrl(filePath);
 
 				const publicUrlWithTimestamp = `${publicUrl}?t=${Date.now()}`;
 
-				// Actualizar en la base de datos
+				// Update in the database
 				const { error: updateError } = await supabase
 					.from('usuario')
 					.update({ avatar_url: publicUrlWithTimestamp })

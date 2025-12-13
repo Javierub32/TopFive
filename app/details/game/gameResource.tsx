@@ -5,33 +5,8 @@ import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useResource } from 'context/ResourceContext';
+import { GameResource } from 'app/types/Resources';
 
-interface GameResource {
-  id: number;
-  usuarioId: string;
-  idContenido: number;
-  estado: 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO' | 'ABANDONADO';
-  reseña: string;
-  calificacion: number;
-  favorito: boolean;
-  tiporecurso: string;
-  horasJugadas: number;
-  dificultad: string;
-  fechaInicio: string | null;
-  fechaFin: string | null;
-  fechacreacion: string;
-  contenidovideojuego: {
-    titulo: string;
-    imagenUrl: string;
-    fechaLanzamiento: string;
-    descripcion?: string;
-    calificacion?: number;
-    autor?: string;
-    genero?: string[];
-    plataformas?: string[];
-    modosJuego?: string[];
-  };
-}
 
 export default function GameDetail() {
   const { item } = useLocalSearchParams();

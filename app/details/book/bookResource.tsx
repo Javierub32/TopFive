@@ -5,30 +5,8 @@ import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useResource } from 'context/ResourceContext';
+import { BookResource } from 'app/types/Resources';
 
-interface BookResource {
-  id: number;
-  usuarioId: string;
-  idContenido: number;
-  estado: 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';
-  reseña: string;
-  calificacion: number;
-  favorito: boolean;
-  tiporecurso: string;
-  paginasLeidas: number;
-  fechaInicio: string | null;
-  fechaFin: string | null;
-  fechacreacion: string;
-  contenidolibro: {
-    titulo: string;
-    imagenUrl: string;
-    fechaLanzamiento: string;
-    descripcion?: string;
-    calificacion?: number;
-    autor?: string;
-    genero?: string[];
-  };
-}
 
 export default function BookDetail() {
   const { item } = useLocalSearchParams();

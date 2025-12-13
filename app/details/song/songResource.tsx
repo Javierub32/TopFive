@@ -5,29 +5,8 @@ import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useResource } from 'context/ResourceContext';
+import { SongResource } from 'app/types/Resources';
 
-interface SongResource {
-  id: number;
-  usuarioId: string;
-  idContenido: number;
-  estado: 'PENDIENTE' | 'COMPLETADO';
-  reseña: string;
-  calificacion: number;
-  favorito: boolean;
-  tiporecurso: string;
-  fechaEscucha: string | null;
-  albumId: number | null;
-  fechacreacion: string;
-  contenidocancion: {
-    titulo: string;
-    imagenUrl: string;
-    fechaLanzamiento: string;
-    autor?: string;
-    genero?: string[];
-    albumTitulo?: string;
-    referencia?: string;
-  };
-}
 
 export default function SongDetail() {
   const { item } = useLocalSearchParams();

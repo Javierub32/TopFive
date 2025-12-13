@@ -5,32 +5,9 @@ import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useResource } from 'context/ResourceContext';
+import { SeriesResource } from 'app/types/Resources';
 
-interface SeriesResource {
-  id: number;
-  usuarioId: string;
-  idContenido: number;
-  estado: 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';
-  reseña: string;
-  calificacion: number;
-  favorito: boolean;
-  tiporecurso: string;
-  temporadaActual: number;
-  episodioActual: number;
-  numVisualizaciones: number;
-  fechaInicio: string | null;
-  fechaFin: string | null;
-  fechacreacion: string;
-  contenidoserie: {
-    titulo: string;
-    imagenUrl: string;
-    fechaLanzamiento: string;
-    fechaFin?: string;
-    descripcion?: string;
-    calificacion?: number;
-    genero?: string[];
-  };
-}
+
 
 export default function SeriesDetail() {
   const { item } = useLocalSearchParams();
