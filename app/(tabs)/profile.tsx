@@ -77,38 +77,44 @@ export default function HomeScreen() {
 	// Fetch all resources of the selected category and fill the profile data
 	const fetchResourceInfo = async () =>  {
 		let resourceData: any[] = [];
+		let date = '';
 		switch (selectedCategory) {
 			case 'libros':
 				resourceData = await fetchLibros() as BookResource[];
+				date = 'fechaFin';
 				break;
 			case 'películas':
 				resourceData = await fetchPeliculas() as FilmResource[];
+				date = 'fechaVisionado';
 				break;
 			case 'series':
 				resourceData = await fetchSeries() as SeriesResource[];
+				date = 'fechaFin';
 				break;
 			case 'canciones':
 				resourceData = await fetchCanciones() as SongResource[];
+				date = 'fechaEscucha';
 				break;
 			case 'videojuegos':
 				resourceData = await fetchVideojuegos() as GameResource[];
+				date = 'fechaFin';
 				break;
 			default:
 				break;
 		}
-		setData(resourceData);
-		fillData(resourceData);
+		setData(resourceData); // If needed to display the data somewhere
+		fillData(resourceData, date);
 	};
 
 	// Fill the profile statistics data based on fetched resources
 	// We dont use typed here for simplicity, but if needed we can add it
-	const fillData = (resourses: any[]) => {
+	const fillData = (resourses: any[], date: string) => {
 		let total = 0;
 		let months = 0;
 		let resoursesPerMonth = new Array(12).fill(0);
 		resourses.forEach((resourse) => {
-			if (resourse.fechaFin) {
-				const fecha = new Date(resourse.fechaFin);
+			if (resourse[date]) {
+				const fecha = new Date(resourse[date]);
 				const month = fecha.getMonth();
 				if (fecha.getFullYear() === new Date().getFullYear()) {
 					resoursesPerMonth[month]++;
@@ -395,14 +401,14 @@ export default function HomeScreen() {
 				</ScrollView>
 
 				<View className="flex-row px-1 mb-2">
-					<View className="flex-1 bg-gray-800 rounded-xl p-5 mx-2 my-2 border-2 border-purple-500/30">
-						<Text className="text-purple-400 text-xl font-bold mb-3">{categoryData[selectedCategory].title}</Text>
+					<View className="flex-1 bg-gray-800 rounded-xl p-5 mx-2 my-2 border-2 border-slate-700">
+						<Text className="text-purple-400 text-xl mb-3">{categoryData[selectedCategory].title}</Text>
 						<View className="flex-1 justify-end">
 							<Text className="text-white text-2xl text-right">{categoryData[selectedCategory].total}</Text>
 						</View>
 					</View>
-					<View className="flex-1 bg-gray-800 rounded-xl p-5 mx-2 my-2 border-2 border-purple-500/30">
-						<Text className="text-purple-400 text-xl font-bold mb-3">Promedio/Mes</Text>
+					<View className="flex-1 bg-gray-800 rounded-xl p-5 mx-2 my-2 border-2 border-slate-700">
+						<Text className="text-purple-400 text-xl mb-3">Promedio/Mes</Text>
 						<View className="flex-1 justify-end">
 							<Text className="text-white text-2xl text-right">{categoryData[selectedCategory].average}</Text>
 						</View>
@@ -410,8 +416,8 @@ export default function HomeScreen() {
 				</View>
 				{/* Graph Section */}
 				<View className="px-3 pb-10">
-					<View className="bg-gray-800 rounded-xl py-5 my-2 border-2 border-purple-500/30" style={{ overflow: 'hidden' }}>
-						<Text className="text-purple-400 text-xl font-bold mb-3 px-5">Actividad Anual</Text>
+					<View className="bg-gray-800 rounded-xl py-5 my-2 border-2 border-slate-700" style={{ overflow: 'hidden' }}>
+						<Text className="text-purple-400 text-xl  mb-3 px-5">Actividad Anual</Text>
 						<View style={{ alignItems: 'center' }}>
 							<BarChart
 								data={{
