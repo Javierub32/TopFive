@@ -209,6 +209,14 @@ export default function HomeScreen() {
     </TouchableOpacity>
   );
 
+  const iconosPorCategoria = {
+    'Libros': 'book-open-page-variant',
+    'Películas': 'movie-open', 
+    'Series': 'television-classic',
+    'Videojuegos': 'google-controller',
+    'Canciones': 'music',
+  };
+
   return (
     <Screen>
       <StatusBar style="light" />
@@ -286,7 +294,7 @@ export default function HomeScreen() {
           <View className="-z-10 flex-1 items-center justify-center">
             <View className="mb-6 h-32 w-32 items-center justify-center rounded-full bg-white/5">
               <View className="h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-800">
-                <MaterialCommunityIcons name="hammer-wrench" size={64} color="#fff" />
+                <MaterialCommunityIcons name={iconosPorCategoria[recursoBusqueda] || 'hammer-wrench'} size={64} color="#fff" />
               </View>
             </View>
             <Text className="mb-3 text-center text-3xl font-bold text-white">
