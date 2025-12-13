@@ -222,11 +222,12 @@ export default function HomeScreen() {
       <StatusBar style="light" />
 
       <View className="flex-1 px-4 pt-6">
-        {/* --- ZONA DE BÚSQUEDA --- */}
+        <Text className="mb-4 text-3xl font-bold text-white">Búsqueda</Text>
+          {/* --- ZONA DE BÚSQUEDA --- */}
         <View className="relative z-50">
-          <View className="h-14 flex-row items-center rounded-lg border border-slate-700 bg-slate-800 shadow-lg">
+          <View className="h-12 flex-row items-center rounded-lg border border-slate-700 bg-slate-800 shadow-lg">
             <View className="justify-center pl-3">
-              <MaterialCommunityIcons name="magnify" size={24} color="#94a3b8" />
+              <MaterialCommunityIcons name="magnify" size={20} color="#94a3b8" />
             </View>
             <TextInput
               className="h-full flex-1 px-3 text-base text-white"
