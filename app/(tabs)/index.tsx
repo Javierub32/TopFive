@@ -38,44 +38,119 @@ export default function HomeScreen() {
 	return (
 		<Screen>
 			<StatusBar style="light" />
-			<View className="flex-1">
-				{/* Barra de categorías */}
-				<View 
-					className="mx-4 mt-4 mb-6 flex-row"
-					style={{
-						backgroundColor: 'rgba(255, 255, 255, 0.08)',
-						borderWidth: 2,
-						borderColor: 'rgba(139, 92, 246, 0.5)',
-						borderRadius: 25,
-						overflow: 'hidden'
-					}}
-				>
-					{categories.map((category, index) => (
-						<TouchableOpacity
-							key={category.id}
-							onPress={() => setSelectedCategory(category.id)}
-							className="flex-1 items-center py-3"
-							style={{
-								backgroundColor: selectedCategory === category.id ? '#8b5cf6' : 'transparent',
-								borderLeftWidth: index > 0 ? 1 : 0,
-								borderLeftColor: 'rgba(139, 92, 246, 0.3)'
-							}}
-						>
-							<Text 
-								className="mt-1 text-xs font-semibold text-center"
-								style={{ color: selectedCategory === category.id ? '#fff' : '#a78bfa' }}
-							>
-								{category.id}
-							</Text>
-						</TouchableOpacity>
-					))}
-				</View>
+			<View className="px-4 pt-6">
+				<Text className="mb-4 text-3xl font-bold text-white">Inicio</Text>
+			</View>
 
-				{/* Contenido */}
-				<ScrollView className="flex-1 px-6">
-					{getCategoryContent()}
+			<ScrollView showsVerticalScrollIndicator={true} className="flex-1 mb-4">
+
+			<View className="px-4">
+				<View className="mb-4 flex-row space-x-4">
+					<MaterialCommunityIcons name="fire" size={24} color="#9ca3af" />
+					<Text className="mb-4 text-lg font-semibold text-white"> Destacados de la semana </Text>
+				</View>
+				<ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
+					{['Wicked II (Peli)', 'Hogwarts Legacy (Juego)', 'Stranger Things (Serie)', 'La vereda de la puerta de atrás (Cancion)', 'Alas de sangre (Libro)'].map((populares) => (
+						<View key={populares} className="mr-4 w-72">
+							<View className="h-40 w-full rounded-lg bg-gray-700 justify-center items-center">
+								<MaterialCommunityIcons name="trending-up" size={48} color="#9ca3af" />
+							</View>
+							<Text className="mt-2 text-white">{populares}</Text>
+						</View>
+					))}
 				</ScrollView>
 			</View>
+
+			<View className="px-4">
+				<View className="mb-4 flex-row space-x-4">
+					<MaterialCommunityIcons name="bookshelf" size={24} color="#9ca3af" />
+					<Text className="mb-4 text-lg font-semibold text-white"> Libros populares </Text>
+				</View>
+				<ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
+					{['El principito', 'Don Quijote de la Mancha', 'Harry Potter y la piedra filosofal', '1984', 'Cien años de soledad'].map((movie) => (
+						<View key={movie} className="mr-4 w-40">
+							<View className="h-60 w-full rounded-lg bg-gray-700 justify-center items-center">
+								<MaterialCommunityIcons name="book-open-blank-variant" size={48} color="#9ca3af" />
+							</View>
+							<Text className="mt-2 text-white">{movie}</Text>
+						</View>
+					))}
+				</ScrollView>
+			</View>
+
+			<View className="px-4">
+				<View className="mb-4 flex-row space-x-4">
+					<MaterialCommunityIcons name="film" size={24} color="#9ca3af" />
+					<Text className="mb-4 text-lg font-semibold text-white"> Películas populares </Text>
+				</View>
+				<ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
+					{['Inception', 'The Dark Knight', 'Interstellar', 'Parasite', 'Avengers: Endgame'].map((movie) => (
+						<View key={movie} className="mr-4 w-40">
+							<View className="h-60 w-full rounded-lg bg-gray-700 justify-center items-center">
+								<MaterialCommunityIcons name="movie" size={48} color="#9ca3af" />
+							</View>
+							<Text className="mt-2 text-white">{movie}</Text>
+						</View>
+					))}
+				</ScrollView>
+			</View>
+
+			<View className="px-4">
+				<View className="mb-4 flex-row space-x-4">
+					<MaterialCommunityIcons name="video-vintage" size={24} color="#9ca3af" />
+					<Text className="mb-4 text-lg font-semibold text-white"> Series populares </Text>
+				</View>
+				<ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
+					{['Breaking Bad', 'Game of Thrones', 'Stranger Things', 'The Walking Dead', 'The Big Bang Theory'].map((series) => (
+						<View key={series} className="mr-4 w-40">
+							<View className="h-60 w-full rounded-lg bg-gray-700 justify-center items-center">
+								<MaterialCommunityIcons name="filmstrip" size={48} color="#9ca3af" />
+							</View>
+							<Text className="mt-2 text-white">{series}</Text>
+						</View>
+					))}
+				</ScrollView>
+			</View>
+
+			<View className="px-4">
+				<View className="mb-4 flex-row space-x-4">
+					<MaterialCommunityIcons name="gamepad-variant" size={24} color="#9ca3af" />
+					<Text className="mb-4 text-lg font-semibold text-white"> Videojuegos populares </Text>
+				</View>
+				<ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
+					{['Grand Theft Auto V', 'The Legend of Zelda: Breath of the Wild', 'Minecraft', 'Fortnite', 'The Witcher 3: Wild Hunt'].map((movie) => (
+						<View key={movie} className="mr-4 w-40">
+							<View className="h-60 w-full rounded-lg bg-gray-700 justify-center items-center">
+								<MaterialCommunityIcons name="gamepad-outline" size={48} color="#9ca3af" />
+							</View>
+							<Text className="mt-2 text-white">{movie}</Text>
+						</View>
+					))}
+				</ScrollView>
+			</View>
+
+			<View className="px-4">
+				<View className="mb-4 flex-row space-x-4">
+					<MaterialCommunityIcons name="music-circle" size={24} color="#9ca3af" />
+					<Text className="mb-4 text-lg font-semibold text-white"> Canciones populares </Text>
+				</View>
+				<ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
+					{[['SUPERESTRELLA','Aitana'], ['Latin Girl', 'Claudia Arenas'], ['Dios es un stalker', 'Rosalía'], ['DESQUICIAO', 'BAJOCERO X'], ['Ático', 'Belén Aguilera']].map((canciones) => (
+						<View key={canciones[0]} className="mr-4 w-72 h-24 bg-gray-800 rounded-xl flex-row overflow-hidden items-center shadow-sm">
+							<View className="w-24 h-full bg-gray-700 justify-center items-center">
+								<MaterialCommunityIcons name="music-note" size={32} color="#9ca3af" />
+							</View>
+							<View className="flex-1 p-3 justify-center">
+								<Text className="text-white font-bold text-base" numberOfLines={2}>
+									{canciones[0]}
+								</Text>
+								<Text className="text-gray-400 text-xs mt-1">{canciones[1]}</Text>
+							</View>
+						</View>
+					))}
+				</ScrollView>
+			</View>
+			</ScrollView>
 		</Screen>
 	);
 
