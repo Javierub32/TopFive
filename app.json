@@ -45,6 +45,12 @@
       "enableProguardInReleaseBuilds": true,
       "enableShrinkResourcesInReleaseBuilds": true,
       "versionCode": 1
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "7793291a-d63c-43ed-8a35-34f8cc7a863e"
+      }
     }
   }
 }
