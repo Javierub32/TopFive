@@ -14,7 +14,7 @@ import { Screen } from 'components/Screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
-export default function HomeScreen() {
+export default function SearchScreen() {
   // Estados
   const [busqueda, setBusqueda] = useState('');
   const [recursoBusqueda, setRecursoBusqueda] = useState('Películas');

@@ -3,10 +3,10 @@ import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../../context/AuthContext';
 import { BarChart } from 'react-native-chart-kit';
 import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../../../lib/supabase';
 import * as ImagePicker from 'expo-image-picker';
 import { decode } from 'base64-arraybuffer';
 
@@ -50,7 +50,7 @@ const categoryData = {
 type CategoryKey = 'libros' | 'películas' | 'series' | 'canciones' | 'videojuegos';
 
 // The section that displays the user's profile and statistics
-export default function HomeScreen() {
+export default function ProfileScreen() {
 	const { signOut, user } = useAuth();
 	const {fetchCanciones, fetchLibros, fetchPeliculas, fetchSeries, fetchVideojuegos} = useResource();
 	const { width: screenWidth } = useWindowDimensions();
@@ -317,7 +317,7 @@ export default function HomeScreen() {
 								)}
 							</TouchableOpacity>
 							<Image
-								source={require('../../assets/gorro-navideño.png')}
+								source={require('../../../assets/gorro-navideño.png')}
 								style={{ 
 									position: 'absolute', 
 									top: isPressed ? 2 : 5, 

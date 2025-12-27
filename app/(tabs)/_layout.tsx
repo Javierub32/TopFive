@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
-import { View, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BottomTabBar } from '@react-navigation/bottom-tabs'; // Importación necesaria
 
 import { HomeIcon, CardsIcon, UserIcon, SearchIcon } from 'components/Icons';
 
@@ -9,11 +9,20 @@ export default function TabLayout() {
   
   return (
     <Tabs
+      tabBar={(props) => (
+        <BottomTabBar 
+          {...props} 
+          state={{
+            ...props.state,
+            routes: props.state.routes.filter((route) => !route.name.includes('components')),
+          }} 
+        />
+      )}
       screenOptions={{
-		headerShown: false,
+        headerShown: false,
         tabBarActiveTintColor: '#8b5cf6',
         tabBarInactiveTintColor: '#9ca3af',
-
+        tabBarShowLabel: true, 
         headerTintColor: '#fff',
         tabBarStyle: {
           backgroundColor: '#1e1e2e',
@@ -29,28 +38,28 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="Home/index"
         options={{
           title: 'Home',
           tabBarIcon: ({color, size}) => (<HomeIcon color={color} size={size} />),
         }}
       />
       <Tabs.Screen
-        name="search"
+        name="Search/index"
         options={{
           title: 'Search',
           tabBarIcon: ({color, size}) => (<SearchIcon color={color} size={size} />),
         }}
       />
       <Tabs.Screen
-        name="collection"
+        name="Collection/index"
         options={{
           title: 'Collection',
           tabBarIcon: ({color, size}) => (<CardsIcon color={color} size={size} />),
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="Profile/index"
         options={{
           title: 'Profile',
           tabBarIcon: ({color, size}) => (<UserIcon color={color} size={size} />),
