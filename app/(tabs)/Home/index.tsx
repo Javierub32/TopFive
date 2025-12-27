@@ -1,14 +1,15 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, ScrollView} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import data from './data/content.json'
 
-import FeaturedList from './components/featuredList';
-import FeaturedBooks from './components/featuredBooks';
-import FeaturedFilms from './components/featuredFilms';
-import FeaturedGames from './components/featuredGames';
-import FeaturedSeries from './components/featuredSeries';
-import FeaturedSongs from './components/featuredSongs';
+import FeaturedList from './components/featured-contents/FeaturedList';
+import FeaturedBooks from './components/featured-contents/FeaturedBooks';
+import FeaturedFilms from './components/featured-contents/FeaturedFilms';
+import FeaturedGames from './components/featured-contents/FeaturedGames';
+import FeaturedSeries from './components/featured-contents/FeaturedSeries';
+import FeaturedSongs from './components/featured-contents/FeaturedSongs';
+
 
 export default function HomeScreen() {
 	return (

@@ -8,7 +8,7 @@ interface MediaItemProps {
   variant: 'horizontal' | 'vertical';
 }
 
-export default function RenderContent({ item, variant }: MediaItemProps) {
+export function RenderContent({ item, variant }: MediaItemProps) {
   const isVertical = variant === 'vertical';
   const containerWidth = isVertical ? 'w-40' : 'w-72';
   const imageHeight = isVertical ? 'h-60' : 'h-40';
@@ -39,7 +39,6 @@ export function RenderSong({ song }: { song: { id: string; title: string; artist
           source={{ uri: song.image }}
           className="h-full w-full"
           resizeMode="cover"
-          onLoad={() => console.log(`Canción cargada: ${song.title}`)}
         />
       </View>
       <View className="flex-1 justify-center p-3">
