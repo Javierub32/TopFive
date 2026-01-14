@@ -34,7 +34,7 @@ export default function CollectionScreen() {
     <Screen>
       <StatusBar style="light" />
       <View className="flex-1 px-4 pt-6">
-        <Text className="mb-4 text-3xl font-bold text-white">Mi Biblioteca</Text>
+        <Text className="mb-4 text-3xl font-bold text-primaryText">Mi Biblioteca</Text>
 
         <SearchBar
           busqueda={busqueda}
@@ -77,7 +77,7 @@ export default function CollectionScreen() {
             ListEmptyComponent={
               <View className="flex-1 items-center justify-center pt-20">
                 <MaterialCommunityIcons name="bookshelf" size={64} color="#334155" />
-                <Text className="mt-4 text-gray-500">No hay nada por aquí.</Text>
+                <Text className="mt-4 text-secondaryText">No hay nada por aquí.</Text>
               </View>
             }
             contentContainerStyle={{ paddingBottom: 100 }}
@@ -85,7 +85,7 @@ export default function CollectionScreen() {
         )}
 
         <TouchableOpacity
-          className="absolute bottom-6 right-6 h-14 w-14 items-center justify-center rounded-full bg-purple-600 shadow-lg"
+          className="absolute bottom-6 right-6 h-14 w-14 items-center justify-center rounded-full bg-primary shadow-lg"
           onPress={() => router.push('/Search')}>
           <MaterialCommunityIcons name="plus" size={30} color="white" />
         </TouchableOpacity>

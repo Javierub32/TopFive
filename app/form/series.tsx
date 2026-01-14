@@ -8,6 +8,7 @@ import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
+import { COLORS } from 'constants/colors';
 
 interface Series {
   id: number;
@@ -144,8 +145,8 @@ export default function SeriesForm() {
         <StatusBar style="light" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="mt-4 text-xl font-bold text-white">Error al cargar</Text>
-          <Text className="mt-2 text-center text-gray-400">
+          <Text className="mt-4 text-xl font-bold text-primaryText">Error al cargar</Text>
+          <Text className="mt-2 text-center text-secondaryText">
             No se pudo cargar la información de la serie
           </Text>
         </View>
@@ -163,27 +164,27 @@ export default function SeriesForm() {
           className="mb-4 flex-row items-center"
           activeOpacity={0.7}>
           <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
-          <Text className="ml-2 text-lg text-white">Volver</Text>
+          <Text className="ml-2 text-lg text-primaryText">Volver</Text>
         </TouchableOpacity>
 
         {/* Tarjeta de Resumen */}
-        <View className="mb-6 flex-row items-center rounded-xl border border-slate-700/50 bg-slate-800/50 px-4 py-4">
+        <View className="mb-6 flex-row items-center rounded-xl border border-borderButton/50 bg-surfaceButton/50 px-4 py-4">
           <Image
             source={{ uri: series.image || 'https://via.placeholder.com/100x150' }}
-            className="mr-4 h-24 w-16 rounded-lg border border-slate-700 bg-slate-800"
+            className="mr-4 h-24 w-16 rounded-lg border border-borderButton bg-surfaceButton"
             resizeMode="cover"
           />
           <View className="flex-1">
-            <Text className="text-xl font-bold text-white" numberOfLines={2}>
+            <Text className="text-xl font-bold text-primaryText" numberOfLines={2}>
               {series.title}
             </Text>
-            <Text className="mt-1 text-gray-400">
+            <Text className="mt-1 text-secondaryText">
                {series.releaseDate ? new Date(series.releaseDate).getFullYear() : 'N/A'} 
                {series.ended ? ` - ${new Date(series.ended).getFullYear()}` : ' - Presente'}
             </Text>
             {/* Dato extra añadido: Género */}
             {series.genre && series.genre.length > 0 && (
-              <Text className="mt-1 text-sm text-gray-500" numberOfLines={1}>
+              <Text className="mt-1 text-sm text-secondaryText" numberOfLines={1}>
                 {series.genre.slice(0, 3).join(', ')}
               </Text>
             )}
@@ -200,7 +201,7 @@ export default function SeriesForm() {
         <View className="gap-6">
           {/* Selector de Estado */}
           <View>
-            <Text className="mb-3 text-lg font-semibold text-white">Estado</Text>
+            <Text className="mb-3 text-lg font-semibold text-primaryText">Estado</Text>
             <View className="flex-row gap-2">
               {(['PENDIENTE', 'EN_CURSO', 'COMPLETADO'] as const).map((est) => (
                 <TouchableOpacity
@@ -208,12 +209,12 @@ export default function SeriesForm() {
                   onPress={() => setEstado(est)}
                   className={`flex-1 rounded-lg border py-3 ${
                     estado === est
-                      ? 'border-purple-600 bg-purple-600/20'
-                      : 'border-slate-700 bg-slate-800'
+                      ? 'border-primary bg-primary/20'
+                      : 'border-borderButton bg-surfaceButton'
                   }`}>
                   <Text
                     className={`text-center text-sm ${
-                      estado === est ? 'text-purple-400' : 'text-gray-400'
+                      estado === est ? 'text-primary' : 'text-secondaryText'
                     }`}>
                     {est === 'PENDIENTE'
                       ? 'Pendiente'
@@ -224,12 +225,12 @@ export default function SeriesForm() {
                 </TouchableOpacity>
               ))}
             </View>
-            <View className="mt-4 h-[1px] bg-slate-700/50" />
+            <View className="mt-4 h-[1px] bg-borderButton/50" />
           </View>
 
           {/* Calificación */}
           <View>
-            <Text className="mb-3 text-lg font-semibold text-white">Tu calificación</Text>
+            <Text className="mb-3 text-lg font-semibold text-primaryText">Tu calificación</Text>
             <View className="flex-row justify-center gap-2 py-2">
               {[1, 2, 3, 4, 5].map((star) => (
                 <TouchableOpacity key={star} onPress={() => setCalificacionPersonal(star)}>
@@ -242,15 +243,15 @@ export default function SeriesForm() {
                 </TouchableOpacity>
               ))}
             </View>
-            <View className="mt-4 h-[1px] bg-slate-700/50" />
+            <View className="mt-4 h-[1px] bg-borderButton/50" />
           </View>
 
           {/* Progreso (Temporada / Episodio) */}
           <View>
-            <Text className="mb-3 text-lg font-semibold text-white">Progreso</Text>
+            <Text className="mb-3 text-lg font-semibold text-primaryText">Progreso</Text>
             <View className="flex-row gap-4">
               <View className="flex-1">
-                <Text className="mb-2 text-xs text-gray-400">Temporada</Text>
+                <Text className="mb-2 text-xs text-secondaryText">Temporada</Text>
                 <TextInput
                   value={temporadaActual}
                   onChangeText={(text) => {
@@ -258,14 +259,14 @@ export default function SeriesForm() {
                     setTemporadaActual(numValue > 10000 ? '10000' : text.replace(/[^0-9]/g, ''));
                   }}
                   placeholder="1"
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={COLORS.placeholderText}
                   keyboardType="numeric"
                   maxLength={5}
-                  className="rounded-lg border border-slate-700 bg-slate-800 p-3 text-center text-base text-white"
+                  className="rounded-lg border border-borderButton bg-surfaceButton p-3 text-center text-base text-primaryText"
                 />
               </View>
               <View className="flex-1">
-                <Text className="mb-2 text-xs text-gray-400">Episodio</Text>
+                <Text className="mb-2 text-xs text-secondaryText">Episodio</Text>
                 <TextInput
                   value={episodioActual}
                   onChangeText={(text) => {
@@ -273,28 +274,28 @@ export default function SeriesForm() {
                     setEpisodioActual(numValue > 10000 ? '10000' : text.replace(/[^0-9]/g, ''));
                   }}
                   placeholder="1"
-                  placeholderTextColor="#64748b"
+                  placeholderTextColor={COLORS.placeholderText}
                   keyboardType="numeric"
                   maxLength={5}
-                  className="rounded-lg border border-slate-700 bg-slate-800 p-3 text-center text-base text-white"
+                  className="rounded-lg border border-borderButton bg-surfaceButton p-3 text-center text-base text-primaryText"
                 />
               </View>
             </View>
-            <View className="mt-4 h-[1px] bg-slate-700/50" />
+            <View className="mt-4 h-[1px] bg-borderButton/50" />
           </View>
 
           {/* Fechas de Visionado */}
           <View>
-            <Text className="mb-3 text-lg font-semibold text-white">Fechas de visionado</Text>
+            <Text className="mb-3 text-lg font-semibold text-primaryText">Fechas de visionado</Text>
             <View className="flex-row gap-3">
               <View className="flex-1">
                 <TouchableOpacity
                   onPress={() => setShowDatePickerInicio(true)}
-                  className="flex-row items-center justify-center rounded-xl border border-slate-700 bg-slate-800 px-3 py-2">
+                  className="flex-row items-center justify-center rounded-xl border border-borderButton bg-surfaceButton px-3 py-2">
                   <MaterialCommunityIcons name="calendar-start" size={20} color="#a855f7" />
                   <View className="ml-3 items-center">
-                    <Text className="text-xs text-gray-400">Inicio</Text>
-                    <Text className="text-sm font-bold text-white">
+                    <Text className="text-xs text-secondaryText">Inicio</Text>
+                    <Text className="text-sm font-bold text-primaryText">
                       {fechaInicio
                         ? fechaInicio.toLocaleDateString('es-ES', {
                             day: '2-digit',
@@ -317,11 +318,11 @@ export default function SeriesForm() {
               <View className="flex-1">
                 <TouchableOpacity
                   onPress={() => setShowDatePickerFin(true)}
-                  className="flex-row items-center justify-center rounded-xl border border-slate-700 bg-slate-800 px-3 py-2">
+                  className="flex-row items-center justify-center rounded-xl border border-borderButton bg-surfaceButton px-3 py-2">
                   <MaterialCommunityIcons name="calendar-end" size={20} color="#a855f7" />
                   <View className="ml-3 items-center">
-                    <Text className="text-xs text-gray-400">Fin</Text>
-                    <Text className="text-sm font-bold text-white">
+                    <Text className="text-xs text-secondaryText">Fin</Text>
+                    <Text className="text-sm font-bold text-primaryText">
                       {fechaFin
                         ? fechaFin.toLocaleDateString('es-ES', {
                             day: '2-digit',
@@ -371,57 +372,57 @@ export default function SeriesForm() {
                 maximumDate={new Date()}
               />
             )}
-            <View className="mt-4 h-[1px] bg-slate-700/50" />
+            <View className="mt-4 h-[1px] bg-borderButton/50" />
           </View>
 
           {/* Número de Visualizaciones (Rewatch) */}
           <View>
-            <Text className="mb-3 text-lg font-semibold text-white">Veces vista (Rewatch)</Text>
-            <View className="flex-row items-center justify-between rounded-xl border border-slate-700 bg-slate-800 px-4 py-3">
+            <Text className="mb-3 text-lg font-semibold text-primaryText">Veces vista (Rewatch)</Text>
+            <View className="flex-row items-center justify-between rounded-xl border border-borderButton bg-surfaceButton px-4 py-3">
               <TouchableOpacity
                 onPress={() => setNumVisualizaciones(Math.max(0, numVisualizaciones - 1))}
-                className="rounded-lg bg-slate-700 p-3">
+                className="rounded-lg bg-borderButton p-3">
                 <MaterialCommunityIcons name="minus" size={20} color="white" />
               </TouchableOpacity>
 
               <View className="items-center">
-                <Text className="text-2xl font-bold text-white">{numVisualizaciones}</Text>
-                <Text className="text-xs text-gray-400">Visualizaciones completas</Text>
+                <Text className="text-2xl font-bold text-primaryText">{numVisualizaciones}</Text>
+                <Text className="text-xs text-secondaryText">Visualizaciones completas</Text>
               </View>
 
               <TouchableOpacity
                 onPress={() => setNumVisualizaciones(numVisualizaciones + 1)}
-                className="rounded-lg bg-slate-700 p-3">
+                className="rounded-lg bg-borderButton p-3">
                 <MaterialCommunityIcons name="plus" size={20} color="white" />
               </TouchableOpacity>
             </View>
-            <View className="mt-4 h-[1px] bg-slate-700/50" />
+            <View className="mt-4 h-[1px] bg-borderButton/50" />
           </View>
 
           {/* Reseña */}
           <View>
-            <Text className="mb-3 text-lg font-semibold text-white">Tu reseña</Text>
+            <Text className="mb-3 text-lg font-semibold text-primaryText">Tu reseña</Text>
             <TextInput
               value={reseña}
               onChangeText={setReseña}
               placeholder="Escribe tu opinión sobre la serie..."
-              placeholderTextColor="#64748b"
+              placeholderTextColor={COLORS.placeholderText}
               multiline
               numberOfLines={4}
               maxLength={500}
-              className="min-h-[100px] rounded-lg border border-slate-700 bg-slate-800 p-3 text-base text-white"
+              className="min-h-[100px] rounded-lg border border-borderButton bg-surfaceButton p-3 text-base text-primaryText"
               textAlignVertical="top"
             />
-            <Text className="mt-1 text-right text-xs text-gray-500">{reseña.length}/500</Text>
+            <Text className="mt-1 text-right text-xs text-secondaryText">{reseña.length}/500</Text>
           </View>
 
           {/* Botón Guardar */}
           <TouchableOpacity
             onPress={handleSubmit}
             disabled={loading}
-            className="mb-24 mt-4 rounded-lg bg-purple-600 py-3"
+            className="mb-24 mt-4 rounded-lg bg-primary py-3"
             activeOpacity={0.8}>
-            <Text className="text-center text-lg font-bold text-white">
+            <Text className="text-center text-lg font-bold text-primaryText">
               {loading ? 'Guardando...' : 'Guardar'}
             </Text>
           </TouchableOpacity>

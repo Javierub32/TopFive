@@ -36,8 +36,8 @@ export default function BookDetail() {
         <StatusBar style="light" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="text-white text-xl font-bold mt-4">Error al cargar</Text>
-          <Text className="text-gray-400 text-center mt-2">No se pudo cargar la información del libro</Text>
+          <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>
+          <Text className="text-secondaryTextyText text-center mt-2">No se pudo cargar la información del libro</Text>
         </View>
       </Screen>
     );
@@ -57,10 +57,10 @@ export default function BookDetail() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'PENDIENTE': return 'bg-gray-600';
+      case 'PENDIENTE': return 'bg-borderButton';
       case 'EN_CURSO': return 'bg-blue-600';
       case 'COMPLETADO': return 'bg-green-600';
-      default: return 'bg-slate-700';
+      default: return 'bg-borderButton';
     }
   };
 
@@ -74,12 +74,12 @@ export default function BookDetail() {
           <View className="flex-row items-center flex-1">
             <TouchableOpacity 
               onPress={() => router.back()}
-              className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-slate-800 border border-slate-700"
+              className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-surfaceButton border border-borderButton"
               activeOpacity={0.7}
             >
               <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
             </TouchableOpacity>
-            <Text className="text-white text-xl font-bold flex-1" numberOfLines={1}>
+            <Text className="text-primaryText text-xl font-bold flex-1" numberOfLines={1}>
               Detalle del libro
             </Text>
           </View>
@@ -98,7 +98,7 @@ export default function BookDetail() {
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: contenidolibro.imagenUrl || 'https://via.placeholder.com/500x750' }}
-            className="w-full h-[500px] rounded-2xl bg-slate-900"
+            className="w-full h-[500px] rounded-2xl bg-background"
             resizeMode="cover"
           />
         </View>
@@ -106,21 +106,21 @@ export default function BookDetail() {
         <View className="px-4 pb-6">
           {/* Título y año */}
           <View className="mb-4">
-            <Text className="text-white text-3xl font-bold mb-2">
+            <Text className="text-primaryText text-3xl font-bold mb-2">
               {contenidolibro.titulo || 'Sin título'}
             </Text>
             
             <View className="flex-row items-center flex-wrap gap-2">
               {/* Año de publicación */}
-              <View className="bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
-                <Text className="text-gray-300 text-sm font-semibold">
+              <View className="bg-surfaceButton px-3 py-1.5 rounded-lg border border-borderButton">
+                <Text className="text-secondaryText text-sm font-semibold">
                   {releaseYear}
                 </Text>
               </View>
 
               {/* Estado */}
               <View className={`px-3 py-1.5 rounded-lg ${getStatusColor(bookResource.estado)}`}>
-                <Text className="text-white text-xs font-bold uppercase">
+                <Text className="text-primaryText text-xs font-bold uppercase">
                   {getStatusText(bookResource.estado)}
                 </Text>
               </View>
@@ -139,8 +139,8 @@ export default function BookDetail() {
           <View className="gap-4 mb-6">
             {/* Tu calificación */}
             {bookResource.calificacion > 0 && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">
                   Tu calificación
                 </Text>
                 <View className="flex-row items-center">
@@ -154,7 +154,7 @@ export default function BookDetail() {
                       style={{ marginRight: 4 }}
                     />
                   ))}
-                  <Text className="text-white text-lg font-bold ml-2">
+                  <Text className="text-primaryText text-lg font-bold ml-2">
                     {bookResource.calificacion}/5
                   </Text>
                 </View>
@@ -163,13 +163,13 @@ export default function BookDetail() {
 
             {/* Calificación general */}
             {contenidolibro.calificacion && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">
                   Calificación general
                 </Text>
                 <View className="flex-row items-center">
                   <MaterialCommunityIcons name="star" size={24} color="#fbbf24" />
-                  <Text className="text-white text-lg font-bold ml-2">
+                  <Text className="text-primaryText text-lg font-bold ml-2">
                     {contenidolibro.calificacion.toFixed(1)}/10
                   </Text>
                 </View>
@@ -178,13 +178,13 @@ export default function BookDetail() {
 
             {/* Páginas leídas */}
             {bookResource.paginasLeidas > 0 && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">
                   Páginas leídas
                 </Text>
                 <View className="flex-row items-center">
                   <MaterialCommunityIcons name="book-open-page-variant" size={24} color="#8b5cf6" />
-                  <Text className="text-white text-lg font-bold ml-2">
+                  <Text className="text-primaryText text-lg font-bold ml-2">
                     {bookResource.paginasLeidas} páginas
                   </Text>
                 </View>
@@ -193,16 +193,16 @@ export default function BookDetail() {
 
             {/* Fechas de lectura */}
             {(bookResource.fechaInicio || bookResource.fechaFin) && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-3 uppercase">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-3 uppercase">
                   Periodo de lectura
                 </Text>
                 <View className="gap-2">
                   {bookResource.fechaInicio && (
                     <View className="flex-row items-center">
                       <MaterialCommunityIcons name="calendar-start" size={20} color="#8b5cf6" />
-                      <Text className="text-gray-400 text-sm ml-2 mr-2">Inicio:</Text>
-                      <Text className="text-white text-sm font-semibold">
+                      <Text className="text-secondaryTextyText text-sm ml-2 mr-2">Inicio:</Text>
+                      <Text className="text-primaryText text-sm font-semibold">
                         {new Date(bookResource.fechaInicio).toLocaleDateString('es-ES', {
                           year: 'numeric',
                           month: 'long',
@@ -214,8 +214,8 @@ export default function BookDetail() {
                   {bookResource.fechaFin && (
                     <View className="flex-row items-center">
                       <MaterialCommunityIcons name="calendar-end" size={20} color="#8b5cf6" />
-                      <Text className="text-gray-400 text-sm ml-2 mr-2">Fin:</Text>
-                      <Text className="text-white text-sm font-semibold">
+                      <Text className="text-secondaryTextyText text-sm ml-2 mr-2">Fin:</Text>
+                      <Text className="text-primaryText text-sm font-semibold">
                         {new Date(bookResource.fechaFin).toLocaleDateString('es-ES', {
                           year: 'numeric',
                           month: 'long',
@@ -230,13 +230,13 @@ export default function BookDetail() {
 
             {/* Autor */}
             {contenidolibro.autor && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">
                   Autor
                 </Text>
                 <View className="flex-row items-center">
                   <MaterialCommunityIcons name="account" size={24} color="#8b5cf6" />
-                  <Text className="text-white text-base ml-2">
+                  <Text className="text-primaryText text-base ml-2">
                     {contenidolibro.autor}
                   </Text>
                 </View>
@@ -245,14 +245,14 @@ export default function BookDetail() {
 
             {/* Géneros */}
             {contenidolibro.genero && contenidolibro.genero.length > 0 && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">
                   Géneros
                 </Text>
                 <View className="flex-row flex-wrap gap-2">
                   {contenidolibro.genero.map((genre, index) => (
-                    <View key={index} className="bg-purple-900/40 px-3 py-1.5 rounded-lg border border-purple-500/30">
-                      <Text className="text-purple-300 text-sm">
+                    <View key={index} className="bg-primary/20 px-3 py-1.5 rounded-lg border border-primary/30">
+                      <Text className="text-primary text-sm">
                         {genre}
                       </Text>
                     </View>
@@ -263,11 +263,11 @@ export default function BookDetail() {
 
             {/* Descripción */}
             {contenidolibro.descripcion && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">
                   Descripción
                 </Text>
-                <Text className="text-gray-300 text-base leading-6">
+                <Text className="text-secondaryText text-base leading-6">
                   {contenidolibro.descripcion}
                 </Text>
               </View>
@@ -275,24 +275,24 @@ export default function BookDetail() {
 
             {/* Tu reseña */}
             {bookResource.reseña && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">
                   Tu reseña
                 </Text>
-                <Text className="text-gray-300 text-base leading-6">
+                <Text className="text-primaryText text-base leading-6">
                   {bookResource.reseña}
                 </Text>
               </View>
             )}
 
             {/* Fecha de agregado */}
-            <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-              <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">
+            <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+              <Text className="text-primary text-sm font-bold mb-2 uppercase">
                 Agregado a tu colección
               </Text>
               <View className="flex-row items-center">
                 <MaterialCommunityIcons name="calendar-plus" size={20} color="#8b5cf6" />
-                <Text className="text-white text-sm ml-2">
+                <Text className="text-primaryText text-sm ml-2">
                   {new Date(bookResource.fechacreacion).toLocaleDateString('es-ES', {
                     year: 'numeric',
                     month: 'long',

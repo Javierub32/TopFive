@@ -22,7 +22,7 @@ export default function SearchScreen() {
     <Screen>
       <StatusBar style="light" />
       <View className="flex-1 px-4 pt-6">
-        <Text className="mb-4 text-3xl font-bold text-white">Búsqueda</Text>
+        <Text className="mb-4 text-3xl font-bold text-primaryText">Búsqueda</Text>
 
         <SearchBar 
           value={busqueda}

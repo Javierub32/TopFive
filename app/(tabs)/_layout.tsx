@@ -3,6 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomTabBar } from '@react-navigation/bottom-tabs'; // Importación necesaria
 
 import { HomeIcon, CardsIcon, UserIcon, SearchIcon } from 'components/Icons';
+import { COLORS } from 'constants/colors';
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
@@ -20,13 +21,13 @@ export default function TabLayout() {
       )}
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#8b5cf6',
-        tabBarInactiveTintColor: '#9ca3af',
+        tabBarActiveTintColor: COLORS.tabBarActiveTintColor,
+        tabBarInactiveTintColor: COLORS.tabBarInactiveTintColor,
         tabBarShowLabel: true, 
         headerTintColor: '#fff',
         tabBarStyle: {
-          backgroundColor: '#1e1e2e',
-          borderTopColor: 'rgba(139, 92, 246, 0.3)',
+          backgroundColor: COLORS.tabBarBackgroundColor,
+          borderTopColor: COLORS.tabBarBorderTopColor,
           borderTopWidth: 2,
           height: 65 + insets.bottom,
           paddingBottom: insets.bottom + 8,

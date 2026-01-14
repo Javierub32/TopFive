@@ -2,6 +2,7 @@ import React from 'react';
 import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CategoryKey } from '../hooks/useSearchContent';
+import { COLORS } from 'constants/colors';
 
 interface SearchBarProps {
   value: string;
@@ -26,7 +27,7 @@ export const SearchBar = ({
 }: SearchBarProps) => {
   return (
     <View className="relative z-50">
-      <View className="h-12 flex-row items-center rounded-lg border border-slate-700 bg-slate-800 shadow-lg">
+      <View className="h-12 flex-row items-center rounded-lg border border-borderButton bg-surfaceButton shadow-lg">
         {/* Icono Lupa */}
         <View className="justify-center pl-3">
           <MaterialCommunityIcons name="magnify" size={20} color="#94a3b8" />
@@ -34,9 +35,9 @@ export const SearchBar = ({
 
         {/* Input de texto */}
         <TextInput
-          className="h-full flex-1 px-3 text-base text-white"
+          className="h-full flex-1 px-3 text-base text-primaryText"
           placeholder={`Buscar ${selectedCategory}...`}
-          placeholderTextColor="#64748b"
+          placeholderTextColor={COLORS.placeholderText}
           value={value}
           onChangeText={onChangeText}
           onSubmitEditing={onSearch}
@@ -44,7 +45,7 @@ export const SearchBar = ({
         />
 
         {/* Separador vertical */}
-        <View className="h-6 w-[1px] bg-slate-600" />
+        <View className="h-6 w-[1px] bg-borderButton" />
 
         {/* Botón Selector de Categoría */}
         <TouchableOpacity
@@ -53,7 +54,7 @@ export const SearchBar = ({
           onPress={() => setMenuAbierto(!menuAbierto)}
         >
           <View className="max-w-[80px]">
-            <Text className="mr-1 font-medium text-gray-300" numberOfLines={1}>
+            <Text className="mr-1 font-medium text-secondaryText" numberOfLines={1}>
               {selectedCategory}
             </Text>
           </View>
@@ -67,16 +68,16 @@ export const SearchBar = ({
 
       {/* Menú Desplegable */}
       {menuAbierto && (
-        <View className="absolute right-0 top-14 z-50 w-48 overflow-hidden rounded-lg border border-slate-600 bg-slate-800 shadow-xl">
+        <View className="absolute right-0 top-14 z-50 w-48 overflow-hidden rounded-lg border border-borderButton bg-surfaceButton shadow-xl">
           {OPCIONES.map((opcion, index) => (
             <TouchableOpacity
               key={opcion}
               className={`flex-row items-center justify-between p-3 
-                ${index !== OPCIONES.length - 1 ? 'border-b border-slate-700' : ''} 
-                ${selectedCategory === opcion ? 'bg-slate-700' : 'active:bg-slate-700/50'}`}
+                ${index !== OPCIONES.length - 1 ? 'border-b border-borderButton' : ''} 
+                ${selectedCategory === opcion ? 'bg-borderButton' : 'active:bg-borderButton/50'}`}
               onPress={() => onCategoryChange(opcion)}
             >
-              <Text className={`text-base ${selectedCategory === opcion ? 'font-bold text-white' : 'text-gray-400'}`}>
+              <Text className={`text-base ${selectedCategory === opcion ? 'font-bold text-primaryText' : 'text-secondaryText'}`}>
                 {opcion}
               </Text>
               {selectedCategory === opcion && (

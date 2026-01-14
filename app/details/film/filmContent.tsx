@@ -33,8 +33,8 @@ export default function FilmDetail() {
         <StatusBar style="light" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="text-white text-xl font-bold mt-4">Error al cargar</Text>
-          <Text className="text-gray-400 text-center mt-2">No se pudo cargar la información de la película</Text>
+          <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>
+          <Text className="text-secondaryText text-center mt-2">No se pudo cargar la información de la película</Text>
         </View>
       </Screen>
     );
@@ -49,13 +49,13 @@ export default function FilmDetail() {
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center px-4 pt-2 pb-4">
           <TouchableOpacity 
-            onPress={() => router.push("/search")}
-            className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-slate-800 border border-slate-700"
+            onPress={() => router.push("/Search")}
+            className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-surfaceButton border border-borderButton"
             activeOpacity={0.7}
           >
             <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
           </TouchableOpacity>
-          <Text className="text-white text-xl font-bold flex-1" numberOfLines={1}>
+          <Text className="text-primaryText text-xl font-bold flex-1" numberOfLines={1}>
             Detalle de la película
           </Text>
         </View>
@@ -63,27 +63,27 @@ export default function FilmDetail() {
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: film.image || 'https://via.placeholder.com/500x750' }}
-            className="w-full h-[500px] rounded-2xl bg-slate-900"
+            className="w-full h-[500px] rounded-2xl bg-background"
             resizeMode="cover"
           />
         </View>
 
         <View className="px-4 mb-14">
-          <Text className="text-white text-3xl font-bold mb-3">
+          <Text className="text-primaryText text-3xl font-bold mb-3">
             {film.title}
           </Text>
 
           <View className="flex-row items-center mb-4 flex-wrap">
-            <View className="bg-slate-800 px-3 py-1.5 rounded-lg mr-2 mb-2 border border-slate-700">
-              <Text className="text-gray-300 text-sm font-semibold">
+            <View className="bg-surfaceButton px-3 py-1.5 rounded-lg mr-2 mb-2 border border-borderButton">
+              <Text className="text-secondaryText text-sm font-semibold">
                 {releaseYear}
               </Text>
             </View>
 
             {!!film.rating && (
-              <View className="bg-purple-900/60 px-3 py-1.5 rounded-lg mr-2 mb-2 border border-purple-500/30 flex-row items-center">
+              <View className="bg-primary/30 px-3 py-1.5 rounded-lg mr-2 mb-2 border border-primary/30 flex-row items-center">
                 <MaterialCommunityIcons name="star" size={16} color="#fbbf24" />
-                <Text className="text-purple-300 text-sm font-bold ml-1">
+                <Text className="text-primary text-sm font-bold ml-1">
                   {film.rating.toFixed(1)}
                 </Text>
               </View>
@@ -94,12 +94,12 @@ export default function FilmDetail() {
 
 		            {film.releaseDate && (
             <View className="mb-6">
-              <Text className="text-purple-400 text-lg font-bold mb-2">
+              <Text className="text-primary text-lg font-bold mb-2">
                 Fecha de Estreno
               </Text>
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700 flex-row items-center">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
                 <MaterialCommunityIcons name="calendar" size={24} color="#8b5cf6" />
-                <Text className="text-gray-300 text-base ml-3">
+                <Text className="text-secondaryText text-base ml-3">
                   {new Date(film.releaseDate).toLocaleDateString('es-ES', {
                     year: 'numeric',
                     month: 'long',
@@ -112,11 +112,11 @@ export default function FilmDetail() {
 
           {film.description && (
             <View className="mb-6">
-              <Text className="text-purple-400 text-lg font-bold mb-2">
+              <Text className="text-primary text-lg font-bold mb-2">
                 Sinopsis
               </Text>
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-gray-300 text-base leading-6">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-secondaryText text-base leading-6">
                   {film.description}
                 </Text>
               </View>
@@ -127,7 +127,7 @@ export default function FilmDetail() {
             className="flex-1 bg-[#8B2DF0] py-4 rounded-xl items-center flex-row justify-center"
           >
             <FontAwesome5 name="cloud-upload-alt" size={16} color="white" style={{marginRight: 8}} />
-            <Text className="text-white font-bold">Añadir a colección</Text>
+            <Text className="text-primaryText font-bold">Añadir a colección</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

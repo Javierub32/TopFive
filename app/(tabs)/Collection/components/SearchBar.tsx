@@ -2,6 +2,7 @@ import React from 'react';
 import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CategoryType } from '../hooks/useCollection';
+import { COLORS } from 'constants/colors';
 
 interface Props {
   busqueda: string;
@@ -30,22 +31,22 @@ export const SearchBar = ({
 }: Props) => {
   return (
     <View className="relative z-50 mb-3">
-      <View className="h-12 flex-row items-center rounded-lg border border-slate-700 bg-slate-800 shadow-lg">
+      <View className="h-12 flex-row items-center rounded-lg border border-borderButton bg-surfaceButton shadow-lg">
         {/* Icono Lupa */}
         <View className="justify-center pl-3">
-          <MaterialCommunityIcons name="magnify" size={20} color="#94a3b8" />
+          <MaterialCommunityIcons name="magnify" size={20} color={COLORS.secondaryText} />
         </View>
 
         {/* Input */}
         <TextInput
-          className="h-full flex-1 px-3 text-base text-white"
+          className="h-full flex-1 px-3 text-base text-primaryText"
           placeholder={`Buscar en ${categoriaActual}...`}
-          placeholderTextColor="#64748b"
+          placeholderTextColor={COLORS.placeholderText}
           value={busqueda}
           onChangeText={setBusqueda}
         />
 
-        <View className="h-6 w-[1px] bg-slate-600" />
+        <View className="h-6 w-[1px] bg-borderButton" />
 
         {/* Selector de Categoría */}
         <TouchableOpacity
@@ -56,7 +57,7 @@ export const SearchBar = ({
             setFiltrosAbiertos(false);
           }}>
           <View className="max-w-[90px]">
-            <Text className="mr-1 font-medium text-xs text-gray-300" numberOfLines={1}>
+            <Text className="mr-1 font-medium text-xs text-primaryText" numberOfLines={1}>
               {categoriaActual}
             </Text>
           </View>
@@ -69,7 +70,7 @@ export const SearchBar = ({
 
         {/* Botón de Filtros */}
         <TouchableOpacity
-          className={`h-full w-12 items-center justify-center rounded-r-lg border-l border-slate-600 ${filtrosAbiertos || isFilterActive ? 'bg-purple-900/30' : 'bg-transparent'}`}
+          className={`h-full w-12 items-center justify-center rounded-r-lg border-l border-borderButton ${filtrosAbiertos || isFilterActive ? 'bg-primary/30' : 'bg-transparent'}`}
           onPress={() => {
             setFiltrosAbiertos(!filtrosAbiertos);
             setMenuAbierto(false);
@@ -85,16 +86,16 @@ export const SearchBar = ({
 
       {/* Desplegable de Categorías */}
       {menuAbierto && (
-        <View className="absolute right-12 top-14 z-50 w-48 overflow-hidden rounded-lg border border-slate-600 bg-slate-800 shadow-xl">
+        <View className="absolute right-12 top-14 z-50 w-48 overflow-hidden rounded-lg border border-borderButton bg-surfaceButton shadow-xl">
           {OPCIONES_CATEGORIA.map((opcion, index) => (
             <TouchableOpacity
               key={opcion}
-              className={`flex-row items-center justify-between p-3 ${index !== OPCIONES_CATEGORIA.length - 1 ? 'border-b border-slate-700' : ''} ${categoriaActual === opcion ? 'bg-slate-700' : 'active:bg-slate-700/50'}`}
+              className={`flex-row items-center justify-between p-3 ${index !== OPCIONES_CATEGORIA.length - 1 ? 'border-b border-borderButton' : ''} ${categoriaActual === opcion ? 'bg-borderButton' : 'active:bg-borderButton/50'}`}
               onPress={() => {
                 setCategoriaActual(opcion);
                 setMenuAbierto(false);
               }}>
-              <Text className={`text-sm ${categoriaActual === opcion ? 'font-bold text-white' : 'text-gray-400'}`}>
+              <Text className={`text-sm ${categoriaActual === opcion ? 'font-bold text-primaryText' : 'text-secondaryText'}`}>
                 {opcion}
               </Text>
               {categoriaActual === opcion && <MaterialCommunityIcons name="check" size={14} color="#fff" />}

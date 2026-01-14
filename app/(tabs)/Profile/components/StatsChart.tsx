@@ -3,8 +3,8 @@ import { BarChart } from 'react-native-chart-kit';
 
 export const StatsChart = ({ data }: { data: number[] }) => (
   <View className="px-3 pb-10">
-    <View className="my-2 rounded-xl border-2 border-slate-700 bg-gray-800 py-5" style={{ overflow: 'hidden' }}>
-      <Text className="mb-3 px-5 text-xl text-purple-400">Actividad Anual</Text>
+    <View className="my-2 rounded-xl border-2 border-borderButton bg-surfaceButton py-5" style={{ overflow: 'hidden' }}>
+      <Text className="mb-3 px-5 text-xl text-primary">Actividad Anual</Text>
       <View style={{ alignItems: 'center' }}>
         <BarChart
           data={{

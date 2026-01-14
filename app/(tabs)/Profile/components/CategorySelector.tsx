@@ -17,8 +17,8 @@ export const CategorySelector = ({ selected, onSelect }: Props) => (
   >
     {CATEGORIES.map((cat) => (
       <Pressable key={cat} onPress={() => onSelect(cat)}>
-        <View className={`px-4 py-2 ${selected === cat ? 'border-b-4 border-purple-500' : ''}`}>
-          <Text className={`text-center capitalize ${selected === cat ? 'font-bold text-purple-500' : 'text-gray-500'}`}>
+        <View className={`px-4 py-2 ${selected === cat ? 'border-b-4 border-primary' : ''}`}>
+          <Text className={`text-center capitalize ${selected === cat ? 'font-bold text-primary' : 'text-secondaryText'}`}>
             {cat}
           </Text>
         </View>

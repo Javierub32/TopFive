@@ -8,6 +8,7 @@ import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
+import { COLORS } from 'constants/colors';
 
 interface Film {
   id: number;
@@ -138,8 +139,8 @@ export default function FilmForm() {
         <StatusBar style="light" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="mt-4 text-xl font-bold text-white">Error al cargar</Text>
-          <Text className="mt-2 text-center text-gray-400">
+          <Text className="mt-4 text-xl font-bold text-primaryText">Error al cargar</Text>
+          <Text className="mt-2 text-center text-secondaryText">
             No se pudo cargar la información de la película
           </Text>
         </View>
@@ -156,20 +157,20 @@ export default function FilmForm() {
           className="mb-4 flex-row items-center"
           activeOpacity={0.7}>
           <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
-          <Text className="ml-2 text-lg text-white">Volver</Text>
+          <Text className="ml-2 text-lg text-primaryText">Volver</Text>
         </TouchableOpacity>
 
-        <View className="mb-6 flex-row items-center rounded-xl border border-slate-700/50 bg-slate-800/50 px-4 py-4">
+        <View className="mb-6 flex-row items-center rounded-xl border border-borderButton/50 bg-surfaceButton/50 px-4 py-4">
           <Image
             source={{ uri: film.image || 'https://via.placeholder.com/100x150' }}
-            className="mr-4 h-24 w-16 rounded-lg border border-slate-700 bg-slate-800"
+            className="mr-4 h-24 w-16 rounded-lg border border-borderButton bg-surfaceButton"
             resizeMode="cover"
           />
           <View className="flex-1">
-            <Text className="text-xl font-bold text-white" numberOfLines={2}>
+            <Text className="text-xl font-bold text-primaryText" numberOfLines={2}>
               {film.title}
             </Text>
-            <Text className="mt-1 text-gray-400">
+            <Text className="mt-1 text-secondaryText">
               {film.releaseDate ? new Date(film.releaseDate).getFullYear() : 'N/A'}
             </Text>
           </View>
@@ -184,7 +185,7 @@ export default function FilmForm() {
 
         <View className="gap-6">
           <View>
-            <Text className="mb-3 text-lg font-semibold text-white">Estado</Text>
+            <Text className="mb-3 text-lg font-semibold text-primaryText">Estado</Text>
             <View className="flex-row gap-2">
               {(['PENDIENTE', 'EN_CURSO', 'COMPLETADO'] as const).map((est) => (
                 <TouchableOpacity
@@ -192,12 +193,12 @@ export default function FilmForm() {
                   onPress={() => setEstado(est)}
                   className={`flex-1 rounded-lg border py-3 ${
                     estado === est
-                      ? 'border-purple-600 bg-purple-600/20'
-                      : 'border-slate-700 bg-slate-800'
+                      ? 'border-primary bg-primary/20'
+                      : 'border-borderButton bg-surfaceButton'
                   }`}>
                   <Text
                     className={`text-center text-sm ${
-                      estado === est ? 'text-purple-400' : 'text-gray-400'
+                      estado === est ? 'text-primary' : 'text-secondaryText'
                     }`}>
                     {est === 'PENDIENTE'
                       ? 'Pendiente'
@@ -208,11 +209,11 @@ export default function FilmForm() {
                 </TouchableOpacity>
               ))}
             </View>
-            <View className="mt-4 h-[1px] bg-slate-700/50" />
+            <View className="mt-4 h-[1px] bg-borderButton/50" />
           </View>
 
           <View>
-            <Text className="mb-3 text-lg font-semibold text-white">Tu calificación</Text>
+            <Text className="mb-3 text-lg font-semibold text-primaryText">Tu calificación</Text>
             <View className="flex-row justify-center gap-2 py-2">
               {[1, 2, 3, 4, 5].map((star) => (
                 <TouchableOpacity key={star} onPress={() => setCalificacionPersonal(star)}>
@@ -225,38 +226,38 @@ export default function FilmForm() {
                 </TouchableOpacity>
               ))}
             </View>
-            <View className="mt-4 h-[1px] bg-slate-700/50" />
+            <View className="mt-4 h-[1px] bg-borderButton/50" />
           </View>
 
           <View>
-            <Text className="mb-3 text-lg font-semibold text-white">Visualizaciones</Text>
+            <Text className="mb-3 text-lg font-semibold text-primaryText">Visualizaciones</Text>
             <View className="flex-row gap-3">
-              <View className="flex-1 flex-row items-center justify-between rounded-xl border border-slate-700 bg-slate-800 px-3 py-2">
+              <View className="flex-1 flex-row items-center justify-between rounded-xl border border-borderButton bg-surfaceButton px-3 py-2">
                 <TouchableOpacity
                   onPress={() => setNumVisionados(Math.max(0, numVisionados - 1))}
-                  className="rounded-lg bg-slate-700 p-2">
+                  className="rounded-lg bg-borderButton p-2">
                   <MaterialCommunityIcons name="minus" size={16} color="white" />
                 </TouchableOpacity>
 
                 <View className="items-center">
-                  <Text className="text-xs text-gray-400">Vistas</Text>
-                  <Text className="text-lg font-bold text-white">{numVisionados}</Text>
+                  <Text className="text-xs text-secondaryText">Vistas</Text>
+                  <Text className="text-lg font-bold text-primaryText">{numVisionados}</Text>
                 </View>
 
                 <TouchableOpacity
                   onPress={() => setNumVisionados(numVisionados + 1)}
-                  className="rounded-lg bg-slate-700 p-2">
+                  className="rounded-lg bg-borderButton p-2">
                   <MaterialCommunityIcons name="plus" size={16} color="white" />
                 </TouchableOpacity>
               </View>
 
               <TouchableOpacity
                 onPress={() => setShowDatePicker(true)}
-                className="flex-1 flex-row items-center justify-center rounded-xl border border-slate-700 bg-slate-800 px-3 py-2">
+                className="flex-1 flex-row items-center justify-center rounded-xl border border-borderButton bg-surfaceButton px-3 py-2">
                 <MaterialCommunityIcons name="calendar" size={20} color="#a855f7" />
                 <View className="ml-3 items-center">
-                  <Text className="text-xs text-gray-400">Fecha</Text>
-                  <Text className="text-sm font-bold text-white">
+                  <Text className="text-xs text-secondaryText">Fecha</Text>
+                  <Text className="text-sm font-bold text-primaryText">
                     {fechaVisionado.toLocaleDateString('es-ES', {
                       day: '2-digit',
                       month: '2-digit',
@@ -281,32 +282,32 @@ export default function FilmForm() {
                 maximumDate={new Date()}
               />
             )}
-            <View className="mt-4 h-[1px] bg-slate-700/50" />
+            <View className="mt-4 h-[1px] bg-borderButton/50" />
           </View>
 
           <View>
-            <Text className="mb-3 text-lg font-semibold text-white">Tu reseña</Text>
+            <Text className="mb-3 text-lg font-semibold text-primaryText">Tu reseña</Text>
             <TextInput
               value={reseña}
               onChangeText={setReseña}
               placeholder="Escribe tu opinión sobre la película..."
-              placeholderTextColor="#64748b"
+              placeholderTextColor={COLORS.placeholderText}
               multiline
               numberOfLines={4}
               maxLength={500}
-              className="min-h-[100px] rounded-lg border border-slate-700 bg-slate-800 p-3 text-base text-white"
+              className="min-h-[100px] rounded-lg border border-borderButton bg-surfaceButton p-3 text-base text-primaryText"
               textAlignVertical="top"
             />
-            <Text className="mt-1 text-right text-xs text-gray-500">{reseña.length}/500</Text>
+            <Text className="mt-1 text-right text-xs text-secondaryText">{reseña.length}/500</Text>
           </View>
 
 		  {/* Botón Guardar */}
 		  <TouchableOpacity
 			onPress={handleSubmit}
 			disabled={loading}
-			className="mb-24 mt-4 rounded-lg bg-purple-600 py-3"
+			className="mb-24 mt-4 rounded-lg bg-primary py-3"
 			activeOpacity={0.8}>
-			<Text className="text-center text-lg font-bold text-white">
+			<Text className="text-center text-lg font-bold text-primaryText">
 			  {loading ? 'Guardando...' : 'Guardar'}
 			</Text>
 		  </TouchableOpacity>

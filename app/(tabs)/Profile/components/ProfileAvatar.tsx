@@ -44,6 +44,6 @@ export const ProfileAvatar = ({ avatarUrl, username, isPressed, onPickImage, set
         <MaterialCommunityIcons name="camera" size={16} color="#fff" />
       </View>
     </View>
-    <Text className="mb-3 mt-5 text-center text-2xl font-bold text-white">{username}</Text>
+    <Text className="mb-3 mt-5 text-center text-2xl font-bold text-primaryText">{username}</Text>
   </View>
 );

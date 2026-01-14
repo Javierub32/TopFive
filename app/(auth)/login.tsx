@@ -100,7 +100,7 @@ export default function Login() {
                       end={{ x: 1, y: 0 }}
                       className="py-4 items-center"
                     >
-                    <Text className="text-white font-bold text-lg">
+                    <Text className="text-primaryText font-bold text-lg">
                       {loading ? 'Cargando...' : 'Iniciar Sesión'}
                     </Text>
                     </LinearGradient>
@@ -110,12 +110,12 @@ export default function Login() {
           </View>
 
           <View style={{ marginTop: 20, alignItems: 'center'}}>
-            <Text className="text-white text-base mb-2">¿No tienes cuenta?</Text>
+            <Text className="text-primaryText text-base mb-2">¿No tienes cuenta?</Text>
             <TouchableOpacity 
               onPress={() => router.push('/(auth)/register')}
               className="bg-white/20 px-6 py-3 rounded-full"
             >
-              <Text className="text-white font-semibold text-base">Regístrate aquí</Text>
+              <Text className="text-primaryText font-semibold text-base">Regístrate aquí</Text>
             </TouchableOpacity>
           </View>
         </View>

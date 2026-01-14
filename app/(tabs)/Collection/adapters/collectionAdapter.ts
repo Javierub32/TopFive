@@ -26,10 +26,10 @@ export const collectionAdapter = {
   // Lógica visual de estados (Mantenemos tu lógica original)
   getStatusColor: (status: string) => {
     switch (status) {
-      case 'PENDIENTE': return 'bg-gray-600';
+      case 'PENDIENTE': return 'bg-borderButton';
       case 'EN_CURSO': return 'bg-blue-600';
       case 'COMPLETADO': return 'bg-green-600';
-      default: return 'bg-slate-700';
+      default: return 'bg-borderButton';
     }
   },
 

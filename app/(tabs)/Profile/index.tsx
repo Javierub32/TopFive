@@ -27,7 +27,7 @@ export default function ProfileScreen() {
     return (
       <Screen>
         <View className="flex-1 items-center justify-center">
-          <Text className="text-lg text-white">Cargando perfil...</Text>
+          <Text className="text-lg text-primaryText">Cargando perfil...</Text>
         </View>
       </Screen>
     );
@@ -39,7 +39,7 @@ export default function ProfileScreen() {
     <Screen>
       <StatusBar style="light" />
       <View className="flex-1 px-4 pt-6">
-        <Text className="mb-4 text-3xl font-bold text-white">Perfil</Text>
+        <Text className="mb-4 text-3xl font-bold text-primaryText">Perfil</Text>
 
         <Pressable
           className="absolute right-4 top-5 z-10 rounded-full bg-white/10 p-3"

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
+import { COLORS } from 'constants/colors';
 
 interface Song {
   id: number | null;
@@ -134,8 +135,8 @@ export default function SongForm() {
         <StatusBar style="light" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="mt-4 text-xl font-bold text-white">Error al cargar</Text>
-          <Text className="mt-2 text-center text-gray-400">
+          <Text className="mt-4 text-xl font-bold text-primaryText">Error al cargar</Text>
+          <Text className="mt-2 text-center text-secondaryText">
             No se pudo cargar la información de la canción
           </Text>
         </View>
@@ -152,26 +153,26 @@ export default function SongForm() {
           className="mb-4 flex-row items-center"
           activeOpacity={0.7}>
           <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
-          <Text className="ml-2 text-lg text-white">Volver</Text>
+          <Text className="ml-2 text-lg text-primaryText">Volver</Text>
         </TouchableOpacity>
 
-        <View className="mb-6 flex-row items-center rounded-xl border border-slate-700/50 bg-slate-800/50 px-4 py-4">
+        <View className="mb-6 flex-row items-center rounded-xl border border-borderButton/50 bg-surfaceButton/50 px-4 py-4">
           <Image
             source={{ uri: song.imageFull || 'https://via.placeholder.com/100x100' }}
-            className="mr-4 h-20 w-20 rounded-lg border border-slate-700 bg-slate-800"
+            className="mr-4 h-20 w-20 rounded-lg border border-borderButton bg-surfaceButton"
             resizeMode="cover"
           />
           <View className="flex-1">
-            <Text className="text-xl font-bold text-white" numberOfLines={2}>
+            <Text className="text-xl font-bold text-primaryText" numberOfLines={2}>
               {song.title}
             </Text>
-            <Text className="mt-1 text-gray-400">{song.autor || 'Artista desconocido'}</Text>
+            <Text className="mt-1 text-secondaryText">{song.autor || 'Artista desconocido'}</Text>
             {song.album && (
-              <Text className="mt-1 text-gray-500 text-sm" numberOfLines={1}>
+              <Text className="mt-1 text-secondaryText text-sm" numberOfLines={1}>
                 {song.album}
               </Text>
             )}
-            <Text className="mt-1 text-gray-500 text-sm">
+            <Text className="mt-1 text-secondaryText text-sm">
               {song.releaseDate ? new Date(song.releaseDate).getFullYear() : 'N/A'}
             </Text>
           </View>
@@ -186,7 +187,7 @@ export default function SongForm() {
 
         <View className="gap-6">
           <View>
-            <Text className="mb-3 text-lg font-semibold text-white">Estado</Text>
+            <Text className="mb-3 text-lg font-semibold text-primaryText">Estado</Text>
             <View className="flex-row justify-center gap-4 px-8">
               {(['PENDIENTE', 'COMPLETADO'] as const).map((est) => (
                 <TouchableOpacity
@@ -194,23 +195,23 @@ export default function SongForm() {
                   onPress={() => setEstado(est)}
                   className={`flex-1 rounded-lg border py-3 ${
                     estado === est
-                      ? 'border-purple-600 bg-purple-600/20'
-                      : 'border-slate-700 bg-slate-800'
+                      ? 'border-primary bg-primary/20'
+                      : 'border-borderButton bg-surfaceButton'
                   }`}>
                   <Text
                     className={`text-center text-sm ${
-                      estado === est ? 'text-purple-400' : 'text-gray-400'
+                      estado === est ? 'text-primary' : 'text-secondaryText'
                     }`}>
                     {est === 'PENDIENTE' ? 'Pendiente' : 'Completado'}
                   </Text>
                 </TouchableOpacity>
               ))}
             </View>
-            <View className="mt-4 h-[1px] bg-slate-700/50" />
+            <View className="mt-4 h-[1px] bg-borderButton/50" />
           </View>
 
           <View>
-            <Text className="mb-3 text-lg font-semibold text-white">Tu calificación</Text>
+            <Text className="mb-3 text-lg font-semibold text-primaryText">Tu calificación</Text>
             <View className="flex-row justify-center gap-2 py-2">
               {[1, 2, 3, 4, 5].map((star) => (
                 <TouchableOpacity key={star} onPress={() => setCalificacionPersonal(star)}>
@@ -223,19 +224,19 @@ export default function SongForm() {
                 </TouchableOpacity>
               ))}
             </View>
-            <View className="mt-4 h-[1px] bg-slate-700/50" />
+            <View className="mt-4 h-[1px] bg-borderButton/50" />
           </View>
 
           <View>
-            <Text className="mb-3 text-lg font-semibold text-white">Fecha de escucha</Text>
+            <Text className="mb-3 text-lg font-semibold text-primaryText">Fecha de escucha</Text>
             <View className="items-center">
               <TouchableOpacity
                 onPress={() => setShowDatePicker(true)}
-                className="w-[70%] flex-row items-center justify-center rounded-xl border border-slate-700 bg-slate-800 px-4 py-3">
+                className="w-[70%] flex-row items-center justify-center rounded-xl border border-borderButton bg-surfaceButton px-4 py-3">
                 <MaterialCommunityIcons name="calendar" size={24} color="#a855f7" />
                 <View className="ml-3 items-center">
-                  <Text className="text-sm text-gray-400">Última escucha</Text>
-                  <Text className="text-base font-bold text-white">
+                  <Text className="text-sm text-secondaryText">Última escucha</Text>
+                  <Text className="text-base font-bold text-primaryText">
                     {fechaEscuchado
                       ? fechaEscuchado.toLocaleDateString('es-ES', {
                           day: '2-digit',
@@ -269,32 +270,32 @@ export default function SongForm() {
                 maximumDate={new Date()}
               />
             )}
-            <View className="mt-4 h-[1px] bg-slate-700/50" />
+            <View className="mt-4 h-[1px] bg-borderButton/50" />
           </View>
 
           <View>
-            <Text className="mb-3 text-lg font-semibold text-white">Tu reseña</Text>
+            <Text className="mb-3 text-lg font-semibold text-primaryText">Tu reseña</Text>
             <TextInput
               value={reseña}
               onChangeText={setReseña}
               placeholder="Escribe tu opinión sobre la canción..."
-              placeholderTextColor="#64748b"
+              placeholderTextColor={COLORS.placeholderText}
               multiline
               numberOfLines={4}
               maxLength={500}
-              className="min-h-[100px] rounded-lg border border-slate-700 bg-slate-800 p-3 text-base text-white"
+              className="min-h-[100px] rounded-lg border border-borderButton bg-surfaceButton p-3 text-base text-primaryText"
               textAlignVertical="top"
             />
-            <Text className="mt-1 text-right text-xs text-gray-500">{reseña.length}/500</Text>
+            <Text className="mt-1 text-right text-xs text-secondaryText">{reseña.length}/500</Text>
           </View>
 
 		  {/* Botón Guardar */}
 		  <TouchableOpacity
 			onPress={handleSubmit}
 			disabled={loading}
-			className="mb-24 mt-4 rounded-lg bg-purple-600 py-3"
+			className="mb-24 mt-4 rounded-lg bg-primary py-3"
 			activeOpacity={0.8}>
-			<Text className="text-center text-lg font-bold text-white">
+			<Text className="text-center text-lg font-bold text-primaryText">
 			  {loading ? 'Guardando...' : 'Guardar'}
 			</Text>
 		  </TouchableOpacity>

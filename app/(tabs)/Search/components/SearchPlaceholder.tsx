@@ -27,7 +27,7 @@ export const SearchPlaceholder = ({ category, loading }: SearchPlaceholderProps)
     <View className={`-z-10 flex-1 items-center justify-center ${loading ? 'hidden' : ''}`}>
       {/* Contenedor del Icono  */}
       <View className="mb-6 h-32 w-32 items-center justify-center rounded-full bg-white/5">
-        <View className="h-28 w-28 items-center justify-center rounded-full bg-purple-700">
+        <View className="h-28 w-28 items-center justify-center rounded-full bg-primary">
           <MaterialCommunityIcons 
             name={iconName} 
             size={64} 
@@ -37,12 +37,12 @@ export const SearchPlaceholder = ({ category, loading }: SearchPlaceholderProps)
       </View>
 
       {/* Texto Principal (Nombre de la categoría) */}
-      <Text className="mb-3 text-center text-3xl font-bold text-white">
+      <Text className="mb-3 text-center text-3xl font-bold text-primaryText">
         {category}
       </Text>
 
       {/* Texto Secundario (Instrucciones) */}
-      <Text className="px-4 text-center text-gray-500">
+      <Text className="px-4 text-center text-secondaryText">
         Realiza una búsqueda para ver resultados de {category.toLowerCase()}.
       </Text>
     </View>

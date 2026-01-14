@@ -16,10 +16,10 @@ export default function HomeScreen() {
 		<Screen>
 			<StatusBar style="light" />
 			<View className="px-4 pt-6">
-				<Text className="mb-4 text-3xl font-bold text-white">Inicio</Text>
+				<Text className="mb-4 text-3xl font-bold text-primaryText">Inicio</Text>
 			</View>
 
-			<ScrollView showsVerticalScrollIndicator={true} className="flex-1 mb-4">
+			<ScrollView showsVerticalScrollIndicator={false} className="flex-1 mb-4">
 				<FeaturedList featured={data.featuredItems} />
 				<FeaturedBooks featured={data.popularBooks} />
 				<FeaturedFilms featured={data.popularMovies} />

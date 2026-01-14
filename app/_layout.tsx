@@ -9,29 +9,21 @@ import { ResourceProvider } from 'context/ResourceContext';
 const InitialLayout = () => {
   const { session, loading } = useAuth();
   const segments = useSegments();
-  const router = useRouter(); // Equivalente al useNavigate de Fazt
+  const router = useRouter();
 
   useEffect(() => {
     if (loading) return;
 
     const inAuthGroup = segments[0] === '(auth)';
+    const inTabsGroup = segments[0] === '(tabs)';
 
-    if (!session && !inAuthGroup) {
-      // Si no hay sesión, mandamos al Login
+    // Redirigir solo si el usuario está en un grupo incorrecto
+    if (!session && !inAuthGroup && segments.length > 0) {
       router.replace('/(auth)/login');
     } else if (session && inAuthGroup) {
-      // Si hay sesión, mandamos a la App principal (Tabs)
-      router.replace('/(tabs)');
+      router.replace('/(tabs)/Home');
     }
   }, [session, loading, segments]);
-
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
 
   return <Slot />;
 };

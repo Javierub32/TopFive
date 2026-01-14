@@ -37,8 +37,8 @@ export default function GameDetail() {
         <StatusBar style="light" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="text-white text-xl font-bold mt-4">Error al cargar</Text>
-          <Text className="text-gray-400 text-center mt-2">No se pudo cargar la información del videojuego</Text>
+          <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>
+          <Text className="text-secondaryText text-center mt-2">No se pudo cargar la información del videojuego</Text>
         </View>
       </Screen>
     );
@@ -59,11 +59,11 @@ export default function GameDetail() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'PENDIENTE': return 'bg-gray-600';
+      case 'PENDIENTE': return 'bg-borderButton';
       case 'EN_CURSO': return 'bg-blue-600';
       case 'COMPLETADO': return 'bg-green-600';
       case 'ABANDONADO': return 'bg-orange-600';
-      default: return 'bg-slate-700';
+      default: return 'bg-borderButton';
     }
   };
 
@@ -77,12 +77,12 @@ export default function GameDetail() {
           <View className="flex-row items-center flex-1">
             <TouchableOpacity 
               onPress={() => router.back()}
-              className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-slate-800 border border-slate-700"
+              className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-surfaceButton border border-borderButton"
               activeOpacity={0.7}
             >
               <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
             </TouchableOpacity>
-            <Text className="text-white text-xl font-bold flex-1" numberOfLines={1}>
+            <Text className="text-primaryText text-xl font-bold flex-1" numberOfLines={1}>
               Detalle del videojuego
             </Text>
           </View>
@@ -101,7 +101,7 @@ export default function GameDetail() {
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: contenidovideojuego.imagenUrl || 'https://via.placeholder.com/500x750' }}
-            className="w-full h-[500px] rounded-2xl bg-slate-900"
+            className="w-full h-[500px] rounded-2xl bg-background"
             resizeMode="cover"
           />
         </View>
@@ -109,19 +109,19 @@ export default function GameDetail() {
         <View className="px-4 pb-6">
           {/* Título y año */}
           <View className="mb-4">
-            <Text className="text-white text-3xl font-bold mb-2">
+            <Text className="text-primaryText text-3xl font-bold mb-2">
               {contenidovideojuego.titulo || 'Sin título'}
             </Text>
             
             <View className="flex-row items-center flex-wrap gap-2">
-              <View className="bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
-                <Text className="text-gray-300 text-sm font-semibold">
+              <View className="bg-surfaceButton px-3 py-1.5 rounded-lg border border-borderButton">
+                <Text className="text-secondaryText text-sm font-semibold">
                   {releaseYear}
                 </Text>
               </View>
 
               <View className={`px-3 py-1.5 rounded-lg ${getStatusColor(gameResource.estado)}`}>
-                <Text className="text-white text-xs font-bold uppercase">
+                <Text className="text-primaryText text-xs font-bold uppercase">
                   {getStatusText(gameResource.estado)}
                 </Text>
               </View>
@@ -134,9 +134,9 @@ export default function GameDetail() {
               )}
 
               {gameResource.horasJugadas > 0 && (
-                <View className="bg-purple-900/40 px-3 py-1.5 rounded-lg border border-purple-500/30 flex-row items-center">
+                <View className="bg-primary/20 px-3 py-1.5 rounded-lg border border-primary/30 flex-row items-center">
                   <MaterialCommunityIcons name="clock-outline" size={16} color="#a855f7" />
-                  <Text className="text-purple-300 text-xs font-bold ml-1">
+                  <Text className="text-primary text-xs font-bold ml-1">
                     {gameResource.horasJugadas}h
                   </Text>
                 </View>
@@ -146,8 +146,8 @@ export default function GameDetail() {
 
           <View className="gap-4 mb-6">
             {gameResource.calificacion > 0 && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">Tu calificación</Text>
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">Tu calificación</Text>
                 <View className="flex-row items-center">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <FontAwesome5
@@ -159,17 +159,17 @@ export default function GameDetail() {
                       style={{ marginRight: 4 }}
                     />
                   ))}
-                  <Text className="text-white text-lg font-bold ml-2">{gameResource.calificacion}/5</Text>
+                  <Text className="text-primaryText text-lg font-bold ml-2">{gameResource.calificacion}/5</Text>
                 </View>
               </View>
             )}
 
             {contenidovideojuego.calificacion && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">Calificación general</Text>
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">Calificación general</Text>
                 <View className="flex-row items-center">
                   <MaterialCommunityIcons name="star" size={24} color="#fbbf24" />
-                  <Text className="text-white text-lg font-bold ml-2">
+                  <Text className="text-primaryText text-lg font-bold ml-2">
                     {contenidovideojuego.calificacion.toFixed(1)}/10
                   </Text>
                 </View>
@@ -177,24 +177,24 @@ export default function GameDetail() {
             )}
 
             {gameResource.dificultad && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">Dificultad</Text>
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">Dificultad</Text>
                 <View className="flex-row items-center">
                   <MaterialCommunityIcons name="speedometer" size={24} color="#8b5cf6" />
-                  <Text className="text-white text-lg font-bold ml-2">{gameResource.dificultad}</Text>
+                  <Text className="text-primaryText text-lg font-bold ml-2">{gameResource.dificultad}</Text>
                 </View>
               </View>
             )}
 
             {(gameResource.fechaInicio || gameResource.fechaFin) && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-3 uppercase">Periodo de juego</Text>
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-3 uppercase">Periodo de juego</Text>
                 <View className="gap-2">
                   {gameResource.fechaInicio && (
                     <View className="flex-row items-center">
                       <MaterialCommunityIcons name="calendar-start" size={20} color="#8b5cf6" />
-                      <Text className="text-gray-400 text-sm ml-2 mr-2">Inicio:</Text>
-                      <Text className="text-white text-sm font-semibold">
+                      <Text className="text-secondaryText text-sm ml-2 mr-2">Inicio:</Text>
+                      <Text className="text-primaryText text-sm font-semibold">
                         {new Date(gameResource.fechaInicio).toLocaleDateString('es-ES', {
                           year: 'numeric', month: 'long', day: 'numeric'
                         })}
@@ -204,8 +204,8 @@ export default function GameDetail() {
                   {gameResource.fechaFin && (
                     <View className="flex-row items-center">
                       <MaterialCommunityIcons name="calendar-end" size={20} color="#8b5cf6" />
-                      <Text className="text-gray-400 text-sm ml-2 mr-2">Fin:</Text>
-                      <Text className="text-white text-sm font-semibold">
+                      <Text className="text-secondaryText text-sm ml-2 mr-2">Fin:</Text>
+                      <Text className="text-primaryText text-sm font-semibold">
                         {new Date(gameResource.fechaFin).toLocaleDateString('es-ES', {
                           year: 'numeric', month: 'long', day: 'numeric'
                         })}
@@ -217,22 +217,22 @@ export default function GameDetail() {
             )}
 
             {contenidovideojuego.autor && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">Desarrollador</Text>
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">Desarrollador</Text>
                 <View className="flex-row items-center">
                   <MaterialCommunityIcons name="domain" size={24} color="#8b5cf6" />
-                  <Text className="text-white text-base ml-2">{contenidovideojuego.autor}</Text>
+                  <Text className="text-primaryText text-base ml-2">{contenidovideojuego.autor}</Text>
                 </View>
               </View>
             )}
 
             {contenidovideojuego.genero && contenidovideojuego.genero.length > 0 && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">Géneros</Text>
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">Géneros</Text>
                 <View className="flex-row flex-wrap gap-2">
                   {contenidovideojuego.genero.map((genre, index) => (
-                    <View key={index} className="bg-purple-900/40 px-3 py-1.5 rounded-lg border border-purple-500/30">
-                      <Text className="text-purple-300 text-sm">{genre}</Text>
+                    <View key={index} className="bg-primary/20 px-3 py-1.5 rounded-lg border border-primary/30">
+                      <Text className="text-primary text-sm">{genre}</Text>
                     </View>
                   ))}
                 </View>
@@ -240,42 +240,42 @@ export default function GameDetail() {
             )}
 
             {contenidovideojuego.plataformas && contenidovideojuego.plataformas.length > 0 && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">Plataformas</Text>
-                <Text className="text-gray-300 text-base leading-6">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">Plataformas</Text>
+                <Text className="text-secondaryText text-base leading-6">
                   {contenidovideojuego.plataformas.join(', ')}
                 </Text>
               </View>
             )}
 
             {contenidovideojuego.modosJuego && contenidovideojuego.modosJuego.length > 0 && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">Modos de juego</Text>
-                <Text className="text-gray-300 text-base leading-6">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">Modos de juego</Text>
+                <Text className="text-secondaryText text-base leading-6">
                   {contenidovideojuego.modosJuego.join(', ')}
                 </Text>
               </View>
             )}
 
             {contenidovideojuego.descripcion && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">Descripción</Text>
-                <Text className="text-gray-300 text-base leading-6">{contenidovideojuego.descripcion}</Text>
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">Descripción</Text>
+                <Text className="text-secondaryText text-base leading-6">{contenidovideojuego.descripcion}</Text>
               </View>
             )}
 
             {gameResource.reseña && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">Tu reseña</Text>
-                <Text className="text-gray-300 text-base leading-6">{gameResource.reseña}</Text>
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">Tu reseña</Text>
+                <Text className="text-secondaryText text-base leading-6">{gameResource.reseña}</Text>
               </View>
             )}
 
-            <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-              <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">Agregado a tu colección</Text>
+            <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+              <Text className="text-primary text-sm font-bold mb-2 uppercase">Agregado a tu colección</Text>
               <View className="flex-row items-center">
                 <MaterialCommunityIcons name="calendar-plus" size={20} color="#8b5cf6" />
-                <Text className="text-white text-sm ml-2">
+                <Text className="text-primaryText text-sm ml-2">
                   {new Date(gameResource.fechacreacion).toLocaleDateString('es-ES', {
                     year: 'numeric', month: 'long', day: 'numeric'
                   })}

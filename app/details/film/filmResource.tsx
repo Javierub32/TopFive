@@ -36,8 +36,8 @@ export default function FilmDetail() {
         <StatusBar style="light" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="text-white text-xl font-bold mt-4">Error al cargar</Text>
-          <Text className="text-gray-400 text-center mt-2">No se pudo cargar la información de la película</Text>
+          <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>
+          <Text className="text-secondaryText text-center mt-2">No se pudo cargar la información de la película</Text>
         </View>
       </Screen>
     );
@@ -57,10 +57,10 @@ export default function FilmDetail() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'PENDIENTE': return 'bg-gray-600';
+      case 'PENDIENTE': return 'bg-borderButton';
       case 'EN_CURSO': return 'bg-blue-600';
       case 'COMPLETADO': return 'bg-green-600';
-      default: return 'bg-slate-700';
+      default: return 'bg-borderButton';
     }
   };
 
@@ -74,12 +74,12 @@ export default function FilmDetail() {
           <View className="flex-row items-center flex-1">
             <TouchableOpacity 
               onPress={() => router.back()}
-              className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-slate-800 border border-slate-700"
+              className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-surfaceButton border border-borderButton"
               activeOpacity={0.7}
             >
               <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
             </TouchableOpacity>
-            <Text className="text-white text-xl font-bold flex-1" numberOfLines={1}>
+            <Text className="text-primaryText text-xl font-bold flex-1" numberOfLines={1}>
               Detalle de la película
             </Text>
           </View>
@@ -98,7 +98,7 @@ export default function FilmDetail() {
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: contenidopelicula.imagenUrl || 'https://via.placeholder.com/500x750' }}
-            className="w-full h-[500px] rounded-2xl bg-slate-900"
+            className="w-full h-[500px] rounded-2xl bg-background"
             resizeMode="cover"
           />
         </View>
@@ -106,21 +106,21 @@ export default function FilmDetail() {
         <View className="px-4 pb-6">
           {/* Título y año */}
           <View className="mb-4">
-            <Text className="text-white text-3xl font-bold mb-2">
+            <Text className="text-primaryText text-3xl font-bold mb-2">
               {contenidopelicula.titulo || 'Sin título'}
             </Text>
             
             <View className="flex-row items-center flex-wrap gap-2">
               {/* Año de estreno */}
-              <View className="bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
-                <Text className="text-gray-300 text-sm font-semibold">
+              <View className="bg-surfaceButton px-3 py-1.5 rounded-lg border border-borderButton">
+                <Text className="text-secondaryText text-sm font-semibold">
                   {releaseYear}
                 </Text>
               </View>
 
               {/* Estado */}
               <View className={`px-3 py-1.5 rounded-lg ${getStatusColor(filmResource.estado)}`}>
-                <Text className="text-white text-xs font-bold uppercase">
+                <Text className="text-primaryText text-xs font-bold uppercase">
                   {getStatusText(filmResource.estado)}
                 </Text>
               </View>
@@ -135,9 +135,9 @@ export default function FilmDetail() {
 
               {/* Número de visionados */}
               {filmResource.numVisionados > 0 && (
-                <View className="bg-purple-900/40 px-3 py-1.5 rounded-lg border border-purple-500/30 flex-row items-center">
+                <View className="bg-primary/20 px-3 py-1.5 rounded-lg border border-primary/30 flex-row items-center">
                   <MaterialCommunityIcons name="eye" size={16} color="#a855f7" />
-                  <Text className="text-purple-300 text-xs font-bold ml-1">
+                  <Text className="text-primary text-xs font-bold ml-1">
                     {filmResource.numVisionados}x
                   </Text>
                 </View>
@@ -149,8 +149,8 @@ export default function FilmDetail() {
           <View className="gap-4 mb-6">
             {/* Tu calificación */}
             {filmResource.calificacion > 0 && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">
                   Tu calificación
                 </Text>
                 <View className="flex-row items-center">
@@ -164,7 +164,7 @@ export default function FilmDetail() {
                       style={{ marginRight: 4 }}
                     />
                   ))}
-                  <Text className="text-white text-lg font-bold ml-2">
+                  <Text className="text-primaryText text-lg font-bold ml-2">
                     {filmResource.calificacion}/5
                   </Text>
                 </View>
@@ -173,13 +173,13 @@ export default function FilmDetail() {
 
             {/* Calificación general */}
             {contenidopelicula.calificacion && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">
                   Calificación general
                 </Text>
                 <View className="flex-row items-center">
                   <MaterialCommunityIcons name="star" size={24} color="#fbbf24" />
-                  <Text className="text-white text-lg font-bold ml-2">
+                  <Text className="text-primaryText text-lg font-bold ml-2">
                     {contenidopelicula.calificacion.toFixed(1)}/10
                   </Text>
                 </View>
@@ -188,13 +188,13 @@ export default function FilmDetail() {
 
             {/* Fecha de visionado */}
             {filmResource.fechaVisionado && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">
                   Fecha de visionado
                 </Text>
                 <View className="flex-row items-center">
                   <MaterialCommunityIcons name="calendar-check" size={20} color="#8b5cf6" />
-                  <Text className="text-white text-sm ml-2">
+                  <Text className="text-primaryText text-sm ml-2">
                     {new Date(filmResource.fechaVisionado).toLocaleDateString('es-ES', {
                       year: 'numeric',
                       month: 'long',
@@ -207,11 +207,11 @@ export default function FilmDetail() {
 
             {/* Descripción */}
             {contenidopelicula.descripcion && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">
                   Descripción
                 </Text>
-                <Text className="text-gray-300 text-base leading-6">
+                <Text className="text-secondaryText text-base leading-6">
                   {contenidopelicula.descripcion}
                 </Text>
               </View>
@@ -219,24 +219,24 @@ export default function FilmDetail() {
 
             {/* Tu reseña */}
             {filmResource.reseña && (
-              <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">
+              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+                <Text className="text-primary text-sm font-bold mb-2 uppercase">
                   Tu reseña
                 </Text>
-                <Text className="text-gray-300 text-base leading-6">
+                <Text className="text-secondaryText text-base leading-6">
                   {filmResource.reseña}
                 </Text>
               </View>
             )}
 
             {/* Fecha de agregado */}
-            <View className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-              <Text className="text-purple-400 text-sm font-bold mb-2 uppercase">
+            <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
+              <Text className="text-primary text-sm font-bold mb-2 uppercase">
                 Agregado a tu colección
               </Text>
               <View className="flex-row items-center">
                 <MaterialCommunityIcons name="calendar-plus" size={20} color="#8b5cf6" />
-                <Text className="text-white text-sm ml-2">
+                <Text className="text-primaryText text-sm ml-2">
                   {new Date(filmResource.fechacreacion).toLocaleDateString('es-ES', {
                     year: 'numeric',
                     month: 'long',

@@ -15,14 +15,14 @@ export function RenderContent({ item, variant }: MediaItemProps) {
 
   return (
     <View className={`mr-4 ${containerWidth}`}>
-      <View className={`${imageHeight} w-full items-center justify-center overflow-hidden rounded-lg bg-gray-700`}>
+      <View className={`${imageHeight} w-full items-center justify-center overflow-hidden rounded-lg bg-borderButton`}>
         <Image
           source={{ uri: item.image }}
           className="h-full w-full"
           resizeMode="cover"
         />
       </View>
-      <Text className="mt-2 text-white" numberOfLines={isVertical ? 2 : undefined}>
+      <Text className="mt-2 text-primaryText" numberOfLines={isVertical ? 2 : undefined}>
         {item.title} {!isVertical && item.type ? ` (${item.type})` : ''}
       </Text>
     </View>
@@ -33,8 +33,8 @@ export function RenderSong({ song }: { song: { id: string; title: string; artist
   return (
     <View
       key={song.id}
-      className="mr-4 h-24 w-72 flex-row items-center overflow-hidden rounded-xl bg-gray-800 shadow-sm">
-      <View className="h-full w-24 items-center justify-center overflow-hidden bg-gray-700">
+      className="mr-4 h-24 w-72 flex-row items-center overflow-hidden rounded-xl bg-surfaceButton shadow-sm">
+      <View className="h-full w-24 items-center justify-center overflow-hidden bg-borderButton">
         <Image
           source={{ uri: song.image }}
           className="h-full w-full"
@@ -42,10 +42,10 @@ export function RenderSong({ song }: { song: { id: string; title: string; artist
         />
       </View>
       <View className="flex-1 justify-center p-3">
-        <Text className="text-base font-bold text-white" numberOfLines={2}>
+        <Text className="text-base font-bold text-primaryText" numberOfLines={2}>
           {song.title}
         </Text>
-        <Text className="mt-1 text-xs text-gray-400">{song.artist}</Text>
+        <Text className="mt-1 text-xs text-secondaryText">{song.artist}</Text>
       </View>
     </View>
   );

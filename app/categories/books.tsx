@@ -79,17 +79,17 @@ export default function Books() {
 
 //To see the book details in the list
   const renderBook = (book: Book) => (
-    <View key={book.trackId} className="bg-gray-800 rounded-xl p-4 mx-4 my-2 border-2 border-purple-500/30">
+    <View key={book.trackId} className="bg-surfaceButton rounded-xl p-4 mx-4 my-2 border-2 border-primary/30">
       <View className="flex-row">
         <Image 
           source={{ uri: book.artworkUrl100 }} 
           className="w-20 h-28 rounded-lg"
         />
         <View className="flex-1 ml-4">
-          <Text className="text-white font-bold text-base" numberOfLines={2}>
+          <Text className="text-primaryText font-bold text-base" numberOfLines={2}>
             {book.trackName}
           </Text>
-          <Text className="text-purple-300 text-sm mt-1" numberOfLines={1}>
+          <Text className="text-primary text-sm mt-1" numberOfLines={1}>
             {book.artistName}
           </Text>
           {book.averageUserRating && (
@@ -100,7 +100,7 @@ export default function Books() {
               </Text>
             </View>
           )}
-          <Text className="text-gray-400 text-xs mt-1">
+          <Text className="text-secondaryText text-xs mt-1">
             {new Date(book.releaseDate).getFullYear()}
           </Text>
         </View>
@@ -112,10 +112,10 @@ export default function Books() {
     <View className="flex-1">
       {/* Search */}
       <View className="mx-4 my-2">
-        <View className="flex-row items-center bg-gray-800 rounded-xl px-4 py-3 border-2 border-purple-500/30">
+        <View className="flex-row items-center bg-surfaceButton rounded-xl px-4 py-3 border-2 border-primary/30">
           <MaterialCommunityIcons name="book-search" size={24} color="#a78bfa" />
           <TextInput
-            className="flex-1 ml-3 text-white"
+            className="flex-1 ml-3 text-primaryText"
             placeholder="Buscar libros..."
             placeholderTextColor="#6b7280"
             value={searchQuery}
@@ -132,7 +132,7 @@ export default function Books() {
       <View className="flex-row mx-4 my-2">
         <TouchableOpacity
           onPress={() => setActiveTab('recent')}
-          className="flex-1 py-3 rounded-l-xl border-2 border-purple-500/30"
+          className="flex-1 py-3 rounded-l-xl border-2 border-primary/30"
           style={{ backgroundColor: activeTab === 'recent' ? '#8b5cf6' : '#1f2937' }}
         >
           <Text className="text-center font-semibold" style={{ color: activeTab === 'recent' ? '#fff' : '#a78bfa' }}>
@@ -141,7 +141,7 @@ export default function Books() {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setActiveTab('topRated')}
-          className="flex-1 py-3 rounded-r-xl border-2 border-l-0 border-purple-500/30"
+          className="flex-1 py-3 rounded-r-xl border-2 border-l-0 border-primary/30"
           style={{ backgroundColor: activeTab === 'topRated' ? '#8b5cf6' : '#1f2937' }}
         >
           <Text className="text-center font-semibold" style={{ color: activeTab === 'topRated' ? '#fff' : '#a78bfa' }}>

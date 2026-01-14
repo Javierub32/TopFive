@@ -1,14 +1,41 @@
+const colors = require('tailwindcss/colors');
+const { COLORS } = require('./constants/colors');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // Asegúrate de incluir "./app/**/*.{js,jsx,ts,tsx}"
   content: [
     "./app/**/*.{js,jsx,ts,tsx}", 
     "./components/**/*.{js,jsx,ts,tsx}",
-    "./src/**/*.{js,jsx,ts,tsx}" // (Si tienes algo en src, déjalo, si no, bórralo)
+    "./src/**/*.{js,jsx,ts,tsx}"
   ],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        // == COLORES PRINCIPALES ==
+        primary: COLORS.primary,       // #8b5cf6
+
+
+		// == FONDOS ==
+        // Clase: bg-background (Pantalla principal)
+        background: COLORS.background,   // #0f111a
+        
+        // Clase: bg-surfaceButton (Search bar, tarjetas)
+        surfaceButton: COLORS.surfaceButton,// #1e293b
+        
+
+        // == TEXTOS ==
+        primaryText: COLORS.primaryText,          // #ffffff
+        secondaryText: COLORS.secondaryText,     // #9ca3af
+        placeholderText: COLORS.placeholderText, // #64748b
+
+        // == BORDES ==
+        borderButton: COLORS.borderButton,   // #334155
+        border: {
+          button: COLORS.borderButton,   // #334155  // border-button
+        }
+      },
+    },
   },
   plugins: [],
 }
