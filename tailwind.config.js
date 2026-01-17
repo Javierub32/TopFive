@@ -28,12 +28,12 @@ module.exports = {
         primaryText: COLORS.primaryText,          // #ffffff
         secondaryText: COLORS.secondaryText,     // #9ca3af
         placeholderText: COLORS.placeholderText, // #64748b
+		title: COLORS.title, // #c084fc
 
         // == BORDES ==
         borderButton: COLORS.borderButton,   // #334155
-        border: {
-          button: COLORS.borderButton,   // #334155  // border-button
-        }
+		marker: COLORS.marker,       // 'rgb(88 28 135 / 0.4)'
+		markerText: COLORS.markerText, // '#e9d5ff'
       },
     },
   },

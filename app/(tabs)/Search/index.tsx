@@ -7,6 +7,7 @@ import { useSearchContent } from './hooks/useSearchContent';
 import { SearchBar } from './components/SearchBar';
 import { SearchResultItem } from './components/SearchResultItem';
 import { SearchPlaceholder } from './components/SearchPlaceholder';
+import { COLORS } from 'constants/colors';
 
 export default function SearchScreen() {
   const {
@@ -56,7 +57,7 @@ export default function SearchScreen() {
 
         {loading && (
           <View className="absolute inset-0 z-50 items-center justify-center bg-black/50">
-            <ActivityIndicator size="large" color="#8b5cf6" />
+            <ActivityIndicator size="large" color={COLORS.primary} />
           </View>
         )}
       </View>

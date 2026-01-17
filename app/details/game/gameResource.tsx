@@ -6,6 +6,7 @@ import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useResource } from 'context/ResourceContext';
 import { GameResource } from 'app/types/Resources';
+import { COLORS } from 'constants/colors';
 
 
 export default function GameDetail() {
@@ -134,9 +135,9 @@ export default function GameDetail() {
               )}
 
               {gameResource.horasJugadas > 0 && (
-                <View className="bg-primary/20 px-3 py-1.5 rounded-lg border border-primary/30 flex-row items-center">
+                <View className="bg-marker px-3 py-1.5 rounded-lg border border-primary/30 flex-row items-center">
                   <MaterialCommunityIcons name="clock-outline" size={16} color="#a855f7" />
-                  <Text className="text-primary text-xs font-bold ml-1">
+                  <Text className="text-markerText text-xs font-bold ml-1">
                     {gameResource.horasJugadas}h
                   </Text>
                 </View>
@@ -147,7 +148,7 @@ export default function GameDetail() {
           <View className="gap-4 mb-6">
             {gameResource.calificacion > 0 && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">Tu calificación</Text>
+                <Text className="text-title text-sm font-bold mb-2 uppercase">Tu calificación</Text>
                 <View className="flex-row items-center">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <FontAwesome5
@@ -166,7 +167,7 @@ export default function GameDetail() {
 
             {contenidovideojuego.calificacion && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">Calificación general</Text>
+                <Text className="text-title text-sm font-bold mb-2 uppercase">Calificación general</Text>
                 <View className="flex-row items-center">
                   <MaterialCommunityIcons name="star" size={24} color="#fbbf24" />
                   <Text className="text-primaryText text-lg font-bold ml-2">
@@ -178,9 +179,9 @@ export default function GameDetail() {
 
             {gameResource.dificultad && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">Dificultad</Text>
+                <Text className="text-title text-sm font-bold mb-2 uppercase">Dificultad</Text>
                 <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="speedometer" size={24} color="#8b5cf6" />
+                  <MaterialCommunityIcons name="speedometer" size={24} color={COLORS.primary} />
                   <Text className="text-primaryText text-lg font-bold ml-2">{gameResource.dificultad}</Text>
                 </View>
               </View>
@@ -188,11 +189,11 @@ export default function GameDetail() {
 
             {(gameResource.fechaInicio || gameResource.fechaFin) && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-3 uppercase">Periodo de juego</Text>
+                <Text className="text-title text-sm font-bold mb-3 uppercase">Periodo de juego</Text>
                 <View className="gap-2">
                   {gameResource.fechaInicio && (
                     <View className="flex-row items-center">
-                      <MaterialCommunityIcons name="calendar-start" size={20} color="#8b5cf6" />
+                      <MaterialCommunityIcons name="calendar-start" size={20} color={COLORS.primary} />
                       <Text className="text-secondaryText text-sm ml-2 mr-2">Inicio:</Text>
                       <Text className="text-primaryText text-sm font-semibold">
                         {new Date(gameResource.fechaInicio).toLocaleDateString('es-ES', {
@@ -203,7 +204,7 @@ export default function GameDetail() {
                   )}
                   {gameResource.fechaFin && (
                     <View className="flex-row items-center">
-                      <MaterialCommunityIcons name="calendar-end" size={20} color="#8b5cf6" />
+                      <MaterialCommunityIcons name="calendar-end" size={20} color={COLORS.primary} />
                       <Text className="text-secondaryText text-sm ml-2 mr-2">Fin:</Text>
                       <Text className="text-primaryText text-sm font-semibold">
                         {new Date(gameResource.fechaFin).toLocaleDateString('es-ES', {
@@ -218,9 +219,9 @@ export default function GameDetail() {
 
             {contenidovideojuego.autor && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">Desarrollador</Text>
+                <Text className="text-title text-sm font-bold mb-2 uppercase">Desarrollador</Text>
                 <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="domain" size={24} color="#8b5cf6" />
+                  <MaterialCommunityIcons name="domain" size={24} color={COLORS.primary} />
                   <Text className="text-primaryText text-base ml-2">{contenidovideojuego.autor}</Text>
                 </View>
               </View>
@@ -228,10 +229,10 @@ export default function GameDetail() {
 
             {contenidovideojuego.genero && contenidovideojuego.genero.length > 0 && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">Géneros</Text>
+                <Text className="text-title text-sm font-bold mb-2 uppercase">Géneros</Text>
                 <View className="flex-row flex-wrap gap-2">
                   {contenidovideojuego.genero.map((genre, index) => (
-                    <View key={index} className="bg-primary/20 px-3 py-1.5 rounded-lg border border-primary/30">
+                    <View key={index} className="bg-marker px-3 py-1.5 rounded-lg border border-primary/30">
                       <Text className="text-primary text-sm">{genre}</Text>
                     </View>
                   ))}
@@ -241,7 +242,7 @@ export default function GameDetail() {
 
             {contenidovideojuego.plataformas && contenidovideojuego.plataformas.length > 0 && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">Plataformas</Text>
+                <Text className="text-title text-sm font-bold mb-2 uppercase">Plataformas</Text>
                 <Text className="text-secondaryText text-base leading-6">
                   {contenidovideojuego.plataformas.join(', ')}
                 </Text>
@@ -250,7 +251,7 @@ export default function GameDetail() {
 
             {contenidovideojuego.modosJuego && contenidovideojuego.modosJuego.length > 0 && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">Modos de juego</Text>
+                <Text className="text-title text-sm font-bold mb-2 uppercase">Modos de juego</Text>
                 <Text className="text-secondaryText text-base leading-6">
                   {contenidovideojuego.modosJuego.join(', ')}
                 </Text>
@@ -259,22 +260,22 @@ export default function GameDetail() {
 
             {contenidovideojuego.descripcion && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">Descripción</Text>
+                <Text className="text-title text-sm font-bold mb-2 uppercase">Descripción</Text>
                 <Text className="text-secondaryText text-base leading-6">{contenidovideojuego.descripcion}</Text>
               </View>
             )}
 
             {gameResource.reseña && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">Tu reseña</Text>
+                <Text className="text-title text-sm font-bold mb-2 uppercase">Tu reseña</Text>
                 <Text className="text-secondaryText text-base leading-6">{gameResource.reseña}</Text>
               </View>
             )}
 
             <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-              <Text className="text-primary text-sm font-bold mb-2 uppercase">Agregado a tu colección</Text>
+              <Text className="text-title text-sm font-bold mb-2 uppercase">Agregado a tu colección</Text>
               <View className="flex-row items-center">
-                <MaterialCommunityIcons name="calendar-plus" size={20} color="#8b5cf6" />
+                <MaterialCommunityIcons name="calendar-plus" size={20} color={COLORS.primary} />
                 <Text className="text-primaryText text-sm ml-2">
                   {new Date(gameResource.fechacreacion).toLocaleDateString('es-ES', {
                     year: 'numeric', month: 'long', day: 'numeric'

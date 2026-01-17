@@ -4,20 +4,8 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-
-interface Book {
-  id: number | null;
-  title: string | null;
-  autor: string | null;
-  image: string | null;
-  releaseDate: string | null;
-  genre: string[] | null;
-  reference: string | null;
-  autorId: number | null;
-  imageFull: string | null;
-  description: string | null;
-  rating: number | null;
-}
+import { COLORS } from 'constants/colors';
+import { Book } from 'app/types/Content';
 
 export default function BookDetail() {
   const { bookData } = useLocalSearchParams();
@@ -85,9 +73,9 @@ export default function BookDetail() {
             </View>
 
             {book.rating && (
-              <View className="bg-primary/30 px-3 py-1.5 rounded-lg mr-2 mb-2 border border-primary/30 flex-row items-center">
+              <View className="bg-marker px-3 py-1.5 rounded-lg mr-2 mb-2 border border-primary/30 flex-row items-center">
                 <MaterialCommunityIcons name="star" size={16} color="#fbbf24" />
-                <Text className="text-primary text-sm font-bold ml-1">
+                <Text className="text-markerText text-sm font-bold ml-1">
                   {book.rating.toFixed(1)}
                 </Text>
               </View>
@@ -104,11 +92,11 @@ export default function BookDetail() {
 
           {book.autor && (
             <View className="mb-6">
-              <Text className="text-primary text-lg font-bold mb-2">
+              <Text className="text-title text-lg font-bold mb-2">
                 Autor
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="account" size={24} color="#8b5cf6" />
+                <MaterialCommunityIcons name="account" size={24} color={COLORS.primary} />
                 <Text className="text-secondaryText text-base ml-3">
                   {book.autor}
                 </Text>
@@ -118,11 +106,11 @@ export default function BookDetail() {
 
           {book.releaseDate && (
             <View className="mb-6">
-              <Text className="text-primary text-lg font-bold mb-2">
+              <Text className="text-title text-lg font-bold mb-2">
                 Fecha de Publicación
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="calendar" size={24} color="#8b5cf6" />
+                <MaterialCommunityIcons name="calendar" size={24} color={COLORS.primary} />
                 <Text className="text-secondaryText text-base ml-3">
                   {new Date(book.releaseDate).toLocaleDateString('es-ES', {
                     year: 'numeric',
@@ -136,7 +124,7 @@ export default function BookDetail() {
 
           {book.description && (
             <View className="mb-6">
-              <Text className="text-primary text-lg font-bold mb-2">
+              <Text className="text-title text-lg font-bold mb-2">
                 Descripción
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
@@ -149,7 +137,7 @@ export default function BookDetail() {
 
           <TouchableOpacity 
             onPress={() => {openForm(book)}} 
-            className="flex-1 bg-[#8B2DF0] py-4 rounded-xl items-center flex-row justify-center"
+            className="flex-1 bg-primary py-4 rounded-xl items-center flex-row justify-center"
           >
             <FontAwesome5 name="cloud-upload-alt" size={16} color="white" style={{marginRight: 8}} />
             <Text className="text-primaryText font-bold">Añadir a colección</Text>

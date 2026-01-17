@@ -57,7 +57,7 @@ export const SearchBar = ({
             setFiltrosAbiertos(false);
           }}>
           <View className="max-w-[90px]">
-            <Text className="mr-1 font-medium text-xs text-primaryText" numberOfLines={1}>
+            <Text className="mr-1 font-medium text-xs text-gray-300" numberOfLines={1}>
               {categoriaActual}
             </Text>
           </View>

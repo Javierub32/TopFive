@@ -195,7 +195,7 @@ export default function SongForm() {
                   onPress={() => setEstado(est)}
                   className={`flex-1 rounded-lg border py-3 ${
                     estado === est
-                      ? 'border-primary bg-primary/20'
+                      ? 'border-primary bg-marker'
                       : 'border-borderButton bg-surfaceButton'
                   }`}>
                   <Text

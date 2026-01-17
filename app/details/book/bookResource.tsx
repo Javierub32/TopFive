@@ -6,6 +6,7 @@ import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useResource } from 'context/ResourceContext';
 import { BookResource } from 'app/types/Resources';
+import { COLORS } from 'constants/colors';
 
 
 export default function BookDetail() {
@@ -140,7 +141,7 @@ export default function BookDetail() {
             {/* Tu calificación */}
             {bookResource.calificacion > 0 && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">
+                <Text className="text-title text-sm font-bold mb-2 uppercase">
                   Tu calificación
                 </Text>
                 <View className="flex-row items-center">
@@ -164,7 +165,7 @@ export default function BookDetail() {
             {/* Calificación general */}
             {contenidolibro.calificacion && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">
+                <Text className="text-title text-sm font-bold mb-2 uppercase">
                   Calificación general
                 </Text>
                 <View className="flex-row items-center">
@@ -179,11 +180,11 @@ export default function BookDetail() {
             {/* Páginas leídas */}
             {bookResource.paginasLeidas > 0 && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">
+                <Text className="text-title text-sm font-bold mb-2 uppercase">
                   Páginas leídas
                 </Text>
                 <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="book-open-page-variant" size={24} color="#8b5cf6" />
+                  <MaterialCommunityIcons name="book-open-page-variant" size={24} color={COLORS.primary} />
                   <Text className="text-primaryText text-lg font-bold ml-2">
                     {bookResource.paginasLeidas} páginas
                   </Text>
@@ -194,13 +195,13 @@ export default function BookDetail() {
             {/* Fechas de lectura */}
             {(bookResource.fechaInicio || bookResource.fechaFin) && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-3 uppercase">
+                <Text className="text-title text-sm font-bold mb-3 uppercase">
                   Periodo de lectura
                 </Text>
                 <View className="gap-2">
                   {bookResource.fechaInicio && (
                     <View className="flex-row items-center">
-                      <MaterialCommunityIcons name="calendar-start" size={20} color="#8b5cf6" />
+                      <MaterialCommunityIcons name="calendar-start" size={20} color={COLORS.primary} />
                       <Text className="text-secondaryTextyText text-sm ml-2 mr-2">Inicio:</Text>
                       <Text className="text-primaryText text-sm font-semibold">
                         {new Date(bookResource.fechaInicio).toLocaleDateString('es-ES', {
@@ -213,7 +214,7 @@ export default function BookDetail() {
                   )}
                   {bookResource.fechaFin && (
                     <View className="flex-row items-center">
-                      <MaterialCommunityIcons name="calendar-end" size={20} color="#8b5cf6" />
+                      <MaterialCommunityIcons name="calendar-end" size={20} color={COLORS.primary} />
                       <Text className="text-secondaryTextyText text-sm ml-2 mr-2">Fin:</Text>
                       <Text className="text-primaryText text-sm font-semibold">
                         {new Date(bookResource.fechaFin).toLocaleDateString('es-ES', {
@@ -231,11 +232,11 @@ export default function BookDetail() {
             {/* Autor */}
             {contenidolibro.autor && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">
+                <Text className="text-title text-sm font-bold mb-2 uppercase">
                   Autor
                 </Text>
                 <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="account" size={24} color="#8b5cf6" />
+                  <MaterialCommunityIcons name="account" size={24} color={COLORS.primary} />
                   <Text className="text-primaryText text-base ml-2">
                     {contenidolibro.autor}
                   </Text>
@@ -246,12 +247,12 @@ export default function BookDetail() {
             {/* Géneros */}
             {contenidolibro.genero && contenidolibro.genero.length > 0 && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">
+                <Text className="text-title text-sm font-bold mb-2 uppercase">
                   Géneros
                 </Text>
                 <View className="flex-row flex-wrap gap-2">
                   {contenidolibro.genero.map((genre, index) => (
-                    <View key={index} className="bg-primary/20 px-3 py-1.5 rounded-lg border border-primary/30">
+                    <View key={index} className="bg-marker px-3 py-1.5 rounded-lg border border-primary/30">
                       <Text className="text-primary text-sm">
                         {genre}
                       </Text>
@@ -264,7 +265,7 @@ export default function BookDetail() {
             {/* Descripción */}
             {contenidolibro.descripcion && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">
+                <Text className="text-title text-sm font-bold mb-2 uppercase">
                   Descripción
                 </Text>
                 <Text className="text-secondaryText text-base leading-6">
@@ -276,7 +277,7 @@ export default function BookDetail() {
             {/* Tu reseña */}
             {bookResource.reseña && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">
+                <Text className="text-title text-sm font-bold mb-2 uppercase">
                   Tu reseña
                 </Text>
                 <Text className="text-primaryText text-base leading-6">
@@ -287,11 +288,11 @@ export default function BookDetail() {
 
             {/* Fecha de agregado */}
             <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-              <Text className="text-primary text-sm font-bold mb-2 uppercase">
+              <Text className="text-title text-sm font-bold mb-2 uppercase">
                 Agregado a tu colección
               </Text>
               <View className="flex-row items-center">
-                <MaterialCommunityIcons name="calendar-plus" size={20} color="#8b5cf6" />
+                <MaterialCommunityIcons name="calendar-plus" size={20} color={COLORS.primary} />
                 <Text className="text-primaryText text-sm ml-2">
                   {new Date(bookResource.fechacreacion).toLocaleDateString('es-ES', {
                     year: 'numeric',

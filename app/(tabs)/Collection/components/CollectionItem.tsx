@@ -20,9 +20,9 @@ export const CollectionItem = ({ item, category, onPress }: any) => {
           <Text className="text-secondaryText text-sm">{new Date(item.fechacreacion).toLocaleDateString()}</Text>
         </View>
         <View className="flex-row items-center justify-between mt-2">
-          <View className="flex-row items-center bg-primary/20 px-2 py-1 rounded border border-primary/20">
+          <View className="flex-row items-center bg-marker px-2 py-1 rounded border border-primary/20">
             <MaterialCommunityIcons name="star" size={12} color="#fbbf24" />
-            <Text className="text-primaryText text-xs font-bold ml-1">{item.calificacion || 0}</Text>
+            <Text className="text-markerText text-xs font-bold ml-1">{item.calificacion || 0}</Text>
           </View>
           <View className={`px-2 py-1 rounded ${statusColor}`}>
             <Text className="text-[10px] text-primaryText font-bold uppercase">{statusText}</Text>

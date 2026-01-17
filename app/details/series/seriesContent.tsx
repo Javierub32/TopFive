@@ -4,18 +4,8 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-
-interface Series {
-  id: number;
-  title: string;
-  image: string | null;
-  releaseDate: string | null;
-  genre: string[] | null;
-  imageFull: string | null;
-  description: string | null;
-  rating: number | null;
-  ended: string | null;
-}
+import { COLORS } from 'constants/colors';
+import { Series } from 'app/types/Content';
 
 export default function SeriesDetail() {
   const { seriesData } = useLocalSearchParams();
@@ -84,9 +74,9 @@ export default function SeriesDetail() {
             </View>
 
             {series.rating && (
-              <View className="bg-primary/30 px-3 py-1.5 rounded-lg mr-2 mb-2 border border-primary/30 flex-row items-center">
+              <View className="bg-marker px-3 py-1.5 rounded-lg mr-2 mb-2 border border-primary/30 flex-row items-center">
                 <MaterialCommunityIcons name="star" size={16} color="#fbbf24" />
-                <Text className="text-primary text-sm font-bold ml-1">
+                <Text className="text-markerText text-sm font-bold ml-1">
                   {series.rating.toFixed(1)}
                 </Text>
               </View>
@@ -103,11 +93,11 @@ export default function SeriesDetail() {
 
           {series.releaseDate && (
             <View className="mb-6">
-              <Text className="text-primary text-lg font-bold mb-2">
+              <Text className="text-title text-lg font-bold mb-2">
                 Fecha de Estreno
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="calendar" size={24} color="#8b5cf6" />
+                <MaterialCommunityIcons name="calendar" size={24} color={COLORS.primary} />
                 <Text className="text-secondaryText text-base ml-3">
                   {new Date(series.releaseDate).toLocaleDateString('es-ES', {
                     year: 'numeric',
@@ -121,11 +111,11 @@ export default function SeriesDetail() {
 
           {series.ended && (
             <View className="mb-6">
-              <Text className="text-primary text-lg font-bold mb-2">
+              <Text className="text-title text-lg font-bold mb-2">
                 Fecha de Finalización
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="calendar-check" size={24} color="#8b5cf6" />
+                <MaterialCommunityIcons name="calendar-check" size={24} color={COLORS.primary} />
                 <Text className="text-secondaryText text-base ml-3">
                   {new Date(series.ended).toLocaleDateString('es-ES', {
                     year: 'numeric',
@@ -139,7 +129,7 @@ export default function SeriesDetail() {
 
           {series.description && (
             <View className="mb-6">
-              <Text className="text-primary text-lg font-bold mb-2">
+              <Text className="text-title text-lg font-bold mb-2">
                 Sinopsis
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
@@ -152,7 +142,7 @@ export default function SeriesDetail() {
 
           <TouchableOpacity 
             onPress={() => openForm(series)} 
-            className="flex-1 bg-[#8B2DF0] py-4 rounded-xl items-center flex-row justify-center"
+            className="flex-1 bg-primary py-4 rounded-xl items-center flex-row justify-center"
           >
             <FontAwesome5 name="cloud-upload-alt" size={16} color="white" />
             <Text className="text-primaryText font-bold ml-2">Añadir a colección</Text>

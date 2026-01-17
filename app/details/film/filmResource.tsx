@@ -6,6 +6,7 @@ import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useResource } from 'context/ResourceContext';
 import { FilmResource } from 'app/types/Resources';
+import { COLORS } from 'constants/colors';
 
 
 export default function FilmDetail() {
@@ -135,9 +136,9 @@ export default function FilmDetail() {
 
               {/* Número de visionados */}
               {filmResource.numVisionados > 0 && (
-                <View className="bg-primary/20 px-3 py-1.5 rounded-lg border border-primary/30 flex-row items-center">
+                <View className="bg-marker px-3 py-1.5 rounded-lg border border-primary/30 flex-row items-center">
                   <MaterialCommunityIcons name="eye" size={16} color="#a855f7" />
-                  <Text className="text-primary text-xs font-bold ml-1">
+                  <Text className="text-markerText text-xs font-bold ml-1">
                     {filmResource.numVisionados}x
                   </Text>
                 </View>
@@ -150,7 +151,7 @@ export default function FilmDetail() {
             {/* Tu calificación */}
             {filmResource.calificacion > 0 && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">
+                <Text className="text-title text-sm font-bold mb-2 uppercase">
                   Tu calificación
                 </Text>
                 <View className="flex-row items-center">
@@ -174,7 +175,7 @@ export default function FilmDetail() {
             {/* Calificación general */}
             {contenidopelicula.calificacion && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">
+                <Text className="text-title text-sm font-bold mb-2 uppercase">
                   Calificación general
                 </Text>
                 <View className="flex-row items-center">
@@ -189,11 +190,11 @@ export default function FilmDetail() {
             {/* Fecha de visionado */}
             {filmResource.fechaVisionado && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">
+                <Text className="text-title text-sm font-bold mb-2 uppercase">
                   Fecha de visionado
                 </Text>
                 <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="calendar-check" size={20} color="#8b5cf6" />
+                  <MaterialCommunityIcons name="calendar-check" size={20} color={COLORS.primary} />
                   <Text className="text-primaryText text-sm ml-2">
                     {new Date(filmResource.fechaVisionado).toLocaleDateString('es-ES', {
                       year: 'numeric',
@@ -208,7 +209,7 @@ export default function FilmDetail() {
             {/* Descripción */}
             {contenidopelicula.descripcion && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">
+                <Text className="text-title text-sm font-bold mb-2 uppercase">
                   Descripción
                 </Text>
                 <Text className="text-secondaryText text-base leading-6">
@@ -220,7 +221,7 @@ export default function FilmDetail() {
             {/* Tu reseña */}
             {filmResource.reseña && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-primary text-sm font-bold mb-2 uppercase">
+                <Text className="text-title text-sm font-bold mb-2 uppercase">
                   Tu reseña
                 </Text>
                 <Text className="text-secondaryText text-base leading-6">
@@ -231,11 +232,11 @@ export default function FilmDetail() {
 
             {/* Fecha de agregado */}
             <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-              <Text className="text-primary text-sm font-bold mb-2 uppercase">
+              <Text className="text-title text-sm font-bold mb-2 uppercase">
                 Agregado a tu colección
               </Text>
               <View className="flex-row items-center">
-                <MaterialCommunityIcons name="calendar-plus" size={20} color="#8b5cf6" />
+                <MaterialCommunityIcons name="calendar-plus" size={20} color={COLORS.primary} />
                 <Text className="text-primaryText text-sm ml-2">
                   {new Date(filmResource.fechacreacion).toLocaleDateString('es-ES', {
                     year: 'numeric',

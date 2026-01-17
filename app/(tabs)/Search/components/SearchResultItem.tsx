@@ -35,8 +35,8 @@ export const SearchResultItem = ({ item, onPress }: SearchResultItemProps) => {
 
         {/* Badge de Género */}
         <View className="flex-row">
-          <View className="rounded border border-primary/30 bg-primary/30 px-2 py-1">
-            <Text className="text-xs font-bold uppercase tracking-wider text-primary">
+          <View className="rounded border border-primary/30 bg-marker px-2 py-1">
+            <Text className="text-xs font-bold uppercase tracking-wider text-markerText">
               {item.genre}
             </Text>
           </View>

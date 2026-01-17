@@ -4,19 +4,8 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-
-interface Song {
-  id: number;
-  title: string | null;
-  autor: string | null;
-  image: string | null;
-  releaseDate: string | null;
-  genre: string | null;
-  reference: string | null;
-  autorId: number | null;
-  imageFull: string | null;
-  album: string | null;
-}
+import { COLORS } from 'constants/colors';
+import { Song } from 'app/types/Content';
 
 export default function SongDetail() {
   const { songData } = useLocalSearchParams();
@@ -94,11 +83,11 @@ export default function SongDetail() {
 
           {song.autor && (
             <View className="mb-6">
-              <Text className="text-primary text-lg font-bold mb-2">
+              <Text className="text-title text-lg font-bold mb-2">
                 Artista
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="account-music" size={24} color="#8b5cf6" />
+                <MaterialCommunityIcons name="account-music" size={24} color={COLORS.primary} />
                 <Text className="text-secondaryText text-base ml-3">
                   {song.autor}
                 </Text>
@@ -108,11 +97,11 @@ export default function SongDetail() {
 
           {song.album && (
             <View className="mb-6">
-              <Text className="text-primary text-lg font-bold mb-2">
+              <Text className="text-title text-lg font-bold mb-2">
                 Álbum
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="album" size={24} color="#8b5cf6" />
+                <MaterialCommunityIcons name="album" size={24} color={COLORS.primary} />
                 <Text className="text-secondaryText text-base ml-3">
                   {song.album}
                 </Text>
@@ -122,11 +111,11 @@ export default function SongDetail() {
 
           {song.releaseDate && (
             <View className="mb-6">
-              <Text className="text-primary text-lg font-bold mb-2">
+              <Text className="text-title text-lg font-bold mb-2">
                 Fecha de Lanzamiento
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="calendar" size={24} color="#8b5cf6" />
+                <MaterialCommunityIcons name="calendar" size={24} color={COLORS.primary} />
                 <Text className="text-secondaryText text-base ml-3">
                   {new Date(song.releaseDate).toLocaleDateString('es-ES', {
                     year: 'numeric',
@@ -140,7 +129,7 @@ export default function SongDetail() {
 
           <TouchableOpacity 
             onPress={() => {openForm(song);}} 
-            className="flex-1 bg-[#8B2DF0] py-4 rounded-xl items-center flex-row justify-center"
+            className="flex-1 bg-primary py-4 rounded-xl items-center flex-row justify-center"
           >
             <FontAwesome5 name="cloud-upload-alt" size={16} color="white" style={{marginRight: 8}} />
             <Text className="text-primaryText font-bold">Añadir a colección</Text>

@@ -54,7 +54,7 @@ export const SearchBar = ({
           onPress={() => setMenuAbierto(!menuAbierto)}
         >
           <View className="max-w-[80px]">
-            <Text className="mr-1 font-medium text-secondaryText" numberOfLines={1}>
+            <Text className="mr-1 font-medium text-gray-300" numberOfLines={1}>
               {selectedCategory}
             </Text>
           </View>
