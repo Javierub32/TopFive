@@ -21,6 +21,8 @@ export default function ProfileScreen() {
     setIsPressed,
     pickImage,
     signOut,
+	selectedYear,
+	setSelectedYear,
   } = useProfile();
 
   if (!user) {
@@ -64,7 +66,7 @@ export default function ProfileScreen() {
             average={currentStats.average}
           />
 
-          <StatsChart data={currentStats.chartData} />
+          <StatsChart data={currentStats.chartData} selectedYear={selectedYear} setSelectedYear={setSelectedYear} />
         </ScrollView>
       </View>
     </Screen>

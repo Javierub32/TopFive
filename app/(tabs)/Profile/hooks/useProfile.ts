@@ -38,6 +38,7 @@ export const useProfile = () => {
     useResource();
 
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('libros');
+  const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
   const [username, setUsername] = useState('Usuario');
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isPressed, setIsPressed] = useState(false);
@@ -65,6 +66,12 @@ export const useProfile = () => {
     }
   }, [selectedCategory]);
 
+  // Reset all stats when year changes
+  useEffect(() => {
+    setFullCategoryData(INITIAL_CATEGORY_DATA);
+    fetchResourceInfo();
+  }, [selectedYear]);
+
   const fetchResourceInfo = async () => {
     let resourceData: any[] = [];
     let dateField = '';
@@ -72,29 +79,29 @@ export const useProfile = () => {
     // TODO: Change API to have same date field name across resources
     switch (selectedCategory) {
       case 'libros':
-        resourceData = await fetchLibros();
+        resourceData = await fetchLibros(null, null, null, null, null, true);
         dateField = 'fechaFin';
         break;
       case 'películas':
-        resourceData = await fetchPeliculas();
+        resourceData = await fetchPeliculas(null, null, null, null, null, true);
         dateField = 'fechaVisionado';
         break;
       case 'series':
-        resourceData = await fetchSeries();
+        resourceData = await fetchSeries(null, null, null, null, null, true);
         dateField = 'fechaFin';
         break;
       case 'canciones':
-        resourceData = await fetchCanciones();
+        resourceData = await fetchCanciones(null, null, null, null, null, true);
         dateField = 'fechaEscucha';
         break;
       case 'videojuegos':
-        resourceData = await fetchVideojuegos();
+        resourceData = await fetchVideojuegos(null, null, null, null, null, true);
         dateField = 'fechaFin';
         break;
     }
 
     // We calculate stats using the adapter
-    const stats = createAdaptedResourceStats(resourceData, dateField);
+    const stats = createAdaptedResourceStats(resourceData, dateField, selectedYear);
 
     updateStats(stats);
   };
@@ -145,9 +152,11 @@ export const useProfile = () => {
     username,
     avatarUrl,
     selectedCategory,
+    selectedYear,
     isPressed,
     categoryData: fullCategoryData,
     setSelectedCategory,
+    setSelectedYear,
     setIsPressed,
     pickImage,
     signOut,

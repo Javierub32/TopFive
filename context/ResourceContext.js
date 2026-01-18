@@ -40,7 +40,7 @@ export const ResourceProvider = ({ children }) => {
 		}
 	}, [user]);
 
-	const fetchPeliculas = async (term, favorito, estado, cantidad, ordenarPorFecha) => {
+	const fetchPeliculas = async (term, favorito, estado, cantidad, ordenarPorFecha, profile) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
 
@@ -55,6 +55,13 @@ export const ResourceProvider = ({ children }) => {
 					)
 				`) 
 				.eq('usuarioId', user.id);
+
+			if (profile) {
+				query = supabase
+					.from('recursopelicula')
+					.select(`fechaVisionado`)
+					.eq('usuarioId', user.id);
+			}
 
 			// Solo aplicar filtro de favorito si es true
 			if (favorito === true) {
@@ -96,7 +103,7 @@ export const ResourceProvider = ({ children }) => {
 			return null;
 		}
 	};
-const fetchSeries = async (term, favorito, estado, cantidad, ordenarPorFecha) => {
+const fetchSeries = async (term, favorito, estado, cantidad, ordenarPorFecha, profile) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
 
@@ -111,6 +118,13 @@ const fetchSeries = async (term, favorito, estado, cantidad, ordenarPorFecha) =>
 					)
 				`) 
 				.eq('usuarioId', user.id);
+
+			if (profile) {
+				query = supabase
+					.from('recursoserie')
+					.select(`fechaFin`)
+					.eq('usuarioId', user.id);
+			}
 
 			// Solo aplicar filtro de favorito si es true
 			if (favorito === true) {
@@ -152,7 +166,7 @@ const fetchSeries = async (term, favorito, estado, cantidad, ordenarPorFecha) =>
 		}
 	};
 
-	const fetchVideojuegos = async (term, favorito, estado, cantidad, ordenarPorFecha) => {
+	const fetchVideojuegos = async (term, favorito, estado, cantidad, ordenarPorFecha, profile) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
 
@@ -167,6 +181,13 @@ const fetchSeries = async (term, favorito, estado, cantidad, ordenarPorFecha) =>
 					)
 				`) 
 				.eq('usuarioId', user.id);
+
+			if (profile) {
+				query = supabase
+					.from('recursovideojuego')
+					.select(`fechaFin`)
+					.eq('usuarioId', user.id);
+			}
 
 			// Solo aplicar filtro de favorito si es true
 			if (favorito === true) {
@@ -208,7 +229,7 @@ const fetchSeries = async (term, favorito, estado, cantidad, ordenarPorFecha) =>
 		}
 	};
 
-	const fetchLibros = async (term, favorito, estado, cantidad, ordenarPorFecha) => {
+	const fetchLibros = async (term, favorito, estado, cantidad, ordenarPorFecha, profile) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
 
@@ -223,6 +244,13 @@ const fetchSeries = async (term, favorito, estado, cantidad, ordenarPorFecha) =>
 					)
 				`) 
 				.eq('usuarioId', user.id);
+
+			if (profile) {
+				query = supabase
+					.from('recursolibro')
+					.select(`fechaFin`)
+					.eq('usuarioId', user.id);
+			}
 
 			// Solo aplicar filtro de favorito si es true
 			if (favorito === true) {
@@ -264,7 +292,7 @@ const fetchSeries = async (term, favorito, estado, cantidad, ordenarPorFecha) =>
 		}
 	};
 
-	const fetchCanciones = async (term, favorito, estado, cantidad, ordenarPorFecha) => {
+	const fetchCanciones = async (term, favorito, estado, cantidad, ordenarPorFecha, profile) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
 
@@ -279,6 +307,13 @@ const fetchSeries = async (term, favorito, estado, cantidad, ordenarPorFecha) =>
 					)
 				`) 
 				.eq('usuarioId', user.id);
+
+			if (profile) {
+				query = supabase
+					.from('recursocancion')
+					.select(`fechaEscucha`)
+					.eq('usuarioId', user.id);
+			}
 
 			// Solo aplicar filtro de favorito si es true
 			if (favorito === true) {

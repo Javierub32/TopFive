@@ -1,10 +1,15 @@
 import { View, Text, useWindowDimensions } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
+import { DateSelector } from './DateSelector';
 
-export const StatsChart = ({ data }: { data: number[] }) => (
+export const StatsChart = ({ data, selectedYear, setSelectedYear }: { data: number[], selectedYear: number, setSelectedYear: (year: number) => void }) => (
   <View className="px-3 pb-10">
     <View className="my-2 rounded-xl border-2 border-borderButton bg-surfaceButton py-5" style={{ overflow: 'hidden' }}>
-      <Text className="mb-3 px-5 text-xl text-primary">Actividad Anual</Text>
+	  <View className= "flex flex-row justify-between px-5 mb-3">
+		<Text className="mb-3  text-xl text-title">Actividad Anual</Text>
+		<DateSelector selectedYear={selectedYear} onYearChange={setSelectedYear} />
+	  </View>
+      
       <View style={{ alignItems: 'center' }}>
         <BarChart
           data={{
