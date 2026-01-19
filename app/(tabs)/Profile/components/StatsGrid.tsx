@@ -15,7 +15,7 @@ export const StatsGrid = ({ title, total, average }: Props) => (
       </View>
     </View>
     <View className="mx-2 my-2 flex-1 rounded-xl border-2 border-borderButton bg-surfaceButton p-5">
-      <Text className="mb-3 text-xl text-primary">Promedio/Mes</Text>
+      <Text className="mb-3 text-xl text-title">Promedio/Mes</Text>
       <View className="flex-1 justify-end">
         <Text className="text-right text-2xl text-primaryText">{average}</Text>
       </View>
