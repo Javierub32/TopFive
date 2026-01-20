@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { SearchResult } from '../adapters/searchResultsAdapter';
+import { SearchResult } from '../../Add/adapters/searchResultsAdapter';
 
 interface SearchResultItemProps {
   item: SearchResult;

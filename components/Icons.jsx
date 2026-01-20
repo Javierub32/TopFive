@@ -17,6 +17,10 @@ export const HomeIcon = (props) => (
 	<MaterialCommunityIcons name="home" size={24} color="black" {...props} />
 );
 
+export const AddIcon = (props) => (
+	<FontAwesome name="plus-circle" size={24} color="black" {...props} />
+);
+
 export const SettingsIcon = (props) => (
 	<FontAwesome name="gear" size={24} color="black" {...props} />
 );

@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
 import { searchContentService } from '../services/searchContentService';
-import { searchAdapter, SearchResult } from '../adapters/searchResultsAdapter';
+import { searchAdapter, SearchResult } from '../../Add/adapters/searchResultsAdapter';
 
 export type CategoryKey = 'Libros' | 'Películas' | 'Series' | 'Videojuegos' | 'Canciones';
 
@@ -12,6 +12,17 @@ export const useSearchContent = () => {
   const [loading, setLoading] = useState(false);
   const [resultados, setResultados] = useState<SearchResult[]>([]);
   const [datosOriginales, setDatosOriginales] = useState<any[]>([]);
+
+  const params = useLocalSearchParams<{ initialCategory?: string }>();
+
+    // Aplicar la categoría inicial si viene en la URL
+  useEffect(() => {
+	if (params.initialCategory && params.initialCategory !== recursoBusqueda) {
+	  setRecursoBusqueda(params.initialCategory as CategoryKey);
+	  setResultados([]);
+	}
+  }, [params.initialCategory]);
+
 
   const handleSearch = async () => {
     if (!busqueda.trim()) return;
@@ -55,3 +66,5 @@ export const useSearchContent = () => {
     setResultados
   };
 };
+
+
