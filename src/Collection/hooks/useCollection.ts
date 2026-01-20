@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useRouter } from 'expo-router';
 import { useResource } from 'context/ResourceContext';
 
@@ -37,7 +37,7 @@ export const useCollection = () => {
 
       const fetchFunction = fetchMap[categoriaActual];
       const favorito = soloFavoritos ? true : null;
-      const estado = filtroEstado === 'TODOS' ? null : filtroEstado;
+      const estado = null
       const ordenarPorFecha = orden === 'FECHA_DESC' ? true : (orden === 'FECHA_ASC' ? false : null);
 
       const resultado = await fetchFunction(busqueda, favorito, estado, null, ordenarPorFecha);
@@ -49,6 +49,9 @@ export const useCollection = () => {
       setLoading(false);
     }
   };
+      const pendientes = data.filter(item => item.estado === 'PENDIENTE');
+      const enCurso = data.filter(item => item.estado === 'EN_CURSO');
+      const completados = data.filter(item => item.estado === 'COMPLETADO');
 
   useEffect(() => { cargarDatos(); }, [categoriaActual, busqueda, filtroEstado, orden, soloFavoritos]);
 
@@ -73,6 +76,9 @@ export const useCollection = () => {
     filtroEstado, setFiltroEstado,
     soloFavoritos, setSoloFavoritos,
     handleItemPress,
-    router
+    router,
+    pendientes,
+    enCurso,
+    completados
   };
 };

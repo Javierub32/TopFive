@@ -68,20 +68,6 @@ export const SearchBar = ({
           />
         </TouchableOpacity>
 
-        {/* Botón de Filtros */}
-        <TouchableOpacity
-          className={`h-full w-12 items-center justify-center rounded-r-lg border-l border-borderButton ${filtrosAbiertos || isFilterActive ? 'bg-primary/30' : 'bg-transparent'}`}
-          onPress={() => {
-            setFiltrosAbiertos(!filtrosAbiertos);
-            setMenuAbierto(false);
-          }}
-        >
-          <MaterialCommunityIcons 
-            name="tune-vertical" 
-            size={20} 
-            color={filtrosAbiertos || isFilterActive ? '#a855f7' : '#94a3b8'} 
-          />
-        </TouchableOpacity>
       </View>
 
       {/* Desplegable de Categorías */}

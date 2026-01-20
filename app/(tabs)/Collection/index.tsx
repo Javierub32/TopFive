@@ -1,34 +1,54 @@
-import { View, Text, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { useCollection } from 'src/Collection/hooks/useCollection';
-import { CollectionItem } from 'src/Collection/components/CollectionItem';
+import { CollectionGroup } from 'src/Collection/components/CollectionGroup'; 
 import { SearchBar } from 'src/Collection/components/SearchBar';
 import { FilterPanel } from 'src/Collection/components/FilterPanel';
 
 export default function CollectionScreen() {
   const {
     loading,
-    data,
-    busqueda,
-    setBusqueda,
-    categoriaActual,
-    setCategoriaActual,
-    menuCategoriaAbierto,
-    setMenuCategoriaAbierto,
-    filtrosAbiertos,
-    setFiltrosAbiertos,
-    orden,
-    setOrden,
-    filtroEstado,
-    setFiltroEstado,
-    soloFavoritos,
-    setSoloFavoritos,
+    busqueda, setBusqueda,
+    categoriaActual, setCategoriaActual,
+    menuCategoriaAbierto, setMenuCategoriaAbierto,
+    filtrosAbiertos, setFiltrosAbiertos,
+    orden, setOrden,
+    filtroEstado, setFiltroEstado,
+    soloFavoritos, setSoloFavoritos,
     handleItemPress,
-    router,
+    pendientes,
+    enCurso,
+    completados
   } = useCollection();
+
+  const renderHorizontalList = (titulo: string, data: any[]) => {
+    return (
+      <View className="mb-8">
+        <View className="px-4 mb-3">
+          <Text className="text-xl font-bold text-primaryText">
+            {titulo} <Text className="text-sm font-normal text-secondaryText">({data.length})</Text>
+          </Text>
+        </View>
+        <FlatList
+          data={data}
+          horizontal={true} 
+          keyExtractor={(item) => item.id.toString()}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 16 }}
+          renderItem={({ item }) => (
+            <CollectionGroup 
+              item={item} 
+              category={categoriaActual} 
+              onPress={() => handleItemPress(item)} 
+            />
+          )}
+        />
+      </View>
+    );
+  };
 
   return (
     <Screen>
@@ -64,31 +84,17 @@ export default function CollectionScreen() {
             <ActivityIndicator size="large" color="#a855f7" />
           </View>
         ) : (
-          <FlatList
-            data={data}
-            keyExtractor={(item) => item.id?.toString()}
-            renderItem={({ item }) => (
-              <CollectionItem
-                item={item}
-                category={categoriaActual}
-                onPress={() => handleItemPress(item)}
-              />
-            )}
-            ListEmptyComponent={
-              <View className="flex-1 items-center justify-center pt-20">
-                <MaterialCommunityIcons name="bookshelf" size={64} color="#334155" />
-                <Text className="mt-4 text-secondaryText">No hay nada por aquí.</Text>
-              </View>
-            }
+          <ScrollView 
+            className="flex-1 mt-4" 
             contentContainerStyle={{ paddingBottom: 100 }}
-          />
-        )}
+            showsVerticalScrollIndicator={false}
+          >
+            {renderHorizontalList('Viendo ahora', enCurso)}
+            {renderHorizontalList(`${categoriaActual} pendientes`, pendientes)}
+            {renderHorizontalList('Completados', completados)}
 
-        <TouchableOpacity
-          className="absolute bottom-6 right-6 h-14 w-14 items-center justify-center rounded-full bg-primary shadow-lg"
-          onPress={() => router.push('/Search')}>
-          <MaterialCommunityIcons name="plus" size={30} color="white" />
-        </TouchableOpacity>
+          </ScrollView>
+        )}
       </View>
     </Screen>
   );
