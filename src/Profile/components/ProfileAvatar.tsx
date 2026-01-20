@@ -28,7 +28,7 @@ export const ProfileAvatar = ({ avatarUrl, username, isPressed, onPickImage, set
       </TouchableOpacity>
 
       <Image
-        source={require('../../../../assets/gorro-navideño.png')}
+        source={require('../../../assets/gorro-navideño.png')}
         style={{
           position: 'absolute',
           top: isPressed ? 2 : 5,

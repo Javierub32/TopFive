@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { useSearchContent } from './hooks/useSearchContent';
+import { useSearchContent } from 'src/Search/hooks/useSearchContent';
 
-import { SearchBar } from './components/SearchBar';
-import { SearchResultItem } from './components/SearchResultItem';
-import { SearchPlaceholder } from './components/SearchPlaceholder';
+import { SearchBar } from 'src/Search/components/SearchBar';
+import { SearchResultItem } from 'src/Search/components/SearchResultItem';
+import { SearchPlaceholder } from 'src/Search/components/SearchPlaceholder';
 import { COLORS } from 'constants/colors';
 
 export default function SearchScreen() {

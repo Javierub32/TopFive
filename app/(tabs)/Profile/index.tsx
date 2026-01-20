@@ -3,11 +3,11 @@ import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { Ionicons } from '@expo/vector-icons';
 
-import { useProfile } from './hooks/useProfile';
-import { ProfileAvatar } from './components/ProfileAvatar';
-import { CategorySelector } from './components/CategorySelector';
-import { StatsGrid } from './components/StatsGrid';
-import { StatsChart } from './components/StatsChart';
+import { useProfile } from 'src/Profile/hooks/useProfile';
+import { ProfileAvatar } from 'src/Profile/components/ProfileAvatar';
+import { CategorySelector } from 'src/Profile/components/CategorySelector';
+import { StatsGrid } from 'src/Profile/components/StatsGrid';
+import { StatsChart } from 'src/Profile/components/StatsChart';
 
 export default function ProfileScreen() {
   const {

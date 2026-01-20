@@ -3,10 +3,10 @@ import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { useCollection } from './hooks/useCollection';
-import { CollectionItem } from './components/CollectionItem';
-import { SearchBar } from './components/SearchBar';
-import { FilterPanel } from './components/FilterPanel';
+import { useCollection } from 'src/Collection/hooks/useCollection';
+import { CollectionItem } from 'src/Collection/components/CollectionItem';
+import { SearchBar } from 'src/Collection/components/SearchBar';
+import { FilterPanel } from 'src/Collection/components/FilterPanel';
 
 export default function CollectionScreen() {
   const {

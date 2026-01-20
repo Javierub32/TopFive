@@ -1,4 +1,4 @@
-import { supabase } from '../../../../lib/supabase';
+import { supabase } from 'lib/supabase';
 import { decode } from 'base64-arraybuffer';
 
 export const userService = {

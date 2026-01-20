@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { useAuth } from '../../../../context/AuthContext';
+import { useAuth } from 'context/AuthContext';
 import { useResource } from 'context/ResourceContext';
 import { userService } from '../services/profileService';
 import { createAdaptedResourceStats } from '../adapters/statsAdapter';
