@@ -20,6 +20,7 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Seleccionar una frase aleatoria - se ejecuta cada vez que se renderiza el componente
   const fraseAleatoria = useState(() => 
@@ -85,8 +86,18 @@ export default function Login() {
                     onChangeText={setPassword} 
                     className="flex-1 ml-3 text-base text-gray-800"
                     placeholderTextColor="#9CA3AF"
-                    secureTextEntry
+                    secureTextEntry={!showPassword}
                   />
+                  <TouchableOpacity 
+                    onPress={() => setShowPassword(!showPassword)}
+                    className="ml-2"
+                  >
+                    <MaterialCommunityIcons 
+                      name={showPassword ? "eye-off" : "eye"} 
+                      size={24} 
+                      color="#9CA3AF" 
+                    />
+                  </TouchableOpacity>
                 </View>
                 <View className="mt-6" style={{}}>
                   <TouchableOpacity
