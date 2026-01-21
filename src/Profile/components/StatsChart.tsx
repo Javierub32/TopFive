@@ -1,6 +1,7 @@
 import { View, Text, useWindowDimensions } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
 import { DateSelector } from './DateSelector';
+import { COLORS } from 'constants/colors';
 
 export const StatsChart = ({ data, selectedYear, setSelectedYear }: { data: number[], selectedYear: number, setSelectedYear: (year: number) => void }) => (
   <View className="px-3 pb-10">
@@ -20,10 +21,10 @@ export const StatsChart = ({ data, selectedYear, setSelectedYear }: { data: numb
           height={160}
           chartConfig={{
             backgroundColor: 'transparent',
-            backgroundGradientFrom: '#1f2937',
-            backgroundGradientTo: '#1f2937',
+            backgroundGradientFrom: COLORS.surfaceButton,
+            backgroundGradientTo: COLORS.surfaceButton,
             decimalPlaces: 0,
-            color: (opacity = 1) => `rgba(168, 85, 247, ${opacity})`,
+            color: (opacity = 1) => `rgba(252, 103, 3, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(156, 163, 175, ${opacity})`,
             barPercentage: 0.5,
             propsForBackgroundLines: { strokeWidth: 0 },

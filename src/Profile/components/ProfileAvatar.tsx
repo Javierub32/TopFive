@@ -1,5 +1,6 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { COLORS } from 'constants/colors';
 
 interface Props {
   avatarUrl: string | null;
@@ -40,7 +41,7 @@ export const ProfileAvatar = ({ avatarUrl, username, isPressed, onPickImage, set
         resizeMode="contain"
       />
 
-      <View style={{ position: 'absolute', bottom: 0, right: 0, backgroundColor: '#a855f7', borderRadius: 15, width: 30, height: 30, justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#1f2937' }}>
+      <View style={{ position: 'absolute', bottom: 0, right: 0, backgroundColor: COLORS.primary, borderRadius: 15, width: 30, height: 30, justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: '#1f2937' }}>
         <MaterialCommunityIcons name="camera" size={16} color="#fff" />
       </View>
     </View>

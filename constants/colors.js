@@ -1,31 +1,33 @@
 const COLORS = {
   // Tu color violeta principal (usado en Tabs activos, loaders, etc.)
-  primary: '#8b5cf6', 
+  primary: '#fc6703', 
+  secondary: '#428f9e',
+  accent: '#204879',
   
   // Variante oscura del primario (no se usa actualmente)
-  primaryDark: '#7c3aed', 
+  primaryDark: '#8a4517', 
 
   // Fondo principal de la app
-  background: '#0f111a', 
+  background: '#03102b', 
 
   // Colores de texto
   primaryText: '#ffffff',
   secondaryText: '#9ca3af', 
   placeholderText: '#64748b',
-  title: '#c084fc',				// Titulos de las características de los recursos y de los contenidos (se podría cambiar a blanco)
+  title: '#42909f',				// Titulos de las características de los recursos y de los contenidos (se podría cambiar a blanco)
 
   // Colores para los botones
-  borderButton: '#334155',  // Color del borde del botón
+  borderButton: '#428f9e',  // Color del borde del botón
   surfaceButton: '#1e293b', // Color de fondo de la barra de búsqueda y tarjetas
 
   marker: 'rgb(88 28 135 / 0.4)', 	// Color de relleno para marcadores (calificaciones, num visualizaciones, etc)
-  markerText: '#e9d5ff', 			// Color para el texto dentro de los marcadores
+  markerText: '#fc6703', 			// Color para el texto dentro de los marcadores
 
   // Colores específicos para el TabBar
-  tabBarActiveTintColor: '#8b5cf6', 
+  tabBarActiveTintColor: '#fc6703', 
   tabBarInactiveTintColor: '#9ca3af',
-  tabBarBackgroundColor: '#1e1e2e',
-  tabBarBorderTopColor: 'rgba(139, 92, 246, 0.3)',
+  tabBarBackgroundColor: '#1e293b',
+  tabBarBorderTopColor: 'rgba(252, 103, 3, 0.3)',
 };
 
 module.exports = { COLORS };

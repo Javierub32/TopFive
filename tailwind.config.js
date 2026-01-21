@@ -14,6 +14,8 @@ module.exports = {
       colors: {
         // == COLORES PRINCIPALES ==
         primary: COLORS.primary,       // #8b5cf6
+        secondary: COLORS.secondary,
+        accent: COLORS.accent,
 
 
 		// == FONDOS ==

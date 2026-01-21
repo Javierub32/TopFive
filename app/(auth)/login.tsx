@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { COLORS } from 'constants/colors';
 
 // Frases aleatorias con iconos - fuera del componente para mejor rendimiento
 const frasesConIconos = [
@@ -42,7 +43,7 @@ export default function Login() {
   return (
     <View className='flex-1'>
       <LinearGradient
-        colors={['#667eea', '#764ba2', '#f093fb']}
+        colors={[COLORS.background, COLORS.secondary, COLORS.primaryDark]}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}
       >
         <View style={{ width: '100%', maxWidth: 550 }}>
@@ -103,18 +104,11 @@ export default function Login() {
                   <TouchableOpacity
                     onPress={handleLogin}
                     disabled={loading}
-                    className="overflow-hidden rounded-xl shadow-lg"
+                    className="bg-accent overflow-hidden rounded-xl shadow-lg py-4 items-center"
                   >
-                    <LinearGradient
-                      colors={['#667eea', '#764ba2']}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 0 }}
-                      className="py-4 items-center"
-                    >
                     <Text className="text-primaryText font-bold text-lg">
                       {loading ? 'Cargando...' : 'Iniciar Sesión'}
                     </Text>
-                    </LinearGradient>
                   </TouchableOpacity>
                 </View>
               </View>
