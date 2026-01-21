@@ -1,5 +1,8 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import { COLORS } from 'constants/colors';
 
 export const SocialIcon = (props) => (
   <FontAwesome name="users" size={24} color="black"  {...props} />
@@ -31,4 +34,24 @@ export const CameraIcon = (props) => (
 
 export const CardsIcon = (props) => (
   <MaterialCommunityIcons name="cards" size={24} color="black" {...props} />
+);
+
+export const BookIcon = (props) => (
+  <FontAwesome5 name="book" size={24} color={COLORS.primaryDark} {...props}/>
+);
+
+export const FilmIcon = (props) => (
+  <FontAwesome name="film" size={24} color={COLORS.primaryDark} {...props}/>
+);
+
+export const ShowIcon = (props) => (
+  <MaterialCommunityIcons name="television-play" size={24} color={COLORS.primaryDark} {...props}/>
+);
+
+export const MusicIcon = (props) => (
+  <FontAwesome name="music" size={24} color={COLORS.primaryDark} {...props}/>
+);
+
+export const GameIcon = (props) => (
+  <Ionicons name="game-controller" size={24} color={COLORS.primaryDark} {...props}/>
 );
