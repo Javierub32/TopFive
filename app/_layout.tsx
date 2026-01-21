@@ -1,15 +1,13 @@
 import '../global.css';
-
 import { Slot, useRouter, useSegments } from 'expo-router';
 import { useEffect, useCallback, useState } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { View, ActivityIndicator } from 'react-native';
-import { ResourceProvider } from 'context/ResourceContext';
+import { ResourceProvider } from '../context/ResourceContext';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 
-// Mantener la splash screen visible mientras cargamos recursos
 SplashScreen.preventAutoHideAsync();
 
 const InitialLayout = () => {
@@ -21,7 +19,6 @@ const InitialLayout = () => {
   useEffect(() => {
     async function prepare() {
       try {
-        // Cargar fuentes/iconos
         await Font.loadAsync({
           ...FontAwesome.font,
           ...MaterialCommunityIcons.font,
@@ -32,7 +29,6 @@ const InitialLayout = () => {
         setAppIsReady(true);
       }
     }
-
     prepare();
   }, []);
 
@@ -43,21 +39,35 @@ const InitialLayout = () => {
   }, [appIsReady]);
 
   useEffect(() => {
+    // Si estamos cargando auth o fuentes, no hacemos nada aún
     if (loading || !appIsReady) return;
 
     const inAuthGroup = segments[0] === '(auth)';
-    const inTabsGroup = segments[0] === '(tabs)';
-
-    // Redirigir solo si el usuario está en un grupo incorrecto
-    if (!session && !inAuthGroup && segments.length > 0) {
-      router.replace('/(auth)/login');
-    } else if (session && inAuthGroup) {
-      router.replace('/(tabs)/Home');
+    
+    if (session) {
+      // SI hay usuario:
+      // Redirigir a Home si intenta entrar a login/registro (AuthGroup) 
+      // O si está en la raíz (segments.length === 0)
+      if (inAuthGroup || (segments.length as number) === 0) {
+        router.replace('/(tabs)/Home');
+      }
+    } else {
+      // NO hay usuario:
+      // Redirigir a Login si NO está ya en el grupo de autenticación.
+      // (Esto cubre cualquier ruta protegida y la raíz)
+      if (!inAuthGroup) {
+        router.replace('/(auth)/login');
+      }
     }
   }, [session, loading, segments, appIsReady]);
 
-  if (!appIsReady) {
-    return null;
+  // Mostrar un indicador de carga mientras se decide la ruta o cargan fuentes
+  if (!appIsReady || loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
 
   return (
@@ -70,9 +80,9 @@ const InitialLayout = () => {
 export default function RootLayout() {
   return (
     <AuthProvider>
-		<ResourceProvider>
-      		<InitialLayout />
-		</ResourceProvider>
+      <ResourceProvider>
+        <InitialLayout />
+      </ResourceProvider>
     </AuthProvider>
   );
 }
