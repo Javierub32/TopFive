@@ -3,26 +3,30 @@ import { TouchableOpacity, Image, View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { collectionAdapter } from '../adapters/collectionAdapter';
 
-export const CollectionGroup = ({ item, category, onPress }: any) => {
+export const CollectionGroup = ({ item, category, onPress, posterWidth, posterHeight }: any) => {
   const title = collectionAdapter.getTitle(item, category);
   const image = collectionAdapter.getImage(item, category);
   const year = item.fechacreacion ? new Date(item.fechacreacion).getFullYear() : '';
   const statusColor = collectionAdapter.getStatusColor(item.estado); 
   const statusText = collectionAdapter.getStatusText(item.estado, category);
+  const finalWidth = posterWidth || 125;
+  const finalHeight = posterHeight || 190;
+  const marginRight = posterWidth ? 0 : 12; // Si es grid, sin margen derecho (lo maneja el gap)
 
   return (
     <TouchableOpacity 
       className="flex-col mb-2" 
-      style={{ width: 130, marginRight: 12 }}
+      style={{ width: finalWidth, marginRight: marginRight, marginBottom: 24 , marginTop: 10}}
       onPress={onPress}
       activeOpacity={0.8}
     >
       {/* Imagen */}
-      <View className="relative w-full h-[190px] rounded-lg overflow-hidden bg-surfaceButton border border-borderButton shadow-sm">
+      <View className="relative w-full rounded-lg overflow-hidden bg-surfaceButton border border-borderButton shadow-sm" style={{ height: finalHeight }}>
         <Image 
           source={{ uri: image }} 
           className="w-full h-full bg-background" 
           resizeMode="cover" 
+          style={{ height: finalHeight }}
         />
         
 

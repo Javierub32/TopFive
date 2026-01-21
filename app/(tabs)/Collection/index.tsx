@@ -4,9 +4,9 @@ import { Screen } from 'components/Screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { useCollection } from 'src/Collection/hooks/useCollection';
-import { CollectionGroup } from 'src/Collection/components/CollectionGroup'; 
 import { SearchBar } from 'src/Collection/components/SearchBar';
 import { FilterPanel } from 'src/Collection/components/FilterPanel';
+import { RenderCollection } from 'src/Collection/components/RenderCollection';
 
 export default function CollectionScreen() {
   const {
@@ -18,37 +18,13 @@ export default function CollectionScreen() {
     orden, setOrden,
     filtroEstado, setFiltroEstado,
     soloFavoritos, setSoloFavoritos,
+    navigateToGrid,
     handleItemPress,
     pendientes,
     enCurso,
-    completados
+    completados,
   } = useCollection();
 
-  const renderHorizontalList = (titulo: string, data: any[]) => {
-    return (
-      <View className="mb-8">
-        <View className="px-4 mb-3">
-          <Text className="text-xl font-bold text-primaryText">
-            {titulo} <Text className="text-sm font-normal text-secondaryText">({data.length})</Text>
-          </Text>
-        </View>
-        <FlatList
-          data={data}
-          horizontal={true} 
-          keyExtractor={(item) => item.id.toString()}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 16 }}
-          renderItem={({ item }) => (
-            <CollectionGroup 
-              item={item} 
-              category={categoriaActual} 
-              onPress={() => handleItemPress(item)} 
-            />
-          )}
-        />
-      </View>
-    );
-  };
 
   return (
     <Screen>
@@ -89,10 +65,27 @@ export default function CollectionScreen() {
             contentContainerStyle={{ paddingBottom: 100 }}
             showsVerticalScrollIndicator={false}
           >
-            {renderHorizontalList('Viendo ahora', enCurso)}
-            {renderHorizontalList(`${categoriaActual} pendientes`, pendientes)}
-            {renderHorizontalList('Completados', completados)}
-
+            <RenderCollection 
+              title="Pendientes"
+              data={pendientes}
+              category={categoriaActual}
+              onPressItem={handleItemPress}
+              onPressTitle={() => navigateToGrid('Pendientes', 'PENDING')}
+            />
+            <RenderCollection 
+              title="En Curso"
+              data={enCurso}
+              category={categoriaActual}
+              onPressItem={handleItemPress}
+              onPressTitle={() => navigateToGrid('Viendo ahora', 'WATCHING')}
+            />
+            <RenderCollection 
+              title="Completados"
+              data={completados}
+              category={categoriaActual}
+              onPressItem={handleItemPress}
+              onPressTitle={() => navigateToGrid('Completados', 'COMPLETED')}
+            />
           </ScrollView>
         )}
       </View>

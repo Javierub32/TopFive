@@ -55,6 +55,12 @@ export const useCollection = () => {
 
   useEffect(() => { cargarDatos(); }, [categoriaActual, busqueda, filtroEstado, orden, soloFavoritos]);
 
+  const navigateToGrid = (title: string, type: string) => {
+    router.push({
+        pathname: '/group',
+        params: { title, type }
+    });
+  };
   const handleItemPress = (item: any) => {
     const resourceTypeMap: Record<CategoryType, string> = {
       'Películas': 'film', 'Series': 'series', 'Videojuegos': 'game', 'Libros': 'book', 'Canciones': 'song'
@@ -75,6 +81,7 @@ export const useCollection = () => {
     orden, setOrden,
     filtroEstado, setFiltroEstado,
     soloFavoritos, setSoloFavoritos,
+    navigateToGrid,
     handleItemPress,
     router,
     pendientes,
