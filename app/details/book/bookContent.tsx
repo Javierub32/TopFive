@@ -6,6 +6,7 @@ import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS } from 'constants/colors';
 import { Book } from 'app/types/Content';
+import { ReturnButton } from 'components/ReturnButton';
 
 export default function BookDetail() {
   const { bookData } = useLocalSearchParams();
@@ -39,18 +40,7 @@ export default function BookDetail() {
       <StatusBar style="light" />
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="flex-row items-center px-4 pt-2 pb-4">
-          <TouchableOpacity 
-            onPress={() => router.push("/Search")}
-            className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-surfaceButton border border-borderButton"
-            activeOpacity={0.7}
-          >
-            <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
-          </TouchableOpacity>
-          <Text className="text-primaryText text-xl font-bold flex-1" numberOfLines={1}>
-            Detalle del libro
-          </Text>
-        </View>
+        <ReturnButton route="/Add?initialCategory=Libros" title="Detalle del libro" />
 
         <View className="px-4 mb-4">
           <Image 

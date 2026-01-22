@@ -55,3 +55,7 @@ export const MusicIcon = (props) => (
 export const GameIcon = (props) => (
   <Ionicons name="game-controller" size={24} color={COLORS.primaryDark} {...props}/>
 );
+
+export const LeftArrowIcon = (props) => (
+  <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" {...props} />
+);
