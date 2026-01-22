@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, Modal, TouchableOpacity, Pressable } from 'react-native';
 import { CategoryKey } from '@/Add/hooks/useSearchContent';
+import { BookIcon, FilmIcon, ShowIcon, MusicIcon, GameIcon } from 'components/Icons';
+import { COLORS } from 'constants/colors';
 
 
 interface AddModalProps {
@@ -10,12 +12,12 @@ interface AddModalProps {
 }
 
 export function AddModal({ visible, onClose, onSelect }: AddModalProps) {
-  const options: { type: CategoryKey; label: string; icon: string }[] = [
-    { type: 'Libros', label: 'Libro', icon: '📚' },
-    { type: 'Películas', label: 'Película', icon: '🎬' },
-    { type: 'Series', label: 'Serie', icon: '📺' },
-    { type: 'Canciones', label: 'Canción', icon: '🎵' },
-    { type: 'Videojuegos', label: 'Juego', icon: '🎮' },
+  const options: { type: CategoryKey; label: string; icon: any }[] = [
+    { type: 'Libros', label: 'Libro', icon: BookIcon },
+    { type: 'Películas', label: 'Película', icon: FilmIcon },
+    { type: 'Series', label: 'Serie', icon: ShowIcon },
+    { type: 'Canciones', label: 'Canción', icon: MusicIcon },
+    { type: 'Videojuegos', label: 'Juego', icon: GameIcon },
   ];
 
   const handleSelect = (type: CategoryKey) => {
@@ -43,17 +45,20 @@ export function AddModal({ visible, onClose, onSelect }: AddModalProps) {
           </Text>
 
           <View className="gap-3">
-            {options.map((option) => (
-              <TouchableOpacity
+            {options.map((option) => {
+              const IconComponent = option.icon;
+              return (
+                <TouchableOpacity
                 key={option.type}
                 className="flex-row items-center rounded-xl border border-borderButton bg-background p-4"
                 onPress={() => handleSelect(option.type)}
                 activeOpacity={0.7}
               >
-                <Text className="mr-4 text-[28px]">{option.icon}</Text>
+                <IconComponent color={COLORS.secondaryText} className="mr-4 text-[28px]"/>
                 <Text className="text-lg font-semibold text-primaryText">{option.label}</Text>
               </TouchableOpacity>
-            ))}
+              );
+            })}
           </View>
 
           <TouchableOpacity

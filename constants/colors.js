@@ -8,7 +8,7 @@ const COLORS = {
   primaryDark: '#8a4517', 
 
   // Fondo principal de la app
-  background: '#03102b', 
+  background: '#0a1223', 
 
   // Colores de texto
   primaryText: '#ffffff',
