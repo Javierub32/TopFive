@@ -1,6 +1,19 @@
 import { useEffect, useState } from "react";
 import { userService } from "../services/userService";
 
+interface User {
+	id: string;
+	username: string;
+	avatar_url: string;
+	description: string;
+	followers_count: number;
+	following_count: number;
+}
+interface UseUserResult {
+	userData: User | null;
+	loading: boolean;
+}
+
 
 export const useUser = (userId: string) => {
 	const [userData, setUserData] = useState<any>(null);
@@ -21,6 +34,7 @@ export const useUser = (userId: string) => {
 		fetchUserData();
 	}, [userId]);
 
-	return { userData, loading };
+	return { userData , loading } as UseUserResult;
+
 
 }

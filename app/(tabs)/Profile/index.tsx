@@ -8,12 +8,12 @@ import { ProfileAvatar } from 'src/Profile/components/ProfileAvatar';
 import { CategorySelector } from 'src/Profile/components/CategorySelector';
 import { StatsGrid } from 'src/Profile/components/StatsGrid';
 import { StatsChart } from 'src/Profile/components/StatsChart';
+import { ProfileData } from '@/User/components/ProfileData';
 
 export default function ProfileScreen() {
   const {
     user,
-    username,
-    avatarUrl,
+    userData,
     selectedCategory,
     isPressed,
     categoryData,
@@ -21,8 +21,8 @@ export default function ProfileScreen() {
     setIsPressed,
     pickImage,
     signOut,
-	selectedYear,
-	setSelectedYear,
+    selectedYear,
+    setSelectedYear,
   } = useProfile();
 
   if (!user) {
@@ -50,13 +50,18 @@ export default function ProfileScreen() {
         </Pressable>
 
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-          <ProfileAvatar
-            username={username}
-            avatarUrl={avatarUrl}
-            isPressed={isPressed}
-            onPickImage={pickImage}
-            setIsPressed={setIsPressed}
-          />
+          <ProfileData
+            username={userData?.username || 'Usuario'}
+            description={userData?.description}
+            followersCount={userData?.followers_count || 0}
+            followingCount={userData?.following_count || 0}>
+				<ProfileAvatar
+				avatarUrl={userData?.avatar_url || null}
+				isPressed={isPressed}
+				onPickImage={pickImage}
+				setIsPressed={setIsPressed}
+				/>
+          </ProfileData>
 
           <CategorySelector selected={selectedCategory} onSelect={setSelectedCategory} />
 
@@ -66,7 +71,11 @@ export default function ProfileScreen() {
             average={currentStats.average}
           />
 
-          <StatsChart data={currentStats.chartData} selectedYear={selectedYear} setSelectedYear={setSelectedYear} />
+          <StatsChart
+            data={currentStats.chartData}
+            selectedYear={selectedYear}
+            setSelectedYear={setSelectedYear}
+          />
         </ScrollView>
       </View>
     </Screen>

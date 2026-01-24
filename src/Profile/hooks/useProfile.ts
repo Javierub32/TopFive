@@ -32,6 +32,15 @@ const INITIAL_CATEGORY_DATA = {
   },
 };
 
+interface User {
+	id: string;
+	username: string;
+	avatar_url: string;
+	description: string;
+	followers_count: number;
+	following_count: number;
+}
+
 export const useProfile = () => {
   const { signOut, user } = useAuth();
   const { fetchCanciones, fetchLibros, fetchPeliculas, fetchSeries, fetchVideojuegos } =
@@ -39,8 +48,7 @@ export const useProfile = () => {
 
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('libros');
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
-  const [username, setUsername] = useState('Usuario');
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const [isPressed, setIsPressed] = useState(false);
   const [fullCategoryData, setFullCategoryData] = useState(INITIAL_CATEGORY_DATA);
 
@@ -51,8 +59,7 @@ export const useProfile = () => {
         .fetchUserProfile(user.id)
         .then((data) => {
           if (data) {
-            setUsername(data.username || 'Usuario');
-            setAvatarUrl(data.avatar_url);
+			setUserData(data as User);
           }
         })
         .catch((err) => console.error('Error al cargar perfil:', err));
@@ -137,9 +144,9 @@ export const useProfile = () => {
       });
 
       if (!result.canceled && result.assets[0] && user) {
-        await userService.deletePreviousAvatar(avatarUrl);
+        await userService.deletePreviousAvatar(userData?.avatar_url || null);
         const newUrl = await userService.uploadAvatar(user.id, result.assets[0].uri);
-        setAvatarUrl(newUrl);
+        setUserData({ ...userData, avatar_url: newUrl } as User);
         Alert.alert('¡Éxito!', 'Foto de perfil actualizada');
       }
     } catch (error) {
@@ -150,8 +157,7 @@ export const useProfile = () => {
 
   return {
     user,
-    username,
-    avatarUrl,
+    userData,
     selectedCategory,
     selectedYear,
     isPressed,

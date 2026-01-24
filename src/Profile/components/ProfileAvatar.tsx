@@ -4,13 +4,12 @@ import { COLORS } from 'constants/colors';
 
 interface Props {
   avatarUrl: string | null;
-  username: string;
   isPressed: boolean;
   onPickImage: () => void;
   setIsPressed: (val: boolean) => void;
 }
 
-export const ProfileAvatar = ({ avatarUrl, username, isPressed, onPickImage, setIsPressed }: Props) => (
+export const ProfileAvatar = ({ avatarUrl, isPressed, onPickImage, setIsPressed }: Props) => (
   <View className="items-center p-2">
     <View style={{ position: 'relative', paddingTop: 20 }}>
       <TouchableOpacity
@@ -45,6 +44,5 @@ export const ProfileAvatar = ({ avatarUrl, username, isPressed, onPickImage, set
         <MaterialCommunityIcons name="camera" size={16} color="#fff" />
       </View>
     </View>
-    <Text className="mb-3 mt-5 text-center text-2xl font-bold text-primaryText">{username}</Text>
   </View>
 );
