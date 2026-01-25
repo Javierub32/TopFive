@@ -43,10 +43,10 @@ export const userService = {
 
 	async unfollow(userId: string, targetUserId: string) {
 		const { data, error } = await supabase
-		.from('follows')
+		.from('relationships')
 		.delete()
 		.eq('follower_id', userId)
-		.eq('followed_id', targetUserId);
+		.eq('following_id', targetUserId);
 		if (error) throw error;
 		return data;
 	}

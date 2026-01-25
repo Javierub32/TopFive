@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, Pressable, useWindowDimensions } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 import { useProfile } from 'src/Profile/hooks/useProfile';
 import { ProfileAvatar } from 'src/Profile/components/ProfileAvatar';
@@ -23,6 +23,7 @@ export default function ProfileScreen() {
     signOut,
     selectedYear,
     setSelectedYear,
+	showNotifications,
   } = useProfile();
 
   if (!user) {
@@ -47,6 +48,11 @@ export default function ProfileScreen() {
           className="absolute right-4 top-5 z-10 rounded-full bg-white/10 p-3"
           onPress={signOut}>
           <Ionicons name="log-out-outline" size={24} color="#fff" />
+        </Pressable>
+        <Pressable
+          className="absolute right-20 top-5 z-10 rounded-full bg-white/10 p-3"
+          onPress={showNotifications}>
+			<MaterialIcons name="notifications-none" size={24} color="white" />
         </Pressable>
 
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>

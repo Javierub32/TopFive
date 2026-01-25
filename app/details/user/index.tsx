@@ -10,7 +10,7 @@ import { FollowButton } from '@/User/components/FollowButton';
 
 export default function UserDetailsScreen() {
   const { id } = useLocalSearchParams();
-  const {loading, userData, handleFollow} = useUser(id as string);
+  const {loading, userData, handleFollow, cancelRequest} = useUser(id as string);
   console.log("Rendering UserDetailsScreen with userData:", userData);
 
   if (loading) {
@@ -37,6 +37,7 @@ export default function UserDetailsScreen() {
         isFollowed={userData?.following_status === 'accepted' || false}
         isRequested={userData?.is_requested || false}
         handleFollow={handleFollow}
+		cancelRequest={cancelRequest}
       />
     </Screen>
   );

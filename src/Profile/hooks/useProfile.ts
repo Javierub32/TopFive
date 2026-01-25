@@ -5,6 +5,7 @@ import { useAuth } from 'context/AuthContext';
 import { useResource } from 'context/ResourceContext';
 import { userService } from '../services/profileService';
 import { createAdaptedResourceStats } from '../adapters/statsAdapter';
+import { router } from 'expo-router';
 
 export type CategoryKey = 'libros' | 'películas' | 'series' | 'canciones' | 'videojuegos';
 
@@ -154,6 +155,9 @@ export const useProfile = () => {
       Alert.alert('Error', 'No se pudo actualizar la foto');
     }
   };
+  const showNotifications = () => {
+	router.push('/notifications');
+  }
 
   return {
     user,
@@ -167,5 +171,6 @@ export const useProfile = () => {
     setIsPressed,
     pickImage,
     signOut,
+	showNotifications,
   };
 };

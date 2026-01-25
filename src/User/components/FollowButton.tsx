@@ -5,11 +5,10 @@ interface FollowButtonProps {
 	isFollowed: boolean;
 	isRequested: boolean;
 	handleFollow: () => void;
+	cancelRequest?: () => void;
 }
 
-export function FollowButton({isFollowed, isRequested, handleFollow}: FollowButtonProps) {
-	const [justClicked, setJustClicked] = useState(false);
-	
+export function FollowButton({isFollowed, isRequested, handleFollow, cancelRequest}: FollowButtonProps) {
 	if (!isFollowed && !isRequested) {
 		return (
 			<TouchableOpacity className="px-4 py-2 rounded-full bg-secondary" onPress={handleFollow}>
@@ -19,10 +18,10 @@ export function FollowButton({isFollowed, isRequested, handleFollow}: FollowButt
 	}
 	if (!isFollowed && isRequested) {
 		return (
-			<TouchableOpacity className="px-4 py-2 rounded-full bg-surfaceButton">
+			<TouchableOpacity className="px-4 py-2 rounded-full bg-surfaceButton" onPress={cancelRequest}>
 				<Text className="text-white font-semibold">Solicitud enviada</Text>
 			</TouchableOpacity>
 		);
 	}
-	return (null);
+	return null;
 }

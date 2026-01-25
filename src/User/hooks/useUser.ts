@@ -16,6 +16,7 @@ interface UseUserResult {
 	userData: User | null;
 	loading: boolean;
 	handleFollow: () => Promise<void>;
+	cancelRequest: () => Promise<void>;
 }
 
 
@@ -45,7 +46,7 @@ export const useUser = (userId: string) => {
 			await userService.requestFollow(user.id, userId);
 			setUserData((prevData: User) => ({
 				...prevData,
-				is_following: false,
+				is_requested: true,
 				following_status: 'pending'
 			}));
 		} catch (error) {
@@ -53,5 +54,19 @@ export const useUser = (userId: string) => {
 		}
 	};
 
-	return { userData , loading, handleFollow } as UseUserResult;
+	const cancelRequest = async () => {
+		if (!user) return;
+		try {
+			await userService.unfollow(user.id, userId);
+			setUserData((prevData: User) => ({
+				...prevData,
+				is_requested: false,
+				following_status: null
+			}));
+		} catch (error) {
+			console.error("Error cancelling follow request:", error);
+		}
+	};
+
+	return { userData , loading, handleFollow, cancelRequest } as UseUserResult;
 }
