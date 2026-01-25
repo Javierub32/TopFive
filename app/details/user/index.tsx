@@ -6,10 +6,12 @@ import { useUser } from '@/User/hooks/useUser';
 import { COLORS } from 'constants/colors';
 import { ProfileData } from '@/User/components/ProfileData';
 import { UserAvatar } from '@/User/components/UserAvatar';
+import { FollowButton } from '@/User/components/FollowButton';
 
 export default function UserDetailsScreen() {
   const { id } = useLocalSearchParams();
-  const {loading, userData} = useUser(id as string);
+  const {loading, userData, handleFollow} = useUser(id as string);
+  console.log("Rendering UserDetailsScreen with userData:", userData);
 
   if (loading) {
     return (
@@ -31,6 +33,11 @@ export default function UserDetailsScreen() {
       >
         <UserAvatar avatarUrl={userData?.avatar_url || null} />
       </ProfileData>
+	  <FollowButton 
+        isFollowed={userData?.following_status === 'accepted' || false}
+        isRequested={userData?.is_requested || false}
+        handleFollow={handleFollow}
+      />
     </Screen>
   );
 }

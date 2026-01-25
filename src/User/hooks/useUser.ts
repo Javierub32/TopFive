@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { userService } from "../services/userService";
+import { useAuth } from "context/AuthContext";
 
 interface User {
 	id: string;
@@ -8,14 +9,18 @@ interface User {
 	description: string;
 	followers_count: number;
 	following_count: number;
+	is_requested: boolean;
+	following_status: 'pending' | 'accepted' | null;
 }
 interface UseUserResult {
 	userData: User | null;
 	loading: boolean;
+	handleFollow: () => Promise<void>;
 }
 
 
 export const useUser = (userId: string) => {
+	const {user} = useAuth();
 	const [userData, setUserData] = useState<any>(null);
 	const [loading, setLoading] = useState(false);
 
@@ -23,7 +28,7 @@ export const useUser = (userId: string) => {
 		const fetchUserData = async () => {
 			setLoading(true);
 			try {
-				const data = await userService.fetchUserById(userId);
+				const data = await userService.fetchUserById(userId, user?.id);
 				setUserData(data);
 			} catch (error) {
 				console.error("Error fetching user data:", error);
@@ -32,9 +37,21 @@ export const useUser = (userId: string) => {
 			}
 		};
 		fetchUserData();
-	}, [userId]);
+	}, [userId, user?.id]);
 
-	return { userData , loading } as UseUserResult;
+	const handleFollow = async () => {
+		if (!user) return;
+		try {
+			await userService.requestFollow(user.id, userId);
+			setUserData((prevData: User) => ({
+				...prevData,
+				is_following: false,
+				following_status: 'pending'
+			}));
+		} catch (error) {
+			console.error("Error requesting follow:", error);
+		}
+	};
 
-
+	return { userData , loading, handleFollow } as UseUserResult;
 }
