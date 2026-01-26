@@ -2,6 +2,8 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Feather from '@expo/vector-icons/Feather';
+
 import { COLORS } from 'constants/colors';
 
 export const SocialIcon = (props) => (
@@ -58,4 +60,12 @@ export const GameIcon = (props) => (
 
 export const LeftArrowIcon = (props) => (
   <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" {...props} />
+);
+
+export const CancelIcon = (props) => (
+  <Feather name="x" size={24} color="white" {...props} />
+);
+
+export const AcceptIcon = (props) => (
+  <Feather name="check" size={24} color="white" {...props} />
 );

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { userService } from "../services/userService";
 import { useAuth } from "context/AuthContext";
 
-interface User {
+export interface User {
 	id: string;
 	username: string;
 	avatar_url: string;
