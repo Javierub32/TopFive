@@ -9,6 +9,7 @@ import { CategorySelector } from 'src/Profile/components/CategorySelector';
 import { StatsGrid } from 'src/Profile/components/StatsGrid';
 import { StatsChart } from 'src/Profile/components/StatsChart';
 import { ProfileData } from '@/User/components/ProfileData';
+import { TopFiveSelector } from 'src/Profile/components/TopFiveSelector';
 
 export default function ProfileScreen() {
   const {
@@ -61,13 +62,15 @@ export default function ProfileScreen() {
             description={userData?.description}
             followersCount={userData?.followers_count || 0}
             followingCount={userData?.following_count || 0}>
-				<ProfileAvatar
-				avatarUrl={userData?.avatar_url || null}
-				isPressed={isPressed}
-				onPickImage={pickImage}
-				setIsPressed={setIsPressed}
-				/>
+            <ProfileAvatar
+            avatarUrl={userData?.avatar_url || null}
+            isPressed={isPressed}
+            onPickImage={pickImage}
+            setIsPressed={setIsPressed}
+            />
           </ProfileData>
+          
+          <TopFiveSelector />
 
           <CategorySelector selected={selectedCategory} onSelect={setSelectedCategory} />
 
