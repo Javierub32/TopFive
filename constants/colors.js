@@ -3,6 +3,7 @@ const COLORS = {
   primary: '#fc6703', 
   secondary: '#428f9e',
   accent: '#204879',
+  error: '#EF4444',
   
   // Variante oscura del primario (no se usa actualmente)
   primaryDark: '#8a4517', 
