@@ -5,8 +5,9 @@ import { CategoryType } from '../hooks/useCollection';
 import { COLORS } from 'constants/colors';
 
 interface Props {
-  busqueda: string;
-  setBusqueda: (val: string) => void;
+  value: string;
+  onChangeText: (val: string) => void;
+  onSearch: () => void;
   categoriaActual: CategoryType;
   setCategoriaActual: (cat: CategoryType) => void;
   menuAbierto: boolean;
@@ -19,8 +20,9 @@ interface Props {
 const OPCIONES_CATEGORIA: CategoryType[] = ['Libros', 'Películas', 'Series', 'Videojuegos', 'Canciones'];
 
 export const SearchBar = ({
-  busqueda,
-  setBusqueda,
+  value,
+  onChangeText,
+  onSearch,
   categoriaActual,
   setCategoriaActual,
   menuAbierto,
@@ -42,8 +44,10 @@ export const SearchBar = ({
           className="h-full flex-1 px-3 text-base text-primaryText"
           placeholder={`Buscar en ${categoriaActual}...`}
           placeholderTextColor={COLORS.placeholderText}
-          value={busqueda}
-          onChangeText={setBusqueda}
+          value={value}
+          onChangeText={onChangeText}
+          onSubmitEditing={onSearch}
+          returnKeyType="search"
         />
 
         <View className="h-6 w-[1px] bg-borderButton" />
@@ -72,7 +76,7 @@ export const SearchBar = ({
 
       {/* Desplegable de Categorías */}
       {menuAbierto && (
-        <View className="absolute right-12 top-14 z-50 w-48 overflow-hidden rounded-lg border border-borderButton bg-surfaceButton shadow-xl">
+        <View className="absolute right-0 top-14 z-50 w-48 overflow-hidden rounded-lg border border-borderButton bg-surfaceButton shadow-xl">
           {OPCIONES_CATEGORIA.map((opcion, index) => (
             <TouchableOpacity
               key={opcion}

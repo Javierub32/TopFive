@@ -10,6 +10,7 @@ export const useCollection = () => {
   const router = useRouter();
   const resources = useResource();
 
+  const [inputBusqueda, setInputBusqueda] = useState('');
   const [busqueda, setBusqueda] = useState('');
   const [categoriaActual, setCategoriaActual] = useState<CategoryType>('Películas');
   const [data, setData] = useState<any[]>([]);
@@ -23,6 +24,10 @@ export const useCollection = () => {
   const [orden, setOrden] = useState<SortType>('FECHA_DESC');
   const [filtroEstado, setFiltroEstado] = useState<StatusType>('TODOS');
   const [soloFavoritos, setSoloFavoritos] = useState(false);
+
+  const handleSearch = () => {
+    setBusqueda(inputBusqueda);
+  };
 
   const cargarDatos = async () => {
     setLoading(true);
@@ -55,10 +60,10 @@ export const useCollection = () => {
 
   useEffect(() => { cargarDatos(); }, [categoriaActual, busqueda, filtroEstado, orden, soloFavoritos]);
 
-  const navigateToGrid = (title: string, type: string) => {
+  const navigateToGrid = (title: string, type: string, category: string) => {
     router.push({
         pathname: '/group',
-        params: { title, type }
+        params: { title, type, category}
     });
   };
   const handleItemPress = (item: any) => {
@@ -73,7 +78,9 @@ export const useCollection = () => {
   };
 
   return {
-    busqueda, setBusqueda,
+    inputBusqueda, setInputBusqueda,
+    busqueda, 
+    handleSearch,
     categoriaActual, setCategoriaActual,
     data, loading,
     menuCategoriaAbierto, setMenuCategoriaAbierto,

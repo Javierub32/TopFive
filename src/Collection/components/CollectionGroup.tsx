@@ -3,7 +3,7 @@ import { TouchableOpacity, Image, View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { collectionAdapter } from '../adapters/collectionAdapter';
 
-export const CollectionGroup = ({ item, category, onPress, posterWidth, posterHeight }: any) => {
+export const CollectionGroup = ({ item, category, onPress, posterWidth, posterHeight, showStatus }: any) => {
   const title = collectionAdapter.getTitle(item, category);
   const image = collectionAdapter.getImage(item, category);
   const year = item.fechacreacion ? new Date(item.fechacreacion).getFullYear() : '';
@@ -11,7 +11,7 @@ export const CollectionGroup = ({ item, category, onPress, posterWidth, posterHe
   const statusText = collectionAdapter.getStatusText(item.estado, category);
   const finalWidth = posterWidth || 125;
   const finalHeight = posterHeight || 190;
-  const marginRight = posterWidth ? 0 : 12; // Si es grid, sin margen derecho (lo maneja el gap)
+  const marginRight = posterWidth ? 0 : 12; 
 
   return (
     <TouchableOpacity 
@@ -37,13 +37,22 @@ export const CollectionGroup = ({ item, category, onPress, posterWidth, posterHe
           </View>
         ) : null}
 
-        {/* Rating (Arriba Derecha - Estrella siempre) */}
-        <View className="absolute top-2 right-2 flex-row items-center bg-black/30 px-1 rounded-sm">
+        {/* Rating (Arriba Derecha) */}
+        {item.estado !== 'PENDIENTE' ? (
+          <View className="absolute top-2 right-2 flex-row items-center bg-black/30 px-1 rounded-sm">
             <MaterialCommunityIcons name="star" size={12} color="#fbbf24" />
             <Text className="text-white text-xs font-bold ml-1">
-                {item.calificacion || "0"}
+              {item.calificacion || "0"}
             </Text>
-        </View>
+          </View>
+        ) : null}
+
+        {/* Estado (Abajo Derecha) - Solo en búsqueda */}
+        {showStatus && statusText ? (
+          <View className="absolute bottom-2 right-2 px-2 py-1 rounded" style={{ backgroundColor: statusColor + '90' }}>
+            <Text className="text-white text-[7px] font-bold">{statusText}</Text>
+          </View>
+        ) : null}
 
       </View>
 
