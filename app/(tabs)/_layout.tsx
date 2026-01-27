@@ -29,15 +29,15 @@ export default function TabLayout() {
           headerShown: false,
           tabBarActiveTintColor: COLORS.tabBarActiveTintColor,
           tabBarInactiveTintColor: COLORS.tabBarInactiveTintColor,
-          tabBarShowLabel: true,
+          tabBarShowLabel: false,
           headerTintColor: '#fff',
           tabBarStyle: {
             backgroundColor: COLORS.tabBarBackgroundColor,
             borderTopColor: COLORS.tabBarBorderTopColor,
             borderTopWidth: 2,
-            height: 65 + insets.bottom,
-            paddingBottom: insets.bottom + 8,
-            paddingTop: 8,
+            height: 52 + insets.bottom,
+            paddingBottom: insets.bottom,
+            paddingTop: 10,
           },
           tabBarLabelStyle: {
             fontSize: 12,
@@ -47,21 +47,21 @@ export default function TabLayout() {
         name="Home/index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, size }) => <HomeIcon color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => <HomeIcon color={color} size={28} />,
         }}
       />
       <Tabs.Screen
         name="Search/index"
         options={{
           title: 'Search',
-          tabBarIcon: ({ color, size }) => <SearchIcon color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => <SearchIcon color={color} size={26} />,
         }}
       />
       <Tabs.Screen
         name="Add/index"
         options={{
           title: 'Add',
-          tabBarIcon: ({ color, size }) => <AddIcon color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => <AddIcon color={color} size={26} />,
         }}
         listeners={{
           tabPress: (e) => {
@@ -74,14 +74,14 @@ export default function TabLayout() {
         name="Collection/index"
         options={{
           title: 'Collection',
-          tabBarIcon: ({ color, size }) => <CardsIcon color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => <CardsIcon color={color} size={26} />,
         }}
       />
       <Tabs.Screen
         name="Profile/index"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color, size }) => <UserIcon color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => <UserIcon color={color} size={26} />,
         }}
       />
     </Tabs>

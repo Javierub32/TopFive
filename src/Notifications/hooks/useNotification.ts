@@ -26,7 +26,6 @@ export const useNotification = () => {
 	const handleAcceptNotification = async (notificationId: string, follower_id: string, following_id: string) => {
 		try {
 			await notificationServices.acceptNotification(follower_id, following_id);
-			console.log('Accepted notification:', notificationId, follower_id, following_id);
 			setNotifications(prev => prev.filter(n => n.id !== notificationId));
 		} catch (error) {
 			console.error('Error accepting notification:', error);
@@ -36,7 +35,6 @@ export const useNotification = () => {
 	const handleDeclineNotification = async (notificationId: string, follower_id: string, following_id: string) => {
 		try {
 			await notificationServices.declineNotification(follower_id, following_id);
-			// Actualizar la lista de notificaciones eliminando la rechazada
 			setNotifications(prev => prev.filter(n => n.id !== notificationId));
 		} catch (error) {
 			console.error('Error declining notification:', error);
