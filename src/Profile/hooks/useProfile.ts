@@ -159,6 +159,10 @@ export const useProfile = () => {
 	router.push('/notifications');
   }
 
+  const showSettings = () => {
+    router.push('/settings');
+  }
+
   return {
     user,
     userData,
@@ -171,6 +175,7 @@ export const useProfile = () => {
     setIsPressed,
     pickImage,
     signOut,
-	showNotifications,
+	  showNotifications,
+    showSettings,
   };
 };
