@@ -10,7 +10,7 @@ interface ReturnButtonProps {
 
 export const ReturnButton = ({ route, title }: ReturnButtonProps) => {
   return (
-    <View className="flex-row items-center px-4 pb-4 pt-2">
+    <View className="flex-row items-center px-4 pt-5 pb-2">
       <TouchableOpacity
         onPress={() => route == 'back' ? router.back() : router.push(route)}
         className="mr-3 h-10 w-10 items-center justify-center rounded-full border border-borderButton bg-surfaceButton"
