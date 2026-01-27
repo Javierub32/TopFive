@@ -13,7 +13,7 @@ const CATEGORIES: CategoryKey[] = ['libros', 'películas', 'series', 'canciones'
 export const CategorySelector = ({ selected, onSelect }: Props) => (
   <View
     className="mb-4 flex-row justify-between"
-    style={{ borderBottomWidth: 1, borderBottomColor: '#374151' }}
+    style={{ borderBottomWidth: 1, borderBottomColor: COLORS.placeholderText }}
   >
 
     {CATEGORIES.map((cat) => {
