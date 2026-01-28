@@ -1,4 +1,3 @@
-import React from 'react';
 import { TouchableOpacity, Image, View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { collectionAdapter } from '../adapters/collectionAdapter';

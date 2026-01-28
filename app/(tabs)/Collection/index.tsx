@@ -6,8 +6,9 @@ import { useCollection } from 'src/Collection/hooks/useCollection';
 import { SearchBar } from 'src/Collection/components/SearchBar';
 import { FilterPanel } from 'src/Collection/components/FilterPanel';
 import { RenderCollection } from 'src/Collection/components/RenderCollection';
-import { CollectionGroup } from 'src/Collection/components/CollectionGroup';
 import { LoadingIndicator } from 'components/LoadingIndicator';
+import { CollectionStructure } from 'components/CollectionStructure';
+import { filterCollectionData } from 'src/Collection/adapters/filterCollectionData';
 
 export default function CollectionScreen() {
   const {
@@ -29,29 +30,10 @@ export default function CollectionScreen() {
     data,
   } = useCollection();
 
-  const { width } = useWindowDimensions();
-  const PADDING_PANTALLA = 40; 
-  const GAP = 20;     
-  const ANCHO_MINIMO_ITEM = 85;              
-
-  const anchoDisponible = width - PADDING_PANTALLA;
-  const numColumns = Math.max(2, Math.floor((anchoDisponible + GAP) / (ANCHO_MINIMO_ITEM + GAP)));
-  const espacioHuecos = GAP * (numColumns - 1);
-  const itemWidth = (anchoDisponible - espacioHuecos) / numColumns;
-  const itemHeight = itemWidth * 1.5;
-
   const hayBusqueda = busqueda.trim() !== '';
   
   // Filtrar datos de búsqueda para eliminar elementos sin contenido
-  const dataFiltrada = hayBusqueda ? data.filter(item => {
-    // Verificar que tenga título según la categoría
-    if (categoriaActual === 'Películas' && item.contenidopelicula?.titulo) return true;
-    if (categoriaActual === 'Series' && item.contenidoserie?.titulo) return true;
-    if (categoriaActual === 'Videojuegos' && item.contenidovideojuego?.titulo) return true;
-    if (categoriaActual === 'Libros' && item.contenidolibro?.titulo) return true;
-    if (categoriaActual === 'Canciones' && item.contenidocancion?.titulo) return true;
-    return false;
-  }) : data;
+  const dataFiltrada = hayBusqueda ? filterCollectionData(data, categoriaActual) : data;
 
 
   return (
@@ -87,26 +69,12 @@ export default function CollectionScreen() {
         {loading ? (
           <LoadingIndicator />
         ) : hayBusqueda ? (
-          <FlatList
-            key={numColumns} 
-            data={dataFiltrada}
-            keyExtractor={(item) => item.id.toString()}
-            numColumns={numColumns}
-            showsVerticalScrollIndicator={false}
-            columnWrapperStyle={{ gap: GAP }} 
-            contentContainerStyle={{ paddingBottom: 100, paddingTop: 16 }}
-            
-            renderItem={({ item }) => (
-              <CollectionGroup 
-                item={item} 
-                category={categoriaActual} 
-                onPress={() => handleItemPress(item)} 
-                posterWidth={itemWidth}
-                posterHeight={itemHeight}
-                showStatus={true}
-              />
-            )}
+          <CollectionStructure
+            dataFiltrada={dataFiltrada}
+            categoriaActual={categoriaActual}
+            handleItemPress={handleItemPress}
           />
+        
         ) : (
           <ScrollView 
             className="flex-1 mt-4" 

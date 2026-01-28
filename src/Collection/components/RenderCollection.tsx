@@ -1,7 +1,6 @@
-import { View, Text, FlatList, Pressable, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { CollectionGroup } from './CollectionGroup'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation } from 'expo-router';
 import { COLORS } from 'constants/colors';
 
 export const RenderCollection = ({ title, data, category, onPressItem, onPressTitle }: any) => {

@@ -1,0 +1,38 @@
+import { CollectionGroup } from '@/Collection/components/CollectionGroup';
+import { FlatList, useWindowDimensions } from 'react-native';
+
+  const { width } = useWindowDimensions();
+  const PADDING_PANTALLA = 40; 
+  const GAP = 20;     
+  const ANCHO_MINIMO_ITEM = 85;              
+
+  const anchoDisponible = width - PADDING_PANTALLA;
+  const numColumns = Math.max(2, Math.floor((anchoDisponible + GAP) / (ANCHO_MINIMO_ITEM + GAP)));
+  const espacioHuecos = GAP * (numColumns - 1);
+  const itemWidth = (anchoDisponible - espacioHuecos) / numColumns;
+  const itemHeight = itemWidth * 1.5;
+
+export const CollectionStructure = ({ data, categoriaActual, handleItemPress }: any) => {
+  return(
+    <FlatList
+      key={numColumns} 
+      data={data}
+      keyExtractor={(item) => item.id.toString()}
+      numColumns={numColumns}
+      showsVerticalScrollIndicator={false}
+      columnWrapperStyle={{ gap: GAP }} 
+      contentContainerStyle={{ paddingBottom: 100, paddingTop: 16 }}
+               
+      renderItem={({ item }) => (
+        <CollectionGroup 
+          item={item} 
+          category={categoriaActual} 
+          onPress={() => handleItemPress(item)} 
+          posterWidth={itemWidth}
+          posterHeight={itemHeight}
+          showStatus={true}
+        />
+      )}
+    />
+  )
+}  
