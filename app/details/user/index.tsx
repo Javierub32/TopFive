@@ -1,12 +1,11 @@
-import { View, Text, ActivityIndicator } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { ReturnButton } from 'components/ReturnButton';
 import { useUser } from '@/User/hooks/useUser';
-import { COLORS } from 'constants/colors';
 import { ProfileData } from '@/User/components/ProfileData';
 import { UserAvatar } from '@/User/components/UserAvatar';
 import { FollowButton } from '@/User/components/FollowButton';
+import { LoadingIndicator } from 'components/LoadingIndicator';
 
 export default function UserDetailsScreen() {
   const { id } = useLocalSearchParams();
@@ -17,7 +16,7 @@ export default function UserDetailsScreen() {
     return (
       <Screen>
         <ReturnButton route='/(tabs)/Search' title='Detalles del Usuario' />
-        <ActivityIndicator size="large" color={COLORS.secondary} className="flex-1 items-center justify-center" />
+        <LoadingIndicator />
       </Screen>
     );
   }

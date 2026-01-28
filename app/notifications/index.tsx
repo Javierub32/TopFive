@@ -1,10 +1,10 @@
-import { View, Text, ActivityIndicator, FlatList } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { FlatList } from 'react-native';
+
 import { Screen } from 'components/Screen';
 import { ReturnButton } from 'components/ReturnButton';
 import { useNotification } from '@/Notifications/hooks/useNotification';
 import { NotificationButton } from '@/Notifications/components/NotificationButton';
-import { COLORS } from 'constants/colors';
+import { LoadingIndicator } from 'components/LoadingIndicator';
 
 export default function NotificationsScreen() {
   const { loading, notifications, handleAcceptNotification, handleDeclineNotification } = useNotification();
@@ -13,9 +13,8 @@ export default function NotificationsScreen() {
   if (loading) {
 	return (
 		<Screen>
-          <View className="absolute inset-0 z-50 items-center justify-center bg-black/50">
-            <ActivityIndicator size="large" color={COLORS.primary} />
-          </View>
+		  <ReturnButton route='/(tabs)/Profile' title='Notificaciones del Usuario' />
+		  <LoadingIndicator />
 		</Screen>
 	);
   }

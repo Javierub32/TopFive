@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { useSearchContent } from 'src/Add/hooks/useSearchContent';
@@ -7,7 +7,7 @@ import { useSearchContent } from 'src/Add/hooks/useSearchContent';
 import { SearchBar } from 'src/Add/components/SearchBar';
 import { SearchResultItem } from 'src/Add/components/SearchResultItem';
 import { SearchPlaceholder } from 'src/Add/components/SearchPlaceholder';
-import { COLORS } from 'constants/colors';
+import { LoadingIndicator } from 'components/LoadingIndicator';
 
 export default function AddScreen() {
   const {
@@ -58,9 +58,7 @@ export default function AddScreen() {
         )}
 
         {loading && (
-          <View className="absolute inset-0 z-50 items-center justify-center bg-black/50">
-            <ActivityIndicator size="large" color={COLORS.primary} />
-          </View>
+          <LoadingIndicator />
         )}
       </View>
     </Screen>

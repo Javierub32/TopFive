@@ -1,13 +1,13 @@
-import { View, Text, FlatList, ActivityIndicator, TouchableOpacity, ScrollView, useWindowDimensions } from 'react-native';
+import { View, Text, FlatList, ScrollView, useWindowDimensions } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { useCollection } from 'src/Collection/hooks/useCollection';
 import { SearchBar } from 'src/Collection/components/SearchBar';
 import { FilterPanel } from 'src/Collection/components/FilterPanel';
 import { RenderCollection } from 'src/Collection/components/RenderCollection';
 import { CollectionGroup } from 'src/Collection/components/CollectionGroup';
+import { LoadingIndicator } from 'components/LoadingIndicator';
 
 export default function CollectionScreen() {
   const {
@@ -85,9 +85,7 @@ export default function CollectionScreen() {
         )}
 
         {loading ? (
-          <View className="flex-1 items-center justify-center">
-            <ActivityIndicator size="large" color="#a855f7" />
-          </View>
+          <LoadingIndicator />
         ) : hayBusqueda ? (
           <FlatList
             key={numColumns} 

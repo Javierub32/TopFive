@@ -1,4 +1,4 @@
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { COLORS } from 'constants/colors';
@@ -7,6 +7,7 @@ import { useSearchUser } from '@/Search/hooks/useSearchUser';
 import { UserSearchPlaceholder } from '@/Search/components/UserSearchPlaceholder';
 import { UserResultItem } from '@/Search/components/UserResultItem';
 import { router } from 'expo-router';
+import { LoadingIndicator } from 'components/LoadingIndicator';
 
 export default function SearchScreen() {
   const { busqueda, setBusqueda, resultados, loading, handleSearch } = useSearchUser();
@@ -40,9 +41,7 @@ export default function SearchScreen() {
         )}
 
         {loading && (
-          <View className="absolute inset-0 z-50 items-center justify-center bg-black/50">
-            <ActivityIndicator size="large" color={COLORS.primary} />
-          </View>
+          <LoadingIndicator />
         )}
       </View>
     </Screen>

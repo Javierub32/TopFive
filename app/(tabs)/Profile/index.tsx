@@ -1,7 +1,7 @@
-import { View, Text, ScrollView, Pressable, useWindowDimensions } from 'react-native';
+import { View, Text, ScrollView, Pressable, } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 
 import { useProfile } from 'src/Profile/hooks/useProfile';
 import { ProfileAvatar } from 'src/Profile/components/ProfileAvatar';
@@ -10,6 +10,8 @@ import { StatsGrid } from 'src/Profile/components/StatsGrid';
 import { StatsChart } from 'src/Profile/components/StatsChart';
 import { ProfileData } from '@/User/components/ProfileData';
 import { TopFiveSelector } from 'src/Profile/components/TopFiveSelector';
+import { router } from 'expo-router';
+import { LoadingIndicator } from 'components/LoadingIndicator';
 
 export default function ProfileScreen() {
   const {
@@ -21,11 +23,9 @@ export default function ProfileScreen() {
     setSelectedCategory,
     setIsPressed,
     pickImage,
-    signOut,
     selectedYear,
     setSelectedYear,
-	  showNotifications,
-    showSettings,
+	loading,
   } = useProfile();
 
   if (!user) {
@@ -35,6 +35,14 @@ export default function ProfileScreen() {
           <Text className="text-lg text-primaryText">Cargando perfil...</Text>
         </View>
       </Screen>
+    );
+  }
+
+  if (loading) {
+    return (
+		<Screen>
+			<LoadingIndicator />
+		</Screen>
     );
   }
 
@@ -48,12 +56,12 @@ export default function ProfileScreen() {
 
         <Pressable
           className="absolute right-4 top-5 z-10 rounded-full bg-white/10 p-3"
-          onPress={showSettings}>
+          onPress={() => router.push('/settings')}>
           <Feather name="settings" size={24} color="#fff" />
         </Pressable>
         <Pressable
           className="absolute right-20 top-5 z-10 rounded-full bg-white/10 p-3"
-          onPress={showNotifications}>
+          onPress={() => router.push('/notifications')}>
 			<MaterialIcons name="notifications-none" size={24} color="white" />
         </Pressable>
 

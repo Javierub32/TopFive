@@ -46,6 +46,7 @@ export const useProfile = () => {
   const { signOut, user } = useAuth();
   const { fetchCanciones, fetchLibros, fetchPeliculas, fetchSeries, fetchVideojuegos } =
     useResource();
+  const [loading, setLoading] = useState(false);
 
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('libros');
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
@@ -56,6 +57,7 @@ export const useProfile = () => {
   // Fetch user profile on mount or when user changes
   useEffect(() => {
     if (user) {
+	  setLoading(true);
       userService
         .fetchUserProfile(user.id)
         .then((data) => {
@@ -63,7 +65,8 @@ export const useProfile = () => {
 			setUserData(data as User);
           }
         })
-        .catch((err) => console.error('Error al cargar perfil:', err));
+        .catch((err) => console.error('Error al cargar perfil:', err))
+        .finally(() => setLoading(false));
     }
   }, [user]);
 
@@ -82,6 +85,7 @@ export const useProfile = () => {
   }, [selectedYear]);
 
   const fetchResourceInfo = async () => {
+    setLoading(true);
     let resourceData: any[] = [];
     let dateField = '';
 
@@ -113,6 +117,7 @@ export const useProfile = () => {
     const stats = createAdaptedResourceStats(resourceData, dateField, selectedYear);
 
     updateStats(stats);
+    setLoading(false);
   };
 
   const updateStats = (newStats: any) => {
@@ -131,6 +136,7 @@ export const useProfile = () => {
 
   const pickImage = async () => {
     try {
+      setLoading(true);
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
         Alert.alert('Permiso denegado', 'Necesitamos acceso a tu galería');
@@ -153,16 +159,10 @@ export const useProfile = () => {
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'No se pudo actualizar la foto');
+    } finally {
+      setLoading(false);
     }
   };
-  const showNotifications = () => {
-	router.push('/notifications');
-  }
-
-  const showSettings = () => {
-    router.push('/settings');
-  }
-
   return {
     user,
     userData,
@@ -170,12 +170,11 @@ export const useProfile = () => {
     selectedYear,
     isPressed,
     categoryData: fullCategoryData,
+    loading,
     setSelectedCategory,
     setSelectedYear,
     setIsPressed,
     pickImage,
     signOut,
-	  showNotifications,
-    showSettings,
   };
 };

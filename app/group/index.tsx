@@ -1,11 +1,11 @@
-import { View, Text, FlatList, ActivityIndicator, useWindowDimensions } from 'react-native';
+import { View, Text, FlatList, useWindowDimensions } from 'react-native';
 import { useLocalSearchParams } from 'expo-router'; 
 import { Screen } from 'components/Screen'; 
 import { CollectionGroup } from 'src/Collection/components/CollectionGroup'; 
-import { COLORS } from 'constants/colors';
 import { useCollection } from '@/Collection/hooks/useCollection';
 import { useState, useEffect } from 'react';
 import { useResource } from 'context/ResourceContext';
+import { LoadingIndicator } from 'components/LoadingIndicator';
 
 export default function GroupScreen() {
   const params = useLocalSearchParams();
@@ -75,7 +75,7 @@ export default function GroupScreen() {
       <View className="flex-1 px-4 pt-4">
         <Text className="text-2xl font-bold text-primaryText mb-4">{title}</Text>
         {loading ? (
-          <ActivityIndicator color={COLORS.primary} size="large" />
+          <LoadingIndicator />
         ) : (
           <FlatList
             key={numColumns} 
