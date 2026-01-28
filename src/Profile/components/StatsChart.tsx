@@ -18,19 +18,19 @@ export const StatsChart = ({ data, selectedYear, setSelectedYear }: { data: numb
             datasets: [{ data }]
           }}
           width={useWindowDimensions().width - 56}
-          height={160}
+          height={170}
           chartConfig={{
             backgroundColor: 'transparent',
             backgroundGradientFrom: COLORS.surfaceButton,
             backgroundGradientTo: COLORS.surfaceButton,
             decimalPlaces: 0,
-            color: (opacity = 1) => `rgba(252, 103, 3, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(156, 163, 175, ${opacity})`,
+            color: (opacity = 1) => `rgba(${COLORS.statsColor}, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(${COLORS.statsLabelColor}, ${opacity})`,
             barPercentage: 0.5,
             propsForBackgroundLines: { strokeWidth: 0 },
-            propsForLabels: { fontSize: 10 },
+            propsForLabels: { fontSize: 12 },
           }}
-          style={{ borderRadius: 16, marginLeft: -15, marginTop: 10, marginRight: 50 }}
+          style={{ borderRadius: 16, marginLeft: -15, marginTop: 10, marginRight: 50}}
           withInnerLines={false}
           fromZero={true}
           withHorizontalLabels={false}

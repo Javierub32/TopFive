@@ -55,14 +55,14 @@ export default function ProfileScreen() {
         <Text className="mb-4 text-3xl font-bold text-primaryText">{userData?.username || 'Usuario'}</Text>
 
         <Pressable
-          className="absolute right-4 top-5 z-10 rounded-full bg-white/10 p-3"
+          className="absolute right-4 top-5 z-10 rounded-full bg-primaryText/10 p-3"
           onPress={() => router.push('/settings')}>
-          <Feather name="settings" size={24} color="#fff" />
+          <Feather name="settings" size={24} color="text-primaryText" />
         </Pressable>
         <Pressable
-          className="absolute right-20 top-5 z-10 rounded-full bg-white/10 p-3"
+          className="absolute right-20 top-5 z-10 rounded-full bg-primaryText/10 p-3"
           onPress={() => router.push('/notifications')}>
-			<MaterialIcons name="notifications-none" size={24} color="white" />
+			<MaterialIcons name="notifications-none" size={24} color="text-primaryText" />
         </Pressable>
 
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
