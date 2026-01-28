@@ -1,27 +1,36 @@
-import { useState } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 interface FollowButtonProps {
-	isFollowed: boolean;
-	isRequested: boolean;
-	handleFollow: () => void;
-	cancelRequest?: () => void;
+  isFollowed: boolean;
+  isRequested: boolean;
+  handleFollow: () => void;
+  cancelRequest?: () => void;
 }
 
-export function FollowButton({isFollowed, isRequested, handleFollow, cancelRequest}: FollowButtonProps) {
-	if (!isFollowed && !isRequested) {
-		return (
-			<TouchableOpacity className="px-4 py-2 rounded-full bg-secondary" onPress={handleFollow}>
-				<Text className="text-white font-semibold">Seguir</Text>
-			</TouchableOpacity>
-		);
-	}
-	if (!isFollowed && isRequested) {
-		return (
-			<TouchableOpacity className="px-4 py-2 rounded-full bg-surfaceButton" onPress={cancelRequest}>
-				<Text className="text-white font-semibold">Solicitud enviada</Text>
-			</TouchableOpacity>
-		);
-	}
-	return null;
+export function FollowButton({
+  isFollowed,
+  isRequested,
+  handleFollow,
+  cancelRequest,
+}: FollowButtonProps) {
+  if (!isFollowed && !isRequested) {
+    return (
+      <View className='flex items-center'>
+        <TouchableOpacity
+          className="items-center px-4 flex w-2/3 rounded-md bg-[#4150f7] py-2"
+          onPress={handleFollow}>
+          <Text className="font-semibold text-white">Seguir</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+  if (!isFollowed && isRequested) {
+    return (
+      <TouchableOpacity className="rounded-full bg-surfaceButton px-4 py-2" onPress={cancelRequest}>
+        <Text className="font-semibold text-white">Solicitud enviada</Text>
+      </TouchableOpacity>
+    );
+  }
+  return null;
 }

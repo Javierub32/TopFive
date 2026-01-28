@@ -85,7 +85,6 @@ export const useProfile = () => {
   }, [selectedYear]);
 
   const fetchResourceInfo = async () => {
-    setLoading(true);
     let resourceData: any[] = [];
     let dateField = '';
 
@@ -117,7 +116,6 @@ export const useProfile = () => {
     const stats = createAdaptedResourceStats(resourceData, dateField, selectedYear);
 
     updateStats(stats);
-    setLoading(false);
   };
 
   const updateStats = (newStats: any) => {

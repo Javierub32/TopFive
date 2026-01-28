@@ -27,7 +27,7 @@ export const SearchPlaceholder = ({ category, loading }: SearchPlaceholderProps)
     <View className={`-z-10 flex-1 items-center justify-center ${loading ? 'hidden' : ''}`}>
       {/* Contenedor del Icono  */}
       <View className="mb-6 h-32 w-32 items-center justify-center rounded-full bg-white/5">
-        <View className="h-28 w-28 items-center justify-center rounded-full bg-primary">
+        <View className="h-28 w-28 items-center justify-center rounded-full bg-secondary">
           <MaterialCommunityIcons 
             name={iconName} 
             size={64} 
