@@ -1,5 +1,5 @@
 import '../global.css';
-import { Slot, useRouter, useSegments } from 'expo-router';
+import { Slot, useRouter, useSegments, useRootNavigationState } from 'expo-router'; // <--- Importa useRootNavigationState
 import { useEffect, useCallback, useState } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { View, ActivityIndicator } from 'react-native';
@@ -14,6 +14,7 @@ const InitialLayout = () => {
   const { session, loading } = useAuth();
   const segments = useSegments();
   const router = useRouter();
+  const rootNavigationState = useRootNavigationState(); // <--- Hook para verificar estado de navegación
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
@@ -39,7 +40,10 @@ const InitialLayout = () => {
   }, [appIsReady]);
 
   useEffect(() => {
-    // Si estamos cargando auth o fuentes, no hacemos nada aún
+    // 1. Verificamos si la navegación está lista (rootNavigationState.key)
+    if (!rootNavigationState?.key) return;
+    
+    // 2. Si estamos cargando auth o fuentes, no hacemos nada aún
     if (loading || !appIsReady) return;
 
     const inAuthGroup = segments[0] === '(auth)';
@@ -47,19 +51,18 @@ const InitialLayout = () => {
     if (session) {
       // SI hay usuario:
       // Redirigir a Home si intenta entrar a login/registro (AuthGroup) 
-      // O si está en la raíz (segments.length === 0)
-      if (inAuthGroup || (segments.length as number) === 0) {
+      // O si está en la raíz (segments[0] es undefined)
+      if (inAuthGroup || !segments[0]) {
         router.replace('/(tabs)/Home');
       }
     } else {
       // NO hay usuario:
       // Redirigir a Login si NO está ya en el grupo de autenticación.
-      // (Esto cubre cualquier ruta protegida y la raíz)
       if (!inAuthGroup) {
         router.replace('/(auth)/login');
       }
     }
-  }, [session, loading, segments, appIsReady]);
+  }, [session, loading, segments, appIsReady, rootNavigationState?.key]); // <--- Añadimos la key a dependencias
 
   // Mostrar un indicador de carga mientras se decide la ruta o cargan fuentes
   if (!appIsReady || loading) {

@@ -1,11 +1,7 @@
-import { View, ActivityIndicator } from 'react-native';
+import { Redirect } from 'expo-router';
 
 export default function Index() {
-  // El _layout se encarga de redirigir, aquí solo mostramos un loader
-  // por si acaso hay un pequeño delay visual.
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <ActivityIndicator size="large" />
-    </View>
-  );
+  // Si el layout renderiza este componente, significa que no hubo redirección previa.
+  // Por defecto, mandamos al usuario a la pestaña principal.
+  return <Redirect href="/(tabs)/Home" />;
 }
