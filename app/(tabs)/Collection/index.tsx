@@ -70,7 +70,7 @@ export default function CollectionScreen() {
           <LoadingIndicator />
         ) : hayBusqueda ? (
           <CollectionStructure
-            dataFiltrada={dataFiltrada}
+            data={dataFiltrada}
             categoriaActual={categoriaActual}
             handleItemPress={handleItemPress}
           />
