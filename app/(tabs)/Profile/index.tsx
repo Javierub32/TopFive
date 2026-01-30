@@ -28,17 +28,19 @@ export default function ProfileScreen() {
     loading,
   } = useProfile();
 
-  // En lugar de retornar fuera, renderiza condicionalmente DENTRO del componente principal
-  // Esto mantiene la jerarquía de componentes estable para el Navigator
+  if (loading) {
+    return (
+      <Screen>
+        <LoadingIndicator />
+      </Screen>
+    );
+  }
   
   const currentStats = categoryData[selectedCategory];
 
   return (
     <Screen>
       <StatusBar style="light" />
-      {loading ? (
-        <LoadingIndicator />
-      ) : (
         <View className="flex-1 px-4 pt-6">
           <Text className="mb-4 text-3xl font-bold text-primaryText">
             {userData?.username || 'Usuario'}
@@ -92,7 +94,6 @@ export default function ProfileScreen() {
             )}
           </ScrollView>
         </View>
-      )}
     </Screen>
   );
 }

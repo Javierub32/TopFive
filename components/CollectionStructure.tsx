@@ -1,6 +1,9 @@
 import { CollectionGroup } from '@/Collection/components/CollectionGroup';
 import { FlatList, useWindowDimensions } from 'react-native';
 
+
+export const CollectionStructure = ({ data, categoriaActual, handleItemPress }: any) => {
+	
   const { width } = useWindowDimensions();
   const PADDING_PANTALLA = 40; 
   const GAP = 20;     
@@ -11,8 +14,6 @@ import { FlatList, useWindowDimensions } from 'react-native';
   const espacioHuecos = GAP * (numColumns - 1);
   const itemWidth = (anchoDisponible - espacioHuecos) / numColumns;
   const itemHeight = itemWidth * 1.5;
-
-export const CollectionStructure = ({ data, categoriaActual, handleItemPress }: any) => {
   return(
     <FlatList
       key={numColumns} 
