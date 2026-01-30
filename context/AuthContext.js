@@ -9,61 +9,79 @@ export const AuthProvider = ({ children }) => {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		// Verificar sesión al inicio
-		supabase.auth.getSession().then(async ({ data: { session } }) => {
-			if (session?.user) {
-				// Verificar que el usuario existe en la base de datos
-				const { data: userExists, error } = await supabase
-					.from('usuario')
-					.select('id')
-					.eq('id', session.user.id)
-					.maybeSingle();
+		let mounted = true;
 
-				if (error || !userExists) {
-					// Si el usuario no existe, cerrar sesión
-					await supabase.auth.signOut();
+		const initializeAuth = async () => {
+			try {
+				// 1. Obtener la sesión inicial
+				const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+				if (sessionError) throw sessionError;
+
+				if (session?.user) {
+					// 2. Verificar si el usuario existe en la tabla 'usuario'
+					const { data: userExists, error: dbError } = await supabase
+						.from('usuario')
+						.select('id')
+						.eq('id', session.user.id)
+						.maybeSingle();
+
+					if (dbError) throw dbError;
+
+					if (!userExists) {
+						// Si el usuario no existe en la DB, forzar logout
+						await supabase.auth.signOut();
+						if (mounted) {
+							setSession(null);
+							setUser(null);
+						}
+					} else {
+						// Usuario válido
+						if (mounted) {
+							setSession(session);
+							setUser(session.user);
+						}
+					}
+				}
+			} catch (error) {
+				console.error("Error en la autenticación inicial:", error);
+				// En caso de error, limpiamos estados por seguridad
+				if (mounted) {
 					setSession(null);
 					setUser(null);
-				} else {
+				}
+			} finally {
+				// ESTO ES LO QUE ARREGLA TU PROBLEMA:
+				// Se ejecuta siempre, haya error o no.
+				if (mounted) {
+					setLoading(false);
+				}
+			}
+		};
+
+		initializeAuth();
+
+		// Escuchar cambios de estado (Login, Logout, etc.)
+		const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+			if (mounted) {
+				if (session) {
 					setSession(session);
 					setUser(session.user);
-				}
-			} else {
-				setSession(null);
-				setUser(null);
-			}
-			setLoading(false);
-		});
-
-		// Escuchar cambios de sesión
-		const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-			if (session?.user) {
-				// Verificar que el usuario existe en la base de datos
-				const { data: userExists, error } = await supabase
-					.from('usuario')
-					.select('id')
-					.eq('id', session.user.id)
-					.maybeSingle();
-
-				if (error || !userExists) {
-					// Si el usuario no existe, cerrar sesión
-					await supabase.auth.signOut();
+				} else {
 					setSession(null);
 					setUser(null);
-				} else {
-					setSession(session);
-					setUser(session.user);
 				}
-			} else {
-				setSession(null);
-				setUser(null);
+				setLoading(false);
 			}
-			setLoading(false);
 		});
 
-	
-		return () => subscription.unsubscribe();
-	}, []);	const signIn = async (email, password) => {
+		return () => {
+			mounted = false;
+			subscription.unsubscribe();
+		};
+	}, []);
+
+	const signIn = async (email, password) => {
 		const { error } = await supabase.auth.signInWithPassword({ email, password });
 		if (error) throw error;
 	};

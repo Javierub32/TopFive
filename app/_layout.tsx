@@ -38,6 +38,7 @@ function InitialLayout() {
   }, [appIsReady]);
 
   useEffect(() => {
+	console.log('Auth State Changed: ', { session, loading, segments, appIsReady });
 
     if (loading || !appIsReady) return;
 
