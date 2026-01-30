@@ -4,6 +4,8 @@ import { Animated, Dimensions, FlatList, Text, TouchableOpacity, View, ScrollVie
 import { Screen } from 'components/Screen';
 import { ReturnButton } from 'components/ReturnButton';
 import { useLocalSearchParams } from 'expo-router/build/hooks';
+import FollowersList from '@/Followers/components/FollowersList';
+import FollowingList from '@/Followers/components/FollowingList';
 
 type TabType = 'followers' | 'following';
 
@@ -107,13 +109,11 @@ export default function FollowersScreen() {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={handleScroll}
-        scrollEventThrottle={175}>
+        scrollEventThrottle={20}>
         {/* followers */}
         <View style={{ width }}>
           {visitedTabs.has('followers') ? (
-            <Text className="p-4 text-center text-primaryText">
-              Lista de followers aquí (cargado)
-            </Text>
+            <FollowersList />
           ) : (
             <View style={{ width }} />
           )}
@@ -122,9 +122,7 @@ export default function FollowersScreen() {
         {/* Seguidos */}
         <View style={{ width }}>
           {visitedTabs.has('following') ? (
-            <Text className="p-4 text-center text-primaryText">
-              Lista de seguidos aquí (cargado)
-            </Text>
+			<FollowingList />
           ) : (
             <View style={{ width }} />
           )}

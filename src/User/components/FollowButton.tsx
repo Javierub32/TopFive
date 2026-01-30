@@ -27,9 +27,13 @@ export function FollowButton({
   }
   if (!isFollowed && isRequested) {
     return (
-      <TouchableOpacity className="rounded-full bg-surfaceButton px-4 py-2" onPress={cancelRequest}>
-        <Text className="font-semibold text-white">Solicitud enviada</Text>
-      </TouchableOpacity>
+      <View className='flex items-center'>
+        <TouchableOpacity
+          className="items-center px-4 flex w-2/3 rounded-md bg-surfaceButton py-2"
+          onPress={cancelRequest}>
+          <Text className="font-semibold text-white">Solicitud enviada</Text>
+        </TouchableOpacity>
+      </View>
     );
   }
   return null;
