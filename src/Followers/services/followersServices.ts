@@ -1,7 +1,9 @@
+import { userService } from "@/User/services/userService";
 import { supabase } from "lib/supabase";
 
 export const followersServices = {
-	async fetchFollowers(userId: string) {
+	async fetchFollowers(username: string) {
+		const userId = await userService.getUserIdByUsername(username);
 		const { data, error } = await supabase
 		.from('relationships')
 		.select(`
@@ -25,7 +27,8 @@ export const followersServices = {
 		return data.map((item: any) => item.follower);
 	},
 
-	async fetchFollowing(userId: string) {
+	async fetchFollowing(username: string) {
+		const userId = await userService.getUserIdByUsername(username);
 		const { data, error } = await supabase
 		.from('relationships')
 		.select(`
@@ -45,5 +48,26 @@ export const followersServices = {
 		}
 
 		return data.map((item: any) => item.following);
-  }
+  },
+
+  async removeFollower(ownId: string, deleteId: string) {
+	await supabase
+	.from('relationships')
+	.delete()
+	.eq('following_id', ownId)
+	.eq('follower_id', deleteId)
+	.eq('status', 'accepted');
+  },
+
+    async removeFollowing(ownId: string, deleteId: string) {
+	await supabase
+	.from('relationships')
+	.delete()
+	.eq('following_id', deleteId)
+	.eq('follower_id', ownId)
+	.eq('status', 'accepted');
+  },
+	
+	
+
 }

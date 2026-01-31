@@ -6,6 +6,7 @@ import { ProfileData } from '@/User/components/ProfileData';
 import { UserAvatar } from '@/User/components/UserAvatar';
 import { FollowButton } from '@/User/components/FollowButton';
 import { LoadingIndicator } from 'components/LoadingIndicator';
+import { View, Text } from 'react-native';
 
 export default function UserDetailsScreen() {
   const { id } = useLocalSearchParams();
@@ -38,6 +39,13 @@ export default function UserDetailsScreen() {
         handleFollow={handleFollow}
 		cancelRequest={cancelRequest}
       />
+	  {userData?.following_status === 'accepted' &&
+	  	<View className="mt-4 px-4">
+			<Text className="text-center text-sm text-gray-500">
+				¡Sois amigos!, ¡Podrás ver los Top 5 que este usuario ha compartido contigo en una futura actualización!
+			</Text>
+		</View>
+	  }
     </Screen>
   );
 }

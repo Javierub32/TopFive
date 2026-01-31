@@ -109,11 +109,11 @@ export default function FollowersScreen() {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         onScroll={handleScroll}
-        scrollEventThrottle={20}>
+        scrollEventThrottle={20}>	
         {/* followers */}
         <View style={{ width }}>
           {visitedTabs.has('followers') ? (
-            <FollowersList />
+            <FollowersList/>
           ) : (
             <View style={{ width }} />
           )}

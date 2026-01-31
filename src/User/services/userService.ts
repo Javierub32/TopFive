@@ -1,6 +1,17 @@
 import { supabase } from 'lib/supabase';
 
 export const userService = {
+	async getUserIdByUsername(username: string): Promise<string | null> {
+		const { data, error } = await supabase
+			.from('usuario')
+			.select('id')
+			.eq('username', username)
+			.single();
+		
+		if (error) return null;
+		return data?.id || null;
+	},
+
 	async fetchUserById(userId: string, currentUserId: string) {
 		// Ejecutamos ambas consultas al mismo tiempo
 		const [userRes, relRes] = await Promise.all([
