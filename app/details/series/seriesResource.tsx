@@ -1,14 +1,11 @@
-import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useResource } from 'context/ResourceContext';
 import { SeriesResource } from 'app/types/Resources';
 import { COLORS } from 'constants/colors';
-
-
 
 export default function SeriesDetail() {
   const { item } = useLocalSearchParams();
@@ -17,12 +14,13 @@ export default function SeriesDetail() {
   const router = useRouter();
   
   let seriesResource: SeriesResource | null = null;
+    
+    try {
+      seriesResource = item ? JSON.parse(item as string) : null;
+    } catch (error) {
+      console.error('Error parsing item:', error);
+    }
   
-  try {
-    seriesResource = item ? JSON.parse(item as string) : null;
-  } catch (error) {
-    console.error('Error parsing item:', error);
-  }
 
   const handleDelete = () => {
 	if (seriesResource) {
@@ -31,6 +29,15 @@ export default function SeriesDetail() {
 			{ text: 'Cancelar', style: 'cancel' }
 		]);
 	}
+  };
+
+  const handleEdit = () => {
+    if (seriesResource) {
+      router.push({
+        pathname: '/form/series',
+        params: { item: JSON.stringify(seriesResource) }
+      });
+    }
   };
 
   if (!seriesResource) {
@@ -79,7 +86,14 @@ export default function SeriesDetail() {
             </TouchableOpacity>
             <Text className="text-primaryText text-xl font-bold flex-1" numberOfLines={1}>Detalle de la serie</Text>
           </View>
-          <TouchableOpacity onPress={handleDelete} className="h-10 w-10 items-center justify-center rounded-full bg-red-600 border border-red-500" activeOpacity={0.7}>
+          <TouchableOpacity 
+            onPress={handleEdit}
+            className="h-10 w-10 items-center justify-center rounded-full bg-blue-600 border border-blue-500 mr-2"
+            activeOpacity={0.7}
+          >
+            <AntDesign name="edit" size={20} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleDelete} className="h-10 w-10 items-center justify-center rounded-full bg-red-600 border border-red-500 mr-2" activeOpacity={0.7}>
             <MaterialCommunityIcons name="delete" size={24} color="#fff" />
           </TouchableOpacity>
         </View>

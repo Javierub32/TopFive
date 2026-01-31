@@ -1,9 +1,8 @@
-import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useResource } from 'context/ResourceContext';
 import { FilmResource } from 'app/types/Resources';
 import { COLORS } from 'constants/colors';
@@ -15,13 +14,13 @@ export default function FilmDetail() {
   const router = useRouter();
   
   let filmResource: FilmResource | null = null;
+    
+    try {
+      filmResource = item ? JSON.parse(item as string) : null;
+    } catch (error) {
+      console.error('Error parsing item:', error);
+    }
   
-  try {
-    filmResource = item ? JSON.parse(item as string) : null;
-  } catch (error) {
-    console.error('Error parsing item:', error);
-  }
-
   const handleDelete = () => {
 	if (filmResource) {
 		Alert.alert('Recurso eliminado', 'Estás seguro de que quieres eliminar esta película de tu colección?', [
@@ -30,6 +29,14 @@ export default function FilmDetail() {
 		]);
 	}
   };
+    const handleEdit = () => {
+  if (filmResource) {
+    router.push({
+      pathname: '/form/film',
+      params: { item: JSON.stringify(filmResource) }
+    });
+  }
+};
 
   if (!filmResource) {
     return (
@@ -84,11 +91,19 @@ export default function FilmDetail() {
               Detalle de la película
             </Text>
           </View>
+          {/* Botón de editar */}
+          <TouchableOpacity 
+            onPress={handleEdit}
+            className="h-10 w-10 items-center justify-center rounded-full bg-blue-600 border border-blue-500 mr-2"
+            activeOpacity={0.7}
+          >
+            <AntDesign name="edit" size={20} color="#fff" />
+          </TouchableOpacity>
           
           {/* Botón de eliminar */}
           <TouchableOpacity 
             onPress={handleDelete}
-            className="h-10 w-10 items-center justify-center rounded-full bg-red-600 border border-red-500"
+            className="h-10 w-10 items-center justify-center rounded-full bg-red-600 border border-red-500 mr-2"
             activeOpacity={0.7}
           >
             <MaterialCommunityIcons name="delete" size={24} color="#fff" />

@@ -25,18 +25,22 @@ interface Book {
 }
 
 export default function BookForm() {
-  const { bookData } = useLocalSearchParams();
+  const { bookData, item } = useLocalSearchParams();
   const router = useRouter();
-  const book: Book = JSON.parse(bookData as string);
   const { user } = useAuth();
+  
+  // Si es item, se edita, si no, es nuevo
+  const editando = !!item;
+  const existeRecurso = editando ? JSON.parse(item as string) : null;
+  const book: any = editando ? existeRecurso.contenidolibro : JSON.parse(bookData as string);
 
-  const [reseña, setReseña] = useState('');
-  const [calificacionPersonal, setCalificacionPersonal] = useState(0);
-  const [favorito, setFavorito] = useState(false);
-  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>('PENDIENTE');
-  const [paginasLeidas, setPaginasLeidas] = useState('');
-  const [fechaInicio, setFechaInicio] = useState<Date | null>(null);
-  const [fechaFin, setFechaFin] = useState<Date | null>(null);
+  const [reseña, setReseña] = useState(existeRecurso?.reseña || '');
+  const [calificacionPersonal, setCalificacionPersonal] = useState(existeRecurso?.calificacion || 0);
+  const [favorito, setFavorito] = useState(existeRecurso?.favorito || false);
+  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(existeRecurso?.estado || 'PENDIENTE');
+  const [paginasLeidas, setPaginasLeidas] = useState(existeRecurso?.paginasLeidas?.toString() || '');
+  const [fechaInicio, setFechaInicio] = useState<Date | null>(existeRecurso?.fechaInicio ? new Date(existeRecurso.fechaInicio) : null);
+  const [fechaFin, setFechaFin] = useState<Date | null>(existeRecurso?.fechaFin ? new Date(existeRecurso.fechaFin) : null);
   const [showDatePickerInicio, setShowDatePickerInicio] = useState(false);
   const [showDatePickerFin, setShowDatePickerFin] = useState(false);
 
@@ -51,84 +55,108 @@ export default function BookForm() {
 
     setLoading(true);
     try {
-      // Miramos si el contenido ya existe en la tabla contenidolibro
-      const { data: existingContent, error: searchError } = await supabase
-        .from('contenidolibro')
-        .select('id')
-        .eq('idApi', book.id)
-        .eq('titulo', book.title)
-        .maybeSingle();
-
-      if (searchError) {
-        throw searchError;
-      }
-      let contentId;
-
-      if (existingContent) {
-        contentId = existingContent.id;
-      } else {
-        // Si no existe, lo creamos
-        const { data: newContent, error: insertError } = await supabase
-          .from('contenidolibro')
-          .insert({
-            titulo: book.title,
-            idApi: book.id,
-            imagenUrl: book.imageFull,
-            fechaLanzamiento: book.releaseDate,
-            descripcion: book.description,
-            calificacion: book.rating,
-            autor: book.autor,
-            genero: book.genre || null,
-            idAutor: book.autorId,
-            referencia: book.reference,
+      if (editando) {
+        // Si se está editando, actualizar el recurso existente
+        const { error: updateError } = await supabase
+          .from('recursolibro')
+          .update({
+            estado: estado,
+            reseña: reseña,
+            calificacion: calificacionPersonal,
+            favorito: favorito,
+            paginasLeidas: numPaginas,
+            fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
+            fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
           })
-          .select('id')
-          .single();
+          .eq('id', existeRecurso.id);
 
-        if (insertError) throw insertError;
-        contentId = newContent.id;
-      }
-
-      // Verificar si el usuario ya tiene este recurso
-      const { data: existingResource, error: checkError } = await supabase
-        .from('recursolibro')
-        .select('id')
-        .eq('idContenido', contentId)
-        .eq('usuarioId', user.id)
-        .maybeSingle();
-
-      if (checkError) {
-        throw checkError;
-      }
-
-      if (existingResource) {
-        Alert.alert('Aviso', 'Ya tienes este libro en tu colección.');
-        router.back();
-        setLoading(false);
-        return;
-      }
-
-      // Ahora insertamos el recurso del usuario
-      const numPaginas = parseInt(paginasLeidas) || 0;
-      const { error: inventoryError } = await supabase.from('recursolibro').insert({
-        usuarioId: user.id,
-        idContenido: contentId,
-        estado: estado,
-        reseña: reseña,
-        calificacion: calificacionPersonal,
-        favorito: favorito,
-        tiporecurso: 'LIBRO',
-        paginasLeidas: numPaginas,
-        fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
-        fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
-      });
-
-      if (inventoryError) {
-        Alert.alert('Error', 'Hubo un problema al guardar el libro. Inténtalo de nuevo.');
-        console.error('Error al insertar:', inventoryError);
+        if (updateError) {
+          Alert.alert('Error', 'Hubo un problema al actualizar el libro. Inténtalo de nuevo.');
+        } else {
+          Alert.alert('¡Éxito!', `Has actualizado ${book.title} en tu colección.`);
+          router.back();
+        }
       } else {
-        Alert.alert('¡Éxito!', `Has añadido ${book.title} a tu colección.`);
-        router.back();
+        // Si es un nuevo contenido,insertar nuevo recurso
+        // Miramos si el contenido ya existe en la tabla contenidolibro
+        const { data: existingContent, error: searchError } = await supabase
+          .from('contenidolibro')
+          .select('id')
+          .eq('idApi', book.id)
+          .eq('titulo', book.title)
+          .maybeSingle();
+
+        if (searchError) {
+          throw searchError;
+        }
+        let contentId;
+
+        if (existingContent) {
+          contentId = existingContent.id;
+        } else {
+          // Si no existe, lo creamos
+          const { data: newContent, error: insertError } = await supabase
+            .from('contenidolibro')
+            .insert({
+              titulo: book.title,
+              idApi: book.id,
+              imagenUrl: book.imageFull,
+              fechaLanzamiento: book.releaseDate,
+              descripcion: book.description,
+              calificacion: book.rating,
+              autor: book.autor,
+              genero: book.genre || null,
+              idAutor: book.autorId,
+              referencia: book.reference,
+            })
+            .select('id')
+            .single();
+
+          if (insertError) throw insertError;
+          contentId = newContent.id;
+        }
+
+        // Verificar si el usuario ya tiene este recurso
+        const { data: existeRecurso, error: checkError } = await supabase
+          .from('recursolibro')
+          .select('id')
+          .eq('idContenido', contentId)
+          .eq('usuarioId', user.id)
+          .maybeSingle();
+
+        if (checkError) {
+          throw checkError;
+        }
+
+        if (existeRecurso) {
+          Alert.alert('Aviso', 'Ya tienes este libro en tu colección.');
+          router.back();
+          setLoading(false);
+          return;
+        }
+
+        // Ahora insertamos el recurso del usuario
+        const numPaginas = parseInt(paginasLeidas) || 0;
+        const { error: inventoryError } = await supabase.from('recursolibro').insert({
+          usuarioId: user.id,
+          idContenido: contentId,
+          estado: estado,
+          reseña: reseña,
+          calificacion: calificacionPersonal,
+          favorito: favorito,
+          tiporecurso: 'LIBRO',
+          paginasLeidas: numPaginas,
+          fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
+          fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
+        });
+
+        if (inventoryError) {
+          Alert.alert('Error', 'Hubo un problema al guardar el libro. Inténtalo de nuevo.');
+          console.error('Error al insertar:', inventoryError);
+        } else {
+          Alert.alert('¡Éxito!', `Has añadido ${book.title} a tu colección.`);
+          router.back();
+        }
       }
     } catch (error) {
       console.error('Error saving book data:', error);
@@ -170,17 +198,17 @@ export default function BookForm() {
 
         <View className="mb-6 flex-row items-center rounded-xl border border-borderButton/50 bg-surfaceButton/50 px-4 py-4">
           <Image
-            source={{ uri: book.imageFull || 'https://via.placeholder.com/100x150' }}
+            source={{ uri: book.imagenUrl || book.imageFull || 'https://via.placeholder.com/100x150' }}
             className="mr-4 h-24 w-16 rounded-lg border border-borderButton bg-surfaceButton"
             resizeMode="cover"
           />
           <View className="flex-1">
             <Text className="text-xl font-bold text-primaryText" numberOfLines={2}>
-              {book.title}
+              {book.titulo || book.title}
             </Text>
             <Text className="mt-1 text-secondaryText">{book.autor || 'Autor desconocido'}</Text>
             <Text className="mt-1 text-secondaryText text-sm">
-              {book.releaseDate ? new Date(book.releaseDate).getFullYear() : 'N/A'}
+              {book.fechaLanzamiento || book.releaseDate ? new Date(book.fechaLanzamiento || book.releaseDate).getFullYear() : 'N/A'}
             </Text>
           </View>
           <TouchableOpacity onPress={() => setFavorito(!favorito)} className="p-2">

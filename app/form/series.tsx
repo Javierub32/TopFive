@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -23,24 +22,27 @@ interface Series {
 }
 
 export default function SeriesForm() {
-  const { seriesData } = useLocalSearchParams();
+  const { seriesData, item } = useLocalSearchParams();
   const router = useRouter();
-  const series: Series = JSON.parse(seriesData as string);
   const { user } = useAuth();
+  
+  const isEditing = !!item;
+  const existingResource = isEditing ? JSON.parse(item as string) : null;
+  const series: any = isEditing ? existingResource.contenidoserie : JSON.parse(seriesData as string);
 
-  const [reseña, setReseña] = useState('');
-  const [calificacionPersonal, setCalificacionPersonal] = useState(0);
-  const [favorita, setFavorita] = useState(false);
-  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>('PENDIENTE');
+  const [reseña, setReseña] = useState(existingResource?.reseña || '');
+  const [calificacionPersonal, setCalificacionPersonal] = useState(existingResource?.calificacion || 0);
+  const [favorita, setFavorita] = useState(existingResource?.favorito || false);
+  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(existingResource?.estado || 'PENDIENTE');
   
   // Campos específicos de series
-  const [temporadaActual, setTemporadaActual] = useState('1');
-  const [episodioActual, setEpisodioActual] = useState('1');
-  const [numVisualizaciones, setNumVisualizaciones] = useState(0); // Rewatch count
+  const [temporadaActual, setTemporadaActual] = useState(existingResource?.temporadaActual?.toString() || '1');
+  const [episodioActual, setEpisodioActual] = useState(existingResource?.episodioActual?.toString() || '1');
+  const [numVisualizaciones, setNumVisualizaciones] = useState(existingResource?.numVisualizaciones || 0);
   
   // Fechas
-  const [fechaInicio, setFechaInicio] = useState<Date | null>(null);
-  const [fechaFin, setFechaFin] = useState<Date | null>(null);
+  const [fechaInicio, setFechaInicio] = useState<Date | null>(existingResource?.fechaInicio ? new Date(existingResource.fechaInicio) : null);
+  const [fechaFin, setFechaFin] = useState<Date | null>(existingResource?.fechaFin ? new Date(existingResource.fechaFin) : null);
   const [showDatePickerInicio, setShowDatePickerInicio] = useState(false);
   const [showDatePickerFin, setShowDatePickerFin] = useState(false);
 
@@ -53,7 +55,33 @@ export default function SeriesForm() {
 
     setLoading(true);
     try {
-      // 1. Verificar si el contenido existe en 'contenidoserie'
+      if (isEditing) {
+        // Modo edición: actualizar el recurso existente
+        const { error: updateError } = await supabase
+          .from('recursoserie')
+          .update({
+            estado: estado,
+            reseña: reseña,
+            calificacion: calificacionPersonal,
+            favorito: favorita,
+            temporadaActual: tempNum,
+            episodioActual: epNum,
+            numVisualizaciones: numVisualizaciones,
+            fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
+            fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
+          })
+          .eq('id', existingResource.id);
+
+        if (updateError) {
+          Alert.alert('Error', 'Hubo un problema al actualizar la serie. Inténtalo de nuevo.');
+          console.error('Error al actualizar:', updateError);
+        } else {
+          Alert.alert('¡Éxito!', `Has actualizado ${series.titulo || series.title} en tu colección.`);
+          router.back();
+        }
+      } else {
+        // Modo creación: insertar nuevo recurso
+        // 1. Verificar si el contenido existe en 'contenidoserie'
       const { data: existingContent, error: searchError } = await supabase
         .from('contenidoserie')
         .select('id')
@@ -127,6 +155,7 @@ export default function SeriesForm() {
         Alert.alert('¡Éxito!', `Has añadido ${series.title} a tu colección.`);
         router.back();
       }
+      }
     } catch (error) {
       console.error('Error saving series data:', error);
       Alert.alert('Error', 'Ocurrió un error inesperado.');
@@ -170,22 +199,22 @@ export default function SeriesForm() {
         {/* Tarjeta de Resumen */}
         <View className="mb-6 flex-row items-center rounded-xl border border-borderButton/50 bg-surfaceButton/50 px-4 py-4">
           <Image
-            source={{ uri: series.image || 'https://via.placeholder.com/100x150' }}
+            source={{ uri: series.imagenUrl || series.imageFull || series.image || 'https://via.placeholder.com/100x150' }}
             className="mr-4 h-24 w-16 rounded-lg border border-borderButton bg-surfaceButton"
             resizeMode="cover"
           />
           <View className="flex-1">
             <Text className="text-xl font-bold text-primaryText" numberOfLines={2}>
-              {series.title}
+              {series.titulo || series.title}
             </Text>
             <Text className="mt-1 text-secondaryText">
-               {series.releaseDate ? new Date(series.releaseDate).getFullYear() : 'N/A'} 
-               {series.ended ? ` - ${new Date(series.ended).getFullYear()}` : ' - Presente'}
+               {series.fechaLanzamiento || series.releaseDate ? new Date(series.fechaLanzamiento || series.releaseDate).getFullYear() : 'N/A'} 
+               {series.fechaFin || series.ended ? ` - ${new Date(series.fechaFin || series.ended).getFullYear()}` : ' - Presente'}
             </Text>
             {/* Dato extra añadido: Género */}
-            {series.genre && series.genre.length > 0 && (
+            {(series.genero || series.genre) && (series.genero || series.genre).length > 0 && (
               <Text className="mt-1 text-sm text-secondaryText" numberOfLines={1}>
-                {series.genre.slice(0, 3).join(', ')}
+                {(series.genero || series.genre).slice(0, 3).join(', ')}
               </Text>
             )}
           </View>

@@ -1,13 +1,11 @@
-import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useResource } from 'context/ResourceContext';
 import { SongResource } from 'app/types/Resources';
 import { COLORS } from 'constants/colors';
-
 
 export default function SongDetail() {
   const { item } = useLocalSearchParams();
@@ -30,6 +28,15 @@ export default function SongDetail() {
 			{ text: 'Cancelar', style: 'cancel' }
 		]);
 	}
+  };
+
+  const handleEdit = () => {
+    if (songResource) {
+      router.push({
+        pathname: '/form/song',
+        params: { item: JSON.stringify(songResource) }
+      });
+    }
   };
 
   if (!songResource) {
@@ -67,7 +74,15 @@ export default function SongDetail() {
             </TouchableOpacity>
             <Text className="text-primaryText text-xl font-bold flex-1" numberOfLines={1}>Detalle de la canción</Text>
           </View>
-          <TouchableOpacity onPress={handleDelete} className="h-10 w-10 items-center justify-center rounded-full bg-red-600 border border-red-500" activeOpacity={0.7}>
+          {/* Botón de editar */}
+          <TouchableOpacity 
+            onPress={handleEdit}
+            className="h-10 w-10 items-center justify-center rounded-full bg-blue-600 border border-blue-500 mr-2"
+            activeOpacity={0.7}
+          >
+            <AntDesign name="edit" size={20} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleDelete} className="h-10 w-10 items-center justify-center rounded-full bg-red-600 border border-red-500 mr-2" activeOpacity={0.7}>
             <MaterialCommunityIcons name="delete" size={24} color="#fff" />
           </TouchableOpacity>
         </View>

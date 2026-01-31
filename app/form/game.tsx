@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -13,7 +12,7 @@ import { COLORS } from 'constants/colors';
 interface Game {
   id: number;
   title: string;
-  autor: string | null; // Desarrollador
+  autor: string | null; 
   image: string | null;
   releaseDate: string | null;
   genre: string[] | null;
@@ -27,23 +26,26 @@ interface Game {
 const DIFFICULTIES = [ 'Fácil', 'Normal', 'Difícil', 'Extremo'];
 
 export default function GameForm() {
-  const { gameData } = useLocalSearchParams();
+  const { gameData, item } = useLocalSearchParams();
   const router = useRouter();
-  const game: Game = JSON.parse(gameData as string);
   const { user } = useAuth();
+  
+  const editando = !!item;
+  const existeRecurso = editando ? JSON.parse(item as string) : null;
+  const game: any = editando ? existeRecurso.contenidovideojuego : JSON.parse(gameData as string);
 
-  const [reseña, setReseña] = useState('');
-  const [calificacionPersonal, setCalificacionPersonal] = useState(0);
-  const [favorito, setFavorito] = useState(false);
-  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO' | 'ABANDONADO'>('PENDIENTE');
+  const [reseña, setReseña] = useState(existeRecurso?.reseña || '');
+  const [calificacionPersonal, setCalificacionPersonal] = useState(existeRecurso?.calificacion || 0);
+  const [favorito, setFavorito] = useState(existeRecurso?.favorito || false);
+  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO' | 'ABANDONADO'>(existeRecurso?.estado || 'PENDIENTE');
   
   // Campos específicos de videojuegos
-  const [horasJugadas, setHorasJugadas] = useState('');
-  const [dificultad, setDificultad] = useState<string>('Normal');
+  const [horasJugadas, setHorasJugadas] = useState(existeRecurso?.horasJugadas?.toString() || '');
+  const [dificultad, setDificultad] = useState<string>(existeRecurso?.dificultad || 'Normal');
 
-  // Fechas (Lógica traída de series.tsx)
-  const [fechaInicio, setFechaInicio] = useState<Date | null>(null);
-  const [fechaFin, setFechaFin] = useState<Date | null>(null);
+  // Fechas
+  const [fechaInicio, setFechaInicio] = useState<Date | null>(existeRecurso?.fechaInicio ? new Date(existeRecurso.fechaInicio) : null);
+  const [fechaFin, setFechaFin] = useState<Date | null>(existeRecurso?.fechaFin ? new Date(existeRecurso.fechaFin) : null);
   const [showDatePickerInicio, setShowDatePickerInicio] = useState(false);
   const [showDatePickerFin, setShowDatePickerFin] = useState(false);
 
@@ -54,7 +56,32 @@ export default function GameForm() {
 
     setLoading(true);
     try {
-      // 1. Verificar si el contenido existe en 'contenidovideojuego'
+      if (editando) {
+        // Actualizar el recurso existente
+        const { error: updateError } = await supabase
+          .from('recursovideojuego')
+          .update({
+            estado: estado,
+            reseña: reseña,
+            calificacion: calificacionPersonal,
+            favorito: favorito,
+            horasJugadas: horasNum,
+            dificultad: dificultad,
+            fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
+            fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
+          })
+          .eq('id', existeRecurso.id);
+
+        if (updateError) {
+          Alert.alert('Error', 'Hubo un problema al actualizar el videojuego. Inténtalo de nuevo.');
+          console.error('Error al actualizar:', updateError);
+        } else {
+          Alert.alert('¡Éxito!', `Has actualizado ${game.titulo || game.title} en tu colección.`);
+          router.back();
+        }
+      } else {
+        // Insertar nuevo recurso
+        // 1. Verificar si el contenido existe en 'contenidovideojuego'
       const { data: existingContent, error: searchError } = await supabase
         .from('contenidovideojuego')
         .select('id')
@@ -129,6 +156,7 @@ export default function GameForm() {
         Alert.alert('¡Éxito!', `Has añadido ${game.title} a tu colección.`);
         router.back();
       }
+      }
     } catch (error) {
       console.error('Error saving game data:', error);
       Alert.alert('Error', 'Ocurrió un error inesperado.');
@@ -172,16 +200,16 @@ export default function GameForm() {
         {/* Tarjeta de Resumen */}
         <View className="mb-6 flex-row items-center rounded-xl border border-borderButton/50 bg-surfaceButton/50 px-4 py-4">
           <Image
-            source={{ uri: game.image || 'https://via.placeholder.com/100x150' }}
+            source={{ uri: game.imagenUrl || game.imageFull || game.image || 'https://via.placeholder.com/100x150' }}
             className="mr-4 h-24 w-16 rounded-lg border border-borderButton bg-surfaceButton"
             resizeMode="cover"
           />
           <View className="flex-1">
             <Text className="text-xl font-bold text-primaryText" numberOfLines={2}>
-              {game.title}
+              {game.titulo || game.title}
             </Text>
             <Text className="mt-1 text-secondaryText">
-               {game.releaseDate ? new Date(game.releaseDate).getFullYear() : 'N/A'}
+               {game.fechaLanzamiento || game.releaseDate ? new Date(game.fechaLanzamiento || game.releaseDate).getFullYear() : 'N/A'}
             </Text>
             <Text className="mt-1 text-sm text-secondaryText" numberOfLines={1}>
                 {game.autor || 'Desarrollador desconocido'}

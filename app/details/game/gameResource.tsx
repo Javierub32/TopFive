@@ -1,9 +1,8 @@
-import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useResource } from 'context/ResourceContext';
 import { GameResource } from 'app/types/Resources';
 import { COLORS } from 'constants/colors';
@@ -14,14 +13,14 @@ export default function GameDetail() {
   const {borrarRecurso} = useResource();
 
   const router = useRouter();
-  
   let gameResource: GameResource | null = null;
+    
+    try {
+      gameResource = item ? JSON.parse(item as string) : null;
+    } catch (error) {
+      console.error('Error parsing item:', error);
+    }
   
-  try {
-    gameResource = item ? JSON.parse(item as string) : null;
-  } catch (error) {
-    console.error('Error parsing item:', error);
-  }
 
   const handleDelete = () => {
 	if (gameResource) {
@@ -30,6 +29,15 @@ export default function GameDetail() {
 			{ text: 'Cancelar', style: 'cancel' }
 		]);
 	}
+  };
+
+  const handleEdit = () => {
+    if (gameResource) {
+      router.push({
+        pathname: '/form/game',
+        params: { item: JSON.stringify(gameResource) }
+      });
+    }
   };
 
   if (!gameResource) {
@@ -87,11 +95,18 @@ export default function GameDetail() {
               Detalle del videojuego
             </Text>
           </View>
-          
+          {/* Botón de editar */}
+          <TouchableOpacity 
+            onPress={handleEdit}
+            className="h-10 w-10 items-center justify-center rounded-full bg-blue-600 border border-blue-500 mr-2"
+            activeOpacity={0.7}
+          >
+            <AntDesign name="edit" size={20} color="#fff" />
+          </TouchableOpacity>
           {/* Botón de eliminar */}
           <TouchableOpacity 
             onPress={handleDelete}
-            className="h-10 w-10 items-center justify-center rounded-full bg-red-600 border border-red-500"
+            className="h-10 w-10 items-center justify-center rounded-full bg-red-600 border border-red-500 mr-2"
             activeOpacity={0.7}
           >
             <MaterialCommunityIcons name="delete" size={24} color="#fff" />

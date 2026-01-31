@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -21,17 +20,20 @@ interface Film {
 }
 
 export default function FilmForm() {
-  const { filmData } = useLocalSearchParams();
+  const { filmData, item } = useLocalSearchParams();
   const router = useRouter();
-  const film: Film = JSON.parse(filmData as string);
   const { user } = useAuth();
+  
+  const editando = !!item;
+  const existeRecurso = editando ? JSON.parse(item as string) : null;
+  const film: any = editando ? existeRecurso.contenidopelicula : JSON.parse(filmData as string);
 
-  const [reseña, setReseña] = useState('');
-  const [calificacionPersonal, setCalificacionPersonal] = useState(0);
-  const [favorita, setFavorita] = useState(false);
-  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>('PENDIENTE');
-  const [fechaVisionado, setFechaVisionado] = useState<Date>(new Date());
-  const [numVisionados, setNumVisionados] = useState(0);
+  const [reseña, setReseña] = useState(existeRecurso?.reseña || '');
+  const [calificacionPersonal, setCalificacionPersonal] = useState(existeRecurso?.calificacion || 0);
+  const [favorita, setFavorita] = useState(existeRecurso?.favorito || false);
+  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(existeRecurso?.estado || 'PENDIENTE');
+  const [fechaVisionado, setFechaVisionado] = useState<Date>(existeRecurso?.fechaVisionado ? new Date(existeRecurso.fechaVisionado) : new Date());
+  const [numVisionados, setNumVisionados] = useState(existeRecurso?.numVisionados || 0);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -49,7 +51,30 @@ export default function FilmForm() {
 
     setLoading(true);
     try {
-	  // Miramos si el contenido ya existe en la tabla contenidopelicula
+      if (editando) {
+        // Actualizar el recurso existente
+        const { error: updateError } = await supabase
+          .from('recursopelicula')
+          .update({
+            estado: estado,
+            reseña: reseña,
+            calificacion: calificacionPersonal,
+            favorito: favorita,
+            fechaVisionado: fechaVisionado.toISOString().split('T')[0],
+            numVisionados: numVisionados,
+          })
+          .eq('id', existeRecurso.id);
+
+        if (updateError) {
+          Alert.alert('Error', 'Hubo un problema al actualizar la película. Inténtalo de nuevo.');
+          console.error('Error al actualizar:', updateError);
+        } else {
+          Alert.alert('¡Éxito!', `Has actualizado ${film.titulo || film.title} en tu colección.`);
+          router.back();
+        }
+      } else {
+      // Insertar nuevo recurso
+	    // Miramos si el contenido ya existe en la tabla contenidopelicula
       const { data: existingContent, error: searchError } = await supabase
         .from('contenidopelicula')
         .select('id')
@@ -121,7 +146,7 @@ export default function FilmForm() {
         Alert.alert("¡Éxito!", `Has añadido a ${film.title} a tu colección.`);
         router.back();
       }
-
+      }
     } catch (error) {
       console.error('Error saving film data:', error);
     } finally {
@@ -162,16 +187,16 @@ export default function FilmForm() {
 
         <View className="mb-6 flex-row items-center rounded-xl border border-borderButton/50 bg-surfaceButton/50 px-4 py-4">
           <Image
-            source={{ uri: film.image || 'https://via.placeholder.com/100x150' }}
+            source={{ uri: film.imagenUrl || film.image || 'https://via.placeholder.com/100x150' }}
             className="mr-4 h-24 w-16 rounded-lg border border-borderButton bg-surfaceButton"
             resizeMode="cover"
           />
           <View className="flex-1">
             <Text className="text-xl font-bold text-primaryText" numberOfLines={2}>
-              {film.title}
+              {film.titulo || film.title}
             </Text>
             <Text className="mt-1 text-secondaryText">
-              {film.releaseDate ? new Date(film.releaseDate).getFullYear() : 'N/A'}
+              {film.fechaLanzamiento || film.releaseDate ? new Date(film.fechaLanzamiento || film.releaseDate).getFullYear() : 'N/A'}
             </Text>
           </View>
           <TouchableOpacity onPress={() => setFavorita(!favorita)} className="p-2">

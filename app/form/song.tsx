@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -24,16 +23,19 @@ interface Song {
 }
 
 export default function SongForm() {
-  const { songData } = useLocalSearchParams();
+  const { songData, item } = useLocalSearchParams();
   const router = useRouter();
-  const song: Song = JSON.parse(songData as string);
   const { user } = useAuth();
+  
+  const editando = !!item;
+  const existeRecurso = editando ? JSON.parse(item as string) : null;
+  const song: any = editando ? existeRecurso.contenidocancion : JSON.parse(songData as string);
 
-  const [reseña, setReseña] = useState('');
-  const [calificacionPersonal, setCalificacionPersonal] = useState(0);
-  const [favorita, setFavorita] = useState(false);
-  const [estado, setEstado] = useState<'PENDIENTE' | 'COMPLETADO'>('PENDIENTE');
-  const [fechaEscuchado, setFechaEscuchado] = useState<Date | null>(null);
+  const [reseña, setReseña] = useState(existeRecurso?.reseña || '');
+  const [calificacionPersonal, setCalificacionPersonal] = useState(existeRecurso?.calificacion || 0);
+  const [favorita, setFavorita] = useState(existeRecurso?.favorito || false);
+  const [estado, setEstado] = useState<'PENDIENTE' | 'COMPLETADO'>(existeRecurso?.estado || 'PENDIENTE');
+  const [fechaEscuchado, setFechaEscuchado] = useState<Date | null>(existeRecurso?.fechaEscucha ? new Date(existeRecurso.fechaEscucha) : null);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -41,7 +43,29 @@ export default function SongForm() {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      // Miramos si el contenido ya existe en la tabla contenidocancion
+      if (editando) {
+        // Modo edición: actualizar el recurso existente
+        const { error: updateError } = await supabase
+          .from('recursocancion')
+          .update({
+            estado: estado,
+            reseña: reseña,
+            calificacion: calificacionPersonal,
+            favorito: favorita,
+            fechaEscucha: fechaEscuchado ? fechaEscuchado.toISOString().split('T')[0] : null,
+          })
+          .eq('id', existeRecurso.id);
+
+        if (updateError) {
+          Alert.alert('Error', 'Hubo un problema al actualizar la canción. Inténtalo de nuevo.');
+          console.error('Error al actualizar:', updateError);
+        } else {
+          Alert.alert('¡Éxito!', `Has actualizado ${song.titulo || song.title} en tu colección.`);
+          router.back();
+        }
+      } else {
+        // Modo creación: insertar nuevo recurso
+        // Miramos si el contenido ya existe en la tabla contenidocancion
       const { data: existingContent, error: searchError } = await supabase
         .from('contenidocancion')
         .select('id')
@@ -81,7 +105,7 @@ export default function SongForm() {
       }
 
       // Verificar si el usuario ya tiene este recurso
-      const { data: existingResource, error: checkError } = await supabase
+      const { data: existeRecurso, error: checkError } = await supabase
         .from('recursocancion')
         .select('id')
         .eq('idContenido', contentId)
@@ -92,7 +116,7 @@ export default function SongForm() {
         throw checkError;
       }
 
-      if (existingResource) {
+      if (existeRecurso) {
         Alert.alert('Aviso', 'Ya tienes esta canción en tu colección.');
         router.back();
         setLoading(false);
@@ -117,6 +141,7 @@ export default function SongForm() {
       } else {
         Alert.alert('¡Éxito!', `Has añadido ${song.title} a tu colección.`);
         router.back();
+      }
       }
     } catch (error) {
       console.error('Error saving song data:', error);
@@ -158,22 +183,22 @@ export default function SongForm() {
 
         <View className="mb-6 flex-row items-center rounded-xl border border-borderButton/50 bg-surfaceButton/50 px-4 py-4">
           <Image
-            source={{ uri: song.imageFull || 'https://via.placeholder.com/100x100' }}
+            source={{ uri: song.imagenUrl || song.imageFull || 'https://via.placeholder.com/100x100' }}
             className="mr-4 h-20 w-20 rounded-lg border border-borderButton bg-surfaceButton"
             resizeMode="cover"
           />
           <View className="flex-1">
             <Text className="text-xl font-bold text-primaryText" numberOfLines={2}>
-              {song.title}
+              {song.titulo || song.title}
             </Text>
             <Text className="mt-1 text-secondaryText">{song.autor || 'Artista desconocido'}</Text>
-            {song.album && (
+            {(song.albumTitulo || song.album) && (
               <Text className="mt-1 text-secondaryText text-sm" numberOfLines={1}>
-                {song.album}
+                {song.albumTitulo || song.album}
               </Text>
             )}
             <Text className="mt-1 text-secondaryText text-sm">
-              {song.releaseDate ? new Date(song.releaseDate).getFullYear() : 'N/A'}
+              {song.fechaLanzamiento || song.releaseDate ? new Date(song.fechaLanzamiento || song.releaseDate).getFullYear() : 'N/A'}
             </Text>
           </View>
           <TouchableOpacity onPress={() => setFavorita(!favorita)} className="p-2">

@@ -1,9 +1,8 @@
-import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import { useResource } from 'context/ResourceContext';
 import { BookResource } from 'app/types/Resources';
 import { COLORS } from 'constants/colors';
@@ -15,7 +14,7 @@ export default function BookDetail() {
   const router = useRouter();
   
   let bookResource: BookResource | null = null;
-  
+
   try {
     bookResource = item ? JSON.parse(item as string) : null;
   } catch (error) {
@@ -30,6 +29,14 @@ export default function BookDetail() {
 		]);
 	}
   };
+  const handleEdit = () => {
+  if (bookResource) {
+    router.push({
+      pathname: '/form/book',
+      params: { item: JSON.stringify(bookResource) }
+    });
+  }
+};
 
   if (!bookResource) {
     return (
@@ -84,11 +91,19 @@ export default function BookDetail() {
               Detalle del libro
             </Text>
           </View>
-          
+          {/* Botón de editar */}
+          <TouchableOpacity 
+            onPress={() => handleEdit()}
+            className="h-10 w-10 items-center justify-center rounded-full bg-blue-600 border border-blue-500 mr-2"
+            activeOpacity={0.7}
+          >
+            <AntDesign name="edit" size={20} color="#fff" />
+          </TouchableOpacity>
+
           {/* Botón de eliminar */}
           <TouchableOpacity 
             onPress={handleDelete}
-            className="h-10 w-10 items-center justify-center rounded-full bg-red-600 border border-red-500"
+            className="h-10 w-10 items-center justify-center rounded-full bg-red-600 border border-red-500 mr-2"
             activeOpacity={0.7}
           >
             <MaterialCommunityIcons name="delete" size={24} color="#fff" />
