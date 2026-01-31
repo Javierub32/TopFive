@@ -29,7 +29,7 @@ export default function SearchScreen() {
                 onPress={() =>
                   router.push({
                     pathname: 'details/user/',
-                    params: { id: item.id },
+                    params: { username: item.username },
                   })
                 }
               />

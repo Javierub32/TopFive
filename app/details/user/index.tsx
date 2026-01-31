@@ -9,8 +9,8 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { View, Text } from 'react-native';
 
 export default function UserDetailsScreen() {
-  const { id } = useLocalSearchParams();
-  const {loading, userData, handleFollow, cancelRequest} = useUser(id as string);
+  const { username } = useLocalSearchParams();
+  const {loading, userData, handleFollow, cancelRequest} = useUser(username as string);
   console.log("Rendering UserDetailsScreen with userData:", userData);
 
   if (loading) {

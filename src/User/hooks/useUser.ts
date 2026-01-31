@@ -20,7 +20,7 @@ interface UseUserResult {
 }
 
 
-export const useUser = (userId: string) => {
+export const useUser = (username: string) => {
 	const {user} = useAuth();
 	const [userData, setUserData] = useState<any>(null);
 	const [loading, setLoading] = useState(false);
@@ -29,6 +29,8 @@ export const useUser = (userId: string) => {
 		const fetchUserData = async () => {
 			setLoading(true);
 			try {
+				const userId = await userService.getUserIdByUsername(username);
+				if (!userId) throw new Error("User not found");
 				const data = await userService.fetchUserById(userId, user?.id);
 				setUserData(data);
 			} catch (error) {
@@ -38,11 +40,13 @@ export const useUser = (userId: string) => {
 			}
 		};
 		fetchUserData();
-	}, [userId, user?.id]);
+	}, [username, user?.id]);
 
 	const handleFollow = async () => {
 		if (!user) return;
 		try {
+			const userId = await userService.getUserIdByUsername(username);
+			if (!userId) throw new Error("User not found");
 			await userService.requestFollow(user.id, userId);
 			setUserData((prevData: User) => ({
 				...prevData,
@@ -57,6 +61,8 @@ export const useUser = (userId: string) => {
 	const cancelRequest = async () => {
 		if (!user) return;
 		try {
+			const userId = await userService.getUserIdByUsername(username);
+			if (!userId) throw new Error("User not found");
 			await userService.unfollow(user.id, userId);
 			setUserData((prevData: User) => ({
 				...prevData,

@@ -23,7 +23,7 @@ export default function FollowingList() {
 					<UserResultItem item={item} onPress={() =>
 					router.push({
 						pathname: 'details/user/',
-						params: { id: item.id },
+						params: { username: item.username },
 					})} />
 				</View>
 				{ownList && 
