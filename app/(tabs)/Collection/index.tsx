@@ -9,6 +9,8 @@ import { RenderCollection } from 'src/Collection/components/RenderCollection';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { CollectionStructure } from 'components/CollectionStructure';
 import { filterCollectionData } from 'src/Collection/adapters/filterCollectionData';
+import NavigableCollectionScreen from 'app/borrar/a';
+import ResourceList from 'app/borrar/ResourceList';
 
 export default function CollectionScreen() {
   const {
@@ -29,13 +31,6 @@ export default function CollectionScreen() {
     completados,
     data,
   } = useCollection();
-
-  const hayBusqueda = busqueda.trim() !== '';
-  
-  // Filtrar datos de búsqueda para eliminar elementos sin contenido
-  const dataFiltrada = hayBusqueda ? filterCollectionData(data, categoriaActual) : data;
-
-
   return (
     <Screen>
       <StatusBar style="light" />
@@ -65,46 +60,20 @@ export default function CollectionScreen() {
             setSoloFavoritos={setSoloFavoritos}
           />
         )}
-
-        {loading ? (
-          <LoadingIndicator />
-        ) : hayBusqueda ? (
-          <CollectionStructure
-            data={dataFiltrada}
-            categoriaActual={categoriaActual}
-            handleItemPress={handleItemPress}
-			showStatus={true}
-          />
-        
-        ) : (
-          <ScrollView 
-            className="flex-1 mt-4" 
-            contentContainerStyle={{ paddingBottom: 100 }}
-            showsVerticalScrollIndicator={false}
-          >
-            <RenderCollection 
-              title="En Curso"
-              data={enCurso}
-              category={categoriaActual}
-              onPressItem={handleItemPress}
-              onPressTitle={() => navigateToGrid('En curso', 'WATCHING', categoriaActual)}
-            />
-            <RenderCollection 
-              title="Completados"
-              data={completados}
-              category={categoriaActual}
-              onPressItem={handleItemPress}
-              onPressTitle={() => navigateToGrid('Completados', 'COMPLETED', categoriaActual)}
-            />
-            <RenderCollection 
-              title="Pendientes"
-              data={pendientes}
-              category={categoriaActual}
-              onPressItem={handleItemPress}
-              onPressTitle={() => navigateToGrid('Pendientes', 'PENDING', categoriaActual )}
-            />
-          </ScrollView>
-        )}
+		{//<NavigableCollectionScreen />*/}
+}
+		
+        <ResourceList
+          categoriaActual={categoriaActual}
+          navigateToGrid={navigateToGrid}
+          handleItemPress={handleItemPress}
+          pendientes={pendientes}
+          enCurso={enCurso}
+          completados={completados}
+          loading={loading}
+          busqueda={busqueda}
+          data={data}
+        />
       </View>
     </Screen>
   );
