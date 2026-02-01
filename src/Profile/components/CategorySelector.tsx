@@ -8,7 +8,7 @@ interface Props {
   onSelect: (cat: CategoryKey) => void;
 }
 
-const CATEGORIES: CategoryKey[] = ['libros', 'películas', 'series', 'canciones', 'videojuegos'];
+const CATEGORIES: CategoryKey[] = ['libros', 'películas', 'series', 'videojuegos', 'canciones'];
 
 export const CategorySelector = ({ selected, onSelect }: Props) => (
   <View

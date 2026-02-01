@@ -16,8 +16,8 @@ export function AddModal({ visible, onClose, onSelect }: AddModalProps) {
     { type: 'Libros', label: 'Libro', icon: BookIcon },
     { type: 'Películas', label: 'Película', icon: FilmIcon },
     { type: 'Series', label: 'Serie', icon: ShowIcon },
-    { type: 'Canciones', label: 'Canción', icon: MusicIcon },
     { type: 'Videojuegos', label: 'Juego', icon: GameIcon },
+    { type: 'Canciones', label: 'Canción', icon: MusicIcon },
   ];
 
   const handleSelect = (type: CategoryKey) => {

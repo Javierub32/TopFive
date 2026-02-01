@@ -5,6 +5,7 @@ import { useCollection } from '@/Collection/hooks/useCollection';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { CollectionStructure } from 'components/CollectionStructure';
 import { useGroupData } from 'src/Collection/hooks/useGroupData';
+import { ReturnButton } from 'components/ReturnButton';
 
 export default function GroupScreen() {
   const params = useLocalSearchParams();
@@ -18,7 +19,7 @@ export default function GroupScreen() {
   return (
     <Screen>
       <View className="flex-1 px-4 pt-4">
-        <Text className="text-2xl font-bold text-primaryText mb-4">{title}</Text>
+        <ReturnButton route="/Collection" title={title} style={" "} params={{initialResource: category}}/>
         {loading ? (
           <LoadingIndicator />
         ) : (
@@ -26,6 +27,7 @@ export default function GroupScreen() {
             data={dataToShow}
             categoriaActual={category}
             handleItemPress={handleItemPress}
+			showStatus={false}
           />
         )}
       </View>

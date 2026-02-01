@@ -6,6 +6,7 @@ import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-ic
 import { useResource } from 'context/ResourceContext';
 import { SeriesResource } from 'app/types/Resources';
 import { COLORS } from 'constants/colors';
+import { ReturnButton } from 'components/ReturnButton';
 
 export default function SeriesDetail() {
   const { item } = useLocalSearchParams();
@@ -81,10 +82,7 @@ export default function SeriesDetail() {
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center justify-between px-4 pt-2 pb-4">
           <View className="flex-row items-center flex-1">
-            <TouchableOpacity onPress={() => router.back()} className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-surfaceButton border border-borderButton" activeOpacity={0.7}>
-              <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
-            </TouchableOpacity>
-            <Text className="text-primaryText text-xl font-bold flex-1" numberOfLines={1}>Detalle de la serie</Text>
+            <ReturnButton route="/Collection" title={'Detalle de la serie'} style={" "} params={{initialResource: 'Series'}}/>
           </View>
           <TouchableOpacity 
             onPress={handleEdit}

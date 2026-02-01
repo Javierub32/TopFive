@@ -73,6 +73,7 @@ export default function CollectionScreen() {
             data={dataFiltrada}
             categoriaActual={categoriaActual}
             handleItemPress={handleItemPress}
+			showStatus={true}
           />
         
         ) : (
@@ -86,7 +87,7 @@ export default function CollectionScreen() {
               data={enCurso}
               category={categoriaActual}
               onPressItem={handleItemPress}
-              onPressTitle={() => navigateToGrid('Viendo ahora', 'WATCHING', categoriaActual)}
+              onPressTitle={() => navigateToGrid('En curso', 'WATCHING', categoriaActual)}
             />
             <RenderCollection 
               title="Completados"

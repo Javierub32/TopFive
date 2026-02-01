@@ -6,6 +6,7 @@ import { FontAwesome5, MaterialCommunityIcons, AntDesign } from '@expo/vector-ic
 import { useResource } from 'context/ResourceContext';
 import { BookResource } from 'app/types/Resources';
 import { COLORS } from 'constants/colors';
+import { ReturnButton } from 'components/ReturnButton';
 
 
 export default function BookDetail() {
@@ -80,16 +81,7 @@ export default function BookDetail() {
         {/* Header con botón de volver y botón de eliminar */}
         <View className="flex-row items-center justify-between px-4 pt-2 pb-4">
           <View className="flex-row items-center flex-1">
-            <TouchableOpacity 
-              onPress={() => router.back()}
-              className="mr-3 h-10 w-10 items-center justify-center rounded-full bg-surfaceButton border border-borderButton"
-              activeOpacity={0.7}
-            >
-              <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
-            </TouchableOpacity>
-            <Text className="text-primaryText text-xl font-bold flex-1" numberOfLines={1}>
-              Detalle del libro
-            </Text>
+            <ReturnButton route="/Collection" title={'Detalle del libro'} style={" "} params={{initialResource: 'Libros'}}/>
           </View>
           {/* Botón de editar */}
           <TouchableOpacity 

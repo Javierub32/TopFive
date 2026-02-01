@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Tabs, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BottomTabBar } from '@react-navigation/bottom-tabs';
 
 import { HomeIcon, CardsIcon, UserIcon, SearchIcon, AddIcon } from 'components/Icons';
 import { COLORS } from 'constants/colors';

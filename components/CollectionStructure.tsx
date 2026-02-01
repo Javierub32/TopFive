@@ -2,7 +2,7 @@ import { CollectionGroup } from '@/Collection/components/CollectionGroup';
 import { FlatList, useWindowDimensions } from 'react-native';
 
 
-export const CollectionStructure = ({ data, categoriaActual, handleItemPress }: any) => {
+export const CollectionStructure = ({ data, categoriaActual, handleItemPress, showStatus }: any) => {
 	
   const { width } = useWindowDimensions();
   const PADDING_PANTALLA = 40; 
@@ -31,7 +31,7 @@ export const CollectionStructure = ({ data, categoriaActual, handleItemPress }: 
           onPress={() => handleItemPress(item)} 
           posterWidth={itemWidth}
           posterHeight={itemHeight}
-          showStatus={true}
+          showStatus={showStatus}
         />
       )}
     />

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useResource } from 'context/ResourceContext';
 
 export type CategoryType = 'Libros' | 'Películas' | 'Series' | 'Videojuegos' | 'Canciones';
@@ -9,10 +9,11 @@ export type SortType = 'FECHA_DESC' | 'FECHA_ASC';
 export const useCollection = () => {
   const router = useRouter();
   const resources = useResource();
+  const { initialResource } = useLocalSearchParams();
 
   const [inputBusqueda, setInputBusqueda] = useState('');
   const [busqueda, setBusqueda] = useState('');
-  const [categoriaActual, setCategoriaActual] = useState<CategoryType>('Películas');
+  const [categoriaActual, setCategoriaActual] = useState<CategoryType>(initialResource ? (initialResource as CategoryType) : 'Películas');
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   
