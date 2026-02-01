@@ -9,6 +9,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { COLORS } from 'constants/colors';
+import { BookResource } from 'app/types/Resources';
 
 interface Book {
   id: number | null;
@@ -31,16 +32,16 @@ export default function BookForm() {
   
   // Si es item, se edita, si no, es nuevo
   const editando = !!item;
-  const existeRecurso = editando ? JSON.parse(item as string) : null;
-  const book: any = editando ? existeRecurso.contenidolibro : JSON.parse(bookData as string);
+  const resource = editando ? JSON.parse(item as string) : null;
+  const book: any = editando ? resource.contenidolibro : JSON.parse(bookData as string);
 
-  const [reseña, setReseña] = useState(existeRecurso?.reseña || '');
-  const [calificacionPersonal, setCalificacionPersonal] = useState(existeRecurso?.calificacion || 0);
-  const [favorito, setFavorito] = useState(existeRecurso?.favorito || false);
-  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(existeRecurso?.estado || 'PENDIENTE');
-  const [paginasLeidas, setPaginasLeidas] = useState(existeRecurso?.paginasLeidas?.toString() || '');
-  const [fechaInicio, setFechaInicio] = useState<Date | null>(existeRecurso?.fechaInicio ? new Date(existeRecurso.fechaInicio) : null);
-  const [fechaFin, setFechaFin] = useState<Date | null>(existeRecurso?.fechaFin ? new Date(existeRecurso.fechaFin) : null);
+  const [reseña, setReseña] = useState(resource?.reseña || '');
+  const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
+  const [favorito, setFavorito] = useState(resource?.favorito || false);
+  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(resource?.estado || 'PENDIENTE');
+  const [paginasLeidas, setPaginasLeidas] = useState(resource?.paginasLeidas?.toString() || '');
+  const [fechaInicio, setFechaInicio] = useState<Date | null>(resource?.fechaInicio ? new Date(resource.fechaInicio) : null);
+  const [fechaFin, setFechaFin] = useState<Date | null>(resource?.fechaFin ? new Date(resource.fechaFin) : null);
   const [showDatePickerInicio, setShowDatePickerInicio] = useState(false);
   const [showDatePickerFin, setShowDatePickerFin] = useState(false);
 
@@ -57,7 +58,7 @@ export default function BookForm() {
     try {
       if (editando) {
         // Si se está editando, actualizar el recurso existente
-        const { error: updateError } = await supabase
+        const { data: updatedData, error: updateError } = await supabase
           .from('recursolibro')
           .update({
             estado: estado,
@@ -68,13 +69,32 @@ export default function BookForm() {
             fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
             fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
           })
-          .eq('id', existeRecurso.id);
+          .eq('id', resource.id)
+          .select(`
+            *,
+            contenidolibro:idContenido (
+              titulo,
+              imagenUrl,
+              fechaLanzamiento,
+              descripcion,
+              calificacion,
+              autor,
+              genero
+            )
+          `)
+          .single();
 
         if (updateError) {
           Alert.alert('Error', 'Hubo un problema al actualizar el libro. Inténtalo de nuevo.');
         } else {
+          const bookResource: BookResource = updatedData;
           Alert.alert('¡Éxito!', `Has actualizado ${book.title} en tu colección.`);
-          router.back();
+          router.replace({
+            pathname: '/details/book/bookResource',
+            params: { 
+              item: JSON.stringify(bookResource)
+            }
+          });
         }
       } else {
         // Si es un nuevo contenido,insertar nuevo recurso
@@ -95,8 +115,8 @@ export default function BookForm() {
           contentId = existingContent.id;
         } else {
           // Si no existe, lo creamos
-          const { data: newContent, error: insertError } = await supabase
-            .from('contenidolibro')
+          const { data: newContent, error: insertError } = await supabase 
+		  .from('contenidolibro')
             .insert({
               titulo: book.title,
               idApi: book.id,
@@ -117,7 +137,7 @@ export default function BookForm() {
         }
 
         // Verificar si el usuario ya tiene este recurso
-        const { data: existeRecurso, error: checkError } = await supabase
+        const { data: resource, error: checkError } = await supabase
           .from('recursolibro')
           .select('id')
           .eq('idContenido', contentId)
@@ -128,7 +148,7 @@ export default function BookForm() {
           throw checkError;
         }
 
-        if (existeRecurso) {
+        if (resource) {
           Alert.alert('Aviso', 'Ya tienes este libro en tu colección.');
           router.back();
           setLoading(false);
@@ -137,18 +157,20 @@ export default function BookForm() {
 
         // Ahora insertamos el recurso del usuario
         const numPaginas = parseInt(paginasLeidas) || 0;
-        const { error: inventoryError } = await supabase.from('recursolibro').insert({
-          usuarioId: user.id,
-          idContenido: contentId,
-          estado: estado,
-          reseña: reseña,
-          calificacion: calificacionPersonal,
-          favorito: favorito,
-          tiporecurso: 'LIBRO',
-          paginasLeidas: numPaginas,
-          fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
-          fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
-        });
+        const { error: inventoryError } = await supabase
+          .from('recursolibro')
+          .insert({
+            usuarioId: user.id,
+            idContenido: contentId,
+            estado: estado,
+            reseña: reseña,
+            calificacion: calificacionPersonal,
+            favorito: favorito,
+            tiporecurso: 'LIBRO',
+            paginasLeidas: numPaginas,
+            fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
+            fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
+          });
 
         if (inventoryError) {
           Alert.alert('Error', 'Hubo un problema al guardar el libro. Inténtalo de nuevo.');
