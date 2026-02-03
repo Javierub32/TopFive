@@ -2,7 +2,7 @@ const COMMON_COLORS = {
     // Colores comunes a ambos modos
 
     //Colores principales de la paleta
-    //primary: '#BD7161', //marron                                                                                                        //cambiado
+    primary: '#47b553', //marron                                                                                                        //cambiado
 
     //Colores especiales
     error: '#EF4444', //rojo utilizado para errores
@@ -14,17 +14,16 @@ const COMMON_COLORS = {
     title: '#42909f',  //azul utilizado en los títulos de las secciones dentro del contenido
 
     //Colores de la barra del layout
-    //tabBarActiveTintColor: '#BD7161', // marron utilizado en los iconos de la barra de navegación cuando están activos                  //cambiado
+    tabBarActiveTintColor: '#47b553', // marron utilizado en los iconos de la barra de navegación cuando están activos                  //cambiado
 
     //Colores para elementos
     marker: 'rgb(48 101 165 / 0.4)', 	// azul utilizado para el fondo de los marcadores en los contenidos
     rating: '#fbbf24', 				// amarillo utilizado para las estrellas de calificación
-    statsColor: '75, 100, 58', // marron utilizado para las barras de la gráfica (en la implementación se le añade una opacidad)       //cambiado
+    statsColor: '71, 181, 83', // marron utilizado para las barras de la gráfica (en la implementación se le añade una opacidad)       //cambiado
   };
 
   export const DARK_MODE_COLORS = {
-    // Colores principales de la paleta
-    primary: '#4b643a', //marron                                                                                                        //cambiado
+    // Colores principales de la paleta                                                                                                 
     secondary: '#428f9e', //azul grisáceo
     accent: '#204879', //azul fuerte
     
@@ -39,9 +38,8 @@ const COMMON_COLORS = {
 
     // Colores de la barra del layout
     tabBarInactiveTintColor: '#9ca3af', // gris para la iconos de la barra de navegación cuando están inactivos
-    tabBarActiveTintColor: '#4b643a', // azul utilizado en la iconos de la barra de navegación cuando están activos
     tabBarBackgroundColor: '#1e293b', // azul oscuro para el fondo de la barra de navegación    
-    tabBarBorderTopColor: 'rgba(75, 100, 58, 0.5)', // marron translúcido para el borde superior de la barra de navegación               //cambiado
+    tabBarBorderTopColor: 'rgba(71, 181, 83, 0.5)', // marron translúcido para el borde superior de la barra de navegación               //cambiado
 
     // Colores para los elementos
     borderButton: '#428f9e',  // azul utilizado para el borde del botón
@@ -55,8 +53,7 @@ const COMMON_COLORS = {
   };
 
   export const LIGHT_MODE_COLORS = {
-    // Colores principales de la paleta
-    primary: '#47b553', //marron                                                                                                        //cambiado
+    // Colores principales de la paleta                                                                                           
     secondary: '#61adbd', //azul claro
     accent: '#5781b3', //azul fuerte
 
@@ -71,7 +68,6 @@ const COMMON_COLORS = {
 
     // Colores específicos para el TabBar
     tabBarInactiveTintColor: '#4f5763', // gris para la iconos de la barra de navegación cuando están inactivos
-    tabBarActiveTintColor: '#47b553', // azul claro utilizado en la iconos de la barra de navegación cuando están activos
     tabBarBackgroundColor: '#c5d0e2', // azul claro para el fondo de la barra de navegación
     tabBarBorderTopColor: 'rgba(71, 181, 83, 0.5)', // azul claro translúcido para el borde superior de la barra de navegación               //cambiado
 
