@@ -3,34 +3,12 @@ import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CategoryType } from '../hooks/useCollection';
 import { COLORS } from 'constants/colors';
-
-interface Props {
-  value: string;
-  onChangeText: (val: string) => void;
-  onSearch: () => void;
-  categoriaActual: CategoryType;
-  setCategoriaActual: (cat: CategoryType) => void;
-  menuAbierto: boolean;
-  setMenuAbierto: (val: boolean) => void;
-  filtrosAbiertos: boolean;
-  setFiltrosAbiertos: (val: boolean) => void;
-  isFilterActive: boolean;
-}
+import { useCollection } from 'context/CollectionContext';
 
 const OPCIONES_CATEGORIA: CategoryType[] = ['Libros', 'Películas', 'Series', 'Videojuegos', 'Canciones'];
 
-export const SearchBar = ({
-  value,
-  onChangeText,
-  onSearch,
-  categoriaActual,
-  setCategoriaActual,
-  menuAbierto,
-  setMenuAbierto,
-  filtrosAbiertos,
-  setFiltrosAbiertos,
-  isFilterActive
-}: Props) => {
+export const SearchBar = () => {
+  const { inputBusqueda, setInputBusqueda, handleSearch, categoriaActual, setCategoriaActual, menuCategoriaAbierto, setMenuCategoriaAbierto} = useCollection();
   return (
     <View className="relative z-50 mb-3">
       <View className="h-12 flex-row items-center rounded-lg border border-borderButton bg-surfaceButton shadow-lg">
@@ -44,9 +22,9 @@ export const SearchBar = ({
           className="h-full flex-1 px-3 text-base text-primaryText"
           placeholder={`Buscar en ${categoriaActual}...`}
           placeholderTextColor={COLORS.placeholderText}
-          value={value}
-          onChangeText={onChangeText}
-          onSubmitEditing={onSearch}
+          value={inputBusqueda}
+          onChangeText={setInputBusqueda}
+          onSubmitEditing={handleSearch}
           returnKeyType="search"
         />
 
@@ -57,8 +35,7 @@ export const SearchBar = ({
           className="h-full flex-row items-center justify-center px-3"
           activeOpacity={0.7}
           onPress={() => {
-            setMenuAbierto(!menuAbierto);
-            setFiltrosAbiertos(false);
+            setMenuCategoriaAbierto(!menuCategoriaAbierto);
           }}>
           <View className="max-w-[90px]">
             <Text className="mr-1 font-medium text-xs text-secondaryText" numberOfLines={1}>
@@ -66,7 +43,7 @@ export const SearchBar = ({
             </Text>
           </View>
           <MaterialCommunityIcons
-            name={menuAbierto ? 'chevron-up' : 'chevron-down'}
+            name={menuCategoriaAbierto ? 'chevron-up' : 'chevron-down'}
             size={16}
             color="#94a3b8"
           />
@@ -75,7 +52,7 @@ export const SearchBar = ({
       </View>
 
       {/* Desplegable de Categorías */}
-      {menuAbierto && (
+      {menuCategoriaAbierto && (
         <View className="absolute right-0 top-14 z-50 w-48 overflow-hidden rounded-lg border border-borderButton bg-surfaceButton shadow-xl">
           {OPCIONES_CATEGORIA.map((opcion, index) => (
             <TouchableOpacity
@@ -83,7 +60,7 @@ export const SearchBar = ({
               className={`flex-row items-center justify-between p-3 ${index !== OPCIONES_CATEGORIA.length - 1 ? 'border-b border-borderButton' : ''} ${categoriaActual === opcion ? 'bg-borderButton' : 'active:bg-borderButton/50'}`}
               onPress={() => {
                 setCategoriaActual(opcion);
-                setMenuAbierto(false);
+                setMenuCategoriaAbierto(false);
               }}>
               <Text className={`text-sm ${categoriaActual === opcion ? 'font-bold text-primaryText' : 'text-secondaryText'}`}>
                 {opcion}
