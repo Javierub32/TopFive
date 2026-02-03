@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from '@expo/vector-icons/';
 
 import { useProfile } from 'src/Profile/hooks/useProfile';
+import { useTheme } from "context/ThemeContext";
 
 export default function SettingsScreen() {
 
@@ -22,25 +23,29 @@ export default function SettingsScreen() {
     setSelectedYear,
   } = useProfile();
 
+  const { colors, toggleTheme} = useTheme();
+
 
     return (
         <Screen>
             <ReturnButton route='/(tabs)/Profile' title='Configuración' />
             <View className="flex-1 p-4">
-                <Text className="text-lg text-secondaryText pb-4">Settings content goes here</Text>
+                <Text className="text-lg pb-4" style= {{color: colors.secondaryText}}>Settings content goes here</Text>
                 <View className="flex-col justify-center space-y-2">
                     <Pressable
-                        className="w-full flex-row justify-between items-center rounded border-2 border-borderButton bg-surfaceButton/10 p-3"
-                        onPress={pickImage}>
-                        <Text className="text-lg text-primaryText">Alternar tema</Text>
-                        <FontAwesome5 name="palette" size={24} color="#fff" />
+                        className="w-full flex-row justify-between items-center rounded border-2 p-3"
+                        style={{borderColor: colors.borderButton, backgroundColor: `${colors.buttonBackground}1A`}}
+                        onPress={toggleTheme}>
+                        <Text className="text-lg" style={{color: colors.primaryText}}>Alternar tema</Text>
+                        <FontAwesome5 name="palette" size={24} color={colors.primaryText} />
                     </Pressable>
 
                     <Pressable
-                        className="w-full flex-row justify-between items-center rounded border-2 border-error bg-error/10 p-3"
+                        className="w-full flex-row justify-between items-center rounded border-2 bg-error/10 p-3"
+                        style={{borderColor: colors.error, backgroundColor: `${colors.error}1A`}}
                         onPress={signOut}>
-                        <Text className="text-lg text-primaryText">Cerrar sesión</Text>
-                        <Ionicons name="log-out-outline" size={24} color="#fff" />
+                        <Text className="text-lg" style={{color: colors.primaryText}}>Cerrar sesión</Text>
+                        <Ionicons name="log-out-outline" size={24} color={colors.primaryText} />
                     </Pressable>
                 </View>
                 
