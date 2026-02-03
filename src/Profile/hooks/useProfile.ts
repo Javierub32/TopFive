@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from 'context/AuthContext';
-import { useResource } from 'context/ResourceContext';
 import { userService } from '../services/profileService';
 import { createAdaptedResourceStats } from '../adapters/statsAdapter';
 import { router } from 'expo-router';
+import { useResource } from 'hooks/useResource';
 
 export type CategoryKey = 'libros' | 'películas' | 'series' | 'canciones' | 'videojuegos';
 
@@ -107,31 +107,31 @@ export const useProfile = () => {
     switch (selectedCategory) {
       case 'libros':
         console.log('[fetchResourceInfo] Fetching libros...');
-        resourceData = await fetchLibros(null, null, null, null, null, true);
+        resourceData = (await fetchLibros(null, null, null, null, null, true)) || [];
         console.log('[fetchResourceInfo] Libros recibidos:', resourceData.length);
         dateField = 'fechaFin';
         break;
       case 'películas':
         console.log('[fetchResourceInfo] Fetching películas...');
-        resourceData = await fetchPeliculas(null, null, null, null, null, true);
+        resourceData = (await fetchPeliculas(null, null, null, null, null, true)) || [];
         console.log('[fetchResourceInfo] Películas recibidas:', resourceData.length);
         dateField = 'fechaVisionado';
         break;
       case 'series':
         console.log('[fetchResourceInfo] Fetching series...');
-        resourceData = await fetchSeries(null, null, null, null, null, true);
+        resourceData = (await fetchSeries(null, null, null, null, null, true)) || [];
         console.log('[fetchResourceInfo] Series recibidas:', resourceData.length);
         dateField = 'fechaFin';
         break;
       case 'canciones':
         console.log('[fetchResourceInfo] Fetching canciones...');
-        resourceData = await fetchCanciones(null, null, null, null, null, true);
+        resourceData = (await fetchCanciones(null, null, null, null, null, true)) || [];
         console.log('[fetchResourceInfo] Canciones recibidas:', resourceData.length);
         dateField = 'fechaEscucha';
         break;
       case 'videojuegos':
         console.log('[fetchResourceInfo] Fetching videojuegos...');
-        resourceData = await fetchVideojuegos(null, null, null, null, null, true);
+        resourceData = (await fetchVideojuegos(null, null, null, null, null, true)) || [];
         console.log('[fetchResourceInfo] Videojuegos recibidos:', resourceData.length);
         dateField = 'fechaFin';
         break;

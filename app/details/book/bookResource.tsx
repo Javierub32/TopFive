@@ -1,18 +1,17 @@
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { router, useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
-import { useResource } from 'context/ResourceContext';
 import { BookResource } from 'app/types/Resources';
 import { COLORS } from 'constants/colors';
 import { ReturnButton } from 'components/ReturnButton';
+import { useResource } from 'hooks/useResource';
 
 
 export default function BookDetail() {
   const { item } = useLocalSearchParams();
   const { borrarRecurso } = useResource();
-  const router = useRouter();
   
   let bookResource: BookResource | null = null;
 
@@ -25,8 +24,8 @@ export default function BookDetail() {
   const handleDelete = () => {
 	if (bookResource) {
 		Alert.alert('Recurso eliminado', 'Estás seguro de que quieres eliminar este libro de tu colección?', [
-			{ text: 'Confirmar', onPress: () => {borrarRecurso(bookResource.id, 'libro'); router.push('/collection')} },
-			{ text: 'Cancelar', style: 'cancel' }
+			{ text: 'Confirmar', onPress: () => {borrarRecurso(bookResource.id, 'libro'); router.replace({ pathname: '/Collection', params: { initialResource: 'Libros' } })} },
+			{ text: 'Cancelar', style: 'cancel'}
 		]);
 	}
   };
