@@ -8,6 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { COLORS } from 'constants/colors';
+import { SeriesResource } from 'app/types/Resources';
 
 interface Series {
   id: number;
@@ -27,22 +28,22 @@ export default function SeriesForm() {
   const { user } = useAuth();
   
   const isEditing = !!item;
-  const existingResource = isEditing ? JSON.parse(item as string) : null;
-  const series: any = isEditing ? existingResource.contenidoserie : JSON.parse(seriesData as string);
+  const resource = isEditing ? JSON.parse(item as string) : null;
+  const series: any = isEditing ? resource.contenidoserie : JSON.parse(seriesData as string);
 
-  const [reseña, setReseña] = useState(existingResource?.reseña || '');
-  const [calificacionPersonal, setCalificacionPersonal] = useState(existingResource?.calificacion || 0);
-  const [favorita, setFavorita] = useState(existingResource?.favorito || false);
-  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(existingResource?.estado || 'PENDIENTE');
+  const [reseña, setReseña] = useState(resource?.reseña || '');
+  const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
+  const [favorita, setFavorita] = useState(resource?.favorito || false);
+  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(resource?.estado || 'PENDIENTE');
   
   // Campos específicos de series
-  const [temporadaActual, setTemporadaActual] = useState(existingResource?.temporadaActual?.toString() || '1');
-  const [episodioActual, setEpisodioActual] = useState(existingResource?.episodioActual?.toString() || '1');
-  const [numVisualizaciones, setNumVisualizaciones] = useState(existingResource?.numVisualizaciones || 0);
+  const [temporadaActual, setTemporadaActual] = useState(resource?.temporadaActual?.toString() || '1');
+  const [episodioActual, setEpisodioActual] = useState(resource?.episodioActual?.toString() || '1');
+  const [numVisualizaciones, setNumVisualizaciones] = useState(resource?.numVisualizaciones || 0);
   
   // Fechas
-  const [fechaInicio, setFechaInicio] = useState<Date | null>(existingResource?.fechaInicio ? new Date(existingResource.fechaInicio) : null);
-  const [fechaFin, setFechaFin] = useState<Date | null>(existingResource?.fechaFin ? new Date(existingResource.fechaFin) : null);
+  const [fechaInicio, setFechaInicio] = useState<Date | null>(resource?.fechaInicio ? new Date(resource.fechaInicio) : null);
+  const [fechaFin, setFechaFin] = useState<Date | null>(resource?.fechaFin ? new Date(resource.fechaFin) : null);
   const [showDatePickerInicio, setShowDatePickerInicio] = useState(false);
   const [showDatePickerFin, setShowDatePickerFin] = useState(false);
 
@@ -57,7 +58,7 @@ export default function SeriesForm() {
     try {
       if (isEditing) {
         // Modo edición: actualizar el recurso existente
-        const { error: updateError } = await supabase
+        const { data: updateData, error: updateError } = await supabase
           .from('recursoserie')
           .update({
             estado: estado,
@@ -70,14 +71,30 @@ export default function SeriesForm() {
             fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
             fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
           })
-          .eq('id', existingResource.id);
+          .eq('id', resource.id)
+          .select(`
+            *,
+            contenidoserie:idContenido (
+              titulo,
+              imagenUrl,
+              fechaLanzamiento,
+              fechaFin            
+            )
+          `)
+          .single();
 
         if (updateError) {
           Alert.alert('Error', 'Hubo un problema al actualizar la serie. Inténtalo de nuevo.');
           console.error('Error al actualizar:', updateError);
         } else {
+          const seriesResource: SeriesResource = updateData;
           Alert.alert('¡Éxito!', `Has actualizado ${series.titulo || series.title} en tu colección.`);
-          router.back();
+          router.replace({
+            pathname: '/details/series/seriesResource',
+            params: { 
+              item: JSON.stringify(seriesResource)
+            }
+          });
         }
       } else {
         // Modo creación: insertar nuevo recurso
@@ -117,7 +134,7 @@ export default function SeriesForm() {
       }
 
       // 3. Verificar si el usuario ya tiene este recurso
-      const { data: existingResource, error: checkError } = await supabase
+      const { data: resource, error: checkError } = await supabase
         .from('recursoserie')
         .select('id')
         .eq('idContenido', contentId)
@@ -126,7 +143,7 @@ export default function SeriesForm() {
 
       if (checkError) throw checkError;
 
-      if (existingResource) {
+      if (resource) {
         Alert.alert('Aviso', 'Ya tienes esta serie en tu colección.');
         router.back();
         setLoading(false);

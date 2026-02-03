@@ -8,6 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { COLORS } from 'constants/colors';
+import { FilmResource } from 'app/types/Resources';
 
 interface Film {
   id: number;
@@ -25,15 +26,15 @@ export default function FilmForm() {
   const { user } = useAuth();
   
   const editando = !!item;
-  const existeRecurso = editando ? JSON.parse(item as string) : null;
-  const film: any = editando ? existeRecurso.contenidopelicula : JSON.parse(filmData as string);
+  const resource = editando ? JSON.parse(item as string) : null;
+  const film: any = editando ? resource.contenidopelicula : JSON.parse(filmData as string);
 
-  const [reseña, setReseña] = useState(existeRecurso?.reseña || '');
-  const [calificacionPersonal, setCalificacionPersonal] = useState(existeRecurso?.calificacion || 0);
-  const [favorita, setFavorita] = useState(existeRecurso?.favorito || false);
-  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(existeRecurso?.estado || 'PENDIENTE');
-  const [fechaVisionado, setFechaVisionado] = useState<Date>(existeRecurso?.fechaVisionado ? new Date(existeRecurso.fechaVisionado) : new Date());
-  const [numVisionados, setNumVisionados] = useState(existeRecurso?.numVisionados || 0);
+  const [reseña, setReseña] = useState(resource?.reseña || '');
+  const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
+  const [favorita, setFavorita] = useState(resource?.favorito || false);
+  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(resource?.estado || 'PENDIENTE');
+  const [fechaVisionado, setFechaVisionado] = useState<Date>(resource?.fechaVisionado ? new Date(resource.fechaVisionado) : new Date());
+  const [numVisionados, setNumVisionados] = useState(resource?.numVisionados || 0);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -53,7 +54,7 @@ export default function FilmForm() {
     try {
       if (editando) {
         // Actualizar el recurso existente
-        const { error: updateError } = await supabase
+        const { data: updateData, error: updateError } = await supabase
           .from('recursopelicula')
           .update({
             estado: estado,
@@ -63,14 +64,29 @@ export default function FilmForm() {
             fechaVisionado: fechaVisionado.toISOString().split('T')[0],
             numVisionados: numVisionados,
           })
-          .eq('id', existeRecurso.id);
+          .eq('id', resource.id)
+          .select(`
+            *,
+            contenidopelicula (
+              titulo,
+              imagenUrl,
+              fechaLanzamiento
+            )
+          `)
+          .single();
 
         if (updateError) {
           Alert.alert('Error', 'Hubo un problema al actualizar la película. Inténtalo de nuevo.');
           console.error('Error al actualizar:', updateError);
         } else {
+          const filmResource: FilmResource = updateData;
           Alert.alert('¡Éxito!', `Has actualizado ${film.titulo || film.title} en tu colección.`);
-          router.back();
+          router.replace({
+            pathname: '/details/film/filmResource',
+            params: {
+              item: JSON.stringify(filmResource)
+            }
+          });
         }
       } else {
       // Insertar nuevo recurso

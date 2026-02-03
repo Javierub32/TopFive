@@ -86,6 +86,7 @@ export default function BookForm() {
 
         if (updateError) {
           Alert.alert('Error', 'Hubo un problema al actualizar el libro. Inténtalo de nuevo.');
+          console.error('Error al actualizar:', updateError);
         } else {
           const bookResource: BookResource = updatedData;
           Alert.alert('¡Éxito!', `Has actualizado ${book.title} en tu colección.`);

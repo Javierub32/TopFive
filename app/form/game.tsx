@@ -8,6 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { COLORS } from 'constants/colors';
+import { GameResource } from 'app/types/Resources';
 
 interface Game {
   id: number;
@@ -31,21 +32,21 @@ export default function GameForm() {
   const { user } = useAuth();
   
   const editando = !!item;
-  const existeRecurso = editando ? JSON.parse(item as string) : null;
-  const game: any = editando ? existeRecurso.contenidovideojuego : JSON.parse(gameData as string);
+  const resource = editando ? JSON.parse(item as string) : null;
+  const game: any = editando ? resource.contenidovideojuego : JSON.parse(gameData as string);
 
-  const [reseña, setReseña] = useState(existeRecurso?.reseña || '');
-  const [calificacionPersonal, setCalificacionPersonal] = useState(existeRecurso?.calificacion || 0);
-  const [favorito, setFavorito] = useState(existeRecurso?.favorito || false);
-  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO' | 'ABANDONADO'>(existeRecurso?.estado || 'PENDIENTE');
+  const [reseña, setReseña] = useState(resource?.reseña || '');
+  const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
+  const [favorito, setFavorito] = useState(resource?.favorito || false);
+  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO' | 'ABANDONADO'>(resource?.estado || 'PENDIENTE');
   
   // Campos específicos de videojuegos
-  const [horasJugadas, setHorasJugadas] = useState(existeRecurso?.horasJugadas?.toString() || '');
-  const [dificultad, setDificultad] = useState<string>(existeRecurso?.dificultad || 'Normal');
+  const [horasJugadas, setHorasJugadas] = useState(resource?.horasJugadas?.toString() || '');
+  const [dificultad, setDificultad] = useState<string>(resource?.dificultad || 'Normal');
 
   // Fechas
-  const [fechaInicio, setFechaInicio] = useState<Date | null>(existeRecurso?.fechaInicio ? new Date(existeRecurso.fechaInicio) : null);
-  const [fechaFin, setFechaFin] = useState<Date | null>(existeRecurso?.fechaFin ? new Date(existeRecurso.fechaFin) : null);
+  const [fechaInicio, setFechaInicio] = useState<Date | null>(resource?.fechaInicio ? new Date(resource.fechaInicio) : null);
+  const [fechaFin, setFechaFin] = useState<Date | null>(resource?.fechaFin ? new Date(resource.fechaFin) : null);
   const [showDatePickerInicio, setShowDatePickerInicio] = useState(false);
   const [showDatePickerFin, setShowDatePickerFin] = useState(false);
 
@@ -58,7 +59,7 @@ export default function GameForm() {
     try {
       if (editando) {
         // Actualizar el recurso existente
-        const { error: updateError } = await supabase
+        const { data: updateData, error: updateError } = await supabase
           .from('recursovideojuego')
           .update({
             estado: estado,
@@ -70,14 +71,29 @@ export default function GameForm() {
             fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
             fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
           })
-          .eq('id', existeRecurso.id);
+          .eq('id', resource.id)
+          .select(`
+            *,
+            contenidovideojuego:idContenido (
+              titulo,
+              imagenUrl,
+              fechaLanzamiento              
+            )
+          `)
+          .single();
 
         if (updateError) {
           Alert.alert('Error', 'Hubo un problema al actualizar el videojuego. Inténtalo de nuevo.');
           console.error('Error al actualizar:', updateError);
         } else {
+          const gameResource: GameResource = updateData;
           Alert.alert('¡Éxito!', `Has actualizado ${game.titulo || game.title} en tu colección.`);
-          router.back();
+          router.replace({
+            pathname: '/details/game/gameResource',
+            params: { 
+              item: JSON.stringify(gameResource)
+            }
+          });
         }
       } else {
         // Insertar nuevo recurso

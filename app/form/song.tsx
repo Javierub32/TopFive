@@ -8,6 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { COLORS } from 'constants/colors';
+import { SongResource } from 'app/types/Resources';
 
 interface Song {
   id: number | null;
@@ -28,14 +29,14 @@ export default function SongForm() {
   const { user } = useAuth();
   
   const editando = !!item;
-  const existeRecurso = editando ? JSON.parse(item as string) : null;
-  const song: any = editando ? existeRecurso.contenidocancion : JSON.parse(songData as string);
+  const resource = editando ? JSON.parse(item as string) : null;
+  const song: any = editando ? resource.contenidocancion : JSON.parse(songData as string);
 
-  const [reseña, setReseña] = useState(existeRecurso?.reseña || '');
-  const [calificacionPersonal, setCalificacionPersonal] = useState(existeRecurso?.calificacion || 0);
-  const [favorita, setFavorita] = useState(existeRecurso?.favorito || false);
-  const [estado, setEstado] = useState<'PENDIENTE' | 'COMPLETADO'>(existeRecurso?.estado || 'PENDIENTE');
-  const [fechaEscuchado, setFechaEscuchado] = useState<Date | null>(existeRecurso?.fechaEscucha ? new Date(existeRecurso.fechaEscucha) : null);
+  const [reseña, setReseña] = useState(resource?.reseña || '');
+  const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
+  const [favorita, setFavorita] = useState(resource?.favorito || false);
+  const [estado, setEstado] = useState<'PENDIENTE' | 'COMPLETADO'>(resource?.estado || 'PENDIENTE');
+  const [fechaEscuchado, setFechaEscuchado] = useState<Date | null>(resource?.fechaEscucha ? new Date(resource.fechaEscucha) : null);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -45,7 +46,7 @@ export default function SongForm() {
     try {
       if (editando) {
         // Modo edición: actualizar el recurso existente
-        const { error: updateError } = await supabase
+        const { data: updateData, error: updateError } = await supabase
           .from('recursocancion')
           .update({
             estado: estado,
@@ -54,14 +55,29 @@ export default function SongForm() {
             favorito: favorita,
             fechaEscucha: fechaEscuchado ? fechaEscuchado.toISOString().split('T')[0] : null,
           })
-          .eq('id', existeRecurso.id);
+          .eq('id', resource.id)
+          .select(`
+            *,
+            contenidocancion:idContenido (
+              titulo,
+              imagenUrl,
+              fechaLanzamiento
+            )
+          `)
+          .single();
 
         if (updateError) {
           Alert.alert('Error', 'Hubo un problema al actualizar la canción. Inténtalo de nuevo.');
           console.error('Error al actualizar:', updateError);
         } else {
+          const songResource: SongResource = updateData;
           Alert.alert('¡Éxito!', `Has actualizado ${song.titulo || song.title} en tu colección.`);
-          router.back();
+          router.replace({
+            pathname: '/details/song/songResource',
+            params: { 
+              item: JSON.stringify(songResource)
+            }
+          });
         }
       } else {
         // Modo creación: insertar nuevo recurso
@@ -105,7 +121,7 @@ export default function SongForm() {
       }
 
       // Verificar si el usuario ya tiene este recurso
-      const { data: existeRecurso, error: checkError } = await supabase
+      const { data: resource, error: checkError } = await supabase
         .from('recursocancion')
         .select('id')
         .eq('idContenido', contentId)
@@ -116,7 +132,7 @@ export default function SongForm() {
         throw checkError;
       }
 
-      if (existeRecurso) {
+      if (resource) {
         Alert.alert('Aviso', 'Ya tienes esta canción en tu colección.');
         router.back();
         setLoading(false);
