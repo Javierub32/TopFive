@@ -1,31 +1,73 @@
-import { View, Text, FlatList, ScrollView, useWindowDimensions } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 
-import { useCollection } from 'src/Collection/hooks/useCollection';
 import { SearchBar } from 'src/Collection/components/SearchBar';
-import { FilterPanel } from 'src/Collection/components/FilterPanel';
-import { RenderCollection } from 'src/Collection/components/RenderCollection';
-import { LoadingIndicator } from 'components/LoadingIndicator';
-import { CollectionStructure } from 'components/CollectionStructure';
-import { filterCollectionData } from 'src/Collection/adapters/filterCollectionData';
-import NavigableCollectionScreen from 'app/borrar/a';
 import ResourceList from 'app/borrar/ResourceList';
-import { CollectionProvider } from 'context/CollectionContext';
+import { useNavigable } from '@/Collection/hooks/useNavigable';
+import { SceneMap, TabView } from 'react-native-tab-view';
+import Lists from 'app/borrar/Lists';
+import { CancelIcon, CancelIcon2, SearchIcon } from 'components/Icons';
+import renderTabBar from '@/Collection/components/TabBar';
+import colors from 'tailwindcss/colors';
+import { useTheme } from 'context/ThemeContext';
+import { useCollection } from 'context/CollectionContext';
+import Animated, { FadeInDown, FadeInUp, FadeOut, FadeOutRight, FadeOutUp, LinearTransition, ZoomOut, ZoomOutDown, ZoomOutUp } from 'react-native-reanimated';
+
+
+const renderScene = SceneMap({
+  resources: ResourceList,
+  lists: Lists,
+});
 
 export default function CollectionScreen() {
+  const { layout, index, setIndex, routes } = useNavigable();
+  const { isSearchVisible, toggleSearch } = useCollection();
+  const { colors } = useTheme();
+
   return (
     <Screen>
       <StatusBar style="light" />
       <View className="flex-1 px-4 pt-6">
-        <Text className="mb-4 text-3xl font-bold text-primaryText">Mi Biblioteca</Text>
+        <View className="mb-4 flex-row items-center justify-between">
+          <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
+            Mi Biblioteca
+          </Text>
 
-        <SearchBar/>
+          <TouchableOpacity
+            onPress={toggleSearch}
+            className="rounded-full p-2">
+            {isSearchVisible ? (
+              <CancelIcon2 size={24} color={colors.primaryText} />
+            ) : (
+              <SearchIcon size={24} color={colors.primaryText} />
+            )}
+          </TouchableOpacity>
+        </View>
 
-		{//<NavigableCollectionScreen />*/}
-}
-		
-        <ResourceList/>
+        {isSearchVisible && (
+            <Animated.View 
+                entering={FadeInUp.duration(300).springify()}
+                style={{ overflow: 'hidden' }}
+            >
+                <SearchBar/>
+            </Animated.View>
+        )}
+
+        <Animated.View 
+            layout={LinearTransition.springify()} 
+            style={{ flex: 1 }}
+        >
+            <TabView
+                navigationState={{ index, routes }}
+                renderScene={renderScene}
+                renderTabBar={(props) => renderTabBar(props)}
+                onIndexChange={setIndex}
+                initialLayout={{ width: layout.width }}
+                lazy
+                style={{ flex: 1 }}
+            />
+        </Animated.View>
       </View>
     </Screen>
   );

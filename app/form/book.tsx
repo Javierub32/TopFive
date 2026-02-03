@@ -94,6 +94,7 @@ export default function BookForm() {
         } else {
           const bookResource: BookResource = updatedData;
           Alert.alert('¡Éxito!', `Has actualizado ${book.title} en tu colección.`);
+		  refreshData();
           router.replace({
             pathname: '/details/book/bookResource',
             params: { 

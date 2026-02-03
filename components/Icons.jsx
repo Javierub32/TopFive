@@ -48,6 +48,10 @@ export const ShowIcon = (props) => (
   <MaterialCommunityIcons name="television-play" size={24} color="white" {...props}/>
 );
 
+export const SearchIcon2 = (props) => (
+  <Feather name="search" size={24} color="black" {...props} />
+);
+
 export const MusicIcon = (props) => (
   <FontAwesome name="music" size={24} color="white" {...props}/>
 );
@@ -62,6 +66,10 @@ export const LeftArrowIcon = (props) => (
 
 export const CancelIcon = (props) => (
   <Feather name="x" size={24} color="white" {...props} />
+);
+
+export const CancelIcon2 = (props) => (
+  <FontAwesome name="remove" size={24} color="white" {...props} />
 );
 
 export const AcceptIcon = (props) => (

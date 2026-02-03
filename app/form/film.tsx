@@ -85,6 +85,7 @@ export default function FilmForm() {
         } else {
           const filmResource: FilmResource = updateData;
           Alert.alert('¡Éxito!', `Has actualizado ${film.titulo || film.title} en tu colección.`);
+		  refreshData();
           router.replace({
             pathname: '/details/film/filmResource',
             params: {

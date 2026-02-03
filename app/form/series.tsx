@@ -93,6 +93,7 @@ export default function SeriesForm() {
         } else {
           const seriesResource: SeriesResource = updateData;
           Alert.alert('¡Éxito!', `Has actualizado ${series.titulo || series.title} en tu colección.`);
+		  refreshData();
           router.replace({
             pathname: '/details/series/seriesResource',
             params: { 

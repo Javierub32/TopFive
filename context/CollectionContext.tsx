@@ -2,10 +2,12 @@ import { createContext, useState, useEffect, useContext } from 'react';
 import { useResource } from 'hooks/useResource';
 import { useLocalSearchParams, router } from 'expo-router';
 import { CategoryType } from '@/Collection/hooks/useCollection';
+import { useAuth } from './AuthContext';
 
 const CollectionContext = createContext<any>(undefined);
 
 export const CollectionProvider = ({ children }: any) => {
+  const { user } = useAuth();
   const {
     fetchCanciones,
     fetchPeliculas,
@@ -22,6 +24,8 @@ export const CollectionProvider = ({ children }: any) => {
   const [loading, setLoading] = useState(false);
   const [menuCategoriaAbierto, setMenuCategoriaAbierto] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+
 
   // Datos por estado
   const [pendientes, setPendientes] = useState<any[]>([]);
@@ -42,6 +46,8 @@ export const CollectionProvider = ({ children }: any) => {
   };
 
   const handleSearch = async () => {
+	if (!user) return;
+	if (!inputBusqueda || inputBusqueda.trim() === '') return;
     setBusqueda(inputBusqueda);
 	try {
 		setLoading(true);
@@ -58,7 +64,19 @@ export const CollectionProvider = ({ children }: any) => {
 	}
   };
 
+  const toggleSearch = () => {
+    if (isSearchVisible) {
+        // Si se está cerrando, limpiamos todo para volver a la vista normal
+        setInputBusqueda('');
+        setBusqueda('');
+        setData([]);
+    }
+    setIsSearchVisible(!isSearchVisible);
+  };
+
   const fetchInitialData = async () => {
+	if (!user) return;
+
     setLoading(true);
     try {
       const categoriaKey = categoriaActual as CategoryType;
@@ -99,12 +117,20 @@ export const CollectionProvider = ({ children }: any) => {
   };
 
   useEffect(() => {
+	// Limpiamos si el usuario hace logout
+    if (!user) {
+        setPendientes([]);
+        setEnCurso([]);
+        setCompletados([]);
+        return; 
+    }
+
     setInputBusqueda('');
     setBusqueda('');
     setData([]); 
     
     fetchInitialData();
-  }, [categoriaActual, refreshTrigger]);
+  }, [categoriaActual, refreshTrigger, user]); 
 
   const refreshData = () => {
     setRefreshTrigger(prev => prev + 1);
@@ -154,6 +180,8 @@ export const CollectionProvider = ({ children }: any) => {
         setBusqueda,
 		data,
 		refreshData,
+        isSearchVisible,
+        toggleSearch
       }}>
       {children}
     </CollectionContext.Provider>

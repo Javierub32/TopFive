@@ -92,6 +92,7 @@ export default function GameForm() {
         } else {
           const gameResource: GameResource = updateData;
           Alert.alert('¡Éxito!', `Has actualizado ${game.titulo || game.title} en tu colección.`);
+		  refreshData();
           router.replace({
             pathname: '/details/game/gameResource',
             params: { 

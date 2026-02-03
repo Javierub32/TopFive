@@ -76,6 +76,7 @@ export default function SongForm() {
         } else {
           const songResource: SongResource = updateData;
           Alert.alert('¡Éxito!', `Has actualizado ${song.titulo || song.title} en tu colección.`);
+		  refreshData();
           router.replace({
             pathname: '/details/song/songResource',
             params: { 

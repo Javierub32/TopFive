@@ -1,6 +1,6 @@
 import { ReturnButton } from "components/ReturnButton";
 import { Screen } from "components/Screen";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 
 export default function Lists() {
@@ -8,6 +8,7 @@ export default function Lists() {
 		<Screen>
 			<View className="flex-1 px-4 pt-4">
 				<ReturnButton route="/Collection" title="Volver a Mi Biblioteca" style={" "} params={{}}/>
+				<Text className="mt-6 text-3xl font-bold text-primaryText">ME GUSTA LA VERGA</Text>
 			</View>
 		</Screen>
 	)
