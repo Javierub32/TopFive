@@ -3,13 +3,15 @@ import { Tabs, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { HomeIcon, CardsIcon, UserIcon, SearchIcon, AddIcon } from 'components/Icons';
-import { COLORS } from 'constants/colors';
 import { AddModal } from '../../src/Add/components/AddModal';
+import { useTheme } from 'context/ThemeContext';
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [showAddModal, setShowAddModal] = useState(false);
+
+  const { colors } = useTheme();
 
   return (
     <>
@@ -26,13 +28,13 @@ export default function TabLayout() {
       <Tabs
         screenOptions={{
           headerShown: false,
-          tabBarActiveTintColor: COLORS.tabBarActiveTintColor,
-          tabBarInactiveTintColor: COLORS.tabBarInactiveTintColor,
+          tabBarActiveTintColor: colors.tabBarActiveTintColor,
+          tabBarInactiveTintColor: colors.tabBarInactiveTintColor,
           tabBarShowLabel: false,
-          headerTintColor: '#fff',
+          headerTintColor: colors.primaryText,
           tabBarStyle: {
-            backgroundColor: COLORS.tabBarBackgroundColor,
-            borderTopColor: COLORS.tabBarBorderTopColor,
+            backgroundColor: colors.tabBarBackgroundColor,
+            borderTopColor: colors.tabBarBorderTopColor,
             borderTopWidth: 2,
             height: 52 + insets.bottom,
             paddingBottom: insets.bottom,
