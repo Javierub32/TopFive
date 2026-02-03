@@ -7,8 +7,8 @@ import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
-import { COLORS } from 'constants/colors';
 import { SeriesResource } from 'app/types/Resources';
+import { useTheme } from 'context/ThemeContext';
 
 interface Series {
   id: number;
@@ -26,7 +26,8 @@ export default function SeriesForm() {
   const { seriesData, item } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
-  
+  const { colors } = useTheme();
+
   const isEditing = !!item;
   const resource = isEditing ? JSON.parse(item as string) : null;
   const series: any = isEditing ? resource.contenidoserie : JSON.parse(seriesData as string);

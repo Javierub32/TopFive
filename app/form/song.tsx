@@ -7,8 +7,8 @@ import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
-import { COLORS } from 'constants/colors';
 import { SongResource } from 'app/types/Resources';
+import { useTheme } from 'context/ThemeContext';
 
 interface Song {
   id: number | null;
@@ -27,6 +27,7 @@ export default function SongForm() {
   const { songData, item } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
+  const { colors } = useTheme();
   
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;

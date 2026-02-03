@@ -4,14 +4,15 @@ import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import { BookResource } from 'app/types/Resources';
-import { COLORS } from 'constants/colors';
 import { ReturnButton } from 'components/ReturnButton';
 import { useResource } from 'hooks/useResource';
+import { useTheme } from 'context/ThemeContext';
 
 
 export default function BookDetail() {
   const { item } = useLocalSearchParams();
   const { borrarRecurso } = useResource();
+  const { colors } = useTheme();
   
   let bookResource: BookResource | null = null;
 
