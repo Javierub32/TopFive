@@ -320,7 +320,7 @@ export default function SongForm() {
               value={reseña}
               onChangeText={setReseña}
               placeholder="Escribe tu opinión sobre la canción..."
-              placeholderTextColor={COLORS.placeholderText}
+              placeholderTextColor={colors.placeholderText}
               multiline
               numberOfLines={4}
               maxLength={500}

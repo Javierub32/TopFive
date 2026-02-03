@@ -7,7 +7,7 @@ import { Screen } from 'components/Screen';
 import { ReturnButton } from 'components/ReturnButton';
 import FollowersList from '@/Followers/components/FollowersList';
 import FollowingList from '@/Followers/components/FollowingList';
-import { COLORS } from 'constants/colors';
+import { useTheme } from 'context/ThemeContext';
 
 // Definimos las escenas (componentes a renderizar)
 const renderScene = SceneMap({
@@ -18,6 +18,7 @@ const renderScene = SceneMap({
 export default function FollowersScreen() {
   const layout = useWindowDimensions();
   const { username, page } = useLocalSearchParams<{ username?: string; page?: string }>();
+  const { colors } = useTheme();
 
   // Índice: 0 para followers, 1 para following
   const [index, setIndex] = useState(page === 'following' ? 1 : 0);
@@ -31,9 +32,9 @@ export default function FollowersScreen() {
   const renderTabBar = (props: any) => (
     <TabBar
       {...props}
-      activeColor={COLORS.primaryText} // O usa tu color primaryText
-      inactiveColor={COLORS.placeholderText}// O usa tu color secondaryText
-      indicatorStyle={{ backgroundColor: COLORS.secondaryText, height: 2 }} // La barra animada
+      activeColor={colors.primaryText} // O usa tu color primaryText
+      inactiveColor={colors.placeholderText}// O usa tu color secondaryText
+      indicatorStyle={{ backgroundColor: colors.secondaryText, height: 2 }} // La barra animada
       style={{ backgroundColor: 'transparent', elevation: 0, shadowOpacity: 0, borderBottomWidth: 1, borderBottomColor: '#e5e7eb' }}
       renderLabel={({ route, focused }: any) => (
         <Text className={`text-base font-semibold ${focused ? 'text-primaryText' : 'text-secondaryText'}`}>

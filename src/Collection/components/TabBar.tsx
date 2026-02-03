@@ -1,8 +1,9 @@
-import { COLORS } from "constants/colors";
+import { useTheme } from "context/ThemeContext";
 import { Text, View } from "react-native";
 import { TabBar, TabBarProps } from "react-native-tab-view";
 
 export default function renderTabBar(props: TabBarProps<any>) {
+	const { colors } = useTheme();
 	return (
 		<View className="py-2 bg-transparent">
 		  
@@ -13,7 +14,7 @@ export default function renderTabBar(props: TabBarProps<any>) {
 		  activeColor={'white'}
 		  inactiveColor={'#94a3b8'}
 		  indicatorStyle={{ 
-			backgroundColor: COLORS.secondary, 
+			backgroundColor: colors.secondary, 
 			height: '100%', 
 			borderRadius: 6, 
 		  }}

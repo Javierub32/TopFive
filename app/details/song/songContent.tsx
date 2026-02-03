@@ -4,14 +4,15 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from 'constants/colors';
 import { Song } from 'app/types/Content';
 import { ReturnButton } from 'components/ReturnButton';
+import { useTheme } from 'context/ThemeContext';
 
 export default function SongDetail() {
   const { songData } = useLocalSearchParams();
   const router = useRouter();
   const song: Song = JSON.parse(songData as string);
+  const { colors } = useTheme();
 
   const openForm = (song: Song) => {
 	router.push({
@@ -78,7 +79,7 @@ export default function SongDetail() {
                 Artista
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="account-music" size={24} color={COLORS.primary} />
+                <MaterialCommunityIcons name="account-music" size={24} color={colors.primary} />
                 <Text className="text-secondaryText text-base ml-3">
                   {song.autor}
                 </Text>
@@ -92,7 +93,7 @@ export default function SongDetail() {
                 Álbum
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="album" size={24} color={COLORS.primary} />
+                <MaterialCommunityIcons name="album" size={24} color={colors.primary} />
                 <Text className="text-secondaryText text-base ml-3">
                   {song.album}
                 </Text>
@@ -106,7 +107,7 @@ export default function SongDetail() {
                 Fecha de Lanzamiento
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="calendar" size={24} color={COLORS.primary} />
+                <MaterialCommunityIcons name="calendar" size={24} color={colors.primary} />
                 <Text className="text-secondaryText text-base ml-3">
                   {new Date(song.releaseDate).toLocaleDateString('es-ES', {
                     year: 'numeric',

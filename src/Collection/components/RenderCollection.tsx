@@ -1,10 +1,11 @@
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { CollectionGroup } from './CollectionGroup'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from 'constants/colors';
+import { useTheme } from 'context/ThemeContext';
 
 export const RenderCollection = ({ title, data, total, category, onPressItem, onPressTitle }: any) => {
   const safeData = data || [];
+  const { colors } = useTheme();
 
   return (
     <View className="mb-4">
@@ -16,7 +17,7 @@ export const RenderCollection = ({ title, data, total, category, onPressItem, on
         <View className="px-0 mb-1">
           <Text className="text-xl font-bold text-primaryText">
             {title} <Text className="text-sm font-normal text-secondaryText">({total})</Text>
-            <MaterialCommunityIcons name="chevron-right" size={14} color={COLORS.secondaryText} />
+            <MaterialCommunityIcons name="chevron-right" size={14} color={colors.secondaryText} />
           </Text>
         </View>
       </TouchableOpacity>
@@ -41,7 +42,7 @@ export const RenderCollection = ({ title, data, total, category, onPressItem, on
           </Text>
         }
       />
-      <View className="mt-3 mx-0 h-[1px] " style={{ backgroundColor: COLORS.placeholderText }} />
+      <View className="mt-3 mx-0 h-[1px] " style={{ backgroundColor: colors.placeholderText }} />
     </View>
   );
 };

@@ -4,13 +4,14 @@ import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { SongResource } from 'app/types/Resources';
-import { COLORS } from 'constants/colors';
 import { ReturnButton } from 'components/ReturnButton';
 import { useResource } from 'hooks/useResource';
+import { useTheme } from 'context/ThemeContext';
 
 export default function SongDetail() {
   const { item } = useLocalSearchParams();
   const {borrarRecurso} = useResource();
+  const {colors} = useTheme();
   
   let songResource: SongResource | null = null;
   
@@ -107,11 +108,11 @@ export default function SongDetail() {
             {songResource.fechaEscucha && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
                 <Text className="text-title text-sm font-bold mb-2 uppercase">Fecha de escucha</Text>
-                <View className="flex-row items-center"><MaterialCommunityIcons name="calendar-check" size={20} color={COLORS.primary} /><Text className="text-primaryText text-sm ml-2">{new Date(songResource.fechaEscucha).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</Text></View>
+                <View className="flex-row items-center"><MaterialCommunityIcons name="calendar-check" size={20} color={colors.primary} /><Text className="text-primaryText text-sm ml-2">{new Date(songResource.fechaEscucha).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</Text></View>
               </View>
             )}
-            {contenidocancion.autor && (<View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Artista</Text><View className="flex-row items-center"><MaterialCommunityIcons name="account-music" size={24} color={COLORS.primary} /><Text className="text-primaryText text-base ml-2">{contenidocancion.autor}</Text></View></View>)}
-            {contenidocancion.albumTitulo && (<View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Álbum</Text><View className="flex-row items-center"><MaterialCommunityIcons name="album" size={24} color={COLORS.primary} /><Text className="text-primaryText text-base ml-2">{contenidocancion.albumTitulo}</Text></View></View>)}
+            {contenidocancion.autor && (<View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Artista</Text><View className="flex-row items-center"><MaterialCommunityIcons name="account-music" size={24} color={colors.primary} /><Text className="text-primaryText text-base ml-2">{contenidocancion.autor}</Text></View></View>)}
+            {contenidocancion.albumTitulo && (<View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Álbum</Text><View className="flex-row items-center"><MaterialCommunityIcons name="album" size={24} color={colors.primary} /><Text className="text-primaryText text-base ml-2">{contenidocancion.albumTitulo}</Text></View></View>)}
             {contenidocancion.genero && contenidocancion.genero.length > 0 && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
                 <Text className="text-title text-sm font-bold mb-2 uppercase">Géneros</Text>
@@ -119,7 +120,7 @@ export default function SongDetail() {
               </View>
             )}
             {songResource.reseña && (<View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Tu reseña</Text><Text className="text-secondaryText text-base leading-6">{songResource.reseña}</Text></View>)}
-            <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Agregado a tu colección</Text><View className="flex-row items-center"><MaterialCommunityIcons name="calendar-plus" size={20} color={COLORS.primary} /><Text className="text-primaryText text-sm ml-2">{new Date(songResource.fechacreacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</Text></View></View>
+            <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Agregado a tu colección</Text><View className="flex-row items-center"><MaterialCommunityIcons name="calendar-plus" size={20} color={colors.primary} /><Text className="text-primaryText text-sm ml-2">{new Date(songResource.fechacreacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</Text></View></View>
           </View>
         </View>
       </ScrollView>

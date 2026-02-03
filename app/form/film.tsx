@@ -7,8 +7,8 @@ import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
-import { COLORS } from 'constants/colors';
 import { FilmResource } from 'app/types/Resources';
+import { useTheme } from 'context/ThemeContext';
 
 interface Film {
   id: number;
@@ -24,6 +24,7 @@ export default function FilmForm() {
   const { filmData, item } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
+  const { colors } = useTheme();
   
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
@@ -332,7 +333,7 @@ export default function FilmForm() {
               value={reseña}
               onChangeText={setReseña}
               placeholder="Escribe tu opinión sobre la película..."
-              placeholderTextColor={COLORS.placeholderText}
+              placeholderTextColor={colors.placeholderText}
               multiline
               numberOfLines={4}
               maxLength={500}

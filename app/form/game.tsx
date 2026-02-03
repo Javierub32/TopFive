@@ -7,8 +7,8 @@ import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
-import { COLORS } from 'constants/colors';
 import { GameResource } from 'app/types/Resources';
+import { useTheme } from 'context/ThemeContext';
 
 interface Game {
   id: number;
@@ -30,6 +30,7 @@ export default function GameForm() {
   const { gameData, item } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
+  const { colors } = useTheme();
   
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
@@ -305,7 +306,7 @@ export default function GameForm() {
                      }
                   }}
                   placeholder="0"
-                  placeholderTextColor={COLORS.placeholderText}
+                  placeholderTextColor={colors.placeholderText}
                   keyboardType="numeric"
                   maxLength={5}
                   className="flex-1 rounded-lg border border-borderButton bg-surfaceButton p-3 text-base text-primaryText"
@@ -438,7 +439,7 @@ export default function GameForm() {
               value={reseña}
               onChangeText={setReseña}
               placeholder="Escribe tu opinión sobre el videojuego..."
-              placeholderTextColor={COLORS.placeholderText}
+              placeholderTextColor={colors.placeholderText}
               multiline
               numberOfLines={4}
               maxLength={500}

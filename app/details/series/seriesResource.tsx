@@ -4,13 +4,14 @@ import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { SeriesResource } from 'app/types/Resources';
-import { COLORS } from 'constants/colors';
 import { ReturnButton } from 'components/ReturnButton';
 import { useResource } from 'hooks/useResource';
+import { useTheme } from 'context/ThemeContext';
 
 export default function SeriesDetail() {
   const { item } = useLocalSearchParams();
   const {borrarRecurso} = useResource();
+  const { colors } = useTheme();    
 
   
   let seriesResource: SeriesResource | null = null;
@@ -139,14 +140,14 @@ export default function SeriesDetail() {
             )}
             <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
               <Text className="text-title text-sm font-bold mb-2 uppercase">Progreso</Text>
-              <View className="flex-row items-center"><MaterialCommunityIcons name="television-play" size={24} color={COLORS.primary} /><Text className="text-primaryText text-lg font-bold ml-2">T{seriesResource.temporadaActual} - E{seriesResource.episodioActual}</Text></View>
+              <View className="flex-row items-center"><MaterialCommunityIcons name="television-play" size={24} color={colors.primary} /><Text className="text-primaryText text-lg font-bold ml-2">T{seriesResource.temporadaActual} - E{seriesResource.episodioActual}</Text></View>
             </View>
             {(seriesResource.fechaInicio || seriesResource.fechaFin) && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
                 <Text className="text-title text-sm font-bold mb-3 uppercase">Periodo de visualización</Text>
                 <View className="gap-2">
-                  {seriesResource.fechaInicio && (<View className="flex-row items-center"><MaterialCommunityIcons name="calendar-start" size={20} color={COLORS.primary} /><Text className="text-secondaryText text-sm ml-2 mr-2">Inicio:</Text><Text className="text-primaryText text-sm font-semibold">{new Date(seriesResource.fechaInicio).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</Text></View>)}
-                  {seriesResource.fechaFin && (<View className="flex-row items-center"><MaterialCommunityIcons name="calendar-end" size={20} color={COLORS.primary} /><Text className="text-secondaryText text-sm ml-2 mr-2">Fin:</Text><Text className="text-primaryText text-sm font-semibold">{new Date(seriesResource.fechaFin).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</Text></View>)}
+                  {seriesResource.fechaInicio && (<View className="flex-row items-center"><MaterialCommunityIcons name="calendar-start" size={20} color={colors.primary} /><Text className="text-secondaryText text-sm ml-2 mr-2">Inicio:</Text><Text className="text-primaryText text-sm font-semibold">{new Date(seriesResource.fechaInicio).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</Text></View>)}
+                  {seriesResource.fechaFin && (<View className="flex-row items-center"><MaterialCommunityIcons name="calendar-end" size={20} color={colors.primary} /><Text className="text-secondaryText text-sm ml-2 mr-2">Fin:</Text><Text className="text-primaryText text-sm font-semibold">{new Date(seriesResource.fechaFin).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</Text></View>)}
                 </View>
               </View>
             )}
@@ -158,7 +159,7 @@ export default function SeriesDetail() {
             )}
             {contenidoserie.descripcion && (<View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Descripción</Text><Text className="text-secondaryText text-base leading-6">{contenidoserie.descripcion}</Text></View>)}
             {seriesResource.reseña && (<View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Tu reseña</Text><Text className="text-secondaryText text-base leading-6">{seriesResource.reseña}</Text></View>)}
-            <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Agregado a tu colección</Text><View className="flex-row items-center"><MaterialCommunityIcons name="calendar-plus" size={20} color={COLORS.primary} /><Text className="text-primaryText text-sm ml-2">{new Date(seriesResource.fechacreacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</Text></View></View>
+            <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Agregado a tu colección</Text><View className="flex-row items-center"><MaterialCommunityIcons name="calendar-plus" size={20} color={colors.primary} /><Text className="text-primaryText text-sm ml-2">{new Date(seriesResource.fechacreacion).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</Text></View></View>
           </View>
         </View>
       </ScrollView>

@@ -4,14 +4,15 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from 'constants/colors';
 import { Game } from 'app/types/Content';
 import { ReturnButton } from 'components/ReturnButton';
+import { useTheme } from 'context/ThemeContext';
 
 export default function GameDetail() {
   const { gameData } = useLocalSearchParams();
   const router = useRouter();
   const game: Game = JSON.parse(gameData as string);
+  const { colors } = useTheme();
 
   const openForm = (game: Game) => {
 	router.push({
@@ -86,7 +87,7 @@ export default function GameDetail() {
                 Desarrollador
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="domain" size={24} color={COLORS.primary} />
+                <MaterialCommunityIcons name="domain" size={24} color={colors.primary} />
                 <Text className="text-secondaryText text-base ml-3">
                   {game.autor}
                 </Text>
@@ -126,7 +127,7 @@ export default function GameDetail() {
                 Fecha de Lanzamiento
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="calendar" size={24} color={COLORS.primary} />
+                <MaterialCommunityIcons name="calendar" size={24} color={colors.primary} />
                 <Text className="text-secondaryText text-base ml-3">
                   {new Date(game.releaseDate).toLocaleDateString('es-ES', {
                     year: 'numeric',

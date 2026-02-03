@@ -8,8 +8,9 @@ import { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
-import { COLORS } from 'constants/colors';
 import { BookResource } from 'app/types/Resources';
+import { useTheme } from 'context/ThemeContext';
+
 
 interface Book {
   id: number | null;
@@ -29,6 +30,7 @@ export default function BookForm() {
   const { bookData, item } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
+  const { colors } = useTheme();
   
   // Si es item, se edita, si no, es nuevo
   const editando = !!item;
@@ -302,7 +304,7 @@ export default function BookForm() {
                 }
               }}
               placeholder="Número de páginas"
-              placeholderTextColor={COLORS.placeholderText}
+              placeholderTextColor={colors.placeholderText}
               keyboardType="numeric"
               maxLength={4}
               className="rounded-lg border border-borderButton bg-surfaceButton p-3 text-base text-primaryText"
@@ -406,7 +408,7 @@ export default function BookForm() {
               value={reseña}
               onChangeText={setReseña}
               placeholder="Escribe tu opinión sobre el libro..."
-              placeholderTextColor={COLORS.placeholderText}
+              placeholderTextColor={colors.placeholderText}
               multiline
               numberOfLines={4}
               maxLength={500}

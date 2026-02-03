@@ -4,8 +4,6 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Feather from '@expo/vector-icons/Feather';
 
-import { COLORS } from 'constants/colors';
-
 export const SocialIcon = (props) => (
   <FontAwesome name="users" size={24} color="black"  {...props} />
 );
@@ -39,23 +37,23 @@ export const CardsIcon = (props) => (
 );
 
 export const BookIcon = (props) => (
-  <FontAwesome5 name="book" size={24} color={COLORS.primaryDark} {...props}/>
+  <FontAwesome5 name="book" size={24} color="white" {...props}/>
 );
 
 export const FilmIcon = (props) => (
-  <FontAwesome name="film" size={24} color={COLORS.primaryDark} {...props}/>
+  <FontAwesome name="film" size={24} color="white" {...props}/>
 );
 
 export const ShowIcon = (props) => (
-  <MaterialCommunityIcons name="television-play" size={24} color={COLORS.primaryDark} {...props}/>
+  <MaterialCommunityIcons name="television-play" size={24} color="white" {...props}/>
 );
 
 export const MusicIcon = (props) => (
-  <FontAwesome name="music" size={24} color={COLORS.primaryDark} {...props}/>
+  <FontAwesome name="music" size={24} color="white" {...props}/>
 );
 
 export const GameIcon = (props) => (
-  <Ionicons name="game-controller" size={24} color={COLORS.primaryDark} {...props}/>
+  <Ionicons name="game-controller" size={24} color="white" {...props}/>
 );
 
 export const LeftArrowIcon = (props) => (

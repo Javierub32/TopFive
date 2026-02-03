@@ -4,14 +4,15 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from 'constants/colors';
 import { Series } from 'app/types/Content';
 import { ReturnButton } from 'components/ReturnButton';
+import { useTheme } from 'context/ThemeContext';
 
 export default function SeriesDetail() {
   const { seriesData } = useLocalSearchParams();
   const router = useRouter();
   const series: Series = JSON.parse(seriesData as string);
+  const { colors } = useTheme();  
 
   const openForm = (series: Series) => {
 	router.push({
@@ -87,7 +88,7 @@ export default function SeriesDetail() {
                 Fecha de Estreno
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="calendar" size={24} color={COLORS.primary} />
+                <MaterialCommunityIcons name="calendar" size={24} color={colors.primary} />
                 <Text className="text-secondaryText text-base ml-3">
                   {new Date(series.releaseDate).toLocaleDateString('es-ES', {
                     year: 'numeric',
@@ -105,7 +106,7 @@ export default function SeriesDetail() {
                 Fecha de Finalización
               </Text>
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="calendar-check" size={24} color={COLORS.primary} />
+                <MaterialCommunityIcons name="calendar-check" size={24} color={colors.primary} />
                 <Text className="text-secondaryText text-base ml-3">
                   {new Date(series.ended).toLocaleDateString('es-ES', {
                     year: 'numeric',

@@ -4,14 +4,15 @@ import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { FilmResource } from 'app/types/Resources';
-import { COLORS } from 'constants/colors';
 import { ReturnButton } from 'components/ReturnButton';
 import { useResource } from 'hooks/useResource';
+import { useTheme } from 'context/ThemeContext';
 
 
 export default function FilmDetail() {
   const { item } = useLocalSearchParams();
   const {borrarRecurso} = useResource();
+  const {colors} = useTheme();
   
   let filmResource: FilmResource | null = null;
     
@@ -200,7 +201,7 @@ export default function FilmDetail() {
                   Fecha de visionado
                 </Text>
                 <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="calendar-check" size={20} color={COLORS.primary} />
+                  <MaterialCommunityIcons name="calendar-check" size={20} color={colors.primary} />
                   <Text className="text-primaryText text-sm ml-2">
                     {new Date(filmResource.fechaVisionado).toLocaleDateString('es-ES', {
                       year: 'numeric',
@@ -242,7 +243,7 @@ export default function FilmDetail() {
                 Agregado a tu colección
               </Text>
               <View className="flex-row items-center">
-                <MaterialCommunityIcons name="calendar-plus" size={20} color={COLORS.primary} />
+                <MaterialCommunityIcons name="calendar-plus" size={20} color={colors.primary} />
                 <Text className="text-primaryText text-sm ml-2">
                   {new Date(filmResource.fechacreacion).toLocaleDateString('es-ES', {
                     year: 'numeric',

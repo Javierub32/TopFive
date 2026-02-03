@@ -4,11 +4,12 @@ import { UserResultItem } from "@/Search/components/UserResultItem";
 import { router, useLocalSearchParams } from "expo-router";
 import { LoadingIndicator } from "components/LoadingIndicator";
 import { CancelIcon } from "components/Icons";
-import { COLORS } from "constants/colors";
+import { useTheme } from "context/ThemeContext";
 
 export default function FollowersList() {
 	const { username } = useLocalSearchParams<{ username: string }>();
 	const { loading, followers, handleRemovePress, ownList } = useFollowers(username);
+	const { colors } = useTheme();
 
 	if (loading) {
 		return <LoadingIndicator />;
@@ -28,7 +29,7 @@ export default function FollowersList() {
 				</View>
 				{ownList && 
 				<TouchableOpacity onPress={() => handleRemovePress(item.username, item.id)}>
-					<CancelIcon color={COLORS.primaryText} size={28} />
+					<CancelIcon color={colors.primaryText} size={28} />
 				</TouchableOpacity>
 				}
 			</View>

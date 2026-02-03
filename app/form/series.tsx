@@ -305,7 +305,7 @@ export default function SeriesForm() {
                     setTemporadaActual(numValue > 10000 ? '10000' : text.replace(/[^0-9]/g, ''));
                   }}
                   placeholder="1"
-                  placeholderTextColor={COLORS.placeholderText}
+                  placeholderTextColor={colors.placeholderText}
                   keyboardType="numeric"
                   maxLength={5}
                   className="rounded-lg border border-borderButton bg-surfaceButton p-3 text-center text-base text-primaryText"
@@ -320,7 +320,7 @@ export default function SeriesForm() {
                     setEpisodioActual(numValue > 10000 ? '10000' : text.replace(/[^0-9]/g, ''));
                   }}
                   placeholder="1"
-                  placeholderTextColor={COLORS.placeholderText}
+                  placeholderTextColor={colors.placeholderText}
                   keyboardType="numeric"
                   maxLength={5}
                   className="rounded-lg border border-borderButton bg-surfaceButton p-3 text-center text-base text-primaryText"
@@ -452,7 +452,7 @@ export default function SeriesForm() {
               value={reseña}
               onChangeText={setReseña}
               placeholder="Escribe tu opinión sobre la serie..."
-              placeholderTextColor={COLORS.placeholderText}
+              placeholderTextColor={colors.placeholderText}
               multiline
               numberOfLines={4}
               maxLength={500}

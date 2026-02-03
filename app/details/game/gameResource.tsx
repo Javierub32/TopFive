@@ -4,14 +4,15 @@ import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { GameResource } from 'app/types/Resources';
-import { COLORS } from 'constants/colors';
 import { ReturnButton } from 'components/ReturnButton';
 import { useResource } from 'hooks/useResource';
+import { useTheme } from 'context/ThemeContext';
 
 
 export default function GameDetail() {
   const { item } = useLocalSearchParams();
   const {borrarRecurso} = useResource();
+  const { colors } = useTheme();
 
   let gameResource: GameResource | null = null;
     
@@ -187,7 +188,7 @@ export default function GameDetail() {
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
                 <Text className="text-title text-sm font-bold mb-2 uppercase">Dificultad</Text>
                 <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="speedometer" size={24} color={COLORS.primary} />
+                  <MaterialCommunityIcons name="speedometer" size={24} color={colors.primary} />
                   <Text className="text-primaryText text-lg font-bold ml-2">{gameResource.dificultad}</Text>
                 </View>
               </View>
@@ -199,7 +200,7 @@ export default function GameDetail() {
                 <View className="gap-2">
                   {gameResource.fechaInicio && (
                     <View className="flex-row items-center">
-                      <MaterialCommunityIcons name="calendar-start" size={20} color={COLORS.primary} />
+                      <MaterialCommunityIcons name="calendar-start" size={20} color={colors.primary} />
                       <Text className="text-secondaryText text-sm ml-2 mr-2">Inicio:</Text>
                       <Text className="text-primaryText text-sm font-semibold">
                         {new Date(gameResource.fechaInicio).toLocaleDateString('es-ES', {
@@ -210,7 +211,7 @@ export default function GameDetail() {
                   )}
                   {gameResource.fechaFin && (
                     <View className="flex-row items-center">
-                      <MaterialCommunityIcons name="calendar-end" size={20} color={COLORS.primary} />
+                      <MaterialCommunityIcons name="calendar-end" size={20} color={colors.primary} />
                       <Text className="text-secondaryText text-sm ml-2 mr-2">Fin:</Text>
                       <Text className="text-primaryText text-sm font-semibold">
                         {new Date(gameResource.fechaFin).toLocaleDateString('es-ES', {
@@ -227,7 +228,7 @@ export default function GameDetail() {
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
                 <Text className="text-title text-sm font-bold mb-2 uppercase">Desarrollador</Text>
                 <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="domain" size={24} color={COLORS.primary} />
+                  <MaterialCommunityIcons name="domain" size={24} color={colors.primary} />
                   <Text className="text-primaryText text-base ml-2">{contenidovideojuego.autor}</Text>
                 </View>
               </View>
@@ -281,7 +282,7 @@ export default function GameDetail() {
             <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
               <Text className="text-title text-sm font-bold mb-2 uppercase">Agregado a tu colección</Text>
               <View className="flex-row items-center">
-                <MaterialCommunityIcons name="calendar-plus" size={20} color={COLORS.primary} />
+                <MaterialCommunityIcons name="calendar-plus" size={20} color={colors.primary} />
                 <Text className="text-primaryText text-sm ml-2">
                   {new Date(gameResource.fechacreacion).toLocaleDateString('es-ES', {
                     year: 'numeric', month: 'long', day: 'numeric'
