@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { COLORS } from 'constants/colors';
+import { useTheme } from 'context/ThemeContext';
 
 // Frases aleatorias con iconos - fuera del componente para mejor rendimiento
 const frasesConIconos = [
@@ -22,6 +22,8 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  
+  const { colors } = useTheme();
 
   // Seleccionar una frase aleatoria - se ejecuta cada vez que se renderiza el componente
   const fraseAleatoria = useState(() => 
@@ -40,53 +42,54 @@ export default function Login() {
     }
   };
 
+
   return (
     <View className='flex-1'>
       <LinearGradient
-        colors={[COLORS.background, COLORS.secondary, COLORS.primaryDark]}
+        colors={[colors.background, colors.secondary, colors.primaryVariant]}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}
       >
         <View style={{ width: '100%', maxWidth: 550 }}>
           {/* Título con icono */}
           <View className="flex-row items-center justify-center mb-4">
-            <View className="bg-white/20 rounded-full p-3 mr-3">
-              <MaterialCommunityIcons name={fraseAleatoria.icono as any} size={40} color="white" />
+            <View className="rounded-full p-3 mr-3" style= {{backgroundColor: `${colors.primaryText}20`}}>
+              <MaterialCommunityIcons name={fraseAleatoria.icono as any} size={40} color={colors.primaryText} />
             </View>
-            <Text style={{fontSize: 24, fontWeight: 'bold', color: 'white'}}>
+            <Text style={{fontSize: 24, fontWeight: 'bold', color: colors.primaryText}}>
               TopFive
             </Text>
           </View>
           
           {/* Frase aleatoria */}
-          <Text style={{fontSize: 14, marginBottom: 20, textAlign: 'center', color: 'white', opacity: 0.9, fontStyle: 'italic'}}>
+          <Text style={{fontSize: 14, marginBottom: 20, textAlign: 'center', color: colors.primaryText, opacity: 0.9, fontStyle: 'italic'}}>
             {" " +fraseAleatoria.texto}
           </Text>
           
-          <View className="bg-white/95 rounded-3xl p-6 shadow-2xl">
+          <View className="rounded-3xl p-6 shadow-2xl" style={{backgroundColor: colors.background}}>
               {/* Email Input */}
               <View className="mb-4">
-                <Text className="text-black-700 font-semibold mb-2 ml-1">Email</Text>
-                <View className="flex-row items-center bg-gray-100 rounded-xl px-4 py-3">
-                  <MaterialCommunityIcons name="email-outline" size={24} color="#9CA3AF" />
+                <Text className="font-semibold mb-1 ml-1" style= {{color: colors.primaryText}}>Email</Text>
+                <View className="flex-row items-center rounded-xl px-4 py-3 mb-3" style= {{backgroundColor: colors.surfaceButton}}>
+                  <MaterialCommunityIcons name="email-outline" size={24} color={colors.secondaryText}/>
                   <TextInput 
                     placeholder="tu@email.com" 
+                    placeholderTextColor={colors.placeholderText}
                     value={email} 
                     onChangeText={setEmail} 
                     autoCapitalize="none"
                     keyboardType="email-address"
-                    className="flex-1 ml-3 text-base text-gray-800"
-                    placeholderTextColor="#9CA3AF"
+                    className="flex-1 ml-3 text-base" 
                   />
                 </View>
-                <Text className="text-black-700 font-semibold mb-2 ml-1">Contraseña</Text>
-                <View className="flex-row items-center bg-gray-100 rounded-xl px-4 py-3">
-                  <MaterialCommunityIcons name="lock-outline" size={24} color="#9CA3AF" />
+                <Text className="font-semibold mb-1 ml-1" style= {{color: colors.primaryText}}>Contraseña</Text>
+                <View className="flex-row items-center rounded-xl px-4 py-3" style= {{backgroundColor: colors.surfaceButton}}>
+                  <MaterialCommunityIcons name="lock-outline" size={24} color={colors.secondaryText} />
                   <TextInput 
                     placeholder="••••••••" 
                     value={password} 
                     onChangeText={setPassword} 
-                    className="flex-1 ml-3 text-base text-gray-800"
-                    placeholderTextColor="#9CA3AF"
+                    className="flex-1 ml-3 text-base"
+                    placeholderTextColor={colors.placeholderText}
                     secureTextEntry={!showPassword}
                   />
                   <TouchableOpacity 
@@ -96,7 +99,7 @@ export default function Login() {
                     <MaterialCommunityIcons 
                       name={showPassword ? "eye-off" : "eye"} 
                       size={24} 
-                      color="#9CA3AF" 
+                      color={colors.secondaryText}
                     />
                   </TouchableOpacity>
                 </View>
@@ -104,9 +107,10 @@ export default function Login() {
                   <TouchableOpacity
                     onPress={handleLogin}
                     disabled={loading}
-                    className="bg-accent overflow-hidden rounded-xl shadow-lg py-4 items-center"
+                    className="overflow-hidden rounded-xl shadow-lg py-4 items-center"
+                    style={{backgroundColor: colors.accent}}
                   >
-                    <Text className="text-primaryText font-bold text-lg">
+                    <Text className="font-bold text-lg" style={{color: colors.primaryText}}>
                       {loading ? 'Cargando...' : 'Iniciar Sesión'}
                     </Text>
                   </TouchableOpacity>
@@ -115,12 +119,13 @@ export default function Login() {
           </View>
 
           <View style={{ marginTop: 20, alignItems: 'center'}}>
-            <Text className="text-primaryText text-base mb-2">¿No tienes cuenta?</Text>
+            <Text className="text-base mb-2" style={{color: colors.primaryText}}>¿No tienes cuenta?</Text>
             <TouchableOpacity 
               onPress={() => router.push('/(auth)/register')}
-              className="bg-white/20 px-6 py-3 rounded-full"
+              className="px-6 py-3 rounded-full"
+                style={{backgroundColor: `${colors.surfaceButton}80`}}
             >
-              <Text className="text-primaryText font-semibold text-base">Regístrate aquí</Text>
+              <Text className="font-semibold text-base" style={{color: colors.primaryText}}>Regístrate aquí</Text>
             </TouchableOpacity>
           </View>
         </View>
