@@ -1,7 +1,7 @@
 import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CategoryKey } from '../hooks/useSearchContent';
-import { COLORS } from 'constants/colors';
+import { useTheme } from 'context/ThemeContext';
 
 interface SearchBarProps {
   value: string;
@@ -24,19 +24,22 @@ export const SearchBar = ({
   menuAbierto,
   setMenuAbierto,
 }: SearchBarProps) => {
+  const { colors } = useTheme();
+  
   return (
     <View className="relative z-50">
-      <View className="h-12 flex-row items-center rounded-lg border border-borderButton bg-surfaceButton shadow-lg">
+      <View className="h-12 flex-row items-center rounded-lg border shadow-lg" style={{borderColor: colors.borderButton, backgroundColor: colors.surfaceButton}}>
         {/* Icono Lupa */}
         <View className="justify-center pl-3">
-          <MaterialCommunityIcons name="magnify" size={20} color="#94a3b8" />
+          <MaterialCommunityIcons name="magnify" size={20} color={colors.secondaryText} />
         </View>
 
         {/* Input de texto */}
         <TextInput
-          className="h-full flex-1 px-3 text-base text-primaryText"
+          className="h-full flex-1 px-3 text-base"
+          style={{color: colors.primaryText}}
           placeholder={`Buscar ${selectedCategory}...`}
-          placeholderTextColor={COLORS.placeholderText}
+          placeholderTextColor={colors.placeholderText}
           value={value}
           onChangeText={onChangeText}
           onSubmitEditing={onSearch}
@@ -44,7 +47,7 @@ export const SearchBar = ({
         />
 
         {/* Separador vertical */}
-        <View className="h-6 w-[1px] bg-borderButton" />
+        <View className="h-6 w-[1px]" style={{backgroundColor: colors.borderButton}} />
 
         {/* Botón Selector de Categoría */}
         <TouchableOpacity
@@ -53,34 +56,37 @@ export const SearchBar = ({
           onPress={() => setMenuAbierto(!menuAbierto)}
         >
           <View className="max-w-[80px]">
-            <Text className="mr-1 font-medium text-gray-300" numberOfLines={1}>
+            <Text className="mr-1 font-medium" style={{color: colors.secondaryText}} numberOfLines={1}>
               {selectedCategory}
             </Text>
           </View>
           <MaterialCommunityIcons
             name={menuAbierto ? 'chevron-up' : 'chevron-down'}
             size={20}
-            color="#94a3b8"
+            color={colors.secondaryText}
           />
         </TouchableOpacity>
       </View>
 
       {/* Menú Desplegable */}
       {menuAbierto && (
-        <View className="absolute right-0 top-14 z-50 w-48 overflow-hidden rounded-lg border border-borderButton bg-surfaceButton shadow-xl">
+        <View className="absolute right-0 top-14 z-50 w-48 overflow-hidden rounded-lg border shadow-xl" style={{borderColor: colors.borderButton, backgroundColor: colors.surfaceButton}}>
           {OPCIONES.map((opcion, index) => (
             <TouchableOpacity
               key={opcion}
-              className={`flex-row items-center justify-between p-3 
-                ${index !== OPCIONES.length - 1 ? 'border-b border-borderButton' : ''} 
-                ${selectedCategory === opcion ? 'bg-borderButton' : 'active:bg-borderButton/50'}`}
+              className="flex-row items-center justify-between p-3"
+              style={{
+                borderBottomWidth: index !== OPCIONES.length - 1 ? 1 : 0,
+                borderBottomColor: colors.borderButton,
+                backgroundColor: selectedCategory === opcion ? colors.borderButton : 'transparent'
+              }}
               onPress={() => onCategoryChange(opcion)}
             >
-              <Text className={`text-base ${selectedCategory === opcion ? 'font-bold text-primaryText' : 'text-secondaryText'}`}>
+              <Text className="text-base" style={{fontWeight: selectedCategory === opcion ? 'bold' : 'normal', color: selectedCategory === opcion ? colors.primaryText : colors.secondaryText}}>
                 {opcion}
               </Text>
               {selectedCategory === opcion && (
-                <MaterialCommunityIcons name="check" size={16} color="#fff" />
+                <MaterialCommunityIcons name="check" size={16} color={colors.primaryText} />
               )}
             </TouchableOpacity>
           ))}

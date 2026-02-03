@@ -8,6 +8,8 @@ import { SearchBar } from 'src/Add/components/SearchBar';
 import { SearchResultItem } from 'src/Add/components/SearchResultItem';
 import { SearchPlaceholder } from 'src/Add/components/SearchPlaceholder';
 import { LoadingIndicator } from 'components/LoadingIndicator';
+import { useTheme } from 'context/ThemeContext';
+import { ThemedStatusBar } from 'components/ThemedStatusBar';
 
 export default function AddScreen() {
   const {
@@ -19,13 +21,13 @@ export default function AddScreen() {
     setResultados
   } = useSearchContent();
 
-  
+  const { colors } = useTheme();
 
   return (
     <Screen>
-      <StatusBar style="light" />
+      <ThemedStatusBar/>
       <View className="flex-1 px-4 pt-6">
-        <Text className="mb-4 text-3xl font-bold text-primaryText">Búsqueda</Text>
+        <Text className="mb-4 text-3xl font-bold" style={{color: colors.primaryText}}>Búsqueda</Text>
 
         <SearchBar 
           value={busqueda}
