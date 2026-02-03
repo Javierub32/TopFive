@@ -8,6 +8,7 @@ export const useResource = () => {
 
 	const { user } = useAuth();
 
+
 	useEffect(() => {
 		const fetchData = async () => {
 		};

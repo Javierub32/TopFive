@@ -9,6 +9,7 @@ import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { GameResource } from 'app/types/Resources';
 import { useTheme } from 'context/ThemeContext';
+import { useCollection } from 'context/CollectionContext';
 
 interface Game {
   id: number;
@@ -30,6 +31,8 @@ export default function GameForm() {
   const { gameData, item } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
+  const { refreshData } = useCollection();
+  
   const { colors } = useTheme();
   
   const editando = !!item;
@@ -171,6 +174,7 @@ export default function GameForm() {
         console.error('Error al insertar:', inventoryError);
       } else {
         Alert.alert('¡Éxito!', `Has añadido ${game.title} a tu colección.`);
+		refreshData();
         router.back();
       }
       }

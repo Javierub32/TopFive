@@ -7,10 +7,12 @@ import { SongResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
 import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
+import { useCollection } from 'context/CollectionContext';
 
 export default function SongDetail() {
   const { item } = useLocalSearchParams();
   const {borrarRecurso} = useResource();
+  const { refreshData } = useCollection();
   const {colors} = useTheme();
   
   let songResource: SongResource | null = null;
@@ -24,7 +26,11 @@ export default function SongDetail() {
   const handleDelete = () => {
 	if (songResource) {
 		Alert.alert('Recurso eliminado', 'Estás seguro de que quieres eliminar esta canción de tu colección?', [
-			{ text: 'Confirmar', onPress: () => {borrarRecurso(songResource.id, 'cancion'); router.replace({ pathname: '/Collection', params: { initialResource: 'Canciones' } })} },
+			{ text: 'Confirmar', onPress: async () => {
+				await borrarRecurso(songResource.id, 'cancion');
+				refreshData();
+				router.replace({ pathname: '/Collection', params: { initialResource: 'Canciones' } })
+			} },
 			{ text: 'Cancelar', style: 'cancel' }
 		]);
 	}

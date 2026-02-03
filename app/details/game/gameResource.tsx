@@ -7,11 +7,13 @@ import { GameResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
 import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
+import { useCollection } from 'context/CollectionContext';
 
 
 export default function GameDetail() {
   const { item } = useLocalSearchParams();
   const {borrarRecurso} = useResource();
+  const { refreshData } = useCollection();
   const { colors } = useTheme();
 
   let gameResource: GameResource | null = null;
@@ -26,7 +28,11 @@ export default function GameDetail() {
   const handleDelete = () => {
 	if (gameResource) {
 		Alert.alert('Recurso eliminado', 'Estás seguro de que quieres eliminar este videojuego de tu colección?', [
-			{ text: 'Confirmar', onPress: () => {borrarRecurso(gameResource.id, 'videojuego'); router.replace({ pathname: '/Collection', params: { initialResource: 'Videojuegos' } })} },
+			{ text: 'Confirmar', onPress: async () => {
+				await borrarRecurso(gameResource.id, 'videojuego');
+				refreshData();
+				router.replace({ pathname: '/Collection', params: { initialResource: 'Videojuegos' } })
+			} },
 			{ text: 'Cancelar', style: 'cancel' }
 		]);
 	}

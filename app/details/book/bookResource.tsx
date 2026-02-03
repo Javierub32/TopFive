@@ -7,11 +7,13 @@ import { BookResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
 import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
+import { useCollection } from 'context/CollectionContext';
 
 
 export default function BookDetail() {
   const { item } = useLocalSearchParams();
   const { borrarRecurso } = useResource();
+  const { refreshData } = useCollection();
   const { colors } = useTheme();
   
   let bookResource: BookResource | null = null;
@@ -25,7 +27,10 @@ export default function BookDetail() {
   const handleDelete = () => {
 	if (bookResource) {
 		Alert.alert('Recurso eliminado', 'Estás seguro de que quieres eliminar este libro de tu colección?', [
-			{ text: 'Confirmar', onPress: () => {borrarRecurso(bookResource.id, 'libro'); router.replace({ pathname: '/Collection', params: { initialResource: 'Libros' } })} },
+			{ text: 'Confirmar', onPress: async () => {
+				await borrarRecurso(bookResource.id, 'libro');
+				refreshData();
+				router.replace({ pathname: '/Collection', params: { initialResource: 'Libros' } })} },
 			{ text: 'Cancelar', style: 'cancel'}
 		]);
 	}

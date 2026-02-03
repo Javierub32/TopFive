@@ -9,6 +9,7 @@ import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { SongResource } from 'app/types/Resources';
 import { useTheme } from 'context/ThemeContext';
+import { useCollection } from 'context/CollectionContext';
 
 interface Song {
   id: number | null;
@@ -27,6 +28,8 @@ export default function SongForm() {
   const { songData, item } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
+  const { refreshData } = useCollection();
+  
   const { colors } = useTheme();
   
   const editando = !!item;
@@ -157,6 +160,7 @@ export default function SongForm() {
         console.error('Error al insertar:', inventoryError);
       } else {
         Alert.alert('¡Éxito!', `Has añadido ${song.title} a tu colección.`);
+		refreshData();
         router.back();
       }
       }

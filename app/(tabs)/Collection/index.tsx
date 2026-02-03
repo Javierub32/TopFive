@@ -15,7 +15,6 @@ import { CollectionProvider } from 'context/CollectionContext';
 
 export default function CollectionScreen() {
   return (
-	<CollectionProvider>
     <Screen>
       <StatusBar style="light" />
       <View className="flex-1 px-4 pt-6">
@@ -29,6 +28,5 @@ export default function CollectionScreen() {
         <ResourceList/>
       </View>
     </Screen>
-	</CollectionProvider>
   );
 }

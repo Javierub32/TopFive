@@ -9,6 +9,7 @@ import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { FilmResource } from 'app/types/Resources';
 import { useTheme } from 'context/ThemeContext';
+import { useCollection } from 'context/CollectionContext';
 
 interface Film {
   id: number;
@@ -24,6 +25,8 @@ export default function FilmForm() {
   const { filmData, item } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
+  const { refreshData } = useCollection();
+  
   const { colors } = useTheme();
   
   const editando = !!item;
@@ -161,6 +164,7 @@ export default function FilmForm() {
         console.error('Error al insertar:', inventoryError);
       } else {
         Alert.alert("¡Éxito!", `Has añadido a ${film.title} a tu colección.`);
+    	refreshData();
         router.back();
       }
       }

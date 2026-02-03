@@ -9,6 +9,7 @@ import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { SeriesResource } from 'app/types/Resources';
 import { useTheme } from 'context/ThemeContext';
+import { useCollection } from 'context/CollectionContext';
 
 interface Series {
   id: number;
@@ -26,6 +27,8 @@ export default function SeriesForm() {
   const { seriesData, item } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
+  const { refreshData } = useCollection();
+  
   const { colors } = useTheme();
 
   const isEditing = !!item;
@@ -171,6 +174,7 @@ export default function SeriesForm() {
         console.error('Error al insertar:', inventoryError);
       } else {
         Alert.alert('¡Éxito!', `Has añadido ${series.title} a tu colección.`);
+		refreshData();
         router.back();
       }
       }

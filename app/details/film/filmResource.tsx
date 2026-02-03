@@ -7,11 +7,13 @@ import { FilmResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
 import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
+import { useCollection } from 'context/CollectionContext';
 
 
 export default function FilmDetail() {
   const { item } = useLocalSearchParams();
   const {borrarRecurso} = useResource();
+  const { refreshData } = useCollection();
   const {colors} = useTheme();
   
   let filmResource: FilmResource | null = null;
@@ -25,7 +27,11 @@ export default function FilmDetail() {
   const handleDelete = () => {
 	if (filmResource) {
 		Alert.alert('Recurso eliminado', 'Estás seguro de que quieres eliminar esta película de tu colección?', [
-			{ text: 'Confirmar', onPress: () => {borrarRecurso(filmResource.id, 'pelicula'); router.replace({ pathname: '/Collection', params: { initialResource: 'Películas' } })} },
+			{ text: 'Confirmar', onPress: async () => {
+				await borrarRecurso(filmResource.id, 'pelicula');
+				refreshData();
+				router.replace({ pathname: '/Collection', params: { initialResource: 'Películas' } })
+			} },
 			{ text: 'Cancelar', style: 'cancel' }
 		]);
 	}

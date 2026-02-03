@@ -7,10 +7,12 @@ import { SeriesResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
 import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
+import { useCollection } from 'context/CollectionContext';
 
 export default function SeriesDetail() {
   const { item } = useLocalSearchParams();
   const {borrarRecurso} = useResource();
+  const { refreshData } = useCollection();
   const { colors } = useTheme();    
 
   
@@ -26,7 +28,11 @@ export default function SeriesDetail() {
   const handleDelete = () => {
 	if (seriesResource) {
 		Alert.alert('Recurso eliminado', 'Estás seguro de que quieres eliminar esta serie de tu colección?', [
-			{ text: 'Confirmar', onPress: () => {borrarRecurso(seriesResource.id, 'serie'); router.replace({ pathname: '/Collection', params: { initialResource: 'Series' } })} },
+			{ text: 'Confirmar', onPress: async () => {
+				await borrarRecurso(seriesResource.id, 'serie');
+				refreshData();
+				router.replace({ pathname: '/Collection', params: { initialResource: 'Series' } })
+			} },
 			{ text: 'Cancelar', style: 'cancel' }
 		]);
 	}

@@ -21,6 +21,7 @@ export const CollectionProvider = ({ children }: any) => {
   const [categoriaActual, setCategoriaActual] = useState(initialResource ? initialResource : 'Películas');
   const [loading, setLoading] = useState(false);
   const [menuCategoriaAbierto, setMenuCategoriaAbierto] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   // Datos por estado
   const [pendientes, setPendientes] = useState<any[]>([]);
@@ -62,12 +63,22 @@ export const CollectionProvider = ({ children }: any) => {
     try {
       const categoriaKey = categoriaActual as CategoryType;
       const fetchFunction = fetchMap[categoriaKey];
-      const pendientes = await fetchFunction(null, null, 'PENDIENTE', 5);
-      const enCurso = await fetchFunction(null, null, 'EN_CURSO', 5);
-      const completados = await fetchFunction(null, null, 'COMPLETADO', 5);
-      const totalPendientes = await calcularTotal(categoriaKey, 'PENDIENTE');
-      const totalEnCurso = await calcularTotal(categoriaKey, 'EN_CURSO');
-      const totalCompletados = await calcularTotal(categoriaKey, 'COMPLETADO');
+      const [
+        pendientes, 
+        enCurso, 
+        completados, 
+        totalPendientes, 
+        totalEnCurso, 
+        totalCompletados
+      ] = await Promise.all([
+        fetchFunction(null, null, 'PENDIENTE', 5),
+        fetchFunction(null, null, 'EN_CURSO', 5),
+        fetchFunction(null, null, 'COMPLETADO', 5),
+        calcularTotal(categoriaKey, 'PENDIENTE'),
+        calcularTotal(categoriaKey, 'EN_CURSO'),
+        calcularTotal(categoriaKey, 'COMPLETADO')
+      ]);
+
       setPendientes(pendientes || []);
       setEnCurso(enCurso || []);
       setCompletados(completados || []);
@@ -88,8 +99,16 @@ export const CollectionProvider = ({ children }: any) => {
   };
 
   useEffect(() => {
+    setInputBusqueda('');
+    setBusqueda('');
+    setData([]); 
+    
     fetchInitialData();
-  }, [categoriaActual]);
+  }, [categoriaActual, refreshTrigger]);
+
+  const refreshData = () => {
+    setRefreshTrigger(prev => prev + 1);
+  };
 
   const navigateToGrid = (title: any, type: any, category: any) => {
     router.push({
@@ -134,6 +153,7 @@ export const CollectionProvider = ({ children }: any) => {
         busqueda,
         setBusqueda,
 		data,
+		refreshData,
       }}>
       {children}
     </CollectionContext.Provider>

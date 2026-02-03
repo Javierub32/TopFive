@@ -2,11 +2,11 @@ import '../global.css';
 import { Slot, SplashScreen, useRouter, useSegments } from 'expo-router';
 import { useEffect, useCallback, useState } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
-import { ResourceProvider } from '../context/ResourceContext';
 import { View, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeProvider } from 'context/ThemeContext';
+import { CollectionProvider } from 'context/CollectionContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -81,9 +81,9 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <ThemeProvider>
-        <ResourceProvider>
+		<CollectionProvider>
           <InitialLayout />
-        </ResourceProvider>
+		</CollectionProvider>
       </ThemeProvider>
     </AuthProvider>
   );

@@ -10,6 +10,7 @@ import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { BookResource } from 'app/types/Resources';
 import { useTheme } from 'context/ThemeContext';
+import { useCollection } from 'context/CollectionContext';
 
 
 interface Book {
@@ -30,6 +31,7 @@ export default function BookForm() {
   const { bookData, item } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
+  const { refreshData } = useCollection();
   const { colors } = useTheme();
   
   // Si es item, se edita, si no, es nuevo
@@ -180,6 +182,7 @@ export default function BookForm() {
           console.error('Error al insertar:', inventoryError);
         } else {
           Alert.alert('¡Éxito!', `Has añadido ${book.title} a tu colección.`);
+		  refreshData();
           router.back();
         }
       }
