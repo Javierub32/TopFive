@@ -31,9 +31,9 @@ export default function SettingsScreen() {
             <ReturnButton route='/(tabs)/Profile' title='Configuración' />
             <View className="flex-1 p-4">
                 <Text className="text-lg pb-4" style= {{color: colors.secondaryText}}>Settings content goes here</Text>
-                <View className="flex-col justify-center space-y-2">
+                <View className="flex-col justify-center gap-2">
                     <Pressable
-                        className="w-full flex-row justify-between items-center rounded border-2 p-3"
+                        className="w-full flex-row justify-between items-center rounded-xl border-2 p-3"
                         style={{borderColor: colors.borderButton, backgroundColor: `${colors.buttonBackground}1A`}}
                         onPress={toggleTheme}>
                         <Text className="text-lg" style={{color: colors.primaryText}}>Alternar tema</Text>
@@ -41,7 +41,7 @@ export default function SettingsScreen() {
                     </Pressable>
 
                     <Pressable
-                        className="w-full flex-row justify-between items-center rounded border-2 bg-error/10 p-3"
+                        className="w-full flex-row justify-between items-center rounded-xl border-2 bg-error/10 p-3"
                         style={{borderColor: colors.error, backgroundColor: `${colors.error}1A`}}
                         onPress={signOut}>
                         <Text className="text-lg" style={{color: colors.primaryText}}>Cerrar sesión</Text>
