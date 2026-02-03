@@ -1,15 +1,16 @@
 import { View, Image, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from 'react';
+import { useTheme } from 'context/ThemeContext';
 
 interface Props {
   avatarUrl: string | null;
   size?: number;
 }
 
-export function UserAvatar({ avatarUrl, size = 90 }: Props) {
+export function UserAvatar({ avatarUrl }: Props) {
   const [isPressed, setIsPressed] = useState(false);
-  const radius = size / 2;
+  const { colors } = useTheme();
 
   return (
     <View style={{ position: 'relative' }}>
@@ -20,35 +21,34 @@ export function UserAvatar({ avatarUrl, size = 90 }: Props) {
         {avatarUrl ? (
           <Image
             source={{ uri: avatarUrl }}
-            style={{ width: size, height: size, borderRadius: radius }}
+            className="w-28 h-28 rounded-full border-2"
+            style={{borderColor: colors.background}}
           />
         ) : (
-          <View
+          <View 
+            className="w-28 h-28 rounded-full justify-center items-center border-2"
             style={{
-              width: size,
-              height: size,
-              borderRadius: radius,
-              backgroundColor: '#374151',
-              justifyContent: 'center',
-              alignItems: 'center',
+                backgroundColor: colors.surfaceButton,
+                borderColor: colors.background
             }}>
-            <MaterialCommunityIcons name="account" size={size * 0.55} color="#9CA3AF" />
+            <MaterialCommunityIcons name="account" size={60} color={colors.secondaryText} />
           </View>
         )}
       </TouchableOpacity>
 
       <Image
-        source={require('../../../assets/gorro-navideño.png')}
-        style={{
-          position: 'absolute',
-          top: isPressed ? -5 : -2,
-          right: isPressed ? -14 : -8,
-          width: isPressed ? size * 0.55 : size * 0.5,
-          height: isPressed ? size * 0.66 : size * 0.61,
-          transform: [{ rotate: '20deg' }],
-        }}
-        resizeMode="contain"
-      />
+          source={require('../../../assets/gorro-navideño.png')}
+          style={{
+            position: 'absolute',
+            top: isPressed ? -15 : -10,
+            right: isPressed ? -10 : -5,
+            width: isPressed ? 55 : 50,
+            height: isPressed ? 65 : 60,
+            transform: [{ rotate: '20deg' }],
+          }}
+          resizeMode="contain"
+          />
+
     </View>
   );
 }

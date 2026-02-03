@@ -1,6 +1,7 @@
 import { View, Text, Pressable } from 'react-native';
 import { ReactNode } from 'react';
 import { router } from 'expo-router';
+import { useTheme } from 'context/ThemeContext';
 
 interface Props {
   children: ReactNode;
@@ -17,6 +18,8 @@ export function ProfileData({
   followersCount,
   followingCount,
 }: Props) {
+  const { colors } = useTheme();
+
   return (
     <View className="p-4">
       {/* Se le pasa por props el avatar porque así podemos mostrar las estadísticas del usuario tanto con el perfil (puede actualizar su foto), como en la página de búsqueda (no se permite modificar la foto de otros usuarios) */}
@@ -30,8 +33,8 @@ export function ProfileData({
                 onPress={() => {
                   router.push(`/followers?username=${username}&page=followers`);
                 }}>
-                <Text className="text-lg font-bold text-primaryText">{followersCount}</Text>
-                <Text className="text-xs text-primaryText/60">Seguidores</Text>
+                <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>{followersCount}</Text>
+                <Text className="text-xs" style={{ color: colors.secondaryText }}>Seguidores</Text>
               </Pressable>
             </View>
             <View className="items-center">
@@ -39,8 +42,8 @@ export function ProfileData({
                 onPress={() => {
                   router.push(`/followers?username=${username}&page=following`);
                 }}>
-                <Text className="text-lg font-bold text-primaryText">{followingCount}</Text>
-                <Text className="text-xs text-primaryText/60">Siguiendo</Text>
+                <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>{followingCount}</Text>
+                <Text className="text-xs" style={{ color: colors.secondaryText }}>Siguiendo</Text>
               </Pressable>
             </View>
           </View>
@@ -49,7 +52,7 @@ export function ProfileData({
           <View>
             {/* Descripción */}
             {description && (
-              <Text className="text-sm leading-tight text-primaryText/80">{description}</Text>
+              <Text className="text-sm leading-tight" style={{ color: colors.secondaryText }}>{description}</Text>
             )}
           </View>
         </View>

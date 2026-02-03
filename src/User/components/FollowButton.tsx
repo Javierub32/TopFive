@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useTheme } from 'context/ThemeContext';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 interface FollowButtonProps {
@@ -14,13 +14,16 @@ export function FollowButton({
   handleFollow,
   cancelRequest,
 }: FollowButtonProps) {
+  const { colors } = useTheme();
+
   if (!isFollowed && !isRequested) {
     return (
       <View className='flex items-center'>
         <TouchableOpacity
-          className="items-center px-4 flex w-2/3 rounded-md bg-[#4150f7] py-2"
+          className="items-center px-4 flex w-2/3 rounded-md py-2"
+          style={{ backgroundColor: colors.accent }}
           onPress={handleFollow}>
-          <Text className="font-semibold text-white">Seguir</Text>
+          <Text className="font-semibold" style={{ color: colors.primaryText }}>Seguir</Text>
         </TouchableOpacity>
       </View>
     );
@@ -29,9 +32,10 @@ export function FollowButton({
     return (
       <View className='flex items-center'>
         <TouchableOpacity
-          className="items-center px-4 flex w-2/3 rounded-md bg-surfaceButton py-2"
+          className="items-center px-4 flex w-2/3 rounded-md py-2"
+          style={{ backgroundColor: colors.surfaceButton }}
           onPress={cancelRequest}>
-          <Text className="font-semibold text-white">Solicitud enviada</Text>
+          <Text className="font-semibold" style={{ color: colors.primaryText }}>Solicitud enviada</Text>
         </TouchableOpacity>
       </View>
     );
