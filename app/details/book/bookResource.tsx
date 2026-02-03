@@ -190,7 +190,7 @@ export default function BookDetail() {
                   Páginas leídas
                 </Text>
                 <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="book-open-page-variant" size={24} color={COLORS.primary} />
+                  <MaterialCommunityIcons name="book-open-page-variant" size={24} color={colors.primary} />
                   <Text className="text-primaryText text-lg font-bold ml-2">
                     {bookResource.paginasLeidas} páginas
                   </Text>
@@ -207,7 +207,7 @@ export default function BookDetail() {
                 <View className="gap-2">
                   {bookResource.fechaInicio && (
                     <View className="flex-row items-center">
-                      <MaterialCommunityIcons name="calendar-start" size={20} color={COLORS.primary} />
+                      <MaterialCommunityIcons name="calendar-start" size={20} color={colors.primary} />
                       <Text className="text-secondaryTextyText text-sm ml-2 mr-2">Inicio:</Text>
                       <Text className="text-primaryText text-sm font-semibold">
                         {new Date(bookResource.fechaInicio).toLocaleDateString('es-ES', {
@@ -220,7 +220,7 @@ export default function BookDetail() {
                   )}
                   {bookResource.fechaFin && (
                     <View className="flex-row items-center">
-                      <MaterialCommunityIcons name="calendar-end" size={20} color={COLORS.primary} />
+                      <MaterialCommunityIcons name="calendar-end" size={20} color={colors.primary} />
                       <Text className="text-secondaryTextyText text-sm ml-2 mr-2">Fin:</Text>
                       <Text className="text-primaryText text-sm font-semibold">
                         {new Date(bookResource.fechaFin).toLocaleDateString('es-ES', {
@@ -242,7 +242,7 @@ export default function BookDetail() {
                   Autor
                 </Text>
                 <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="account" size={24} color={COLORS.primary} />
+                  <MaterialCommunityIcons name="account" size={24} color={colors.primary} />
                   <Text className="text-primaryText text-base ml-2">
                     {contenidolibro.autor}
                   </Text>
@@ -298,7 +298,7 @@ export default function BookDetail() {
                 Agregado a tu colección
               </Text>
               <View className="flex-row items-center">
-                <MaterialCommunityIcons name="calendar-plus" size={20} color={COLORS.primary} />
+                <MaterialCommunityIcons name="calendar-plus" size={20} color={colors.primary} />
                 <Text className="text-primaryText text-sm ml-2">
                   {new Date(bookResource.fechacreacion).toLocaleDateString('es-ES', {
                     year: 'numeric',
