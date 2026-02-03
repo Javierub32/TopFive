@@ -69,3 +69,7 @@ export const CancelIcon = (props) => (
 export const AcceptIcon = (props) => (
   <Feather name="check" size={24} color="white" {...props} />
 );
+
+export const WrenchIcon = (props) => (
+  <MaterialCommunityIcons name="hammer-wrench" size={24} color="white" {...props} />
+);
