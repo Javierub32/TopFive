@@ -1,7 +1,8 @@
 import { View, Text, ScrollView} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import data from 'src/Home/data/content.json'
+import data from 'src/Home/data/content.json';
+import { useTheme } from 'context/ThemeContext';
 
 import FeaturedList from 'src/Home/components/featured-contents/FeaturedList';
 import FeaturedBooks from 'src/Home/components/featured-contents/FeaturedBooks';
@@ -11,12 +12,14 @@ import FeaturedSeries from 'src/Home/components/featured-contents/FeaturedSeries
 import FeaturedSongs from 'src/Home/components/featured-contents/FeaturedSongs';
 
 
+
 export default function HomeScreen() {
+	const { colors } = useTheme();
 	return (
 		<Screen>
 			<StatusBar style="light" />
 			<View className="px-4 pt-6">
-				<Text className="mb-4 text-3xl font-bold text-primaryText">Inicio</Text>
+				<Text className="mb-4 text-3xl font-bold" style={{color: colors.primaryText}}>Inicio</Text>
 			</View>
 
 			<ScrollView showsVerticalScrollIndicator={false} className="flex-1 mb-4">
