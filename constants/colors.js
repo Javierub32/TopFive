@@ -1,78 +1,93 @@
-const COLORS = {
-  //En modo oscuro
-  /*
-  // Tu color violeta principal (usado en Tabs activos, loaders, etc.)
-  primary: '#fc6703', 
-  secondary: '#428f9e',
-  accent: '#204879',
-  error: '#EF4444',
-  
-  // Variante oscura del primario (no se usa actualmente)
-  primaryDark: '#8a4517', 
+const COMMON_COLORS = {
+    // Colores comunes a ambos modos
 
-  // Fondo principal de la app
-  background: '#0a1223', 
+    //Colores principales de la paleta
+    primary: '#fc6703',
 
-  // Colores de texto
-  primaryText: '#ffffff',
-  secondaryText: '#9ca3af', 
-  placeholderText: '#64748b',
-  title: '#42909f',				// Titulos de las características de los recursos y de los contenidos (se podría cambiar a blanco)
+    //Colores especiales
+    error: '#EF4444',
+    success: '#10B981',
+    warning: '#F59E0B',
 
-  // Colores para los botones
-  borderButton: '#428f9e',  // Color del borde del botón
-  surfaceButton: '#1e293b', // Color de fondo de la barra de búsqueda y tarjetas
+    //Colores de texto
+    placeholderText: '#64748b',
+    title: '#42909f',     //Utilizado en los títulos de las secciones dentro del contenido
 
-  marker: 'rgb(88 28 135 / 0.4)', 	// Color de relleno para marcadores (calificaciones, num visualizaciones, etc)
-  markerText: '#fc6703', 			// Color para el texto dentro de los marcadores
+    //Colores de la barra del layout
+    tabBarActiveTintColor: '#fc6703', 
 
-  // Colores específicos para el TabBar
-  tabBarActiveTintColor: '#fc6703', 
-  tabBarInactiveTintColor: '#9ca3af',
-  tabBarBackgroundColor: '#1e293b',
-  tabBarBorderTopColor: 'rgba(252, 103, 3, 0.3)',
+    //Colores para elementos
+    marker: 'rgb(48 101 165 / 0.4)', 	// Color de bg para marcadores (calificaciones, num visualizaciones, etc)
+    
+    statsColor: '252, 103, 3', //Color de las barras de la gráfica (en la implementación se le añade una opacidad)
+  };
 
-  //Colores para gráficas del perfil
-  statsColor: '252, 103, 3',
-  statsLabelColor: '156, 163, 175',
-  */
+  export const DARK_MODE_COLORS = {
+    // Colores principales de la paleta
+    secondary: '#428f9e',
+    accent: '#204879',
+    
+    primaryVariant: '#8a4517', //Una variante más oscura del primario (usada en el fondo de login)
 
-  //En modo claro
-  // Tu color violeta principal (usado en Tabs activos, loaders, etc.)
-  primary: '#fc6703', 
-  secondary: '#61adbd',
-  accent: '#3065a5',
-  error: '#EF4444',
-  
-  // Variante oscura del primario (no se usa actualmente)
-  primaryDark: '#8a4517', 
+    // Fondo principal de la app
+    background: '#0a1223', 
 
-  // Fondo principal de la app
-  background: '#dbe3f5', 
+    // Colores de texto
+    primaryText: '#ffffff',
+    secondaryText: '#9ca3af', 
 
-  // Colores de texto
-  primaryText: '#000000',
-  secondaryText: '#4f5763', 
-  placeholderText: '#64748b',
-  title: '#42909f',				// Titulos de las características de los recursos y de los contenidos (se podría cambiar a blanco)
+    // Colores de la barra del layout
+    tabBarInactiveTintColor: '#9ca3af',
+    tabBarBackgroundColor: '#1e293b',
+    tabBarBorderTopColor: 'rgba(252, 103, 3, 0.5)',
 
-  // Colores para los botones
-  borderButton: '#61adbd',  // Color del borde del botón
-  surfaceButton: '#c5d0e2', // Color de fondo de la barra de búsqueda y tarjetas
+    // Colores para los elementos
+    borderButton: '#428f9e',  // Color del borde del botón
+    surfaceButton: '#1e293b', // Color de fondo de la barra de búsqueda y tarjetas
 
-  marker: 'rgb(88 28 135 / 0.4)', 	// Color de relleno para marcadores (calificaciones, num visualizaciones, etc)
-  markerText: '#fc6703', 			// Color para el texto dentro de los marcadores
+    markerText: '#9ca3af', 			// Color para el texto dentro de los marcadores
 
-  // Colores específicos para el TabBar
-  tabBarActiveTintColor: '#fc6703', 
-  tabBarInactiveTintColor: '#4f5763',
-  tabBarBackgroundColor: '#c5d0e2',
-  tabBarBorderTopColor: 'rgba(252, 103, 3, 0.5)',
+    statsLabelColor: '156, 163, 175', //Color para las etiquetas de la barra de la gráfica (en la implementación se añade opacidad)
 
-  //Colores para gráficas del perfil
-  statsColor: '252, 103, 3',
-  statsLabelColor: '79, 87, 99',
+    ...COMMON_COLORS
+  };
 
-};
+  export const LIGHT_MODE_COLORS = {
+    // Colores principales de la paleta
+    secondary: '#61adbd',
+    accent: '#3065a5',
+    
+    primaryVariant: '#d67f45', // Una variante más clara del color primario (utilizada en la página de login)
 
-module.exports = { COLORS };
+    // Fondo principal de la app
+    background: '#dbe3f5', 
+
+    // Colores de texto
+    primaryText: '#000000',
+    secondaryText: '#4f5763', 
+
+    // Colores específicos para el TabBar
+    tabBarInactiveTintColor: '#4f5763',
+    tabBarBackgroundColor: '#c5d0e2',
+    tabBarBorderTopColor: 'rgba(252, 103, 3, 0.5)',
+
+    // Colores para los elementos
+    borderButton: '#61adbd',  // Color del borde del botón
+    surfaceButton: '#c5d0e2', // Color de fondo de la barra de búsqueda y tarjetas
+
+    markerText: '#4f5763', 			// Color para el texto dentro de los marcadores
+
+    statsLabelColor: '79, 87, 99',  //Color para las etiquetas de la barra de la gráfica (en la implementación se añade opacidad)
+
+    ...COMMON_COLORS
+  };
+
+
+
+
+  const COLORS = DARK_MODE_COLORS;
+  module.exports = {
+    DARK_MODE_COLORS,
+    LIGHT_MODE_COLORS,
+    COLORS
+  };
