@@ -12,8 +12,12 @@ import { ProfileData } from '@/User/components/ProfileData';
 import { TopFiveSelector } from 'src/Profile/components/TopFiveSelector';
 import { router } from 'expo-router';
 import { LoadingIndicator } from 'components/LoadingIndicator';
+import { useTheme } from 'context/ThemeContext';
+import { ThemedStatusBar } from 'components/ThemedStatusBar';
 
 export default function ProfileScreen() {
+  const { colors } = useTheme();
+  
   const {
     user,
     userData,
@@ -40,23 +44,25 @@ export default function ProfileScreen() {
 
   return (
     <Screen>
-      <StatusBar style="light" />
+      <ThemedStatusBar/>
         <View className="flex-1 px-4 pt-6">
-          <Text className="mb-4 text-3xl font-bold text-primaryText">
+          <Text className="mb-4 text-3xl font-bold" style={{color: colors.primaryText}}>
             {userData?.username || 'Usuario'}
           </Text>
 
           {/* Botones de configuración y notificaciones */}
           <View className="absolute right-4 top-5 z-10 flex-row gap-x-2">
             <Pressable
-              className="rounded-full bg-primaryText/10 p-3"
+              className="rounded-full p-3"
+              style= {{backgroundColor: `${colors.primaryText}30`}}
               onPress={() => router.push('/notifications')}>
-              <MaterialIcons name="notifications-none" size={24} color="white" />
+              <MaterialIcons name="notifications-none" size={24} color={colors.primaryText} />
             </Pressable>
             <Pressable
-              className="rounded-full bg-primaryText/10 p-3"
+              className="rounded-full p-3"
+              style= {{backgroundColor: `${colors.primaryText}30`}}
               onPress={() => router.push('/settings')}>
-              <Feather name="settings" size={24} color="white" />
+              <Feather name="settings" size={24} color={colors.primaryText} />
             </Pressable>
           </View>
 

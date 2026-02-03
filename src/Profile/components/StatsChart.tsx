@@ -1,7 +1,7 @@
 import { View, Text, useWindowDimensions } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
 import { DateSelector } from './DateSelector';
-import { COLORS } from 'constants/colors';
+import { useTheme } from 'context/ThemeContext';
 
 export const StatsChart = ({
   data,
@@ -11,16 +11,17 @@ export const StatsChart = ({
   data: number[];
   selectedYear: number;
   setSelectedYear: (year: number) => void;
-}) => {
+}) => {  
   const { width } = useWindowDimensions(); // BIEN: Hook al inicio
+  const {colors} = useTheme();
   const chartWidth = width - 56;
   return (
     <View className="px-3 pb-10">
       <View
-        className="my-2 rounded-xl border-2 border-borderButton bg-surfaceButton py-5"
-        style={{ overflow: 'hidden' }}>
+        className="my-2 rounded-xl border-2 py-5"
+        style={{ borderColor: colors.borderButton, backgroundColor: colors.surfaceButton, overflow: 'hidden' }}>
         <View className="mb-3 flex flex-row justify-between px-5">
-          <Text className="mb-3  text-xl text-title">Actividad Anual</Text>
+          <Text className="mb-3 text-xl" style={{ color: colors.title }}>Actividad Anual</Text>
           <DateSelector selectedYear={selectedYear} onYearChange={setSelectedYear} />
         </View>
 
@@ -47,11 +48,11 @@ export const StatsChart = ({
             height={170}
             chartConfig={{
               backgroundColor: 'transparent',
-              backgroundGradientFrom: COLORS.surfaceButton,
-              backgroundGradientTo: COLORS.surfaceButton,
+              backgroundGradientFrom: colors.surfaceButton,
+              backgroundGradientTo: colors.surfaceButton,
               decimalPlaces: 0,
-              color: (opacity = 1) => `rgba(${COLORS.statsColor}, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(${COLORS.statsLabelColor}, ${opacity})`,
+              color: (opacity = 1) => `rgba(${colors.statsColor}, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(${colors.statsLabelColor}, ${opacity})`,
               barPercentage: 0.5,
               propsForBackgroundLines: { strokeWidth: 0 },
               propsForLabels: { fontSize: 12 },

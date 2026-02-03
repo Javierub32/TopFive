@@ -1,3 +1,4 @@
+import { useTheme } from 'context/ThemeContext';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, TextInput, Pressable } from 'react-native';
 
@@ -9,6 +10,8 @@ interface DateSelectorProps {
 export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) => {
   const [showYearPicker, setShowYearPicker] = useState(false);
   const [inputYear, setInputYear] = useState(selectedYear.toString());
+
+  const { colors } = useTheme();
 
   const handleYearSubmit = () => {
     const year = parseInt(inputYear, 10);
@@ -24,14 +27,17 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
     }
   };
 
-  const leftStyle = selectedYear <= 1900 ? 'inactive text-title/30' : 'active text-title';
-  const rightStyle = selectedYear >= new Date().getFullYear() ? 'inactive text-title/30' : 'active text-title';
+  const minYear = 1800;
+  const maxYear = new Date().getFullYear();
+
+  const leftColor = selectedYear <= minYear ? `${colors.title}4D` : colors.title;
+  const rightColor = selectedYear >= maxYear ? `${colors.title}4D` : colors.title;
 
   return (
     <View className="flex-row space-x-8">
       {/* Botón Izquierdo */}
-      <TouchableOpacity activeOpacity={0.6} onPressOut={() => handleYearChange(selectedYear - 1)}>
-        <Text className={`px-2 text-xl font-bold ${leftStyle}`}>{'<'}</Text>
+      <TouchableOpacity activeOpacity={0.6} onPressOut={() => handleYearChange(selectedYear - 1)} disabled={selectedYear <= minYear}>
+        <Text className="px-2 text-xl font-bold" style={{color: leftColor}}>{'<'}</Text>
       </TouchableOpacity>
 
       {/* Contenedor Relativo del Año - Ahora es clicable */}
@@ -43,7 +49,7 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
         }}
         className="relative"
       >
-        <Text className="text-xl font-bold tracking-widest text-title">{selectedYear}</Text>
+        <Text className="text-xl font-bold tracking-widest" style={{color: colors.title}}>{selectedYear}</Text>
 
         {/* Línea Absoluta: se expande solo lo que mide el texto de arriba */}
         <View
@@ -56,8 +62,8 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
       </TouchableOpacity>
 
       {/* Botón Derecho */}
-      <TouchableOpacity activeOpacity={0.6} onPressOut={() => handleYearChange(selectedYear + 1)}>
-        <Text className={`px-2 text-xl font-bold ${rightStyle}`}>{'>'}</Text>
+      <TouchableOpacity activeOpacity={0.6} onPressOut={() => handleYearChange(selectedYear + 1)} disabled={selectedYear >= maxYear}>
+        <Text className="px-2 text-xl font-bold" style={{color: rightColor}}>{'>'}</Text>
       </TouchableOpacity>
 
       {/* Modal para seleccionar año manualmente */}
@@ -72,10 +78,11 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
           onPress={() => setShowYearPicker(false)}
         >
           <Pressable 
-            className="bg-background rounded-lg p-6 w-64"
+            className="rounded-lg p-6 w-64"
+            style={{backgroundColor: colors.background}}
             onPress={(e) => e.stopPropagation()}
           >
-            <Text className="text-title text-lg font-bold mb-4 text-center">
+            <Text className="text-lg font-bold mb-4 text-center" style={{color: colors.title}}>
               Seleccionar Año
             </Text>
             
@@ -84,9 +91,9 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
               onChangeText={setInputYear}
               keyboardType="numeric"
               maxLength={4}
-              className="bg-card border border-secondaryText/30 rounded-lg px-4 py-3 text-title text-center text-xl mb-4"
-              placeholder="2024"
-              placeholderTextColor="#666"
+              className="border rounded-lg px-4 py-3 text-center text-xl mb-4"
+              style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton, color: colors.title}}
+              placeholderTextColor={colors.placeholderText}
               autoFocus
               onSubmitEditing={handleYearSubmit}
             />
@@ -94,16 +101,17 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
             <View className="flex-row space-x-2">
               <TouchableOpacity
                 onPress={() => setShowYearPicker(false)}
-                className="flex-1 bg-card rounded-lg py-3 items-center"
+                className="flex-1 rounded-lg py-3 items-center"
               >
-                <Text className="text-secondaryText font-semibold">Cancelar</Text>
+                <Text className="font-semibold" style={{color: colors.secondaryText}}>Cancelar</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 onPress={handleYearSubmit}
-                className="flex-1 bg-primary rounded-lg py-3 items-center"
+                className="flex-1 rounded-lg py-3 items-center"
+                style={{backgroundColor: colors.primary}}
               >
-                <Text className="text-background font-semibold">Aceptar</Text>
+                <Text className="font-semibold" style={{color: colors.background}}>Aceptar</Text>
               </TouchableOpacity>
             </View>
           </Pressable>

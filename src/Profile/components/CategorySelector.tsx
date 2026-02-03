@@ -1,7 +1,7 @@
 import { ScrollView, Pressable, View, Text } from 'react-native';
 import { CategoryKey } from '../hooks/useProfile';
 import { iconAdapter } from '../adapters/iconAdapter';
-import { COLORS } from 'constants/colors';
+import { useTheme } from 'context/ThemeContext';
 
 interface Props {
   selected: CategoryKey;
@@ -10,25 +10,30 @@ interface Props {
 
 const CATEGORIES: CategoryKey[] = ['libros', 'películas', 'series', 'videojuegos', 'canciones'];
 
-export const CategorySelector = ({ selected, onSelect }: Props) => (
-  <View
-    className="mb-4 flex-row justify-between"
-    style={{ borderBottomWidth: 1, borderBottomColor: COLORS.placeholderText }}
-  >
 
-    {CATEGORIES.map((cat) => {
-      const IconComponent = iconAdapter.getIcon(cat);
+export const CategorySelector = ({ selected, onSelect }: Props) => {
+  const { colors } = useTheme();
 
-      return(
-        <Pressable key={cat} onPress={()=> onSelect(cat)}>
-        <View className={`px-6 py-2 ${selected === cat ? 'border-b-4 border-primary':''}`}>
-          <IconComponent color={selected === cat ? COLORS.primary : COLORS.secondaryText} />
-        </View>
+  return (
+    <View
+      className="mb-4 flex-row justify-between"
+      style={{ borderBottomWidth: 1, borderBottomColor: colors.placeholderText }}
+    >
 
-      </Pressable>
-      );
-    })}
-      
-      
-  </View>
-);
+      {CATEGORIES.map((cat) => {
+        const IconComponent = iconAdapter.getIcon(cat);
+
+        return(
+          <Pressable key={cat} onPress={()=> onSelect(cat)}>
+          <View className="px-6 py-2" style={selected === cat ? {borderBottomWidth: 4, borderBottomColor: colors.primary} : {}}>
+            <IconComponent color={selected === cat ? colors.primary : colors.secondaryText} />
+          </View>
+
+        </Pressable>
+        );
+      })}
+        
+        
+    </View>
+  );
+}
