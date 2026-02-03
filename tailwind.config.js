@@ -39,6 +39,7 @@ module.exports = {
         // == BORDES ==
 		    marker: 'var(--marker)',  
 		    markerText: 'var(--markerText)', 
+        rating: 'var(--rating)',
       },
     },
   },

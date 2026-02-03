@@ -18,7 +18,7 @@ const COMMON_COLORS = {
 
     //Colores para elementos
     marker: 'rgb(48 101 165 / 0.4)', 	// Color de bg para marcadores (calificaciones, num visualizaciones, etc)
-    
+    rating: '#fbbf24', 				// Color para las estrellas de calificación
     statsColor: '252, 103, 3', //Color de las barras de la gráfica (en la implementación se le añade una opacidad)
   };
 

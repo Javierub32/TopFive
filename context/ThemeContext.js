@@ -52,6 +52,7 @@ export const ThemeProvider = ({ children }) => {
         "--title": colors.title,
         "--marker": colors.marker,
         "--markerText": colors.markerText,
+        "--rating": colors.rating,
     })
 
     //Funcion para alternar el tema que usaremos en los ajustes.
