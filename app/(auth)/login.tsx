@@ -79,6 +79,7 @@ export default function Login() {
                     autoCapitalize="none"
                     keyboardType="email-address"
                     className="flex-1 ml-3 text-base" 
+                    style={{color: colors.primaryText}}
                   />
                 </View>
                 <Text className="font-semibold mb-1 ml-1" style= {{color: colors.primaryText}}>Contraseña</Text>
@@ -91,6 +92,7 @@ export default function Login() {
                     className="flex-1 ml-3 text-base"
                     placeholderTextColor={colors.placeholderText}
                     secureTextEntry={!showPassword}
+                    style={{color: colors.primaryText}}
                   />
                   <TouchableOpacity 
                     onPress={() => setShowPassword(!showPassword)}

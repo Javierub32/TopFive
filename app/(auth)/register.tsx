@@ -84,6 +84,7 @@ export default function Register() {
                   autoCapitalize="none"
                   className="ml-3 flex-1 text-base"
                   placeholderTextColor={colors.placeholderText}
+                  style={{color: colors.primaryText}}
                 />
               </View>
               <Text className="mb-2 ml-1 font-semibold" style={{color: colors.primaryText}}>Email</Text>
@@ -97,6 +98,7 @@ export default function Register() {
                   keyboardType="email-address"
                   className="ml-3 flex-1 text-base"
                   placeholderTextColor={colors.placeholderText}
+                  style={{color: colors.primaryText}}
                 />
               </View>
               <Text className="mb-2 ml-1 font-semibold" style={{color: colors.primaryText}}>Contraseña</Text>
@@ -109,6 +111,7 @@ export default function Register() {
                   className="ml-3 flex-1 text-base"
                   placeholderTextColor={colors.placeholderText}
                   secureTextEntry={!showPassword}
+                  style={{color: colors.primaryText}}
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="ml-2">
                   <MaterialCommunityIcons
