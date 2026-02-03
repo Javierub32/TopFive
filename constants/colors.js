@@ -55,7 +55,7 @@ const COMMON_COLORS = {
   export const LIGHT_MODE_COLORS = {
     // Colores principales de la paleta
     secondary: '#61adbd',
-    accent: '#3065a5',
+    accent: '#5781b3',
     
     primaryVariant: '#d67f45', // Una variante más clara del color primario (utilizada en la página de login)
 
