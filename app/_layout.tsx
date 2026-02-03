@@ -6,6 +6,7 @@ import { ResourceProvider } from '../context/ResourceContext';
 import { View, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import { ThemeProvider } from 'context/ThemeContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -79,9 +80,11 @@ function InitialLayout() {
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <ResourceProvider>
-        <InitialLayout />
-      </ResourceProvider>
+      <ThemeProvider>
+        <ResourceProvider>
+          <InitialLayout />
+        </ResourceProvider>
+      </ThemeProvider>
     </AuthProvider>
   );
 }
