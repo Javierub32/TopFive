@@ -26,9 +26,9 @@ export default function FilmDetail() {
       <Screen>
         <StatusBar style="light" />
         <View className="flex-1 items-center justify-center px-4">
-          <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>
-          <Text className="text-secondaryText text-center mt-2">No se pudo cargar la información de la película</Text>
+          <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error()} />
+          <Text className="text-xl font-bold mt-4" style={{color: colors.primaryText}}>Error al cargar</Text>
+          <Text className="text-center mt-2" style={{color: colors.secondaryText}}>No se pudo cargar la información de la película</Text>
         </View>
       </Screen>
     );
@@ -52,37 +52,35 @@ export default function FilmDetail() {
         </View>
 
         <View className="px-4 mb-14">
-          <Text className="text-primaryText text-3xl font-bold mb-3">
+          <Text className="text-3xl font-bold mb-3" style={{color: colors.primaryText}}>
             {film.title}
           </Text>
 
           <View className="flex-row items-center mb-4 flex-wrap">
-            <View className="bg-surfaceButton px-3 py-1.5 rounded-lg mr-2 mb-2 border border-borderButton">
-              <Text className="text-secondaryText text-sm font-semibold">
-                {releaseYear}
-              </Text>
-            </View>
-
             {!!film.rating && (
-              <View className="bg-marker px-3 py-1.5 rounded-lg mr-2 mb-2 border border-primary/30 flex-row items-center">
-                <MaterialCommunityIcons name="star" size={16} color="#fbbf24" />
-                <Text className="text-markerText text-sm font-bold ml-1">
+              <View className="px-3 py-1.5 rounded-lg mr-2 mb-2 border flex-row items-center" style={{borderColor: colors.primary, backgroundColor: colors.surfaceButton}}>
+                <MaterialCommunityIcons name="star" size={16} color={colors.rating} />
+                <Text className="text-sm font-bold ml-1" style={{color: colors.markerText}}>
                   {film.rating.toFixed(1)}
                 </Text>
               </View>
             )}
 
-
+            <View className="px-3 py-1.5 rounded-lg mr-2 mb-2 border" style={{borderColor: colors.borderButton, backgroundColor: colors.surfaceButton}}>
+              <Text className="text-sm font-semibold" style={{color: colors.secondaryText}}>
+                {releaseYear}
+              </Text>
+            </View>      
           </View>
 
-		            {film.releaseDate && (
+		      {film.releaseDate && (
             <View className="mb-6">
               <Text className="text-title text-lg font-bold mb-2">
                 Fecha de Estreno
               </Text>
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="calendar" size={24} color={colors.primary} />
-                <Text className="text-secondaryText text-base ml-3">
+              <View className="p-4 rounded-xl border flex-row items-center" style={{borderColor: colors.borderButton, backgroundColor: colors.surfaceButton}}>
+                <MaterialCommunityIcons name="calendar" size={24} color={colors.accent} />
+                <Text className="text-base ml-3" style={{color: colors.secondaryText}}>
                   {new Date(film.releaseDate).toLocaleDateString('es-ES', {
                     year: 'numeric',
                     month: 'long',
@@ -95,11 +93,11 @@ export default function FilmDetail() {
 
           {film.description && (
             <View className="mb-6">
-              <Text className="text-title text-lg font-bold mb-2">
+              <Text className="text-lg font-bold mb-2" style={{color: colors.title}}>
                 Sinopsis
               </Text>
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-secondaryText text-base leading-6">
+              <View className="p-4 rounded-xl border" style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton}}>
+                <Text className="text-base leading-6" style={{color: colors.secondaryText}}>
                   {film.description}
                 </Text>
               </View>
@@ -107,10 +105,11 @@ export default function FilmDetail() {
           )}
           <TouchableOpacity 
             onPress={() => {openForm(film)}}
-            className="flex-1 bg-primary py-4 rounded-xl items-center flex-row justify-center"
+            className="flex-1 py-4 rounded-xl items-center flex-row justify-center"
+            style={{backgroundColor: `${colors.primary}`}}
           >
-            <FontAwesome5 name="cloud-upload-alt" size={16} color="white" style={{marginRight: 8}} />
-            <Text className="text-primaryText font-bold">Añadir a colección</Text>
+            <FontAwesome5 name="cloud-upload-alt" size={16} color={colors.background} style={{marginRight: 8}} />
+            <Text className="font-bold" style={{color: colors.background}}>Añadir a colección</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
