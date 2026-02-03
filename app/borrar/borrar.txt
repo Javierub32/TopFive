@@ -1,0 +1,12 @@
+	{/*
+		hayBusqueda ? (
+			<View className="flex-1 mt-4">
+			  <CollectionStructure
+				data={dataFiltrada}
+				categoriaActual={categoriaActual}
+				handleItemPress={handleItemPress}
+				showStatus={true}
+			  />
+			</View>
+		  ) : 
+		*/}

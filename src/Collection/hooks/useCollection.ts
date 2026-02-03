@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { router, useLocalSearchParams, useRouter } from 'expo-router';
-import { useResource } from 'context/ResourceContext';
+import { useResource } from 'hooks/useResource';
 
 export type CategoryType = 'Libros' | 'Películas' | 'Series' | 'Videojuegos' | 'Canciones';
 export type StatusType = 'TODOS' | 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';

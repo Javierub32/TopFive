@@ -3,7 +3,7 @@ import { CollectionGroup } from './CollectionGroup';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS } from 'constants/colors';
 
-export const RenderCollection = ({ title, data, category, onPressItem, onPressTitle }: any) => {
+export const RenderCollection = ({ title, data, total, category, onPressItem, onPressTitle }: any) => {
   const safeData = data || [];
 
   return (
@@ -15,7 +15,7 @@ export const RenderCollection = ({ title, data, category, onPressItem, onPressTi
       >
         <View className="px-0 mb-1">
           <Text className="text-xl font-bold text-primaryText">
-            {title} <Text className="text-sm font-normal text-secondaryText">({safeData.length})</Text>
+            {title} <Text className="text-sm font-normal text-secondaryText">({total})</Text>
             <MaterialCommunityIcons name="chevron-right" size={14} color={COLORS.secondaryText} />
           </Text>
         </View>

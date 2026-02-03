@@ -5,50 +5,27 @@ import { CollectionStructure } from "components/CollectionStructure";
 import { LoadingIndicator } from "components/LoadingIndicator";
 import { ReturnButton } from "components/ReturnButton";
 import { Screen } from "components/Screen";
+import { useCollection } from "context/CollectionContext";
 import { ScrollView, View } from "react-native";
 
-interface ResourceListProps {
-  categoriaActual: CategoryType;
-  navigateToGrid: (title: string, status: string, category: CategoryType) => void;
-  handleItemPress: (item: any) => void;
-  pendientes: any[];
-  enCurso: any[];
-  completados: any[];
-  loading: boolean;
-  busqueda: string;
-  data: any[];
-}
-
-export default function ResourceList({
-  categoriaActual,
-  navigateToGrid,
-  handleItemPress,
-  pendientes,
-  enCurso,
-  completados,
-  loading,
-  busqueda,
-  data,
-}: ResourceListProps) {
+export default function ResourceList() {
+	const {busqueda, loading, pendientes, enCurso, completados, navigateToGrid, handleItemPress, categoriaActual, totalPendientes, totalEnCurso, totalCompletados, data } = useCollection();
     const hayBusqueda = busqueda.trim() !== '';
-	const dataFiltrada = hayBusqueda ? filterCollectionData(data, categoriaActual) : data;
 	
   
 	return (
 		loading ? (
 		<LoadingIndicator />
-	) :
-		hayBusqueda ? (
+	) : hayBusqueda ? (
 			<View className="flex-1 mt-4">
 			  <CollectionStructure
-				data={dataFiltrada}
+				data={data}
 				categoriaActual={categoriaActual}
 				handleItemPress={handleItemPress}
 				showStatus={true}
 			  />
 			</View>
 		  ) : (
-		
 		<ScrollView 
 			className="flex-1 mt-4" 
 			contentContainerStyle={{ paddingBottom: 100 }}
@@ -57,6 +34,7 @@ export default function ResourceList({
 			<RenderCollection 
 			  title="En Curso"
 			  data={enCurso}
+			  total={totalEnCurso}
 			  category={categoriaActual}
 			  onPressItem={handleItemPress}
 			  onPressTitle={() => navigateToGrid('En curso', 'WATCHING', categoriaActual)}
@@ -64,6 +42,7 @@ export default function ResourceList({
 			<RenderCollection 
 			  title="Completados"
 			  data={completados}
+			  total={totalCompletados}
 			  category={categoriaActual}
 			  onPressItem={handleItemPress}
 			  onPressTitle={() => navigateToGrid('Completados', 'COMPLETED', categoriaActual)}
@@ -71,6 +50,7 @@ export default function ResourceList({
 			<RenderCollection 
 			  title="Pendientes"
 			  data={pendientes}
+			  total={totalPendientes}
 			  category={categoriaActual}
 			  onPressItem={handleItemPress}
 			  onPressTitle={() => navigateToGrid('Pendientes', 'PENDING', categoriaActual )}
