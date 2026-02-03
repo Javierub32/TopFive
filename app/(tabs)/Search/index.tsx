@@ -1,21 +1,23 @@
 import { View, Text, FlatList } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { COLORS } from 'constants/colors';
 import { UserSearchBar } from '@/Search/components/UserSearchBar';
 import { useSearchUser } from '@/Search/hooks/useSearchUser';
 import { UserSearchPlaceholder } from '@/Search/components/UserSearchPlaceholder';
 import { UserResultItem } from '@/Search/components/UserResultItem';
 import { router } from 'expo-router';
 import { LoadingIndicator } from 'components/LoadingIndicator';
+import { useTheme } from 'context/ThemeContext';
+import { ThemedStatusBar } from 'components/ThemedStatusBar';
 
 export default function SearchScreen() {
   const { busqueda, setBusqueda, resultados, loading, handleSearch } = useSearchUser();
+  const { colors } = useTheme();
   return (
     <Screen>
-      <StatusBar style="light" />
+      <ThemedStatusBar/>
       <View className="flex-1 px-4 pt-6">
-        <Text className="mb-4 text-3xl font-bold text-primaryText">Usuarios</Text>
+        <Text className="mb-4 text-3xl font-bold" style={{ color: colors.primaryText }}>Usuarios</Text>
         <UserSearchBar value={busqueda} onChangeText={setBusqueda} onSearch={handleSearch} />
 
         {resultados.length > 0 ? (

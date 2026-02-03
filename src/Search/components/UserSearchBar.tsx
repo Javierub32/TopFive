@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, Text } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from 'constants/colors';
+import { MaterialCommunityIcons } from '@expo/vector-icons';    
+import { useTheme } from 'context/ThemeContext';
 
 interface SearchBarProps {
   value: string;
@@ -14,19 +14,23 @@ export function UserSearchBar({
   onChangeText,
   onSearch,
 }: SearchBarProps) {
+
+  const { colors } = useTheme();
+
   return (
     <View className="relative z-50">
-      <View className="h-12 flex-row items-center rounded-lg border border-borderButton bg-surfaceButton shadow-lg">
+      <View className="h-12 flex-row items-center rounded-lg border shadow-lg" style={{ borderColor: colors.borderButton, backgroundColor: colors.surfaceButton }} >
         {/* Icono Lupa */}
         <View className="justify-center pl-3">
-          <MaterialCommunityIcons name="magnify" size={20} color="#94a3b8" />
+          <MaterialCommunityIcons name="magnify" size={20} color={colors.secondaryText} />
         </View>
 
         {/* Input de texto */}
         <TextInput
-          className="h-full flex-1 px-3 text-base text-primaryText"
+          className="h-full flex-1 px-3 text-base"
+          style={{ color: colors.primaryText }}
           placeholder={`Busca un usuario...`}
-          placeholderTextColor={COLORS.placeholderText}
+          placeholderTextColor={colors.placeholderText}
           value={value}
           onChangeText={onChangeText}
           onSubmitEditing={onSearch}
@@ -34,7 +38,7 @@ export function UserSearchBar({
         />
 
         {/* Separador vertical */}
-        <View className="h-6 w-[1px] bg-borderButton" />
+        <View className="h-6 w-[1px]" style={{ backgroundColor: colors.borderButton }} />
       </View>
     </View>
   );
