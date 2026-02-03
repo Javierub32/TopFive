@@ -1,18 +1,17 @@
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { router, useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useResource } from 'context/ResourceContext';
 import { SeriesResource } from 'app/types/Resources';
 import { COLORS } from 'constants/colors';
 import { ReturnButton } from 'components/ReturnButton';
+import { useResource } from 'hooks/useResource';
 
 export default function SeriesDetail() {
   const { item } = useLocalSearchParams();
   const {borrarRecurso} = useResource();
 
-  const router = useRouter();
   
   let seriesResource: SeriesResource | null = null;
     
@@ -26,7 +25,7 @@ export default function SeriesDetail() {
   const handleDelete = () => {
 	if (seriesResource) {
 		Alert.alert('Recurso eliminado', 'Estás seguro de que quieres eliminar esta serie de tu colección?', [
-			{ text: 'Confirmar', onPress: () => {borrarRecurso(seriesResource.id, 'serie'); router.push('/collection')} },
+			{ text: 'Confirmar', onPress: () => {borrarRecurso(seriesResource.id, 'serie'); router.replace({ pathname: '/Collection', params: { initialResource: 'Series' } })} },
 			{ text: 'Cancelar', style: 'cancel' }
 		]);
 	}

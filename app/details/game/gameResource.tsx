@@ -1,19 +1,18 @@
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { router, useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useResource } from 'context/ResourceContext';
 import { GameResource } from 'app/types/Resources';
 import { COLORS } from 'constants/colors';
 import { ReturnButton } from 'components/ReturnButton';
+import { useResource } from 'hooks/useResource';
 
 
 export default function GameDetail() {
   const { item } = useLocalSearchParams();
   const {borrarRecurso} = useResource();
 
-  const router = useRouter();
   let gameResource: GameResource | null = null;
     
     try {
@@ -26,7 +25,7 @@ export default function GameDetail() {
   const handleDelete = () => {
 	if (gameResource) {
 		Alert.alert('Recurso eliminado', 'Estás seguro de que quieres eliminar este videojuego de tu colección?', [
-			{ text: 'Confirmar', onPress: () => {borrarRecurso(gameResource.id, 'videojuego'); router.push('/collection')} },
+			{ text: 'Confirmar', onPress: () => {borrarRecurso(gameResource.id, 'videojuego'); router.replace({ pathname: '/Collection', params: { initialResource: 'Videojuegos' } })} },
 			{ text: 'Cancelar', style: 'cancel' }
 		]);
 	}

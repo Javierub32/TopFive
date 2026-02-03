@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { router, useLocalSearchParams, useRouter } from 'expo-router';
 import { useResource } from 'context/ResourceContext';
 
 export type CategoryType = 'Libros' | 'Películas' | 'Series' | 'Videojuegos' | 'Canciones';
@@ -7,8 +7,7 @@ export type StatusType = 'TODOS' | 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';
 export type SortType = 'FECHA_DESC' | 'FECHA_ASC';
 
 export const useCollection = () => {
-  const router = useRouter();
-  const resources = useResource();
+  const {fetchCanciones, fetchPeliculas, fetchSeries, fetchVideojuegos, fetchLibros} = useResource();
   const { initialResource } = useLocalSearchParams();
 
   const [inputBusqueda, setInputBusqueda] = useState('');
@@ -34,11 +33,11 @@ export const useCollection = () => {
     setLoading(true);
     try {
       const fetchMap = {
-        'Películas': resources.fetchPeliculas,
-        'Series': resources.fetchSeries,
-        'Videojuegos': resources.fetchVideojuegos,
-        'Libros': resources.fetchLibros,
-        'Canciones': resources.fetchCanciones,
+        'Películas': fetchPeliculas,
+        'Series': fetchSeries,
+        'Videojuegos': fetchVideojuegos,
+        'Libros': fetchLibros,
+        'Canciones': fetchCanciones,
       };
 
       const fetchFunction = fetchMap[categoriaActual];
@@ -91,7 +90,6 @@ export const useCollection = () => {
     soloFavoritos, setSoloFavoritos,
     navigateToGrid,
     handleItemPress,
-    router,
     pendientes,
     enCurso,
     completados

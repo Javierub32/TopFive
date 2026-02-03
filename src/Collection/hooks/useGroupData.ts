@@ -1,10 +1,10 @@
+import { useResource } from 'hooks/useResource';
 import { useState, useEffect } from 'react';
-import { useResource } from 'context/ResourceContext';
 
 type GroupType = 'WATCHING' | 'PENDING' | 'COMPLETED';
 
 export const useGroupData = (category: string, type: GroupType) => {
-  const resources = useResource();
+  const {fetchCanciones, fetchPeliculas, fetchSeries, fetchVideojuegos, fetchLibros} = useResource();
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,11 +13,11 @@ export const useGroupData = (category: string, type: GroupType) => {
       setLoading(true);
       try {
         const fetchMap: any = {
-          'Películas': resources.fetchPeliculas,
-          'Series': resources.fetchSeries,
-          'Videojuegos': resources.fetchVideojuegos,
-          'Libros': resources.fetchLibros,
-          'Canciones': resources.fetchCanciones,
+          'Películas': fetchPeliculas,
+          'Series': fetchSeries,
+          'Videojuegos': fetchVideojuegos,
+          'Libros': fetchLibros,
+          'Canciones': fetchCanciones,
         };
 
         const fetchFunction = fetchMap[category];
