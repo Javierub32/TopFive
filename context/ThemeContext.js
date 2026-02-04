@@ -42,6 +42,7 @@ export const ThemeProvider = ({ children }) => {
         "--secondary": colors.secondary,
         "--accent": colors.accent,
         "--error": colors.error,
+        "--favorite": colors.favorite,
         "--primaryVariant": colors.primaryVariant,
         "--background": colors.background,
         "--surfaceButton": colors.surfaceButton,

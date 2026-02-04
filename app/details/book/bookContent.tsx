@@ -58,17 +58,17 @@ export default function BookDetail() {
             {book.title || 'Sin título'}
           </Text>
 
-          <View className="flex-row items-center mb-4 flex-wrap">
-            <View className="px-3 py-1.5 rounded-lg mr-2 mb-2 border"
-            style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton}}>
-              <Text className="text-sm font-semibold" style={{color: colors.secondaryText}}>
+          <View className="flex-row items-stretch flex-wrap gap-2 mb-4">
+            <View className="px-3 py-1.5 rounded-lg justify-center"
+            style={{backgroundColor: colors.surfaceButton}}>
+              <Text className="text-sm font-semibold" style={{color: colors.markerText}}>
                 {releaseYear}
               </Text>
             </View>
 
             {book.rating && (
-              <View className="px-3 py-1.5 rounded-lg mr-2 mb-2 border flex-row items-center" style={{backgroundColor: colors.surfaceButton, borderColor: colors.primary}}>
-                <MaterialCommunityIcons name="star" size={16} color={colors.rating} />
+              <View className="px-3 py-1.5 rounded-lg flex-row items-center border" style={{backgroundColor: colors.surfaceButton, borderColor: colors.rating}}>
+                <MaterialCommunityIcons name="star" size={20} color={colors.rating} />
                 <Text className="text-sm font-bold ml-1" style={{color: colors.markerText}}>
                   {book.rating.toFixed(1)}
                 </Text>
@@ -76,35 +76,36 @@ export default function BookDetail() {
             )}
 
             {book.genre && book.genre.length > 0 && (
-              <View className="px-3 py-1.5 rounded-lg mb-2 border" style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton}}>
-                <Text className="text-sm" style={{color: colors.secondaryText}}>
+              <View className="px-3 py-1.5 rounded-lg" style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton}}>
+                <Text className="text-sm" style={{color: colors.markerText}}>
                   {book.genre.join(', ')}
                 </Text>
               </View>
             )}
           </View>
 
-          {book.autor && (
-            <View className="mb-6">
-              <Text className="text-lg font-bold mb-2" style={{ color: colors.title }}>
-                Autor
-              </Text>
-              <View className="p-4 rounded-xl border flex-row items-center" style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton}}>
-                <MaterialCommunityIcons name="account" size={24} color={colors.primary} />
-                <Text className="text-base ml-3" style={{ color: colors.secondaryText }}>
-                  {book.autor}
-                </Text>
+          <View className="flex-row flex-wrap justify-between gap-y-3 gap-x-2">
+            {book.autor && (
+            <View className="w-[49%] p-4 rounded-2xl flex justify-between gap-2" style={{ backgroundColor: colors.surfaceButton}}>
+              <View className="flex-row items-center gap-2">
+                <MaterialCommunityIcons name="account" size={20} color={colors.primary} />
+                <Text className="text-sm font-bold uppercase tracking-widest" style={{color:colors.title}}>Autor</Text>                
               </View>
-            </View>
-          )}
-
-          {book.releaseDate && (
-            <View className="mb-6">
-              <Text className="text-lg font-bold mb-2" style={{ color: colors.title }}>
-                Fecha de Publicación
+              <Text className="text-base ml-3 font-semibold" style={{ color: colors.secondaryText }}>
+                {book.autor}
               </Text>
-              <View className="p-4 rounded-xl border flex-row items-center" style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton}}>
-                <MaterialCommunityIcons name="calendar" size={24} color={colors.primary} />
+            </View>
+            )}
+          
+
+            {book.releaseDate && (
+              <View className="w-[49%] p-4 rounded-2xl flex justify-between gap-2" style={{backgroundColor: colors.surfaceButton}}>
+                <View className="flex-row items-center gap-2">
+                  <MaterialCommunityIcons name="calendar" size={20} color={colors.primary} />
+                  <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.title }}>
+                    Publicado
+                  </Text>
+                </View>
                 <Text className="text-base ml-3" style={{ color: colors.secondaryText }}>
                   {new Date(book.releaseDate).toLocaleDateString('es-ES', {
                     year: 'numeric',
@@ -113,28 +114,27 @@ export default function BookDetail() {
                   })}
                 </Text>
               </View>
-            </View>
-          )}
+            )}
 
-          {book.description && (
-            <View className="mb-6">
-              <Text className="text-lg font-bold mb-2" style={{ color: colors.title }}>
-                Descripción
-              </Text>
-              <View className="p-4 rounded-xl border" style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton}}>
-                <Text className="text-base leading-6" style={{ color: colors.secondaryText }}>
-                  {book.description}
-                </Text>
+            {book.description && (
+              <View className="w-full p-5 rounded-2xl space-y-3 border-l-4" style={{ backgroundColor: colors.surfaceButton, borderColor: colors.borderButton }}>
+                <View className="flex-row items-center gap-2">
+                  <MaterialCommunityIcons name="book-open-page-variant" size={20} color={colors.primary} />
+                  <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.title }}>Sinopsis</Text>
+                </View>
+                  <Text className="leading-relaxed italic" style={{ color: colors.secondaryText }}>
+                    {book.description}
+                  </Text>
               </View>
-            </View>
-          )}
+            )}
+          </View>
 
           <TouchableOpacity 
             onPress={() => {openForm(book)}} 
-            className="flex-1 py-4 rounded-xl items-center flex-row justify-center"
+            className="flex-1 py-4 rounded-xl items-center flex-row justify-center mt-4"
             style={{backgroundColor: colors.primary}}
           >
-            <FontAwesome5 name="cloud-upload-alt" size={16} color={colors.background} style={{marginRight: 8}} />
+            <FontAwesome5 name="cloud-upload-alt" size={20} color={colors.background} style={{marginRight: 8}} />
             <Text className="font-bold" style={{ color: colors.background }}>Añadir a colección</Text>
           </TouchableOpacity>
         </View>

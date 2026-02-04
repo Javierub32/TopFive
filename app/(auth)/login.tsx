@@ -46,7 +46,7 @@ export default function Login() {
   return (
     <View className='flex-1'>
       <LinearGradient
-        colors={[colors.background, colors.secondary, colors.primaryVariant]}
+        colors={[colors.background, colors.secondary, colors.secondary]}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}
       >
         <View style={{ width: '100%', maxWidth: 550 }}>

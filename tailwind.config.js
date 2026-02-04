@@ -18,6 +18,7 @@ module.exports = {
         secondary: 'var(--secondary)',
         accent: 'var(--accent)',
         error: 'var(--error)',
+        favorite: 'var(--favorite)',
         primaryVariant: 'var(--primaryVariant)', 
 
 

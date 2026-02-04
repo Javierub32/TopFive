@@ -161,7 +161,7 @@ export default function BookDetail() {
             <View className="flex-row items-stretch flex-wrap gap-2">
               {/* Año de publicación */}
               <View className="px-3 py-1.5 rounded-lg justify-center" style={{ backgroundColor: colors.surfaceButton}}>
-                <Text className="text-sm font-semibold" style={{ color: colors.secondaryText }}>
+                <Text className="text-sm font-semibold" style={{ color: colors.markerText }}>
                   {releaseYear}
                 </Text>
               </View>
@@ -175,25 +175,24 @@ export default function BookDetail() {
 
               {/* Favorito */}
               {bookResource.favorito && (
-                <View className="px-3 py-1.5 rounded-lg justify-center" style={{ backgroundColor: `${colors.error}33`}}>
-                  <MaterialCommunityIcons name="heart" size={16} color={colors.error} />
+                <View className="px-3 py-1.5 rounded-lg justify-center" style={{ backgroundColor: `${colors.favorite}33`}}>
+                  <MaterialCommunityIcons name="heart" size={16} color={colors.favorite} />
                 </View>
               )}
             </View>
           </View>
 
           {/* Información en tarjetas */}
-          {/* === BENTO GRID === */}
           {/* Usamos flex-wrap y widths porcentuales para simular CSS Grid */}
           <View className="flex-row flex-wrap justify-between gap-y-3 gap-x-2">
             {/* CARD 1: Calificación (48% width) */}
             <View 
-              className="w-[48%] p-4 rounded-2xl flex justify-between gap-2"
+              className="w-[49%] p-4 rounded-2xl flex justify-between gap-2"
               style={{ backgroundColor: colors.surfaceButton}}
             >
               <View className="flex-row items-center gap-2">
-                <MaterialCommunityIcons name="star-circle" size={16} color={colors.rating} />
-                <Text className="text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.secondaryText }}>RATING</Text>
+                <MaterialCommunityIcons name="star-circle" size={20} color={colors.rating} />
+                <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.markerText }}>RATING</Text>
               </View>
               <View className="flex-row">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -201,7 +200,7 @@ export default function BookDetail() {
                     key={star}
                     name="star"
                     size={20}
-                    color={star <= bookResource.calificacion ? colors.rating : colors.secondaryText}
+                    color={star <= bookResource.calificacion ? colors.rating : colors.markerText}
                     solid={star <= bookResource.calificacion}
                     style={{ marginRight: 4 }}
                   />
@@ -211,18 +210,18 @@ export default function BookDetail() {
 
             {/* CARD 2: Progreso (48% width) */}
             <View 
-              className="w-[48%] p-4 rounded-2xl flex justify-between gap-2"
+              className="w-[49%] p-4 rounded-2xl flex justify-between gap-2"
               style={{ backgroundColor: colors.surfaceButton }}
             >
               <View className="flex-row items-center gap-2">
-                <MaterialCommunityIcons name="book-open-page-variant" size={16} color={colors.primary} />
-                <Text className="text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.secondaryText }}>PROGRESO</Text>
+                <MaterialCommunityIcons name="book-open-page-variant" size={20} color={colors.primary} />
+                <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.markerText }}>PROGRESO</Text>
               </View>
               <View className="flex-row items-baseline">
                 <Text className="text-xl font-bold" style={{ color: colors.primaryText }}>
                   {bookResource.paginasLeidas || 0}
                 </Text>
-                <Text className="text-xs ml-1" style={{ color: colors.secondaryText }}>págs</Text>
+                <Text className="text-xs ml-1" style={{ color: colors.markerText }}>págs</Text>
               </View>
             </View>
 
@@ -232,8 +231,8 @@ export default function BookDetail() {
               style={{ backgroundColor: colors.surfaceButton , borderColor: colors.borderButton}}
             >
               <View className="flex-row items-center gap-2">
-                <MaterialCommunityIcons name="comment-quote" size={16} color={colors.secondary} />
-                <Text className="text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.secondaryText }}>TU RESEÑA</Text>
+                <MaterialCommunityIcons name="comment-quote" size={20} color={colors.secondary} />
+                <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.markerText }}>TU RESEÑA</Text>
               </View>
               <Text className="leading-relaxed italic" style={{ color: colors.primaryText }}>
                 {bookResource.reseña || 'Sin reseña...'}
@@ -246,12 +245,11 @@ export default function BookDetail() {
               style={{ backgroundColor: colors.surfaceButton }}
             >
               <View className="flex-row items-center gap-2">
-                <MaterialCommunityIcons name="calendar-start" size={16} color={colors.primary} />
-                <Text className="text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.secondaryText }}>INICIO</Text>
+                <MaterialCommunityIcons name="calendar-start" size={20} color={colors.primary} />
+                <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.markerText }}>INICIO</Text>
               </View>
               <View>
-                <Text className="text-[10px]" style={{ color: colors.secondaryText }}>Fecha inicio</Text>
-                <Text className="text-xs font-semibold" style={{ color: colors.primaryText }}>
+                <Text className="text-md font-semibold" style={{ color: colors.primaryText }}>
                   {bookResource.fechaInicio ? new Date(bookResource.fechaInicio).toLocaleDateString() : '-'}
                 </Text>
               </View>
@@ -262,12 +260,11 @@ export default function BookDetail() {
               style={{ backgroundColor: colors.surfaceButton }}
             >
               <View className="flex-row items-center gap-2">
-                <MaterialCommunityIcons name="calendar-end" size={16} color={colors.primary} />
-                <Text className="text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.secondaryText }}>FIN</Text>
+                <MaterialCommunityIcons name="calendar-end" size={20} color={colors.primary} />
+                <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.secondaryText }}>FIN</Text>
               </View>
               <View>
-                <Text className="text-[10px]" style={{ color: colors.secondaryText }}>Fecha fin</Text>
-                <Text className="text-xs font-semibold" style={{ color: colors.primaryText }}>
+                <Text className="text-md font-semibold" style={{ color: colors.primaryText }}>
                   {bookResource.fechaFin ? new Date(bookResource.fechaFin).toLocaleDateString() : '-'}
                 </Text>
               </View>
@@ -283,7 +280,7 @@ export default function BookDetail() {
                 style={{ backgroundColor: colors.accent }}
               >
                 <View>
-                  <Text className="text-xs font-medium uppercase tracking-widest mb-1" style={{ color: colors.primaryText }}>
+                  <Text className="text-sm font-medium uppercase tracking-widest mb-1" style={{ color: colors.primaryText }}>
                     Tiempo de lectura total
                   </Text>
                   <Text className="text-2xl font-bold" style={{ color: colors.primaryText }}>
