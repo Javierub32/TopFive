@@ -63,7 +63,7 @@ export const SearchBar = () => {
                 setCategoriaActual(opcion);
                 setMenuCategoriaAbierto(false);
               }}>
-              <Text className={`text-sm ${categoriaActual === opcion ? 'font-bold text-primaryText' : 'text-secondaryText'}`}>
+              <Text className={`text-sm ${categoriaActual === opcion ? 'font-bold text-white' : 'text-secondaryText'}`}>
                 {opcion}
               </Text>
               {categoriaActual === opcion && <MaterialCommunityIcons name="check" size={14} color="#fff" />}

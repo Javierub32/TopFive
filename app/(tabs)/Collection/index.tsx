@@ -1,18 +1,16 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-
 import { SearchBar } from 'src/Collection/components/SearchBar';
-import ResourceList from 'app/borrar/ResourceList';
+import ResourceList from '@/Collection/components/ResourceList';
 import { useNavigable } from '@/Collection/hooks/useNavigable';
 import { SceneMap, TabView } from 'react-native-tab-view';
-import Lists from 'app/borrar/Lists';
-import { CancelIcon, CancelIcon2, SearchIcon } from 'components/Icons';
+import Lists from '@/Collection/components/Lists';
+import { CancelIcon2, SearchIcon } from 'components/Icons';
 import renderTabBar from '@/Collection/components/TabBar';
-import colors from 'tailwindcss/colors';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
-import Animated, { FadeInDown, FadeInUp, FadeOut, FadeOutRight, FadeOutUp, LinearTransition, ZoomOut, ZoomOutDown, ZoomOutUp } from 'react-native-reanimated';
+import Animated, {FadeInUp,  LinearTransition, } from 'react-native-reanimated';
 
 
 const renderScene = SceneMap({
@@ -48,7 +46,7 @@ export default function CollectionScreen() {
         {isSearchVisible && (
             <Animated.View 
                 entering={FadeInUp.duration(300).springify()}
-                style={{ overflow: 'hidden' }}
+                style={{ zIndex: 1 }}
             >
                 <SearchBar/>
             </Animated.View>
