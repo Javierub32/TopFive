@@ -8,6 +8,7 @@ const COMMON_COLORS = {
     error: '#EF4444', //rojo utilizado para errores
     success: '#10B981', //verde utilizado para acciones exitosas
     warning: '#F59E0B', //naranja utilizado para advertencias
+    favorite: '#EF4444', //rojo usado para la cualidad de favorito
 
     //Colores de texto
     placeholderText: '#64748b', // gris utilizado en los textos de placeholder
@@ -18,7 +19,6 @@ const COMMON_COLORS = {
 
     //Colores para elementos
     marker: 'rgb(48 101 165 / 0.4)', 	// azul utilizado para el fondo de los marcadores en los contenidos
-    rating: '#fbbf24', 				// amarillo utilizado para las estrellas de calificación
     statsColor: '71, 181, 83', // marron utilizado para las barras de la gráfica (en la implementación se le añade una opacidad)       //cambiado
   };
 
@@ -44,6 +44,7 @@ const COMMON_COLORS = {
     // Colores para los elementos
     borderButton: '#428f9e',  // azul utilizado para el borde del botón
     surfaceButton: '#1e293b', // azul oscuro utilizado para el fondo de la barra de búsqueda y tarjetas
+    rating: '#fbbf24', 				// amarillo utilizado para las estrellas de calificación
 
     markerText: '#9ca3af', 			// gris claro utilizado para el texto dentro de los marcadores
 
@@ -74,6 +75,7 @@ const COMMON_COLORS = {
     // Colores para los elementos
     borderButton: '#61adbd',  // azul claro utilizado para el borde del botón
     surfaceButton: '#c5d0e2', // azul claro utilizado para el fondo de la barra de búsqueda y tarjetas
+    rating: '#dc9f04', 				// amarillo utilizado para las estrellas de calificación
 
     markerText: '#4f5763', 			// gris oscuro utilizado para el texto dentro de los marcadores
 
