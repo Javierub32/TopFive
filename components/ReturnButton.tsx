@@ -2,6 +2,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { LeftArrowIcon } from './Icons';
+import { useTheme } from 'context/ThemeContext';
 
 interface ReturnButtonProps {
   route: string;
@@ -11,16 +12,18 @@ interface ReturnButtonProps {
 }
 
 export const ReturnButton = ({ route, title, style, params }: ReturnButtonProps) => {
+  const { colors } = useTheme();
   style = style ? style : 'px-4 pt-5 pb-2';
   return (
     <View className={`flex-row items-center ${style}`}>
       <TouchableOpacity
         onPress={() => route == 'back' ? router.back() : router.push({ pathname: route, params })}
-        className="mr-3 h-10 w-10 items-center justify-center rounded-full border border-borderButton bg-surfaceButton"
+        className="mr-3 h-10 w-10 items-center justify-center rounded-full border"
+        style={{borderColor: colors.borderButton, backgroundColor: colors.surfaceButton}}
         activeOpacity={0.7}>
-        <LeftArrowIcon />
+        <LeftArrowIcon color={colors.primaryText} />
       </TouchableOpacity>
-      <Text className="flex-1 text-xl font-bold text-primaryText" numberOfLines={1}>
+      <Text className="flex-1 text-xl font-bold" style={{ color: colors.primaryText }} numberOfLines={1}>
         {title}
       </Text>
     </View>

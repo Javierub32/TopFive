@@ -25,7 +25,7 @@ const COMMON_COLORS = {
   export const DARK_MODE_COLORS = {
     // Colores principales de la paleta                                                                                                 
     secondary: '#428f9e', //azul grisáceo
-    accent: '#204879', //azul fuerte
+    accent: '#5781b3', //azul fuerte
     
     primaryVariant: '#1D350E', // Una variante más oscura del primario (usada en el fondo de login)                                    //cambiado
 

@@ -48,7 +48,7 @@ export default function BookDetail() {
           <Image 
             source={{ uri: book.imageFull || book.image || 'https://via.placeholder.com/500x750' }}
             className="w-full h-[500px] rounded-2xl"
-            style={{ backgroundColor: colors.background }}
+            style={{ backgroundColor: colors.surfaceButton }}
             resizeMode="cover"
           />
         </View>
@@ -59,6 +59,13 @@ export default function BookDetail() {
           </Text>
 
           <View className="flex-row items-center mb-4 flex-wrap">
+            <View className="px-3 py-1.5 rounded-lg mr-2 mb-2 border"
+            style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton}}>
+              <Text className="text-sm font-semibold" style={{color: colors.secondaryText}}>
+                {releaseYear}
+              </Text>
+            </View>
+
             {book.rating && (
               <View className="px-3 py-1.5 rounded-lg mr-2 mb-2 border flex-row items-center" style={{backgroundColor: colors.surfaceButton, borderColor: colors.primary}}>
                 <MaterialCommunityIcons name="star" size={16} color={colors.rating} />
@@ -67,13 +74,6 @@ export default function BookDetail() {
                 </Text>
               </View>
             )}
-
-            <View className="px-3 py-1.5 rounded-lg mr-2 mb-2 border"
-            style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton}}>
-              <Text className="text-sm font-semibold" style={{color: colors.secondaryText}}>
-                {releaseYear}
-              </Text>
-            </View>
 
             {book.genre && book.genre.length > 0 && (
               <View className="px-3 py-1.5 rounded-lg mb-2 border" style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton}}>
@@ -134,8 +134,8 @@ export default function BookDetail() {
             className="flex-1 py-4 rounded-xl items-center flex-row justify-center"
             style={{backgroundColor: colors.primary}}
           >
-            <FontAwesome5 name="cloud-upload-alt" size={16} color={colors.primaryText} style={{marginRight: 8}} />
-            <Text className=" font-bold" style={{ color: colors.primaryText }}>Añadir a colección</Text>
+            <FontAwesome5 name="cloud-upload-alt" size={16} color={colors.background} style={{marginRight: 8}} />
+            <Text className="font-bold" style={{ color: colors.background }}>Añadir a colección</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
