@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { CollectionType, listServices } from "../services/listServices";
+import { useEffect, useState } from "react";
+import { CollectionType, ListInfo, listServices } from "../services/listServices";
 import { useAuth } from "context/AuthContext";
 import { useCollection } from "./useCollection";
 
@@ -16,11 +16,16 @@ export const useLists = () => {
 	const { user } = useAuth();
 	const { categoriaActual } = useCollection();
 	const [loading, setLoading] = useState(false);
+	const [lists, setLists] = useState<ListInfo[]>([]);
+
+	useEffect(() => {
+		fetchListInfo();
+	}, [categoriaActual]);
 	
-	const createList = async (nombre: string, resena: string, calificacion: number, favorito: boolean, tipo: string) => {
+	const createList = async (nombre: string, descripcion: string | null, icono: string | null, color: string | null, tipo: string) => {
 		try {
 			setLoading(true);
-			await listServices.createList(user.id, nombre, resena, calificacion, favorito, categoryMap[categoriaActual] as CollectionType);
+			await listServices.createList(user.id, nombre, descripcion, icono, color, categoryMap[categoriaActual] as CollectionType);
 		}
 		catch (error) {
 			console.error("Error creating list:", error);
@@ -30,10 +35,10 @@ export const useLists = () => {
 		}
 	}
 
-	const updateList = async (listId: string, nombre: string, resena: string, calificacion: number, favorito: boolean) => {
+	const updateList = async (listId: string, nombre: string, descripcion: string | null, icono: string | null, color: string | null) => {
 		try {
 			setLoading(true);
-			await listServices.updateList(user.id, listId, nombre, resena, calificacion, favorito);
+			await listServices.updateList(user.id, listId, nombre, descripcion, icono, color);
 		}
 		catch (error) {
 			console.error("Error updating list:", error);
@@ -56,5 +61,27 @@ export const useLists = () => {
 		}
 	}
 
+	const fetchListInfo = async () => {
+		try {
+			setLoading(true);
+			const fetchedLists = await listServices.fetchListInfo(user.id, categoryMap[categoriaActual] as CollectionType);
+			setLists(fetchedLists);
+		}
+		catch (error) {
+			console.error("Error fetching lists:", error);
+		}
+		finally {
+			setLoading(false);
+		}
+	}
 
+
+
+	return {
+		loading,
+		lists,
+		createList,
+		updateList,
+		deleteList,
+	};
 };

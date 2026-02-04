@@ -2,16 +2,27 @@ import { supabase } from 'lib/supabase';
 
 export type CollectionType = 'LIBRO' | 'VIDEOJUEGO' | 'PELICULA' | 'SERIE' | 'ALBUM' | 'CANCION';
 
+export interface ListInfo {
+  id: string;
+  nombre: string;
+  descripcion: string | null;
+  icono: string | null;
+  color: string | null;
+  tipo: CollectionType;
+  totalElementos: number;
+  previewImagenes: string[];
+}
+
 export const listServices = {
-  async createList( userId: string, nombre: string, resena: string, calificacion: number, favorito: boolean, tipo: CollectionType ) {
+  async createList( userId: string, nombre: string, descripcion: string | null, icono: string | null, color: string | null, tipo: CollectionType ) {
     const { data, error } = await supabase
       .from('recursocoleccion')
       .insert({
         usuarioid: userId,
         nombrecoleccion: nombre,
-        resena: resena,
-        calificacion: calificacion,
-        favorito: favorito,
+        descripcion: descripcion,
+        icono: icono,
+        color: color,
         tipo_contenido: tipo, 
       })
       .select()
@@ -21,14 +32,14 @@ export const listServices = {
     return data;
   },
 
-  async updateList( userId: string, listId: string, nombre: string, resena: string, calificacion: number, favorito: boolean ) {
+  async updateList( userId: string, listId: string, nombre: string, descripcion: string | null, icono: string | null, color: string | null ) {
     const { data, error } = await supabase
       .from('recursocoleccion')
       .update({
         nombrecoleccion: nombre,
-        resena: resena,
-        calificacion: calificacion,
-        favorito: favorito,
+        descripcion: descripcion,
+        icono: icono,
+        color: color,
       })
       .eq('id', listId)
       .eq('usuarioid', userId)
@@ -141,88 +152,108 @@ export const listServices = {
     return true;
   },
 
-  async fetchListInfo( listId: string, listType: CollectionType) {
-    let itemTable = '';
-    let resourceTable = '';
-    let contentTable = '';
+  async fetchListInfo( userId: string, listType: CollectionType) {
+  let itemTable = '';
+  let resourceTable = '';
+  let contentTable = '';
 
-    switch (listType) {
-      case 'LIBRO':
-        itemTable = 'itemcoleccion_libro';
-        resourceTable = 'recursolibro';
-        contentTable = 'contenidolibro';
-        break;
-      case 'PELICULA':
-        itemTable = 'itemcoleccion_pelicula';
-        resourceTable = 'recursopelicula';
-        contentTable = 'contenidopelicula';
-        break;
-      case 'SERIE':
-        itemTable = 'itemcoleccion_serie';
-        resourceTable = 'recursoserie';
-        contentTable = 'contenidoserie';
-        break;
-      case 'VIDEOJUEGO':
-        itemTable = 'itemcoleccion_videojuego';
-        resourceTable = 'recursovideojuego';
-        contentTable = 'contenidovideojuego';
-        break;
-      case 'ALBUM':
-        itemTable = 'itemcoleccion_album';
-        resourceTable = 'recursoalbum';
-        contentTable = 'contenidoalbum';
-        break;
-      case 'CANCION':
-        itemTable = 'itemcoleccion_cancion';
-        resourceTable = 'recursocancion';
-        contentTable = 'contenidocancion';
-        break;
-      default:
-        throw new Error("Tipo de lista no soportado");
+  switch (listType) {
+    case 'LIBRO':
+      itemTable = 'itemcoleccion_libro';
+      resourceTable = 'recursolibro';
+      contentTable = 'contenidolibro';
+      break;
+    case 'PELICULA':
+      itemTable = 'itemcoleccion_pelicula';
+      resourceTable = 'recursopelicula';
+      contentTable = 'contenidopelicula';
+      break;
+    case 'SERIE':
+      itemTable = 'itemcoleccion_serie';
+      resourceTable = 'recursoserie';
+      contentTable = 'contenidoserie';
+      break;
+    case 'VIDEOJUEGO':
+      itemTable = 'itemcoleccion_videojuego';
+      resourceTable = 'recursovideojuego';
+      contentTable = 'contenidovideojuego';
+      break;
+    case 'ALBUM':
+      itemTable = 'itemcoleccion_album';
+      resourceTable = 'recursoalbum';
+      contentTable = 'contenidoalbum';
+      break;
+    case 'CANCION':
+      itemTable = 'itemcoleccion_cancion';
+      resourceTable = 'recursocancion';
+      contentTable = 'contenidocancion';
+      break;
+    default:
+      // Si el tipo no es válido, lanzamos un error o devolvemos un array vacío.
+      console.error("Tipo de contenido no soportado:", listType);
+      return [];
+  }
+
+  // Obtenemos la info base de las listas del usuario.
+  const { data: listsData, error: listsError } = await supabase
+    .from('recursocoleccion')
+    .select('id, nombrecoleccion, descripcion, icono, color, tipo_contenido')
+    .eq('usuarioid', userId)
+    .eq('tipo_contenido', listType);
+
+  if (listsError) {
+    console.error("Error al obtener las listas del usuario por tipo:", listsError);
+    throw listsError;
+  }
+
+  // Si el usuario no tiene listas, devolvemos un array vacío.
+  if (!listsData || listsData.length === 0) {
+    return []; 
+  }
+
+  // Creamos un array de promesas para obtener los items de cada lista en paralelo.
+  const itemDetailsPromises = listsData.map(list => {
+    return supabase
+      .from(itemTable)
+      .select(`
+        recurso: ${resourceTable}!inner (
+          contenido: ${contentTable}!inner ( imagenUrl )
+        )
+      `, { count: 'exact', head: false })
+      .eq('coleccionid', list.id)
+      .order('fechaagregado', { ascending: false })
+      .limit(5);
+  });
+
+  // Ejecutamos todas las promesas de items simultáneamente.
+  const allItemsResponses = await Promise.all(itemDetailsPromises);
+
+  // Mapeamos los resultados para combinar la info de la lista con la de sus items.
+  const result: ListInfo[] = listsData.map((list, index) => {
+    const itemsResponse = allItemsResponses[index];
+    
+    if (itemsResponse.error) {
+      console.error(`Error al obtener items para la lista ${list.id}:`, itemsResponse.error);
     }
-
-    // Ejecutamos las consultas en paralelo para mayor velocidad
-    const [listResponse, itemsResponse] = await Promise.all([
-      supabase
-        .from('recursocoleccion')
-        .select('nombrecoleccion, resena, calificacion, favorito, tipo_contenido')
-        .eq('id', listId)
-        .single(),
-      supabase
-        .from(itemTable)
-        .select(`
-          id,
-          fechaagregado,
-          recurso: ${resourceTable}!inner (
-            contenido: ${contentTable}!inner ( imagenUrl )
-          )
-        `, { count: 'exact', head: false }) // 'exact' nos da el total real aunque limitemos a 5
-        .eq('coleccionid', listId)
-        .order('fechaagregado', { ascending: false }) 
-        .limit(5)
-    ]);
-
-    if (listResponse.error) throw listResponse.error;
-    if (itemsResponse.error) throw itemsResponse.error;
-
-    // Procesamos la estructura para devolver solo lo necesario
+    
     const previewImages = (itemsResponse.data || [])
       .map((item: any) => item.recurso?.contenido?.imagenUrl)
-      .filter((url: string) => url);
-
+      .filter((url): url is string => !!url);
 
     return {
-      id: listId,
-      nombre: listResponse.data.nombrecoleccion,
-      resena: listResponse.data.resena,
-      calificacion: listResponse.data.calificacion,
-      favorito: listResponse.data.favorito,
-      tipo: listResponse.data.tipo_contenido,
-
+      id: list.id,
+      nombre: list.nombrecoleccion,
+      descripcion: list.descripcion,
+      icono: list.icono,
+      color: list.color,
+      tipo: list.tipo_contenido as CollectionType,
       totalElementos: itemsResponse.count || 0,
-      previewImagenes: previewImages // Array de strings con las URLs
+      previewImagenes: previewImages,
     };
-  },
+  });
+
+  return result;
+},
 
   async fetchListDetails( listId: string, listType: CollectionType) {
     let itemTable = '';
