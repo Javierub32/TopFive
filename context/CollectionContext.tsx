@@ -47,7 +47,10 @@ export const CollectionProvider = ({ children }: any) => {
 
   const handleSearch = async () => {
 	if (!user) return;
-	if (!inputBusqueda || inputBusqueda.trim() === '') return;
+	if (!inputBusqueda || inputBusqueda.trim() === '') {
+		setBusqueda('');
+		return;
+	}
     setBusqueda(inputBusqueda);
 	try {
 		setLoading(true);
@@ -136,10 +139,10 @@ export const CollectionProvider = ({ children }: any) => {
     setRefreshTrigger(prev => prev + 1);
   };
 
-  const navigateToGrid = (title: any, type: any, category: any) => {
+  const navigateToGrid = (title: any, state: any, category: any) => {
     router.push({
       pathname: '/group',
-      params: { title, type, category },
+      params: { title, state, category },
     });
   };
   const handleItemPress = (item: any) => {

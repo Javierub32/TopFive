@@ -37,7 +37,7 @@ export default function ResourceList() {
 			  total={totalEnCurso}
 			  category={categoriaActual}
 			  onPressItem={handleItemPress}
-			  onPressTitle={() => navigateToGrid('En curso', 'WATCHING', categoriaActual)}
+			  onPressTitle={() => navigateToGrid('En curso', 'enCurso', categoriaActual)}
 			/>
 			<RenderCollection 
 			  title="Completados"
@@ -45,7 +45,7 @@ export default function ResourceList() {
 			  total={totalCompletados}
 			  category={categoriaActual}
 			  onPressItem={handleItemPress}
-			  onPressTitle={() => navigateToGrid('Completados', 'COMPLETED', categoriaActual)}
+			  onPressTitle={() => navigateToGrid('Completados', 'completados', categoriaActual)}
 			/>
 			<RenderCollection 
 			  title="Pendientes"
@@ -53,7 +53,7 @@ export default function ResourceList() {
 			  total={totalPendientes}
 			  category={categoriaActual}
 			  onPressItem={handleItemPress}
-			  onPressTitle={() => navigateToGrid('Pendientes', 'PENDING', categoriaActual )}
+			  onPressTitle={() => navigateToGrid('Pendientes', 'pendientes', categoriaActual )}
 			/>
 		  </ScrollView>
 		)
