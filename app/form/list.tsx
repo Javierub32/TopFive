@@ -44,7 +44,7 @@ export default function ListForm() {
     name: '',
     description: '',
     icon: 'cloud',
-    color: iconoColors.map((c) => c.value)[1],
+    color: iconoColors.map((c) => c.value)[0],
     category: '',
   });
 
@@ -69,7 +69,7 @@ export default function ListForm() {
 				<View className="flex-row items-center flex-1">
 					<ReturnButton route="/Collection" title={'Detalle del libro'} style={" "} params={{initialResource: 'Libros'}}/>
 				</View>
-        <View className="mb-6 items-center justify-center">
+        <View className="mb-6 py-4 items-center justify-center">
           <View
             className="h-24 w-24 items-center justify-center rounded-3xl shadow-md"
             style={{ backgroundColor: formData.color }}>
@@ -82,11 +82,12 @@ export default function ListForm() {
         </View>
 
         <View className="mb-5">
-          <Text className="mb-2 ml-1 text-sm font-semibold" style={{ color: colors.primaryText }}>
+          <Text className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
             Nombre de la lista
           </Text>
           <TextInput
             placeholder="Ej: Películas favoritas"
+						placeholderTextColor={colors.secondaryText}
             value={formData.name}
             onChangeText={(text) => setFormData({ ...formData, name: text })}
             className="rounded-xl px-4 py-4"
@@ -95,19 +96,23 @@ export default function ListForm() {
         </View>
 
         <View className="mb-5">
-          <Text className="mb-2 ml-1 text-sm font-semibold" style={{ color: colors.primaryText }}>
+          <Text className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
             Descripción
           </Text>
           <TextInput
             placeholder="Describe el contenido de esta lista..."
+            placeholderTextColor={colors.secondaryText}
             value={formData.description}
             onChangeText={(text) => setFormData({ ...formData, description: text })}
-            className="text-mutedText  rounded-xl px-4"
+            className="rounded-xl px-4 py-4"
             style={{
               color: colors.secondaryText,
               backgroundColor: colors.tabBarBackgroundColor,
               textAlignVertical: 'top',
-              paddingTop: 10,
+              paddingTop: 12,
+							paddingBottom: 12,
+							paddingHorizontal: 12,
+							minHeight: 120
             }}
             multiline
             numberOfLines={6}
@@ -115,15 +120,15 @@ export default function ListForm() {
         </View>
 
         <View className="mb-5">
-          <Text className="mb-2 ml-1 text-sm font-semibold" style={{ color: colors.primaryText }}>
+          <Text className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
             Icono
           </Text>
-          <View className="flex-row flex-wrap justify-between gap-2">
+          <View className="flex-row flex-wrap justify-between gap-4">
             {icons.map((iconName) => (
               <TouchableOpacity
                 key={iconName}
                 onPress={() => setFormData({ ...formData, icon: iconName })}
-                className={`aspect-square w-[14%] items-center justify-center rounded-xl ${
+                className={`h-14 w-14 items-center justify-center rounded-xl ${
                   formData.icon === iconName
                 }`}
                 style={{
@@ -132,7 +137,7 @@ export default function ListForm() {
                 }}>
                 <MaterialCommunityIcons
                   name={iconName as any}
-                  size={20}
+                  size={25}
                   color={formData.icon === iconName ? colors.primaryText : colors.secondaryText}
                 />
               </TouchableOpacity>
@@ -141,7 +146,7 @@ export default function ListForm() {
         </View>
 
         <View className="mb-6">
-          <Text className="mb-2 ml-1 text-sm font-semibold" style={{ color: colors.primaryText }}>
+          <Text className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
             Color
           </Text>
           <View className="flex-row flex-wrap justify-between gap-2">
