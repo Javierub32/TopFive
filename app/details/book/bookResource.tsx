@@ -188,10 +188,11 @@ export default function BookDetail() {
 
           {/* Información en tarjetas */}
           {/* Usamos flex-wrap y widths porcentuales para simular CSS Grid */}
-          <View className="flex-row flex-wrap justify-between gap-y-3 gap-x-2">
-            {/* CARD 1: Calificación (48% width) */}
+          <View className="flex-col flex-wrap  justify-between gap-y-3 gap-x-2">
+			<View className="flex-row gap-2">
+            {/* CARD 1: Calificación */}
             <View 
-              className="w-[49%] p-4 rounded-2xl flex justify-between gap-2"
+              className="flex-1 p-4 rounded-2xl flex justify-between gap-2"
               style={{ backgroundColor: `${colors.rating}1A` }}
             >
               <View className="flex-row items-center gap-2">
@@ -212,9 +213,9 @@ export default function BookDetail() {
               </View>
             </View>
 
-            {/* CARD 2: Progreso (48% width) */}
+            {/* CARD 2: Progreso */}
             <View 
-              className="w-[49%] p-4 rounded-2xl flex justify-between gap-2"
+              className="flex-1 p-4 rounded-2xl flex justify-between gap-2"
               style={{ backgroundColor: `${colors.primary}1A` }}
             >
               <View className="flex-row items-center gap-2">
@@ -228,6 +229,7 @@ export default function BookDetail() {
                 <Text className="text-xs ml-1" style={{ color: colors.markerText }}>págs</Text>
               </View>
             </View>
+			</View>
 
             {/* CARD 3: Reseña (100% width - Wide Item) */}
             <View 
@@ -242,37 +244,40 @@ export default function BookDetail() {
                 {bookResource.reseña || '-'}
               </Text>
             </View>
+			<View className="flex-row gap-2">
+				<View 
+				className="flex-1 p-4 rounded-2xl space-y-2"
+				style={{ backgroundColor: colors.surfaceButton }}
+				>
+				<View className="flex-row items-center gap-2">
+					<MaterialCommunityIcons name="calendar-start" size={20} color={colors.primary} />
+					<Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.markerText }}>INICIO</Text>
+				</View>
+				<View>
+					<Text className="text-md font-semibold" style={{ color: colors.primaryText }}>
+					{bookResource.fechaInicio ? new Date(bookResource.fechaInicio).toLocaleDateString() : '-'}
+					</Text>
+				</View>
+				</View>
+				{/* CARD 5: Fecha Fin (48% width) */}
+				<View 
+				className="flex-1 p-4 rounded-2xl space-y-2"
+				style={{ backgroundColor: colors.surfaceButton }}
+				>
+				<View className="flex-row items-center gap-2">
+					<MaterialCommunityIcons name="calendar-end" size={20} color={colors.primary} />
+					<Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.secondaryText }}>FIN</Text>
+				</View>
+				<View>
+					<Text className="text-md font-semibold" style={{ color: colors.primaryText }}>
+					{bookResource.fechaFin ? new Date(bookResource.fechaFin).toLocaleDateString() : '-'}
+					</Text>
+				</View>
+				</View>
+			</View>
 
             {/* CARD 4: Fecha Inicio (48% width) */}
-            <View 
-              className="w-[49%] p-4 rounded-2xl space-y-2"
-              style={{ backgroundColor: colors.surfaceButton }}
-            >
-              <View className="flex-row items-center gap-2">
-                <MaterialCommunityIcons name="calendar-start" size={20} color={colors.primary} />
-                <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.markerText }}>INICIO</Text>
-              </View>
-              <View>
-                <Text className="text-md font-semibold" style={{ color: colors.primaryText }}>
-                  {bookResource.fechaInicio ? new Date(bookResource.fechaInicio).toLocaleDateString() : '-'}
-                </Text>
-              </View>
-            </View>
-            {/* CARD 5: Fecha Fin (48% width) */}
-            <View 
-              className="w-[49%] p-4 rounded-2xl space-y-2"
-              style={{ backgroundColor: colors.surfaceButton }}
-            >
-              <View className="flex-row items-center gap-2">
-                <MaterialCommunityIcons name="calendar-end" size={20} color={colors.primary} />
-                <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.secondaryText }}>FIN</Text>
-              </View>
-              <View>
-                <Text className="text-md font-semibold" style={{ color: colors.primaryText }}>
-                  {bookResource.fechaFin ? new Date(bookResource.fechaFin).toLocaleDateString() : '-'}
-                </Text>
-              </View>
-            </View>
+
 
           </View>
 
