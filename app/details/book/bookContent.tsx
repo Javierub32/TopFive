@@ -8,6 +8,7 @@ import { Book } from 'app/types/Content';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
+import { useState } from 'react';
 
 export default function BookDetail() {
   const { bookData } = useLocalSearchParams();
@@ -21,6 +22,38 @@ export default function BookDetail() {
 	  params: { bookData: JSON.stringify(book) },
 	});
   };
+
+  const cleanHtmlDescription = (html: string | null | undefined): string => {
+  if (!html) return '';
+  
+  return html
+    // 1. Reemplazar tags <br> y <p> por saltos de línea reales
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n\n')
+    
+    // 2. Eliminar cualquier otro tag HTML (<b>, <i>, etc.)
+    .replace(/<[^>]+>/g, '')
+    
+    // 3. Decodificar entidades comunes
+    .replace(/&nbsp;|&#xa0;/g, ' ')  // Espacios de no separación
+    .replace(/&amp;/g, '&')          // Ampersand
+    .replace(/&quot;/g, '"')         // Comillas dobles
+    .replace(/&lt;/g, '<')           // Menor que
+    .replace(/&gt;/g, '>')           // Mayor que
+    
+    // 4. Limpiar espacios extra resultantes
+    .trim();
+};
+
+  const [ isExpanded, setIsExpanded ] = useState(false);
+  const MAX_LENGTH = 200;
+  const shouldTruncate = book.description && book.description.length > MAX_LENGTH;
+  const rawDescription = book.description || 'Sin descripción disponible.';
+  const descriptionText = cleanHtmlDescription(rawDescription);
+  
+  const displayedDescription = shouldTruncate && !isExpanded
+    ? descriptionText.slice(0, MAX_LENGTH) + '...'
+    : descriptionText;
 
   if (!book) {
     return (
@@ -116,14 +149,22 @@ export default function BookDetail() {
               </View>
             )}
 
-            {book.description && (
+            {descriptionText && (
               <View className="w-full p-5 rounded-2xl space-y-3 border-l-4" style={{ backgroundColor: colors.surfaceButton, borderColor: colors.borderButton }}>
                 <View className="flex-row items-center gap-2">
                   <MaterialCommunityIcons name="book-open-page-variant" size={20} color={colors.primary} />
                   <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.title }}>Sinopsis</Text>
                 </View>
-                  <Text className="leading-relaxed italic" style={{ color: colors.secondaryText }}>
-                    {book.description}
+                  <Text  style={{ color: colors.secondaryText }}>
+                    <Text className="leading-relaxed italic">
+                      {displayedDescription}
+                    </Text>
+                    {shouldTruncate && (
+                      <Text 
+                        className="font-bold" style={{color: colors.primary}} onPress={() => setIsExpanded(!isExpanded)}>
+                        {isExpanded ? ' Leer menos' : 'Leer más'}
+                      </Text>
+                    )}
                   </Text>
               </View>
             )}

@@ -155,12 +155,12 @@ export default function BookDetail() {
         <View className="px-4 pb-6">
           {/* Título y año */}
           <View className="mb-4">
-			<View className="flex-row items-center justify-between">
-				<Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
-				{contenidolibro.titulo || 'Sin título'}
-				</Text>
-				<AddToListButton resourceCategory="Libros" resourceId={bookResource.id} />
-			</View>
+            <View className="flex-row items-center justify-between">
+              <Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
+              {contenidolibro.titulo || 'Sin título'}
+              </Text>
+              <AddToListButton resourceCategory="Libros" resourceId={bookResource.id} />
+            </View>
             
             <View className="flex-row items-stretch flex-wrap gap-2">
               {/* Año de publicación */}
@@ -192,7 +192,7 @@ export default function BookDetail() {
             {/* CARD 1: Calificación (48% width) */}
             <View 
               className="w-[49%] p-4 rounded-2xl flex justify-between gap-2"
-              style={{ backgroundColor: colors.surfaceButton}}
+              style={{ backgroundColor: `${colors.rating}1A` }}
             >
               <View className="flex-row items-center gap-2">
                 <MaterialCommunityIcons name="star-circle" size={20} color={colors.rating} />
@@ -215,7 +215,7 @@ export default function BookDetail() {
             {/* CARD 2: Progreso (48% width) */}
             <View 
               className="w-[49%] p-4 rounded-2xl flex justify-between gap-2"
-              style={{ backgroundColor: colors.surfaceButton }}
+              style={{ backgroundColor: `${colors.primary}1A` }}
             >
               <View className="flex-row items-center gap-2">
                 <MaterialCommunityIcons name="book-open-page-variant" size={20} color={colors.primary} />
@@ -239,13 +239,13 @@ export default function BookDetail() {
                 <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.markerText }}>TU RESEÑA</Text>
               </View>
               <Text className="leading-relaxed italic" style={{ color: colors.primaryText }}>
-                {bookResource.reseña || 'Sin reseña...'}
+                {bookResource.reseña || '-'}
               </Text>
             </View>
 
             {/* CARD 4: Fecha Inicio (48% width) */}
             <View 
-              className="w-[48%] p-4 rounded-2xl space-y-2"
+              className="w-[49%] p-4 rounded-2xl space-y-2"
               style={{ backgroundColor: colors.surfaceButton }}
             >
               <View className="flex-row items-center gap-2">
@@ -260,7 +260,7 @@ export default function BookDetail() {
             </View>
             {/* CARD 5: Fecha Fin (48% width) */}
             <View 
-              className="w-[48%] p-4 rounded-2xl space-y-2"
+              className="w-[49%] p-4 rounded-2xl space-y-2"
               style={{ backgroundColor: colors.surfaceButton }}
             >
               <View className="flex-row items-center gap-2">
@@ -281,7 +281,7 @@ export default function BookDetail() {
             <View className="mt-4">
               <View 
                 className="rounded-2xl p-6 flex-row items-center justify-between shadow-lg" 
-                style={{ backgroundColor: colors.accent }}
+                style={{ backgroundColor: `${colors.accent}BF` }}
               >
                 <View>
                   <Text className="text-sm font-medium uppercase tracking-widest mb-1" style={{ color: colors.primaryText }}>
@@ -297,115 +297,6 @@ export default function BookDetail() {
               </View>
             </View>
           )}
-
-
-
-          {/*
-          <View className="gap-4 mb-6">
-            {/* Tu calificación 
-            {bookResource.calificacion > 0 && (
-              <View className="p-4 rounded-xl" style={{backgroundColor: colors.surfaceButton}}>
-                <Text className="text-sm font-bold mb-2 uppercase" style={{ color: colors.title }}>
-                  Tu calificación
-                </Text>
-                <View className="flex-row items-center">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <FontAwesome5
-                      key={star}
-                      name="star"
-                      size={20}
-                      color={star <= bookResource.calificacion ? colors.rating : colors.secondaryText}
-                      solid={star <= bookResource.calificacion}
-                      style={{ marginRight: 4 }}
-                    />
-                  ))}
-                </View>
-              </View>
-            )}
-
-
-            {/* Páginas leídas 
-            {bookResource.paginasLeidas > 0 && (
-              <View className="p-4 rounded-xl" style={{backgroundColor: colors.surfaceButton}}>
-                <Text className="text-sm font-bold mb-2 uppercase" style={{ color: colors.title }}>
-                  Páginas leídas
-                </Text>
-                <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="book-open-page-variant" size={24} color={colors.primary} />
-                  <Text className="text-lg font-bold ml-2" style={{ color: colors.primaryText }}>
-                    {bookResource.paginasLeidas} páginas
-                  </Text>
-                </View>
-              </View>
-            )}
-
-            {/* Fechas de lectura 
-            {(bookResource.fechaInicio || bookResource.fechaFin) && (
-              <View className="p-4 rounded-xl" style={{backgroundColor: colors.surfaceButton}}>
-                <Text className="text-sm font-bold mb-3 uppercase" style={{ color: colors.title }}>
-                  Periodo de lectura
-                </Text>
-                <View className="gap-2">
-                  {bookResource.fechaInicio && (
-                    <View className="flex-row items-center">
-                      <MaterialCommunityIcons name="calendar-start" size={20} color={colors.primary} />
-                      <Text className="text-sm ml-2 mr-2" style={{ color: colors.secondaryText }}>Inicio:</Text>
-                      <Text className="text-sm font-semibold" style={{ color: colors.primaryText }}>
-                        {new Date(bookResource.fechaInicio).toLocaleDateString('es-ES', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </Text>
-                    </View>
-                  )}
-                  {bookResource.fechaFin && (
-                    <View className="flex-row items-center">
-                      <MaterialCommunityIcons name="calendar-end" size={20} color={colors.primary} />
-                      <Text className="text-sm ml-2 mr-2" style={{ color: colors.secondaryText }}>Fin:</Text>
-                      <Text className="text-sm font-semibold" style={{ color: colors.primaryText }}>
-                        {new Date(bookResource.fechaFin).toLocaleDateString('es-ES', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-              </View>
-            )}
-
-            {/* Tu reseña 
-            {bookResource.reseña && (
-              <View className="p-4 rounded-xl" style={{backgroundColor: colors.surfaceButton}}>
-                <Text className="text-sm font-bold mb-2 uppercase" style={{ color: colors.title }}>
-                  Tu reseña
-                </Text>
-                <Text className="text-base leading-6" style={{ color: colors.primaryText }}>
-                  {bookResource.reseña}
-                </Text>
-              </View>
-            )}
-
-            {/* Fecha de agregado 
-            <View className="p-4 rounded-xl" style={{backgroundColor: colors.surfaceButton}}>
-              <Text className="text-sm font-bold mb-2 uppercase" style={{ color: colors.title }}>
-                Agregado a tu colección
-              </Text>
-              <View className="flex-row items-center">
-                <MaterialCommunityIcons name="calendar-plus" size={20} color={colors.primary} />
-                <Text className="text-base ml-2" style={{ color: colors.primaryText }}>
-                  {new Date(bookResource.fechacreacion).toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </Text>
-              </View>
-            </View>
-          </View>
-          */}
         </View>
       </ScrollView>
     </Screen>
