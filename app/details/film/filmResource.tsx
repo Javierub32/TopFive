@@ -9,6 +9,7 @@ import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
 import { AddToListButton } from 'components/AddToListButton';
+import { ThemedStatusBar } from 'components/ThemedStatusBar';
 
 
 export default function FilmDetail() {
@@ -73,16 +74,16 @@ export default function FilmDetail() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'PENDIENTE': return 'bg-borderButton';
-      case 'EN_CURSO': return 'bg-blue-600';
-      case 'COMPLETADO': return 'bg-green-600';
-      default: return 'bg-borderButton';
+      case 'PENDIENTE': return colors.warning;
+      case 'EN_CURSO': return colors.accent;
+      case 'COMPLETADO': return colors.success;
+      default: return colors.surfaceButton;
     }
   };
 
   return (
     <Screen>
-      <StatusBar style="light" />
+      <ThemedStatusBar/>
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Header con botón de volver y botón de eliminar */}
@@ -93,19 +94,21 @@ export default function FilmDetail() {
           {/* Botón de editar */}
           <TouchableOpacity 
             onPress={handleEdit}
-            className="h-10 w-10 items-center justify-center rounded-full bg-blue-600 border border-blue-500 mr-2"
+            className="h-10 w-10 items-center justify-center rounded-full mr-2 border-2"
+            style ={{backgroundColor: `${colors.primary}99`, borderColor: colors.primary}}
             activeOpacity={0.7}
           >
-            <AntDesign name="edit" size={20} color="#fff" />
+            <AntDesign name="edit" size={20} color={colors.primaryText} />
           </TouchableOpacity>
           
           {/* Botón de eliminar */}
           <TouchableOpacity 
             onPress={handleDelete}
-            className="h-10 w-10 items-center justify-center rounded-full bg-red-600 border border-red-500 mr-2"
+            className="h-10 w-10 items-center justify-center rounded-full mr-2 border-2"
+            style={{backgroundColor: `${colors.error}99`, borderColor: colors.error}}
             activeOpacity={0.7}
           >
-            <MaterialCommunityIcons name="delete" size={24} color="#fff" />
+            <MaterialCommunityIcons name="delete" size={24} color={colors.primaryText}/>
           </TouchableOpacity>
         </View>
 
@@ -113,7 +116,7 @@ export default function FilmDetail() {
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: contenidopelicula.imagenUrl || 'https://via.placeholder.com/500x750' }}
-            className="w-full h-[500px] rounded-2xl bg-background"
+            className="w-full h-[600px] rounded-2xl bg-background"
             resizeMode="cover"
           />
         </View>
@@ -121,41 +124,40 @@ export default function FilmDetail() {
         <View className="px-4 pb-6">
           {/* Título y año */}
           <View className="mb-4">
-			<View className="flex-row items-center justify-between">
-				<Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
-				{contenidopelicula.titulo || 'Sin título'}
-				</Text>
-				<AddToListButton resourceCategory="Películas" resourceId={filmResource.id} />
-			</View>
+            <View className="flex-row items-center justify-between">
+              <Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
+              {contenidopelicula.titulo || 'Sin título'}
+              </Text>
+              <AddToListButton resourceCategory="Películas" resourceId={filmResource.id} />
+            </View>
             
-            <View className="flex-row items-center flex-wrap gap-2">
+            <View className="flex-row items-stretch flex-wrap gap-2">
               {/* Año de estreno */}
-              <View className="bg-surfaceButton px-3 py-1.5 rounded-lg border border-borderButton">
-                <Text className="text-secondaryText text-sm font-semibold">
+              <View className="px-3 py-1.5 rounded-lg justify-center" style={{backgroundColor: colors.surfaceButton}}>
+                <Text className="text-sm font-semibold" style={{color: colors.secondaryText}}>
                   {releaseYear}
                 </Text>
               </View>
 
               {/* Estado */}
-              <View className={`px-3 py-1.5 rounded-lg ${getStatusColor(filmResource.estado)}`}>
-                <Text className="text-primaryText text-xs font-bold uppercase">
+              <View className="px-3 py-1.5 rounded-lg justify-center" style={{backgroundColor:`${getStatusColor(filmResource.estado)}33`}}>
+                <Text className="text-sm font-semibold uppercase" style={{color: getStatusColor(filmResource.estado)}}>
                   {getStatusText(filmResource.estado)}
                 </Text>
               </View>
 
               {/* Favorito */}
               {filmResource.favorito && (
-                <View className="bg-red-900/40 px-3 py-1.5 rounded-lg border border-red-500/30 flex-row items-center">
-                  <MaterialCommunityIcons name="heart" size={16} color="#ef4444" />
-                  <Text className="text-red-300 text-xs font-bold ml-1">Favorito</Text>
+                <View className="px-3 py-1.5 rounded-lg justify-center" style={{backgroundColor: `${colors.favorite}33`}}>
+                  <MaterialCommunityIcons name="heart" size={16} color={colors.favorite} />
                 </View>
               )}
 
               {/* Número de visionados */}
               {filmResource.numVisionados > 0 && (
-                <View className="bg-marker px-3 py-1.5 rounded-lg border border-primary/30 flex-row items-center">
-                  <MaterialCommunityIcons name="eye" size={16} color="#a855f7" />
-                  <Text className="text-markerText text-xs font-bold ml-1">
+                <View className="px-3 py-1.5 rounded-lg flex-row items-center" style={{backgroundColor: `${colors.accent}33`}}>
+                  <MaterialCommunityIcons name="eye" size={16} color={colors.accent} />
+                  <Text className="text-xs font-bold ml-1" style={{color:colors.markerText}}>
                     {filmResource.numVisionados}x
                   </Text>
                 </View>
@@ -163,105 +165,48 @@ export default function FilmDetail() {
             </View>
           </View>
 
-          {/* Información en tarjetas */}
-          <View className="gap-4 mb-6">
-            {/* Tu calificación */}
-            {filmResource.calificacion > 0 && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-2 uppercase">
-                  Tu calificación
-                </Text>
-                <View className="flex-row items-center">
-                  {[1, 2, 3, 4, 5].map((star) => (
+          <View className='flex-1 flex-col justify-between gap-3'>
+            <View className='flex-row gap-2'>
+              <View className='flex-1 p-4 rounded-2xl flex justify-between gap-2' style={{backgroundColor: `${colors.rating}1A`}}>
+                <View className='flex-row items-center gap-2'>
+                  <MaterialCommunityIcons name='star-circle' size={20} color={colors.rating}/>
+                  <Text className='text-sm font-bold uppercase tracling-widest' style={{color: colors.markerText}}>Rating</Text>
+                </View>
+                <View className='flex-row'>
+                  {[1,2,3,4,5].map((star)=>(
                     <FontAwesome5
                       key={star}
                       name="star"
                       size={20}
-                      color={star <= filmResource.calificacion ? '#fbbf24' : '#475569'}
+                      color={star <= filmResource.calificacion ? colors.rating : colors.markerText}
                       solid={star <= filmResource.calificacion}
                       style={{ marginRight: 4 }}
                     />
                   ))}
-                  <Text className="text-primaryText text-lg font-bold ml-2">
-                    {filmResource.calificacion}/5
+                </View>
+              </View>
+
+              <View className='flex-1 p-4 rounded-2xl flex justify-between gap-2' style={{backgroundColor: `${colors.primary}1A`}}>
+                <View className='flex-row items-center gap-2'>
+                  <MaterialCommunityIcons name='calendar' size={20} color={colors.primary} />
+                  <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Última vez</Text>
+                </View>
+                <View className='flex-row items-baseline'>
+                  <Text className='text-xl font-bold' style={{ color: colors.primaryText}}>
+                    {filmResource.fechaVisionado ? new Date(filmResource.fechaVisionado).toLocaleDateString() : '-'}
                   </Text>
                 </View>
               </View>
-            )}
+            </View>
 
-            {/* Calificación general */}
-            {contenidopelicula.calificacion && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-2 uppercase">
-                  Calificación general
-                </Text>
-                <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="star" size={24} color="#fbbf24" />
-                  <Text className="text-primaryText text-lg font-bold ml-2">
-                    {contenidopelicula.calificacion.toFixed(1)}/10
-                  </Text>
-                </View>
+            <View className='flex-1 p-5 rounded-2xl gap-3 border-l-4' style={{backgroundColor:colors.surfaceButton, borderColor:colors.borderButton}}>
+              <View className='flex-row items-center gap-2'>
+                <MaterialCommunityIcons name="comment-quote" size={20} color={colors.secondary}/>
+                <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Tu reseña</Text>
               </View>
-            )}
-
-            {/* Fecha de visionado */}
-            {filmResource.fechaVisionado && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-2 uppercase">
-                  Fecha de visionado
-                </Text>
-                <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="calendar-check" size={20} color={colors.primary} />
-                  <Text className="text-primaryText text-sm ml-2">
-                    {new Date(filmResource.fechaVisionado).toLocaleDateString('es-ES', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </Text>
-                </View>
-              </View>
-            )}
-
-            {/* Descripción */}
-            {contenidopelicula.descripcion && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-2 uppercase">
-                  Descripción
-                </Text>
-                <Text className="text-secondaryText text-base leading-6">
-                  {contenidopelicula.descripcion}
-                </Text>
-              </View>
-            )}
-
-            {/* Tu reseña */}
-            {filmResource.reseña && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-2 uppercase">
-                  Tu reseña
-                </Text>
-                <Text className="text-secondaryText text-base leading-6">
-                  {filmResource.reseña}
-                </Text>
-              </View>
-            )}
-
-            {/* Fecha de agregado */}
-            <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-              <Text className="text-title text-sm font-bold mb-2 uppercase">
-                Agregado a tu colección
+              <Text className='leading-relaxed italic' style={{color: colors.primaryText}}>
+                {filmResource.reseña || '-'}
               </Text>
-              <View className="flex-row items-center">
-                <MaterialCommunityIcons name="calendar-plus" size={20} color={colors.primary} />
-                <Text className="text-primaryText text-sm ml-2">
-                  {new Date(filmResource.fechacreacion).toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </Text>
-              </View>
             </View>
           </View>
         </View>

@@ -9,6 +9,7 @@ import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { useState } from 'react';
+import { cleanHtmlDescription } from '@/Details/utils/descriptionUtils';
 
 export default function BookDetail() {
   const { bookData } = useLocalSearchParams();
@@ -22,28 +23,6 @@ export default function BookDetail() {
 	  params: { bookData: JSON.stringify(book) },
 	});
   };
-
-  const cleanHtmlDescription = (html: string | null | undefined): string => {
-  if (!html) return '';
-  
-  return html
-    // 1. Reemplazar tags <br> y <p> por saltos de línea reales
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/p>/gi, '\n\n')
-    
-    // 2. Eliminar cualquier otro tag HTML (<b>, <i>, etc.)
-    .replace(/<[^>]+>/g, '')
-    
-    // 3. Decodificar entidades comunes
-    .replace(/&nbsp;|&#xa0;/g, ' ')  // Espacios de no separación
-    .replace(/&amp;/g, '&')          // Ampersand
-    .replace(/&quot;/g, '"')         // Comillas dobles
-    .replace(/&lt;/g, '<')           // Menor que
-    .replace(/&gt;/g, '>')           // Mayor que
-    
-    // 4. Limpiar espacios extra resultantes
-    .trim();
-};
 
   const [ isExpanded, setIsExpanded ] = useState(false);
   const MAX_LENGTH = 200;
@@ -86,8 +65,8 @@ export default function BookDetail() {
           />
         </View>
 
-        <View className="px-4 mb-14">
-          <Text className="text-3xl font-bold mb-3" style={{ color: colors.primaryText }}>
+        <View className="px-4 pb-6">
+          <Text className="text-3xl font-bold mb-4" style={{ color: colors.primaryText }}>
             {book.title || 'Sin título'}
           </Text>
 
@@ -99,7 +78,7 @@ export default function BookDetail() {
               </Text>
             </View>
 
-            {book.rating && (
+            {!!book.rating && (
               <View className="px-3 py-1.5 rounded-lg flex-row items-center border" style={{backgroundColor: colors.surfaceButton, borderColor: colors.rating}}>
                 <MaterialCommunityIcons name="star" size={20} color={colors.rating} />
                 <Text className="text-sm font-bold ml-1" style={{color: colors.markerText}}>
@@ -117,55 +96,57 @@ export default function BookDetail() {
             )}
           </View>
 
-          <View className="flex-row flex-wrap justify-between gap-y-3 gap-x-2">
-            {book.autor && (
-            <View className="w-[49%] p-4 rounded-2xl flex justify-between gap-2" style={{ backgroundColor: colors.surfaceButton}}>
-              <View className="flex-row items-center gap-2">
-                <MaterialCommunityIcons name="account" size={20} color={colors.primary} />
-                <Text className="text-sm font-bold uppercase tracking-widest" style={{color:colors.title}}>Autor</Text>                
-              </View>
-              <Text className="text-base ml-3 font-semibold" style={{ color: colors.secondaryText }}>
-                {book.autor}
-              </Text>
-            </View>
-            )}
-          
-
-            {book.releaseDate && (
-              <View className="w-[49%] p-4 rounded-2xl flex justify-between gap-2" style={{backgroundColor: colors.surfaceButton}}>
+          <View className="flex-col justify-between gap-3">
+            <View className="flex-row gap-2">
+              {book.autor && (
+              <View className="flex-1 p-4 rounded-2xl flex justify-between gap-2" style={{ backgroundColor: colors.surfaceButton}}>
                 <View className="flex-row items-center gap-2">
-                  <MaterialCommunityIcons name="calendar" size={20} color={colors.primary} />
-                  <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.title }}>
-                    Publicado
-                  </Text>
+                  <MaterialCommunityIcons name="account" size={20} color={colors.primary} />
+                  <Text className="text-sm font-bold uppercase tracking-widest" style={{color:colors.title}}>Autor</Text>                
                 </View>
-                <Text className="text-base ml-3" style={{ color: colors.secondaryText }}>
-                  {new Date(book.releaseDate).toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
+                <Text className="text-base ml-3 font-semibold" style={{ color: colors.secondaryText }}>
+                  {book.autor}
                 </Text>
               </View>
-            )}
+              )}
+            
+
+              {book.releaseDate && (
+                <View className="flex-1 p-4 rounded-2xl flex justify-between gap-2" style={{backgroundColor: colors.surfaceButton}}>
+                  <View className="flex-row items-center gap-2">
+                    <MaterialCommunityIcons name="calendar" size={20} color={colors.primary} />
+                    <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.title }}>
+                      Publicado
+                    </Text>
+                  </View>
+                  <Text className="text-base ml-3" style={{ color: colors.secondaryText }}>
+                    {new Date(book.releaseDate).toLocaleDateString('es-ES', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </Text>
+                </View>
+              )}
+            </View>
 
             {descriptionText && (
-              <View className="w-full p-5 rounded-2xl space-y-3 border-l-4" style={{ backgroundColor: colors.surfaceButton, borderColor: colors.borderButton }}>
+              <View className="flex-1 p-5 rounded-2xl space-y-3 border-l-4" style={{ backgroundColor: colors.surfaceButton, borderColor: colors.borderButton }}>
                 <View className="flex-row items-center gap-2">
                   <MaterialCommunityIcons name="book-open-page-variant" size={20} color={colors.primary} />
                   <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.title }}>Sinopsis</Text>
                 </View>
-                  <Text  style={{ color: colors.secondaryText }}>
-                    <Text className="leading-relaxed italic">
-                      {displayedDescription}
-                    </Text>
-                    {shouldTruncate && (
-                      <Text 
-                        className="font-bold" style={{color: colors.primary}} onPress={() => setIsExpanded(!isExpanded)}>
-                        {isExpanded ? ' Leer menos' : 'Leer más'}
-                      </Text>
-                    )}
+                <Text  style={{ color: colors.secondaryText }}>
+                  <Text className="leading-relaxed italic">
+                    {displayedDescription}
                   </Text>
+                  {shouldTruncate && (
+                    <Text 
+                      className="font-bold" style={{color: colors.primary}} onPress={() => setIsExpanded(!isExpanded)}>
+                      {isExpanded ? ' Leer menos' : 'Leer más'}
+                    </Text>
+                  )}
+                </Text>
               </View>
             )}
           </View>
