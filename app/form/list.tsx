@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-  Alert,
-} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -13,6 +6,7 @@ import { useState } from 'react';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
 import { useLists } from '@/Collection/hooks/useLists';
+import { ReturnButton } from 'components/ReturnButton';
 
 export default function ListForm() {
   const { colors } = useTheme();
@@ -72,6 +66,9 @@ export default function ListForm() {
     <Screen>
       <StatusBar style="light" />
       <ScrollView className="flex-1 px-4 py-6">
+				<View className="flex-row items-center flex-1">
+					<ReturnButton route="/Collection" title={'Detalle del libro'} style={" "} params={{initialResource: 'Libros'}}/>
+				</View>
         <View className="mb-6 items-center justify-center">
           <View
             className="h-24 w-24 items-center justify-center rounded-3xl shadow-md"
