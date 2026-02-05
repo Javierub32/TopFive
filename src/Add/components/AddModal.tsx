@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Modal, TouchableOpacity, Pressable } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, Pressable, StatusBar } from 'react-native';
 import { CategoryKey } from '@/Add/hooks/useSearchContent';
 import { BookIcon, FilmIcon, ShowIcon, MusicIcon, GameIcon } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
@@ -26,7 +26,7 @@ export function AddModal({ visible, onClose, onSelect }: AddModalProps) {
     onClose();
   };
   
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
 
   return (
     <Modal
@@ -35,6 +35,11 @@ export function AddModal({ visible, onClose, onSelect }: AddModalProps) {
       animationType="fade"
       onRequestClose={onClose}
     >
+      <StatusBar
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+        backgroundColor="transparent"
+        translucent
+      />
       <Pressable className="flex-1 items-center justify-center" style={{backgroundColor: `${colors.background}B3`}} onPress={onClose}>
         <Pressable 
           className="w-[85%] max-w-[400px] rounded-3xl p-6 shadow-2xl" 

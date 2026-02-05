@@ -2,23 +2,26 @@ import { useEffect, useState } from "react";
 import { CollectionType, ListInfo, listServices } from "../services/listServices";
 import { useAuth } from "context/AuthContext";
 import { useCollection } from "./useCollection";
+import { Alert } from "react-native";
 
 const categoryMap: Record<string, string> = {
 	'Películas': 'PELICULA',
-	'Series': 'PELICULA',
+	'Series': 'SERIE',
 	'Videojuegos': 'VIDEOJUEGO',
 	'Libros': 'LIBRO',
 	'Canciones': 'CANCION',
 };
 
 
-export const useLists = () => {
+export const useLists = (categoriaActual: string) => {
 	const { user } = useAuth();
-	const { categoriaActual } = useCollection();
 	const [loading, setLoading] = useState(false);
 	const [lists, setLists] = useState<ListInfo[]>([]);
 
 	useEffect(() => {
+		setLists([]); // Limpiar listas al cambiar de categoría para evitar mostrar datos obsoletos
+		console.log("Categoría actual:", categoriaActual);
+
 		fetchListInfo();
 	}, [categoriaActual]);
 	
@@ -26,9 +29,11 @@ export const useLists = () => {
 		try {
 			setLoading(true);
 			await listServices.createList(user.id, nombre, descripcion, icono, color, categoryMap[categoriaActual] as CollectionType);
+			Alert.alert("Lista creada", `La lista "${nombre}" ha sido creada exitosamente.`);
 		}
 		catch (error) {
 			console.error("Error creating list:", error);
+			Alert.alert("Error", "No se pudo crear la lista. Por favor, inténtalo de nuevo.");
 		}
 		finally {
 			setLoading(false);

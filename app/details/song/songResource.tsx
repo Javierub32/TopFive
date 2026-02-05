@@ -8,6 +8,7 @@ import { ReturnButton } from 'components/ReturnButton';
 import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
+import { AddToListButton } from 'components/AddToListButton';
 
 export default function SongDetail() {
   const { item } = useLocalSearchParams();
@@ -94,7 +95,12 @@ export default function SongDetail() {
         </View>
         <View className="px-4 pb-6">
           <View className="mb-4">
-            <Text className="text-primaryText text-3xl font-bold mb-2">{contenidocancion.titulo || 'Sin título'}</Text>
+			<View className="flex-row items-center justify-between">
+				<Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
+				{contenidocancion.titulo || 'Sin título'}
+				</Text>
+				<AddToListButton resourceCategory="Canciones" resourceId={songResource.id} />
+			</View>
             <View className="flex-row items-center flex-wrap gap-2">
               <View className="bg-surfaceButton px-3 py-1.5 rounded-lg border border-borderButton"><Text className="text-secondaryText text-sm font-semibold">{releaseYear}</Text></View>
               <View className={`px-3 py-1.5 rounded-lg ${getStatusColor(songResource.estado)}`}><Text className="text-primaryText text-xs font-bold uppercase">{getStatusText(songResource.estado)}</Text></View>

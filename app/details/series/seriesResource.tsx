@@ -8,6 +8,7 @@ import { ReturnButton } from 'components/ReturnButton';
 import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
+import { AddToListButton } from 'components/AddToListButton';
 
 export default function SeriesDetail() {
   const { item } = useLocalSearchParams();
@@ -106,7 +107,12 @@ export default function SeriesDetail() {
         </View>
         <View className="px-4 pb-6">
           <View className="mb-4">
-            <Text className="text-primaryText text-3xl font-bold mb-2">{contenidoserie.titulo || 'Sin título'}</Text>
+			<View className="flex-row items-center justify-between">
+				<Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
+				{contenidoserie.titulo || 'Sin título'}
+				</Text>
+				<AddToListButton resourceCategory="Series" resourceId={seriesResource.id} />
+			</View>
             <View className="flex-row items-center flex-wrap gap-2">
               <View className="bg-surfaceButton px-3 py-1.5 rounded-lg border border-borderButton">
                 <Text className="text-secondaryText text-sm font-semibold">{endedYear ? `${releaseYear} - ${endedYear}` : `${releaseYear} - Presente`}</Text>

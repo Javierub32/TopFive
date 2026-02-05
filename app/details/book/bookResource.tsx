@@ -10,6 +10,7 @@ import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import { AddToListButton } from 'components/AddToListButton';
 
 
 export default function BookDetail() {
@@ -154,9 +155,12 @@ export default function BookDetail() {
         <View className="px-4 pb-6">
           {/* Título y año */}
           <View className="mb-4">
-            <Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
-              {contenidolibro.titulo || 'Sin título'}
-            </Text>
+			<View className="flex-row items-center justify-between">
+				<Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
+				{contenidolibro.titulo || 'Sin título'}
+				</Text>
+				<AddToListButton resourceCategory="Libros" resourceId={bookResource.id} />
+			</View>
             
             <View className="flex-row items-stretch flex-wrap gap-2">
               {/* Año de publicación */}

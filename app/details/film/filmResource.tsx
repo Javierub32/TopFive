@@ -8,6 +8,7 @@ import { ReturnButton } from 'components/ReturnButton';
 import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
+import { AddToListButton } from 'components/AddToListButton';
 
 
 export default function FilmDetail() {
@@ -120,9 +121,12 @@ export default function FilmDetail() {
         <View className="px-4 pb-6">
           {/* Título y año */}
           <View className="mb-4">
-            <Text className="text-primaryText text-3xl font-bold mb-2">
-              {contenidopelicula.titulo || 'Sin título'}
-            </Text>
+			<View className="flex-row items-center justify-between">
+				<Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
+				{contenidopelicula.titulo || 'Sin título'}
+				</Text>
+				<AddToListButton resourceCategory="Películas" resourceId={filmResource.id} />
+			</View>
             
             <View className="flex-row items-center flex-wrap gap-2">
               {/* Año de estreno */}

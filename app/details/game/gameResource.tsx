@@ -8,6 +8,7 @@ import { ReturnButton } from 'components/ReturnButton';
 import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
+import { AddToListButton } from 'components/AddToListButton';
 
 
 export default function GameDetail() {
@@ -123,9 +124,12 @@ export default function GameDetail() {
         <View className="px-4 pb-6">
           {/* Título y año */}
           <View className="mb-4">
-            <Text className="text-primaryText text-3xl font-bold mb-2">
-              {contenidovideojuego.titulo || 'Sin título'}
-            </Text>
+			<View className="flex-row items-center justify-between">
+				<Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
+				{contenidovideojuego.titulo || 'Sin título'}
+				</Text>
+				<AddToListButton resourceCategory="Videojuegos" resourceId={gameResource.id} />
+			</View>
             
             <View className="flex-row items-center flex-wrap gap-2">
               <View className="bg-surfaceButton px-3 py-1.5 rounded-lg border border-borderButton">

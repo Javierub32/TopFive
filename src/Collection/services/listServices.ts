@@ -94,22 +94,30 @@ export const listServices = {
         throw new Error(`Tipo de contenido no soportado: ${itemType}`);
     }
 
-    const { data, error } = await supabase
+	const existingCheck = await supabase
+	  .from(tableName)
+	  .select('id')
+	  .eq('coleccionid', listId)
+	  .eq(resourceColumn, itemId)
+	  .single();
+	
+	if (existingCheck.data) {
+	  return 'El ítem ya está en la lista.';
+	}
+
+    const { error } = await supabase
       .from(tableName)
       .insert({
         coleccionid: listId,
         [resourceColumn]: itemId,
       })
-      .select()
       .single();
 
     if (error) {
       // Manejo de errores comunes
       if (error.code === '23503') {
         // Foreign Key Violation
-        throw new Error(
-          'No se pudo agregar: Verifica que el tipo del item coincida con el tipo de la lista.'
-        );
+        throw new Error('No se pudo agregar: Verifica que el tipo del item coincida con el tipo de la lista.');
       }
       if (error.code === '42501') {
         // RLS Violation
@@ -118,7 +126,7 @@ export const listServices = {
       throw error;
     }
 
-    return data;
+	return 'Recurso añadido a la lista exitosamente.';
   },
 
   async removeItemFromList( listId: string, resourceId: string | number, itemType: CollectionType) {

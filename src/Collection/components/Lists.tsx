@@ -5,6 +5,9 @@ import { useTheme } from 'context/ThemeContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ListItem } from './ListItem';
 import { router } from 'expo-router';
+import { useLists } from '../hooks/useLists';
+import { LoadingIndicator } from 'components/LoadingIndicator';
+import { useCollection } from 'context/CollectionContext';
 
 // Datos de prueba para simular el backend
 const MOCK_LISTS = [
@@ -54,13 +57,11 @@ const MOCK_LISTS = [
 
 export default function Lists() {
   const { colors } = useTheme();
+  const { categoriaActual } = useCollection();
+  const { lists, loading } = useLists(categoriaActual);
 
   return (
-      <View
-        className="flex-1  mt-4" 
-      >
-        
-        {/* Cabecera: Título y botón de nueva lista */}
+      <View className="flex-1  mt-4" >
         <View className="flex-row justify-between items-center mb-6">
           <Text className="text-xl font-bold" style={{ color: colors.primaryText }}>
             Mis Listas
@@ -71,9 +72,9 @@ export default function Lists() {
             </Text>
           </TouchableOpacity>
         </View>
-        {/* Renderizado de las tarjetas */}
+        { loading ? <LoadingIndicator /> : (
 		<FlatList
-			data={MOCK_LISTS}
+			data={lists}
 			keyExtractor={(list) => list.id.toString()}
 			renderItem={({ item: list }) => (
 				<ListItem list={list} />
@@ -82,6 +83,7 @@ export default function Lists() {
 			showsVerticalScrollIndicator={false}
 			contentContainerStyle={{ paddingBottom: 100 }}
 		/>
+	)}
 
       </View>
   );
