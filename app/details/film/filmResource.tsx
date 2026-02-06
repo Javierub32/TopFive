@@ -122,10 +122,10 @@ export default function FilmDetail() {
         </View>
 
         <View className="px-4 pb-6">
-          {/* Título y año */}
+          {/* Título y añadir a lista */}
           <View className="mb-4">
-            <View className="flex-row items-center justify-between">
-              <Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
+            <View className="flex-1 flex-row justify-between mb-2 items-center">
+              <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
               {contenidopelicula.titulo || 'Sin título'}
               </Text>
               <AddToListButton resourceCategory="Películas" resourceId={filmResource.id} />

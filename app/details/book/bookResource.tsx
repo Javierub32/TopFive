@@ -155,8 +155,8 @@ export default function BookDetail() {
         <View className="px-4 pb-6">
           {/* Título y año */}
           <View className="mb-4">
-            <View className="flex-row items-center justify-between">
-              <Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
+            <View className="flex-1 flex-row items-center justify-between mb-2 ">
+              <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
               {contenidolibro.titulo || 'Sin título'}
               </Text>
               <AddToListButton resourceCategory="Libros" resourceId={bookResource.id} />
