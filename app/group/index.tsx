@@ -6,6 +6,7 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { CollectionStructure } from 'components/CollectionStructure';
 import { useGroupData } from 'src/Collection/hooks/useGroupData';
 import { ReturnButton } from 'components/ReturnButton';
+import { useEffect } from 'react';
 
 export default function GroupScreen() {
   const params = useLocalSearchParams();
@@ -13,8 +14,13 @@ export default function GroupScreen() {
   const state = params.state as string;
   const category = params.category as string;
 
-  const { handleItemPress } = useCollection();
+  const { handleItemPress, setIsSearchVisible } = useCollection();
   const { loading, data } = useGroupData(category, state as any);
+
+  useEffect(() => {
+		setIsSearchVisible(false);
+  }, []);
+  
   return (
     <Screen>
       <View className="flex-1 px-4 pt-4">

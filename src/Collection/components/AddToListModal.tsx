@@ -28,7 +28,7 @@ const ModalListItem = ({ list, onSelect, colors }: any) => (
           {list.nombre}
         </Text>
         <Text className="text-xs" style={{ color: colors.secondaryText }} numberOfLines={1}>
-          {list.descripcion || (list.tipo === 'PELICULA' ? 'Lista de películas' : 'Lista privada')}
+          {list.descripcion || 'Sin descripción'}
         </Text>
       </View>
     </View>
@@ -41,8 +41,6 @@ export function AddToListModal({ visible, onClose, resourceCategory, onSelect }:
   const { colors, isDark } = useTheme();
   const { categoriaActual } = useCollection();
   const { lists, loading } = useLists(categoriaActual);
-
-  
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose} statusBarTranslucent={true}>

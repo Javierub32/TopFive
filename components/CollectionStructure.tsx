@@ -1,8 +1,10 @@
 import { CollectionGroup } from '@/Collection/components/CollectionGroup';
 import { FlatList, useWindowDimensions } from 'react-native';
+import { LoadingIndicator } from './LoadingIndicator';
+import { View } from 'react-native-reanimated/lib/typescript/Animated';
 
 
-export const CollectionStructure = ({ data, categoriaActual, handleItemPress, handleSearchPagination, showStatus }: any) => {
+export const CollectionStructure = ({ data, categoriaActual, handleItemPress, handleSearchPagination, showStatus, loading }: any) => {
 	
   const { width } = useWindowDimensions();
   const PADDING_PANTALLA = 40; 
@@ -25,6 +27,10 @@ export const CollectionStructure = ({ data, categoriaActual, handleItemPress, ha
       contentContainerStyle={{ paddingBottom: 100, paddingTop: 16 }}
       onEndReached={handleSearchPagination}
       onEndReachedThreshold={0.5}
+	  ListFooterComponent={() => 
+		loading ? 
+			<LoadingIndicator  /> : null
+	}  
       renderItem={({ item }) => (
         <CollectionGroup 
           item={item} 

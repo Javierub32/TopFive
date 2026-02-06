@@ -3,6 +3,7 @@ import { CollectionType, ListInfo, listServices } from "../services/listServices
 import { useAuth } from "context/AuthContext";
 import { useCollection } from "./useCollection";
 import { Alert } from "react-native";
+import { router } from "expo-router";
 
 const categoryMap: Record<string, string> = {
 	'Películas': 'PELICULA',
@@ -29,7 +30,11 @@ export const useLists = (categoriaActual: string) => {
 		try {
 			setLoading(true);
 			await listServices.createList(user.id, nombre, descripcion, icono, color, categoryMap[categoriaActual] as CollectionType);
-			Alert.alert("Lista creada", `La lista "${nombre}" ha sido creada exitosamente.`);
+			Alert.alert("Lista creada", `La lista "${nombre}" ha sido creada exitosamente.`,
+				[{ text: "OK", 
+					onPress: () => router.push({ pathname: '/Collection', params: { initialResource: categoriaActual } }) }]
+			 );
+
 		}
 		catch (error) {
 			console.error("Error creating list:", error);

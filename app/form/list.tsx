@@ -2,15 +2,16 @@ import { View, Text, ScrollView, TouchableOpacity, TextInput, Alert } from 'reac
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
 import { useLists } from '@/Collection/hooks/useLists';
 import { ReturnButton } from 'components/ReturnButton';
+import { router } from 'expo-router';
 
 export default function ListForm() {
   const { colors } = useTheme();
-  const { categoriaActual } = useCollection();
+  const { categoriaActual, setIsSearchVisible } = useCollection();
   const { createList } = useLists(categoriaActual);
   //Iconos que se pueden elegir para las listas
   const icons = [
@@ -48,28 +49,37 @@ export default function ListForm() {
     category: '',
   });
 
-  const handleCreateList = () => {
-	if (!formData.name.trim()) {
-	  Alert.alert('Error', 'El nombre de la lista no puede estar vacío.');
-	  return;
-	}
-	createList(
-	  formData.name,
-	  formData.description,
-	  formData.icon,
-	  formData.color,
-	  categoriaActual
-	);
-  }
+  useEffect(() => {
+	setIsSearchVisible(false);
+  }, []);
+
+  const handleCreateList = async () => {
+    if (!formData.name.trim()) {
+      Alert.alert('Error', 'El nombre de la lista no puede estar vacío.');
+      return;
+    }
+    await createList(
+      formData.name,
+      formData.description,
+      formData.icon,
+      formData.color,
+      categoriaActual
+    );
+  };
 
   return (
     <Screen>
       <StatusBar style="light" />
-      <ScrollView className="flex-1 px-4 py-6">
-				<View className="flex-row items-center flex-1">
-					<ReturnButton route="/Collection" title={'Detalle del libro'} style={" "} params={{initialResource: 'Libros'}}/>
-				</View>
-        <View className="mb-6 py-4 items-center justify-center">
+      <ScrollView className="flex-1 px-4 pt-2">
+        <View className="flex-1 flex-row items-center">
+          <ReturnButton
+            route="/Collection"
+            title={'Crea tu lista'}
+            style={' '}
+            params={{ initialResource: categoriaActual }}
+          />
+        </View>
+        <View className="mb-4 items-center justify-center py-4">
           <View
             className="h-24 w-24 items-center justify-center rounded-3xl shadow-md"
             style={{ backgroundColor: formData.color }}>
@@ -87,7 +97,7 @@ export default function ListForm() {
           </Text>
           <TextInput
             placeholder="Ej: Películas favoritas"
-						placeholderTextColor={colors.secondaryText}
+            placeholderTextColor={colors.secondaryText}
             value={formData.name}
             onChangeText={(text) => setFormData({ ...formData, name: text })}
             className="rounded-xl px-4 py-4"
@@ -110,9 +120,9 @@ export default function ListForm() {
               backgroundColor: colors.tabBarBackgroundColor,
               textAlignVertical: 'top',
               paddingTop: 12,
-							paddingBottom: 12,
-							paddingHorizontal: 12,
-							minHeight: 120
+              paddingBottom: 12,
+              paddingHorizontal: 12,
+              minHeight: 120,
             }}
             multiline
             numberOfLines={6}
@@ -128,10 +138,10 @@ export default function ListForm() {
               <TouchableOpacity
                 key={iconName}
                 onPress={() => setFormData({ ...formData, icon: iconName })}
-                className="items-center justify-center rounded-xl mb-3"
+                className="mb-3 items-center justify-center rounded-xl"
                 style={{
                   width: '15%',
-									height: 50,
+                  height: 50,
                   backgroundColor:
                     formData.icon === iconName ? colors.primary : colors.tabBarBackgroundColor,
                 }}>
@@ -169,7 +179,9 @@ export default function ListForm() {
           </View>
         </View>
         <TouchableOpacity
-          onPress={() => {handleCreateList()}}
+          onPress={() => {
+            handleCreateList();
+          }}
           className="flex-1 flex-row items-center justify-center rounded-xl py-4"
           style={{ backgroundColor: colors.primary }}>
           <FontAwesome5

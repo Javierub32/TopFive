@@ -77,6 +77,7 @@ export const CollectionProvider = ({ children }: any) => {
 	if (!user) return;
 	if (!inputBusqueda || inputBusqueda.trim() === '') return;
 	if (!hasMore) return;
+	if (loading) return; 
 
 	const from = page * pageSize;
 	const to = from + pageSize - 1;
@@ -87,8 +88,7 @@ export const CollectionProvider = ({ children }: any) => {
 		setData((prevData: any[]) => [...prevData, ...(resultado || [])]);
 		setPage((prevPage) => prevPage + 1);
 		if (!resultado || resultado.length < pageSize) {
-			// Si el resultado es menor al tamaño de página, no hay más datos
-			setHasMore(false); // Indicamos que no hay más páginas
+			setHasMore(false);
 		}
 	}
 	catch (error) {
@@ -191,6 +191,7 @@ export const CollectionProvider = ({ children }: any) => {
       pathname: `/details/${type}/${type}Resource`,
       params: { item: JSON.stringify(item) },
     });
+	setIsSearchVisible(false);
   };
   return (
     <CollectionContext.Provider
@@ -218,6 +219,7 @@ export const CollectionProvider = ({ children }: any) => {
         isSearchVisible,
         toggleSearch,
 		handleSearchPagination,
+		setIsSearchVisible
       }}>
       {children}
     </CollectionContext.Provider>

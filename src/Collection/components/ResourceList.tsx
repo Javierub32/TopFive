@@ -14,7 +14,7 @@ export default function ResourceList() {
 	
   
 	return (
-		loading ? (
+		loading && data.length === 0 ? (
 		<LoadingIndicator />
 	) : hayBusqueda ? (
 			<View className="flex-1 mt-4">
@@ -24,6 +24,7 @@ export default function ResourceList() {
 				handleItemPress={handleItemPress}
 				handleSearchPagination={handleSearchPagination}
 				showStatus={true}
+				loading={loading}
 			  />
 			</View>
 		  ) : (
