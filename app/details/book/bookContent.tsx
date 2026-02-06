@@ -59,7 +59,7 @@ export default function BookDetail() {
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: book.imageFull || book.image || 'https://via.placeholder.com/500x750' }}
-            className="w-full h-[500px] rounded-2xl"
+            className="w-full h-[600px] rounded-2xl"
             style={{ backgroundColor: colors.surfaceButton }}
             resizeMode="cover"
           />
@@ -89,11 +89,12 @@ export default function BookDetail() {
 
             {book.genre && book.genre.length > 0 && (
               <View className="px-3 py-1.5 rounded-lg" style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton}}>
-                <Text className="text-sm" style={{color: colors.markerText}}>
+                <Text className="text-sm" numberOfLines={1} style={{color: colors.markerText}}>
                   {book.genre.join(', ')}
                 </Text>
               </View>
             )}
+            
           </View>
 
           <View className="flex-col justify-between gap-3">

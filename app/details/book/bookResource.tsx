@@ -146,7 +146,7 @@ export default function BookDetail() {
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: contenidolibro.imagenUrl || 'https://via.placeholder.com/500x750' }}
-            className="w-full h-[500px] rounded-2xl"
+            className="w-full h-[600px] rounded-2xl"
             style={{ backgroundColor: colors.surfaceButton }}
             resizeMode="cover"
           />
@@ -197,7 +197,7 @@ export default function BookDetail() {
               >
                 <View className="flex-row items-center gap-2">
                   <MaterialCommunityIcons name="star-circle" size={20} color={colors.rating} />
-                  <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.markerText }}>RATING</Text>
+                  <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.markerText }}>Calificación</Text>
                 </View>
                 <View className="flex-row">
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -220,7 +220,7 @@ export default function BookDetail() {
               >
                 <View className="flex-row items-center gap-2">
                   <MaterialCommunityIcons name="book-open-page-variant" size={20} color={colors.primary} />
-                  <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.markerText }}>PROGRESO</Text>
+                  <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.markerText }}>Progreso</Text>
                 </View>
                 <View className="flex-row items-baseline">
                   <Text className="text-xl font-bold" style={{ color: colors.primaryText }}>
@@ -238,7 +238,7 @@ export default function BookDetail() {
             >
               <View className="flex-row items-center gap-2">
                 <MaterialCommunityIcons name="comment-quote" size={20} color={colors.secondary} />
-                <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.markerText }}>TU RESEÑA</Text>
+                <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.markerText }}>Reseña</Text>
               </View>
               <Text className="leading-relaxed italic" style={{ color: colors.primaryText }}>
                 {bookResource.reseña || '-'}
