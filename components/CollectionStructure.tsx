@@ -2,7 +2,7 @@ import { CollectionGroup } from '@/Collection/components/CollectionGroup';
 import { FlatList, useWindowDimensions } from 'react-native';
 
 
-export const CollectionStructure = ({ data, categoriaActual, handleItemPress, showStatus }: any) => {
+export const CollectionStructure = ({ data, categoriaActual, handleItemPress, handleSearchPagination, showStatus }: any) => {
 	
   const { width } = useWindowDimensions();
   const PADDING_PANTALLA = 40; 
@@ -23,7 +23,8 @@ export const CollectionStructure = ({ data, categoriaActual, handleItemPress, sh
       showsVerticalScrollIndicator={false}
       columnWrapperStyle={{ gap: GAP }} 
       contentContainerStyle={{ paddingBottom: 100, paddingTop: 16 }}
-               
+      onEndReached={handleSearchPagination}
+      onEndReachedThreshold={0.5}
       renderItem={({ item }) => (
         <CollectionGroup 
           item={item} 

@@ -9,7 +9,6 @@ import { Activity } from '../hooks/useActivity';
 export default function ActivityItem({ item}: { item: Activity }) {
 	const { colors } = useTheme();
   
-  // Función para calcular tiempo relativo (ej: "Hace 2h")
   const getRelativeTime = (date: string | Date) => {
     const now = new Date();
     const then = new Date(date);

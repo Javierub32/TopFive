@@ -46,8 +46,7 @@ export default function CollectionScreen() {
         {isSearchVisible && (
             <Animated.View 
                 entering={FadeInUp.duration(300).springify()}
-                style={{ zIndex: 1 }}
-            >
+                style={{ zIndex: 1 }}>
                 <SearchBar/>
             </Animated.View>
         )}

@@ -24,7 +24,9 @@ export const useResource = () => {
 		estado?: number | null,
 		cantidad?: number | null,
 		ordenarPorFecha?: boolean | null,
-		profile?: boolean
+		profile?: boolean,
+		from?: number | null,
+		to?: number | null
 	) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
@@ -46,11 +48,16 @@ export const useResource = () => {
 				`) 
 				.eq('usuarioId', user.id);
 
+
 			if (profile) {
 				query = supabase
 					.from('recursopelicula')
 					.select(`fechaVisionado`)
 					.eq('usuarioId', user.id);
+			}
+
+			if ( from != undefined && to != null) {
+				query = query.range(from, to);
 			}
 
 			if (favorito === true) {
@@ -94,7 +101,9 @@ export const useResource = () => {
 		estado?: number | null,
 		cantidad?: number | null,
 		ordenarPorFecha?: boolean | null,
-		profile?: boolean
+		profile?: boolean,
+		from?: number | null,
+		to?: number | null
 	) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
@@ -119,6 +128,10 @@ export const useResource = () => {
 					.from('recursoserie')
 					.select(`fechaFin`)
 					.eq('usuarioId', user.id);
+			}
+
+			if ( from != undefined && to != null) {
+				query = query.range(from, to);
 			}
 
 			if (favorito === true) {
@@ -161,7 +174,9 @@ export const useResource = () => {
 		estado?: number | null,
 		cantidad?: number | null,
 		ordenarPorFecha?: boolean | null,
-		profile?: boolean
+		profile?: boolean,
+		from?: number | null,
+		to?: number | null
 	) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
@@ -186,6 +201,10 @@ export const useResource = () => {
 					.from('recursovideojuego')
 					.select(`fechaFin`)
 					.eq('usuarioId', user.id);
+			}
+
+			if ( from != undefined && to != null) {
+				query = query.range(from, to);
 			}
 
 			if (favorito === true) {
@@ -228,7 +247,9 @@ export const useResource = () => {
 		estado?: number | null,
 		cantidad?: number | null,
 		ordenarPorFecha?: boolean | null,
-		profile?: boolean
+		profile?: boolean,
+		from?: number | null,
+		to?: number | null
 	) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
@@ -253,6 +274,10 @@ export const useResource = () => {
 					.from('recursolibro')
 					.select(`fechaFin`)
 					.eq('usuarioId', user.id);
+			}
+
+			if ( from != undefined && to != null) {
+				query = query.range(from, to);
 			}
 
 			if (favorito === true) {
@@ -295,7 +320,9 @@ export const useResource = () => {
 		estado?: number | null,
 		cantidad?: number | null,
 		ordenarPorFecha?: boolean | null,
-		profile?: boolean
+		profile?: boolean,
+		from?: number | null,
+		to?: number | null
 	) => {
 		try {
 			if (!user) throw new Error('User not authenticated');
@@ -320,6 +347,10 @@ export const useResource = () => {
 					.from('recursocancion')
 					.select(`fechaEscucha`)
 					.eq('usuarioId', user.id);
+			}
+
+			if ( from != undefined && to != null) {
+				query = query.range(from, to);
 			}
 
 			if (favorito === true) {

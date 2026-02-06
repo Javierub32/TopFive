@@ -9,7 +9,7 @@ import { useCollection } from "context/CollectionContext";
 import { ScrollView, View } from "react-native";
 
 export default function ResourceList() {
-	const {busqueda, loading, pendientes, enCurso, completados, navigateToGrid, handleItemPress, categoriaActual, totalPendientes, totalEnCurso, totalCompletados, data } = useCollection();
+	const {busqueda, loading, pendientes, enCurso, completados, navigateToGrid, handleItemPress, categoriaActual, totalPendientes, totalEnCurso, totalCompletados, data, handleSearchPagination } = useCollection();
     const hayBusqueda = busqueda.trim() !== '';
 	
   
@@ -22,6 +22,7 @@ export default function ResourceList() {
 				data={data}
 				categoriaActual={categoriaActual}
 				handleItemPress={handleItemPress}
+				handleSearchPagination={handleSearchPagination}
 				showStatus={true}
 			  />
 			</View>

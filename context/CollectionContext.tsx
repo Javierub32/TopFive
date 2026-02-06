@@ -37,6 +37,10 @@ export const CollectionProvider = ({ children }: any) => {
   const [totalEnCurso, setTotalEnCurso] = useState<number>(0);
   const [totalCompletados, setTotalCompletados] = useState<number>(0);
 
+  const [page, setPage] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const pageSize = 9; // Cantidad de items por página
+
   const fetchMap: any = {
     Películas: fetchPeliculas,
     Series: fetchSeries,
@@ -55,8 +59,10 @@ export const CollectionProvider = ({ children }: any) => {
 	try {
 		setLoading(true);
 		const fetchFunction = fetchMap[categoriaActual as CategoryType];
-		const resultado = await fetchFunction(inputBusqueda);
+		const resultado = await fetchFunction(inputBusqueda, null, null, pageSize);
 		setData(resultado || []);
+		setPage(1);
+		setHasMore(true);
 	}
 	catch (error) {
 		console.error(error);
@@ -66,6 +72,32 @@ export const CollectionProvider = ({ children }: any) => {
 		setLoading(false);
 	}
   };
+
+  const handleSearchPagination = async () => {
+	if (!user) return;
+	if (!inputBusqueda || inputBusqueda.trim() === '') return;
+	if (!hasMore) return;
+
+	const from = page * pageSize;
+	const to = from + pageSize - 1;
+	try {
+		setLoading(true);
+		const fetchFunction = fetchMap[categoriaActual as CategoryType];
+		const resultado = await fetchFunction(inputBusqueda, null, null, null, null, null, from, to);
+		setData((prevData: any[]) => [...prevData, ...(resultado || [])]);
+		setPage((prevPage) => prevPage + 1);
+		if (!resultado || resultado.length < pageSize) {
+			// Si el resultado es menor al tamaño de página, no hay más datos
+			setHasMore(false); // Indicamos que no hay más páginas
+		}
+	}
+	catch (error) {
+		console.error(error);
+	}
+	finally {
+		setLoading(false);
+	}
+  }
 
   const toggleSearch = () => {
     if (isSearchVisible) {
@@ -184,7 +216,8 @@ export const CollectionProvider = ({ children }: any) => {
 		data,
 		refreshData,
         isSearchVisible,
-        toggleSearch
+        toggleSearch,
+		handleSearchPagination,
       }}>
       {children}
     </CollectionContext.Provider>
