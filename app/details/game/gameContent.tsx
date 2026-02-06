@@ -7,6 +7,8 @@ import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Game } from 'app/types/Content';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
+import { ThemedStatusBar } from 'components/ThemedStatusBar';
+import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 
 export default function GameDetail() {
   const { gameData } = useLocalSearchParams();
@@ -21,14 +23,19 @@ export default function GameDetail() {
 	});
   }
 
+  const ratingValue = (rating: Float) => {
+    if (!rating) return null;
+    return (rating/20).toFixed(1);
+  }
+
   if (!game) {
     return (
       <Screen>
-        <StatusBar style="light" />
+        <ThemedStatusBar/>
         <View className="flex-1 items-center justify-center px-4">
-          <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>
-          <Text className="text-secondaryText text-center mt-2">No se pudo cargar la información del videojuego</Text>
+          <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error}/>
+          <Text className="text-xl font-bold mt-4" style={{color: colors.primaryText}}>Error al cargar</Text>
+          <Text className="text-center mt-2" style={{color: colors.secondaryText}}>No se pudo cargar la información del videojuego</Text>
         </View>
       </Screen>
     );
@@ -38,7 +45,7 @@ export default function GameDetail() {
 
   return (
     <Screen>
-      <StatusBar style="light" />
+      <ThemedStatusBar/>
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <ReturnButton route="/Add?initialCategory=Videojuegos" title="Detalle del videojuego" />
@@ -46,35 +53,36 @@ export default function GameDetail() {
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: game.image || 'https://via.placeholder.com/500x750' }}
-            className="w-full h-[500px] rounded-2xl bg-background"
+            className="w-full h-[600px] rounded-2xl"
+            style={{backgroundColor: colors.surfaceButton}}
             resizeMode="cover"
           />
         </View>
 
-        <View className="px-4 mb-14">
-          <Text className="text-primaryText text-3xl font-bold mb-3">
-            {game.title}
+        <View className="px-4 pb-6">
+          <Text className="text-3xl font-bold mb-4" style={{color: colors.primaryText}}>
+            {game.title || 'Sin título'}
           </Text>
 
-          <View className="flex-row items-center mb-4 flex-wrap">
-            <View className="bg-surfaceButton px-3 py-1.5 rounded-lg mr-2 mb-2 border border-borderButton">
-              <Text className="text-secondaryText text-sm font-semibold">
+          <View className="flex-row items-stretch flex-wrap gap-2 mb-4">
+            <View className="px-3 py-1.5 rounded-lg justify-center" style={{backgroundColor: colors.surfaceButton}}>
+              <Text className="text-sm font-semibold" style={{color: colors.markerText}}>
                 {releaseYear}
               </Text>
             </View>
 
             {game.rating && (
-              <View className="bg-marker px-3 py-1.5 rounded-lg mr-2 mb-2 border border-primary/30 flex-row items-center">
-                <MaterialCommunityIcons name="star" size={16} color="#fbbf24" />
-                <Text className="text-markerText text-sm font-bold ml-1">
-                  {game.rating.toFixed(1)}
+              <View className="px-3 py-1.5 rounded-lg border flex-row justify-center items-center" style={{backgroundColor: colors.surfaceButton, borderColor: colors.rating}}>
+                <MaterialCommunityIcons name="star" size={20} color={colors.rating} />
+                <Text className="text-sm font-bold ml-1" style={{color: colors.markerText}}>
+                  {ratingValue(game.rating)}
                 </Text>
               </View>
             )}
 
             {game.genre && game.genre.length > 0 && (
-              <View className="bg-surfaceButton px-3 py-1.5 rounded-lg mb-2 border border-borderButton">
-                <Text className="text-secondaryText text-sm">
+              <View className="px-3 py-1.5 rounded-lg" style= {{backgroundColor: colors.surfaceButton}}>
+                <Text className="text-sm" style={{color: colors.markerText}}>
                   {game.genre.join(', ')}
                 </Text>
               </View>

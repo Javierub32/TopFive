@@ -50,11 +50,11 @@ export default function FilmDetail() {
   if (!filmResource) {
     return (
       <Screen>
-        <StatusBar style="light" />
+        <ThemedStatusBar/>
         <View className="flex-1 items-center justify-center px-4">
-          <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>
-          <Text className="text-secondaryText text-center mt-2">No se pudo cargar la información de la película</Text>
+          <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
+          <Text className="text-xl font-bold mt-4" style={{color: colors.primaryText}}>Error al cargar</Text>
+          <Text className="text-center mt-2" style={{color:colors.secondaryText}}>No se pudo cargar la información de la película</Text>
         </View>
       </Screen>
     );
@@ -122,10 +122,10 @@ export default function FilmDetail() {
         </View>
 
         <View className="px-4 pb-6">
-          {/* Título y año */}
+          {/* Título y añadir a lista */}
           <View className="mb-4">
-            <View className="flex-row items-center justify-between">
-              <Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
+            <View className="flex-1 flex-row justify-between mb-2 items-center">
+              <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
               {contenidopelicula.titulo || 'Sin título'}
               </Text>
               <AddToListButton resourceCategory="Películas" resourceId={filmResource.id} />
@@ -170,7 +170,7 @@ export default function FilmDetail() {
               <View className='flex-1 p-4 rounded-2xl flex justify-between gap-2' style={{backgroundColor: `${colors.rating}1A`}}>
                 <View className='flex-row items-center gap-2'>
                   <MaterialCommunityIcons name='star-circle' size={20} color={colors.rating}/>
-                  <Text className='text-sm font-bold uppercase tracling-widest' style={{color: colors.markerText}}>Rating</Text>
+                  <Text className='text-sm font-bold uppercase tracling-widest' style={{color: colors.markerText}}>Calificación</Text>
                 </View>
                 <View className='flex-row'>
                   {[1,2,3,4,5].map((star)=>(
@@ -202,7 +202,7 @@ export default function FilmDetail() {
             <View className='flex-1 p-5 rounded-2xl gap-3 border-l-4' style={{backgroundColor:colors.surfaceButton, borderColor:colors.borderButton}}>
               <View className='flex-row items-center gap-2'>
                 <MaterialCommunityIcons name="comment-quote" size={20} color={colors.secondary}/>
-                <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Tu reseña</Text>
+                <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Reseña</Text>
               </View>
               <Text className='leading-relaxed italic' style={{color: colors.primaryText}}>
                 {filmResource.reseña || '-'}

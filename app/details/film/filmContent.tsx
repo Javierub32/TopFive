@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Film } from 'app/types/Content';
@@ -9,6 +8,7 @@ import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { cleanHtmlDescription } from '@/Details/utils/descriptionUtils';
+import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 
 export default function FilmDetail() {
   const { filmData } = useLocalSearchParams();
@@ -31,6 +31,11 @@ export default function FilmDetail() {
       params: { filmData: JSON.stringify(film) },
     });
   };
+
+  const ratingValue = (rating: Float) => {
+    if (!rating) return null;
+    return (rating/2).toFixed(1);
+  }
 
   if (!film) {
     return (
@@ -57,8 +62,8 @@ export default function FilmDetail() {
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: film.image || 'https://via.placeholder.com/500x750' }}
-            className="w-full h-[500px] rounded-2xl"
-            style={{ backgroundColor: colors.background }}
+            className="w-full h-[600px] rounded-2xl"
+            style={{ backgroundColor: colors.surfaceButton }}
             resizeMode="cover"
           />
         </View>
@@ -77,10 +82,10 @@ export default function FilmDetail() {
             </View>  
 
             {!!film.rating && (
-              <View className="px-3 py-1.5 rounded-lg flex-row items-center" style={{backgroundColor: colors.surfaceButton, borderColor: colors.rating}}>
+              <View className="px-3 py-1.5 rounded-lg flex-row items-center border" style={{backgroundColor: colors.surfaceButton, borderColor: colors.rating}}>
                 <MaterialCommunityIcons name="star" size={20} color={colors.rating} />
                 <Text className="text-sm font-bold ml-1" style={{color: colors.markerText}}>
-                  {film.rating.toFixed(1)}
+                  {ratingValue(film.rating)}
                 </Text>
               </View>
             )}

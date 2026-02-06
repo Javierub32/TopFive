@@ -9,6 +9,7 @@ import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
 import { AddToListButton } from 'components/AddToListButton';
+import { ThemedStatusBar } from 'components/ThemedStatusBar';
 
 
 export default function GameDetail() {
@@ -51,11 +52,11 @@ export default function GameDetail() {
   if (!gameResource) {
     return (
       <Screen>
-        <StatusBar style="light" />
+        <ThemedStatusBar/>
         <View className="flex-1 items-center justify-center px-4">
-          <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>
-          <Text className="text-secondaryText text-center mt-2">No se pudo cargar la información del videojuego</Text>
+          <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
+          <Text className="text-xl font-bold mt-4" style={{color: colors.primaryText}}>Error al cargar</Text>
+          <Text className="text-center mt-2" style={{color:colors.secondaryText}}>No se pudo cargar la información del videojuego</Text>
         </View>
       </Screen>
     );
@@ -69,24 +70,31 @@ export default function GameDetail() {
       case 'PENDIENTE': return 'Pendiente';
       case 'EN_CURSO': return 'Jugando';
       case 'COMPLETADO': return 'Completado';
-      case 'ABANDONADO': return 'Abandonado';
       default: return status;
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'PENDIENTE': return 'bg-borderButton';
-      case 'EN_CURSO': return 'bg-blue-600';
-      case 'COMPLETADO': return 'bg-green-600';
-      case 'ABANDONADO': return 'bg-orange-600';
-      default: return 'bg-borderButton';
+      case 'PENDIENTE': return colors.warning;
+      case 'EN_CURSO': return colors.accent;
+      case 'COMPLETADO': return colors.success;
+      default: return colors.surfaceButton;
     }
   };
+  
+  const getDificultyColor = (dificultad: string) => {
+    switch(dificultad){
+      case 'Fácil': return colors.success;
+      case 'Normal': return colors.surfaceButton;
+      case 'Difícil': return colors.warning;
+      case 'Extremo': return colors.error;
+    }
+  }
 
   return (
     <Screen>
-      <StatusBar style="light" />
+      <ThemedStatusBar/>
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Header con botón de volver y botón de eliminar */}
@@ -97,18 +105,20 @@ export default function GameDetail() {
           {/* Botón de editar */}
           <TouchableOpacity 
             onPress={handleEdit}
-            className="h-10 w-10 items-center justify-center rounded-full bg-blue-600 border border-blue-500 mr-2"
+            className="h-10 w-10 items-center justify-center rounded-full mr-2 border-2"
+            style={{backgroundColor: `${colors.primary}99`, borderColor: colors.primary}}
             activeOpacity={0.7}
           >
-            <AntDesign name="edit" size={20} color="#fff" />
+            <AntDesign name="edit" size={20} color={colors.primaryText} />
           </TouchableOpacity>
           {/* Botón de eliminar */}
           <TouchableOpacity 
             onPress={handleDelete}
-            className="h-10 w-10 items-center justify-center rounded-full bg-red-600 border border-red-500 mr-2"
+            className="h-10 w-10 items-center justify-center rounded-full mr-2 border-2"
+            style={{backgroundColor: `${colors.error}99`, borderColor:colors.error}}
             activeOpacity={0.7}
           >
-            <MaterialCommunityIcons name="delete" size={24} color="#fff" />
+            <MaterialCommunityIcons name="delete" size={24} color={colors.primaryText}/>
           </TouchableOpacity>
         </View>
 
@@ -116,188 +126,131 @@ export default function GameDetail() {
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: contenidovideojuego.imagenUrl || 'https://via.placeholder.com/500x750' }}
-            className="w-full h-[500px] rounded-2xl bg-background"
+            className="w-full h-[600px] rounded-2xl"
+            style={{backgroundColor: colors.surfaceButton}}
             resizeMode="cover"
           />
         </View>
 
         <View className="px-4 pb-6">
-          {/* Título y año */}
           <View className="mb-4">
-			<View className="flex-row items-center justify-between">
-				<Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
-				{contenidovideojuego.titulo || 'Sin título'}
-				</Text>
-				<AddToListButton resourceCategory="Videojuegos" resourceId={gameResource.id} />
-			</View>
+            {/* Título y añadir a lista */}
+            <View className="flex-1 flex-row items-center justify-between mb-2">
+              <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
+              {contenidovideojuego.titulo || 'Sin título'}
+              </Text>
+              <AddToListButton resourceCategory="Videojuegos" resourceId={gameResource.id} />
+            </View>
             
-            <View className="flex-row items-center flex-wrap gap-2">
-              <View className="bg-surfaceButton px-3 py-1.5 rounded-lg border border-borderButton">
-                <Text className="text-secondaryText text-sm font-semibold">
+            {/* Atributos */}
+            <View className="flex-row items-stretch flex-wrap gap-2">
+              {/* Año */}
+              <View className="px-3 py-1.5 rounded-lg" style={{backgroundColor: colors.surfaceButton}}>
+                <Text className="text-sm font-semibold" style={{color:colors.secondaryText}}>
                   {releaseYear}
                 </Text>
               </View>
 
-              <View className={`px-3 py-1.5 rounded-lg ${getStatusColor(gameResource.estado)}`}>
-                <Text className="text-primaryText text-xs font-bold uppercase">
+              {/* Estado */}
+              <View className="px-3 py-1.5 rounded-lg" style={{backgroundColor: `${getStatusColor(gameResource.estado)}33`}}>
+                <Text className="text-xs font-bold uppercase" style={{color: getStatusColor(gameResource.estado)}}>
                   {getStatusText(gameResource.estado)}
                 </Text>
               </View>
 
-              {gameResource.favorito && (
-                <View className="bg-red-900/40 px-3 py-1.5 rounded-lg border border-red-500/30 flex-row items-center">
-                  <MaterialCommunityIcons name="heart" size={16} color="#ef4444" />
-                  <Text className="text-red-300 text-xs font-bold ml-1">Favorito</Text>
+              {/* Dificultad */}
+              {gameResource.dificultad && (
+                <View className='flex-row px-3 py-1.5 rounded-lg justify-between items-center' style={{backgroundColor: `${getDificultyColor(gameResource.dificultad)}33`}}>
+                  <MaterialCommunityIcons name="speedometer" color={getDificultyColor(gameResource.dificultad)}/>
+                  <Text className="text-semibold text-xs ml-1" style={{color: getDificultyColor(gameResource.dificultad)}}>{gameResource.dificultad}</Text>
                 </View>
               )}
 
-              {gameResource.horasJugadas > 0 && (
-                <View className="bg-marker px-3 py-1.5 rounded-lg border border-primary/30 flex-row items-center">
-                  <MaterialCommunityIcons name="clock-outline" size={16} color="#a855f7" />
-                  <Text className="text-markerText text-xs font-bold ml-1">
-                    {gameResource.horasJugadas}h
-                  </Text>
+              {/* Favorito */}
+              {gameResource.favorito && (
+                <View className="px-3 py-1.5 rounded-lg justify-center" style={{backgroundColor: `${colors.favorite}33`}}>
+                  <MaterialCommunityIcons name="heart" size={16} color={colors.favorite} />
                 </View>
               )}
             </View>
           </View>
 
-          <View className="gap-4 mb-6">
-            {gameResource.calificacion > 0 && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-2 uppercase">Tu calificación</Text>
-                <View className="flex-row items-center">
+
+          {/* TARJETAS */}  
+          <View className='flex-col justify-between gap-3'>
+            <View className='flex-row gap-2'>
+              {/* Calificación  */}
+              <View className='flex-1 p-4 rounded-2xl flex justify-between gap-2' style={{backgroundColor: `${colors.rating}1A`}}>
+                <View className='flex-row items-center gap-2'>
+                  <MaterialCommunityIcons name="star-circle" size={20} color={colors.rating} />
+                  <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Calificación</Text>
+                </View>
+                <View className="flex-row">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <FontAwesome5
                       key={star}
                       name="star"
                       size={20}
-                      color={star <= gameResource.calificacion ? '#fbbf24' : '#475569'}
+                      color={star <= gameResource.calificacion ? colors.rating : colors.markerText}
                       solid={star <= gameResource.calificacion}
                       style={{ marginRight: 4 }}
                     />
                   ))}
-                  <Text className="text-primaryText text-lg font-bold ml-2">{gameResource.calificacion}/5</Text>
                 </View>
               </View>
-            )}
 
-            {contenidovideojuego.calificacion && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-2 uppercase">Calificación general</Text>
-                <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="star" size={24} color="#fbbf24" />
-                  <Text className="text-primaryText text-lg font-bold ml-2">
-                    {contenidovideojuego.calificacion.toFixed(1)}/10
+              {/* Progreso */}
+              <View className='flex-1 p-4 rounded-2xl flex justify-between gap-2' style={{backgroundColor: `${colors.primary}1A`}}>
+                <View className='flex-row items-center gap-2'>
+                  <MaterialCommunityIcons name="clock" size={20} color={colors.primary}/>
+                  <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Progreso</Text>
+                </View>
+                <View className='flex-row items-baseline'>
+                  <Text className='text-xl font-bold' style={{color: colors.primaryText}}>
+                    {gameResource.horasJugadas || 0}
+                  </Text>
+                  <Text className='text-xs ml-1' style={{color: colors.markerText}}>horas</Text>
+                </View>
+              </View>
+            </View>
+
+            {/* Reseña */}
+            <View className='flex-1 p-4 rounded-2xl flex justify-between gap-2 border-l-4' style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton}}>
+              <View className='flex-row items-center gap-2'>
+                <MaterialCommunityIcons name="comment-quote" size={20} color={colors.secondary}/>
+                <Text className='text-sm font-bold uppercase tracking-widest' style={{ color: colors.markerText}}>Reseña</Text>
+              </View>
+              <Text className='leading-relaxed italic' style={{color: colors.primaryText}}>
+                {gameResource.reseña || '-'}
+              </Text>
+            </View>
+
+            {/* Fechas */}
+            <View className='flex-row gap-2'>
+              {/* Fecha Inicio */}
+              <View className='flex-1 p-4 rounded-2xl gap-2' style={{backgroundColor : colors.surfaceButton}}>
+                <View className="flex-row items-center gap-2">
+                  <MaterialCommunityIcons name="calendar-start" size={20} color={colors.primary} />
+                  <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.markerText }}>Inicio</Text>
+                </View>
+                <View>
+                  <Text className="text-md font-semibold" style={{ color: colors.primaryText }}>
+                  {gameResource.fechaInicio ? new Date(gameResource.fechaInicio).toLocaleDateString() : '-'}
                   </Text>
                 </View>
               </View>
-            )}
 
-            {gameResource.dificultad && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-2 uppercase">Dificultad</Text>
-                <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="speedometer" size={24} color={colors.primary} />
-                  <Text className="text-primaryText text-lg font-bold ml-2">{gameResource.dificultad}</Text>
+              {/* Fecha fin */}
+              <View className="flex-1 p-4 rounded-2xl space-y-2" style={{ backgroundColor: colors.surfaceButton }}>
+                <View className="flex-row items-center gap-2">
+                  <MaterialCommunityIcons name="calendar-end" size={20} color={colors.primary} />
+                  <Text className="text-sm font-bold uppercase tracking-widest" style={{ color: colors.secondaryText }}>Fin</Text>
                 </View>
-              </View>
-            )}
-
-            {(gameResource.fechaInicio || gameResource.fechaFin) && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-3 uppercase">Periodo de juego</Text>
-                <View className="gap-2">
-                  {gameResource.fechaInicio && (
-                    <View className="flex-row items-center">
-                      <MaterialCommunityIcons name="calendar-start" size={20} color={colors.primary} />
-                      <Text className="text-secondaryText text-sm ml-2 mr-2">Inicio:</Text>
-                      <Text className="text-primaryText text-sm font-semibold">
-                        {new Date(gameResource.fechaInicio).toLocaleDateString('es-ES', {
-                          year: 'numeric', month: 'long', day: 'numeric'
-                        })}
-                      </Text>
-                    </View>
-                  )}
-                  {gameResource.fechaFin && (
-                    <View className="flex-row items-center">
-                      <MaterialCommunityIcons name="calendar-end" size={20} color={colors.primary} />
-                      <Text className="text-secondaryText text-sm ml-2 mr-2">Fin:</Text>
-                      <Text className="text-primaryText text-sm font-semibold">
-                        {new Date(gameResource.fechaFin).toLocaleDateString('es-ES', {
-                          year: 'numeric', month: 'long', day: 'numeric'
-                        })}
-                      </Text>
-                    </View>
-                  )}
+                <View>
+                  <Text className="text-md font-semibold" style={{ color: colors.primaryText }}>
+                  {gameResource.fechaFin ? new Date(gameResource.fechaFin).toLocaleDateString() : '-'}
+                  </Text>
                 </View>
-              </View>
-            )}
-
-            {contenidovideojuego.autor && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-2 uppercase">Desarrollador</Text>
-                <View className="flex-row items-center">
-                  <MaterialCommunityIcons name="domain" size={24} color={colors.primary} />
-                  <Text className="text-primaryText text-base ml-2">{contenidovideojuego.autor}</Text>
-                </View>
-              </View>
-            )}
-
-            {contenidovideojuego.genero && contenidovideojuego.genero.length > 0 && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-2 uppercase">Géneros</Text>
-                <View className="flex-row flex-wrap gap-2">
-                  {contenidovideojuego.genero.map((genre, index) => (
-                    <View key={index} className="bg-marker px-3 py-1.5 rounded-lg border border-primary/30">
-                      <Text className="text-primary text-sm">{genre}</Text>
-                    </View>
-                  ))}
-                </View>
-              </View>
-            )}
-
-            {contenidovideojuego.plataformas && contenidovideojuego.plataformas.length > 0 && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-2 uppercase">Plataformas</Text>
-                <Text className="text-secondaryText text-base leading-6">
-                  {contenidovideojuego.plataformas.join(', ')}
-                </Text>
-              </View>
-            )}
-
-            {contenidovideojuego.modosJuego && contenidovideojuego.modosJuego.length > 0 && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-2 uppercase">Modos de juego</Text>
-                <Text className="text-secondaryText text-base leading-6">
-                  {contenidovideojuego.modosJuego.join(', ')}
-                </Text>
-              </View>
-            )}
-
-            {contenidovideojuego.descripcion && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-2 uppercase">Descripción</Text>
-                <Text className="text-secondaryText text-base leading-6">{contenidovideojuego.descripcion}</Text>
-              </View>
-            )}
-
-            {gameResource.reseña && (
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-title text-sm font-bold mb-2 uppercase">Tu reseña</Text>
-                <Text className="text-secondaryText text-base leading-6">{gameResource.reseña}</Text>
-              </View>
-            )}
-
-            <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-              <Text className="text-title text-sm font-bold mb-2 uppercase">Agregado a tu colección</Text>
-              <View className="flex-row items-center">
-                <MaterialCommunityIcons name="calendar-plus" size={20} color={colors.primary} />
-                <Text className="text-primaryText text-sm ml-2">
-                  {new Date(gameResource.fechacreacion).toLocaleDateString('es-ES', {
-                    year: 'numeric', month: 'long', day: 'numeric'
-                  })}
-                </Text>
               </View>
             </View>
           </View>

@@ -123,21 +123,21 @@ export default function ListForm() {
           <Text className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
             Icono
           </Text>
-          <View className="flex-row flex-wrap justify-between gap-4">
+          <View className="flex-row flex-wrap justify-between">
             {icons.map((iconName) => (
               <TouchableOpacity
                 key={iconName}
                 onPress={() => setFormData({ ...formData, icon: iconName })}
-                className={`h-14 w-14 items-center justify-center rounded-xl ${
-                  formData.icon === iconName
-                }`}
+                className="items-center justify-center rounded-xl mb-3"
                 style={{
+                  width: '15%',
+									height: 50,
                   backgroundColor:
                     formData.icon === iconName ? colors.primary : colors.tabBarBackgroundColor,
                 }}>
                 <MaterialCommunityIcons
                   name={iconName as any}
-                  size={25}
+                  size={20}
                   color={formData.icon === iconName ? colors.primaryText : colors.secondaryText}
                 />
               </TouchableOpacity>
@@ -149,7 +149,7 @@ export default function ListForm() {
           <Text className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
             Color
           </Text>
-          <View className="flex-row flex-wrap justify-between gap-2">
+          <View className="flex-row flex-wrap gap-2">
             {iconoColors.map(({ name, value }) => (
               <TouchableOpacity
                 key={value}
