@@ -1,35 +1,41 @@
-import { View, Text, ScrollView} from 'react-native';
+import { View, Text, FlatList, RefreshControl} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import data from 'src/Home/data/content.json';
-import { useTheme } from 'context/ThemeContext';
-
-import FeaturedList from 'src/Home/components/featured-contents/FeaturedList';
-import FeaturedBooks from 'src/Home/components/featured-contents/FeaturedBooks';
-import FeaturedFilms from 'src/Home/components/featured-contents/FeaturedFilms';
-import FeaturedGames from 'src/Home/components/featured-contents/FeaturedGames';
-import FeaturedSeries from 'src/Home/components/featured-contents/FeaturedSeries';
-import FeaturedSongs from 'src/Home/components/featured-contents/FeaturedSongs';
+import { useTheme } from 'context/ThemeContext';;
+import { useActivity } from '@/Home/hooks/useActivity';
+import ActivityItem from '@/Home/components/RenderResource';
+import { LoadingIndicator } from 'components/LoadingIndicator';
 
 
 
 export default function HomeScreen() {
 	const { colors } = useTheme();
+	const { activities, loading, refreshing, fetchActivities, refreshActivities } = useActivity();
+
 	return (
 		<Screen>
 			<StatusBar style="light" />
 			<View className="px-4 pt-6">
 				<Text className="mb-4 text-3xl font-bold" style={{color: colors.primaryText}}>Inicio</Text>
 			</View>
-
-			<ScrollView showsVerticalScrollIndicator={false} className="flex-1 mb-4">
-				<FeaturedList featured={data.featuredItems} />
-				<FeaturedBooks featured={data.popularBooks} />
-				<FeaturedFilms featured={data.popularMovies} />
-				<FeaturedSeries featured={data.popularSeries} />
-				<FeaturedGames featured={data.popularGames} />
-				<FeaturedSongs featured={data.popularSongs} />
-			</ScrollView>
+			{loading && activities.length === 0 ? (
+				<LoadingIndicator />
+			) : (
+			<FlatList
+				data={activities}
+				keyExtractor={(item, index) => `${item.recurso_id}-${index}`}
+				renderItem={({ item }) => <ActivityItem item={item} />}
+				contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}
+				onEndReached={fetchActivities}
+				onEndReachedThreshold={0.5}
+				refreshControl={
+					<RefreshControl refreshing={refreshing} onRefresh={refreshActivities} tintColor={colors.primaryText} />	
+				}
+				ListFooterComponent={() => 
+					loading ? <LoadingIndicator  /> : null
+				}
+			/>
+			)}
 		</Screen>
 	);
 }
