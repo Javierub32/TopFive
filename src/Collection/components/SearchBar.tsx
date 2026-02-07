@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, TextInput, TouchableOpacity, Text } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { CategoryType } from '../hooks/useCollection';
-import { useCollection } from 'context/CollectionContext';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { CategoryType, useCollection } from 'context/CollectionContext';
 import { useTheme } from 'context/ThemeContext';
 
 const OPCIONES_CATEGORIA: CategoryType[] = ['Libros', 'Películas', 'Series', 'Videojuegos', 'Canciones'];

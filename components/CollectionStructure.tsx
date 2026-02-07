@@ -30,7 +30,7 @@ export const CollectionStructure = ({ data, categoriaActual, handleItemPress, ha
 	  ListFooterComponent={() => 
 		loading ? 
 			<LoadingIndicator  /> : null
-	}  
+	  }  
       renderItem={({ item }) => (
         <CollectionGroup 
           item={item} 

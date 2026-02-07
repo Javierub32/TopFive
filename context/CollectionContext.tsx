@@ -1,10 +1,12 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import { useResource } from 'hooks/useResource';
 import { useLocalSearchParams, router } from 'expo-router';
-import { CategoryType } from '@/Collection/hooks/useCollection';
 import { useAuth } from './AuthContext';
 
 const CollectionContext = createContext<any>(undefined);
+
+export type CategoryType = 'Libros' | 'Películas' | 'Series' | 'Videojuegos' | 'Canciones';
+
 
 export const CollectionProvider = ({ children }: any) => {
   const { user } = useAuth();

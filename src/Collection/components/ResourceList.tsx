@@ -1,10 +1,6 @@
-import { filterCollectionData } from "@/Collection/adapters/filterCollectionData";
 import { RenderCollection } from "@/Collection/components/RenderCollection";
-import { CategoryType } from "@/Collection/hooks/useCollection";
 import { CollectionStructure } from "components/CollectionStructure";
 import { LoadingIndicator } from "components/LoadingIndicator";
-import { ReturnButton } from "components/ReturnButton";
-import { Screen } from "components/Screen";
 import { useCollection } from "context/CollectionContext";
 import { ScrollView, View } from "react-native";
 

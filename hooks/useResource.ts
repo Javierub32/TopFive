@@ -2,7 +2,7 @@
 import { useContext, createContext, useState, useEffect, use } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from 'context/AuthContext';
-import { CategoryType } from '@/Collection/hooks/useCollection';
+import { CategoryType } from 'context/CollectionContext';
 
 export const useResource = () => {
 

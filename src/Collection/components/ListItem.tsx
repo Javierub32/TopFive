@@ -2,15 +2,17 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from 'context/ThemeContext';
 import { ListInfo } from '../services/listServices';
+import { router } from 'expo-router';
 
 export const ListItem = ({ list }: { list: ListInfo }) => {
 
   const { colors } = useTheme();
   
   return (
-		<View 
+		<TouchableOpacity 
 			key={list.id} 
 			className="mb-4 p-4 rounded-2xl border shadow-sm"
+			onPress={() => router.push({ pathname: '/details/list', params: { listId: list.id, title: list.nombre, icon: list.icono, color: list.color, description: list.descripcion } })}
 			style={{ 
 			  backgroundColor: colors.surfaceButton,
 			  borderColor: colors.borderButton,
@@ -84,7 +86,7 @@ export const ListItem = ({ list }: { list: ListInfo }) => {
 			   />
 			  ))}
 			</View>
-		  </View>
+		  </TouchableOpacity>
 
   );
 };

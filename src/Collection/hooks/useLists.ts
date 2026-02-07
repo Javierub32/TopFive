@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { CollectionType, ListInfo, listServices } from "../services/listServices";
 import { useAuth } from "context/AuthContext";
-import { useCollection } from "./useCollection";
 import { Alert } from "react-native";
 import { router } from "expo-router";
 
@@ -18,6 +17,7 @@ export const useLists = (categoriaActual: string) => {
 	const { user } = useAuth();
 	const [loading, setLoading] = useState(false);
 	const [lists, setLists] = useState<ListInfo[]>([]);
+	const [data, setData] = useState<any[]>([]);
 
 	useEffect(() => {
 		setLists([]); // Limpiar listas al cambiar de categoría para evitar mostrar datos obsoletos
@@ -85,7 +85,19 @@ export const useLists = (categoriaActual: string) => {
 		}
 	}
 
-
+	const fetchListDetails = async (listId: string) => {
+		try {
+			setLoading(true);
+			const listDetails = await listServices.fetchListDetails(listId, categoryMap[categoriaActual] as CollectionType);
+			setData(listDetails);
+		}
+		catch (error) {
+			console.error("Error fetching list details:", error);
+		}
+		finally {
+			setLoading(false);
+		}
+	}
 
 	return {
 		loading,
@@ -93,5 +105,7 @@ export const useLists = (categoriaActual: string) => {
 		createList,
 		updateList,
 		deleteList,
+		fetchListDetails,
+		data,
 	};
 };
