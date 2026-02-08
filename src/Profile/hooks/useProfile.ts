@@ -4,8 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from 'context/AuthContext';
 import { userService } from '../services/profileService';
 import { createAdaptedResourceStats } from '../adapters/statsAdapter';
-import { router } from 'expo-router';
-import { useResource } from 'hooks/useResource';
+import { useResource2 } from 'hooks/useResource2';
 
 export type CategoryKey = 'libros' | 'películas' | 'series' | 'canciones' | 'videojuegos';
 
@@ -43,11 +42,11 @@ interface User {
 }
 
 export const useProfile = () => {
-  console.log('[useProfile] Hook inicializado');
   const { signOut, user } = useAuth();
-  const { fetchCanciones, fetchLibros, fetchPeliculas, fetchSeries, fetchVideojuegos } =
-    useResource();
+  const { fetchResources } = useResource2()
   const [loading, setLoading] = useState(true);
+  const [statsLoading, setStatsLoading] = useState(false);
+
 
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('libros');
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
@@ -56,99 +55,80 @@ export const useProfile = () => {
   const [fullCategoryData, setFullCategoryData] = useState(INITIAL_CATEGORY_DATA);
   const [previousYear, setPreviousYear] = useState<number>(new Date().getFullYear());
   
-  console.log('[useProfile] Estado inicial - user:', user?.id, 'category:', selectedCategory, 'year:', selectedYear);
 
   // Fetch user profile on mount or when user changes
   useEffect(() => {
-    console.log('[useProfile] useEffect user - ejecutando, user:', user?.id);
     if (user) {
-      console.log('[useProfile] Fetching user profile para user:', user.id);
 	  setLoading(true);
       userService
         .fetchUserProfile(user.id)
         .then((data) => {
-          console.log('[useProfile] User profile recibido:', data);
           if (data) {
 			setUserData(data as User);
-			console.log('[useProfile] User data actualizado');
           }
         })
         .catch((err) => console.error('[useProfile] Error al cargar perfil:', err))
         .finally(() => {
-          console.log('[useProfile] Finalizando carga de perfil');
           setLoading(false);
         });
     }
   }, [user]);
 
   // Fetch stats when category or year changes
-  useEffect(() => {
-    console.log('[useProfile] useEffect selectedCategory/Year - ejecutando, category:', selectedCategory, 'year:', selectedYear, 'previousYear:', previousYear);
-    
+  useEffect(() => {    
     // Si cambió el año, resetear todos los datos
     if (selectedYear !== previousYear) {
-      console.log('[useProfile] Año cambió, reseteando fullCategoryData');
       setFullCategoryData(INITIAL_CATEGORY_DATA);
       setPreviousYear(selectedYear);
+	  fetchResourceInfo();
+	  return;
     }
     
     if (fullCategoryData[selectedCategory].total === 0) {
-      console.log('[useProfile] Llamando a fetchResourceInfo');
       fetchResourceInfo();
     }
-  }, [selectedCategory, selectedYear]);
+  }, [selectedCategory, selectedYear, previousYear]);
 
   const fetchResourceInfo = async () => {
-    console.log('[fetchResourceInfo] Iniciando fetch para category:', selectedCategory, 'year:', selectedYear);
     let resourceData: any[] = [];
     let dateField = '';
+	try {
+		setStatsLoading(true);
+		switch (selectedCategory) {
+		case 'libros':
+			resourceData = (await fetchResources('libro', null, null, null, null, true)) || [];
+			dateField = 'fechaFin';
+			break;
+		case 'películas':
+			resourceData = (await fetchResources('pelicula', null, null, null, null, true)) || [];
+			dateField = 'fechaVisionado';
+			break;
+		case 'series':
+			resourceData = (await fetchResources('serie', null, null, null, null, true)) || [];
+			dateField = 'fechaFin';
+			break;
+		case 'canciones':
+			resourceData = (await fetchResources('cancion', null, null, null, null, true)) || [];
+			dateField = 'fechaEscucha';
+			break;
+		case 'videojuegos':
+			resourceData = (await fetchResources('videojuego', null, null, null, null, true)) || [];
+			dateField = 'fechaFin';
+			break;
+		}
 
-    // TODO: Change API to have same date field name across resources
-    switch (selectedCategory) {
-      case 'libros':
-        console.log('[fetchResourceInfo] Fetching libros...');
-        resourceData = (await fetchLibros(null, null, null, null, null, true)) || [];
-        console.log('[fetchResourceInfo] Libros recibidos:', resourceData.length);
-        dateField = 'fechaFin';
-        break;
-      case 'películas':
-        console.log('[fetchResourceInfo] Fetching películas...');
-        resourceData = (await fetchPeliculas(null, null, null, null, null, true)) || [];
-        console.log('[fetchResourceInfo] Películas recibidas:', resourceData.length);
-        dateField = 'fechaVisionado';
-        break;
-      case 'series':
-        console.log('[fetchResourceInfo] Fetching series...');
-        resourceData = (await fetchSeries(null, null, null, null, null, true)) || [];
-        console.log('[fetchResourceInfo] Series recibidas:', resourceData.length);
-        dateField = 'fechaFin';
-        break;
-      case 'canciones':
-        console.log('[fetchResourceInfo] Fetching canciones...');
-        resourceData = (await fetchCanciones(null, null, null, null, null, true)) || [];
-        console.log('[fetchResourceInfo] Canciones recibidas:', resourceData.length);
-        dateField = 'fechaEscucha';
-        break;
-      case 'videojuegos':
-        console.log('[fetchResourceInfo] Fetching videojuegos...');
-        resourceData = (await fetchVideojuegos(null, null, null, null, null, true)) || [];
-        console.log('[fetchResourceInfo] Videojuegos recibidos:', resourceData.length);
-        dateField = 'fechaFin';
-        break;
-    }
+		const stats = createAdaptedResourceStats(resourceData, dateField, selectedYear);
 
-    console.log('[fetchResourceInfo] Creando stats adaptados, dateField:', dateField);
-    // We calculate stats using the adapter
-    const stats = createAdaptedResourceStats(resourceData, dateField, selectedYear);
-    console.log('[fetchResourceInfo] Stats creados:', stats);
-
-    console.log('[fetchResourceInfo] Llamando a updateStats');
-    updateStats(stats);
-    console.log('[fetchResourceInfo] Completado');
+		updateStats(stats);
+	} catch (error) {
+		console.error('[useProfile] Error al cargar estadísticas:', error);
+		Alert.alert('Error', 'No se pudieron cargar las estadísticas. Intenta de nuevo más tarde.');
+	} finally {
+		setStatsLoading(false);
+	}
   };
 
   const updateStats = (newStats: any) => {
-    console.log('[updateStats] Actualizando stats para category:', selectedCategory, 'newStats:', newStats);
     // 1. Creamos una copia superficial de todo el objeto
     const newData = { ...fullCategoryData };
 
@@ -158,39 +138,32 @@ export const useProfile = () => {
       ...newStats,
     };
 
-    console.log('[updateStats] Datos finales:', newData[selectedCategory]);
     // 3. Guardamos la copia completa
     setFullCategoryData(newData);
-    console.log('[updateStats] Estado actualizado');
   };
 
   const pickImage = async () => {
-    console.log('[pickImage] Iniciando selección de imagen');
     try {
       setLoading(true);
-      console.log('[pickImage] Solicitando permisos...');
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      console.log('[pickImage] Permisos:', status);
       if (status !== 'granted') {
         Alert.alert('Permiso denegado', 'Necesitamos acceso a tu galería');
         return;
       }
 
-      console.log('[pickImage] Abriendo galería...');
+       ('[pickImage] Abriendo galería...');
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [1, 1],
         quality: 0.8,
       });
-      console.log('[pickImage] Resultado:', result.canceled ? 'cancelado' : 'imagen seleccionada');
 
       if (!result.canceled && result.assets[0] && user) {
-        console.log('[pickImage] Eliminando avatar anterior...');
+         ('[pickImage] Eliminando avatar anterior...');
         await userService.deletePreviousAvatar(userData?.avatar_url || null);
-        console.log('[pickImage] Subiendo nuevo avatar...');
+         ('[pickImage] Subiendo nuevo avatar...');
         const newUrl = await userService.uploadAvatar(user.id, result.assets[0].uri);
-        console.log('[pickImage] Avatar subido, nueva URL:', newUrl);
         setUserData({ ...userData, avatar_url: newUrl } as User);
         Alert.alert('¡Éxito!', 'Foto de perfil actualizada');
       }
@@ -198,22 +171,22 @@ export const useProfile = () => {
       console.error('[pickImage] Error:', error);
       Alert.alert('Error', 'No se pudo actualizar la foto');
     } finally {
-      console.log('[pickImage] Finalizando');
+       ('[pickImage] Finalizando');
       setLoading(false);
     }
   };
   return {
-    user,
     userData,
     selectedCategory,
     selectedYear,
     isPressed,
-    categoryData: fullCategoryData,
     loading,
     setSelectedCategory,
     setSelectedYear,
     setIsPressed,
     pickImage,
     signOut,
+	statsLoading,
+	currentStats: fullCategoryData[selectedCategory],
   };
 };

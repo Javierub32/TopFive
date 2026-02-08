@@ -10,7 +10,7 @@ export interface FilmResource {
   fechaVisionado: string;
   numVisionados: number;
   fechacreacion: string;
-  contenidopelicula: {
+  contenido: {
     titulo: string;
     imagenUrl: string;
     fechaLanzamiento: string;
@@ -32,7 +32,7 @@ export interface BookResource {
   fechaInicio: string | null;
   fechaFin: string | null;
   fechacreacion: string;
-  contenidolibro: {
+  contenido: {
     titulo: string;
     imagenUrl: string;
     fechaLanzamiento: string;
@@ -47,7 +47,7 @@ export interface GameResource {
   id: number;
   usuarioId: string;
   idContenido: number;
-  estado: 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO' | 'ABANDONADO';
+  estado: 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';
   reseña: string;
   calificacion: number;
   favorito: boolean;
@@ -57,7 +57,7 @@ export interface GameResource {
   fechaInicio: string | null;
   fechaFin: string | null;
   fechacreacion: string;
-  contenidovideojuego: {
+  contenido: {
     titulo: string;
     imagenUrl: string;
     fechaLanzamiento: string;
@@ -82,7 +82,7 @@ export interface SongResource {
   fechaEscucha: string | null;
   albumId: number | null;
   fechacreacion: string;
-  contenidocancion: {
+  contenido: {
     titulo: string;
     imagenUrl: string;
     fechaLanzamiento: string;
@@ -108,7 +108,7 @@ export interface SeriesResource {
   fechaInicio: string | null;
   fechaFin: string | null;
   fechacreacion: string;
-  contenidoserie: {
+  contenido: {
     titulo: string;
     imagenUrl: string;
     fechaLanzamiento: string;
