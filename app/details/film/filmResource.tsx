@@ -5,11 +5,11 @@ import { Screen } from 'components/Screen';
 import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { FilmResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
-import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
 import { AddToListButton } from 'components/AddToListButton';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
+import { ResourceType, useResource } from 'hooks/useResource';
 
 
 export default function FilmDetail() {
@@ -32,7 +32,7 @@ export default function FilmDetail() {
 			{ text: 'Confirmar', onPress: async () => {
 				await borrarRecurso(filmResource.id, 'pelicula');
 				refreshData();
-				router.replace({ pathname: '/Collection', params: { initialResource: 'Películas' } })
+				router.replace({ pathname: '/Collection', params: { initialResource: 'pelicula' as ResourceType } })
 			} },
 			{ text: 'Cancelar', style: 'cancel' }
 		]);
@@ -60,8 +60,8 @@ export default function FilmDetail() {
     );
   }
 
-  const { contenidopelicula } = filmResource;
-  const releaseYear = contenidopelicula.fechaLanzamiento ? new Date(contenidopelicula.fechaLanzamiento).getFullYear() : 'N/A';
+  const { contenido } = filmResource;
+  const releaseYear = contenido.fechaLanzamiento ? new Date(contenido.fechaLanzamiento).getFullYear() : 'N/A';
   
   const getStatusText = (status: string) => {
     switch (status) {
@@ -89,7 +89,7 @@ export default function FilmDetail() {
         {/* Header con botón de volver y botón de eliminar */}
         <View className="flex-row items-center justify-between px-4 pt-2 pb-4">
           <View className="flex-row items-center flex-1">
-            <ReturnButton route="/Collection" title={'Detalle de la película'} style={" "} params={{initialResource: 'Películas'}}/>
+            <ReturnButton route="/Collection" title={'Detalle de la película'} style={" "} params={{initialResource: 'pelicula' as ResourceType}}/>
           </View>
           {/* Botón de editar */}
           <TouchableOpacity 
@@ -115,7 +115,7 @@ export default function FilmDetail() {
         {/* Imagen de la película */}
         <View className="px-4 mb-4">
           <Image 
-            source={{ uri: contenidopelicula.imagenUrl || 'https://via.placeholder.com/500x750' }}
+            source={{ uri: contenido.imagenUrl || 'https://via.placeholder.com/500x750' }}
             className="w-full h-[600px] rounded-2xl bg-background"
             resizeMode="cover"
           />
@@ -126,7 +126,7 @@ export default function FilmDetail() {
           <View className="mb-4">
             <View className="flex-1 flex-row justify-between mb-2 items-center">
               <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
-              {contenidopelicula.titulo || 'Sin título'}
+              {contenido.titulo || 'Sin título'}
               </Text>
               <AddToListButton resourceCategory="Películas" resourceId={filmResource.id} />
             </View>

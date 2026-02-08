@@ -4,7 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from 'context/AuthContext';
 import { userService } from '../services/profileService';
 import { createAdaptedResourceStats } from '../adapters/statsAdapter';
-import { ResourceType, useResource2 } from 'hooks/useResource2';
+import { ResourceType, useResource } from 'hooks/useResource';
 
 export type CategoryKey = 'libros' | 'películas' | 'series' | 'canciones' | 'videojuegos';
 
@@ -43,7 +43,7 @@ interface User {
 
 export const useProfile = () => {
   const { signOut, user } = useAuth();
-  const { fetchResources } = useResource2()
+  const { fetchResources } = useResource()
   const [loading, setLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(false);
 

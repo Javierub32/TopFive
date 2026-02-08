@@ -37,7 +37,7 @@ export default function GameForm() {
   
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
-  const game: any = editando ? resource.contenidovideojuego : JSON.parse(gameData as string);
+  const game: any = editando ? resource.contenido : JSON.parse(gameData as string);
 
   const [reseña, setReseña] = useState(resource?.reseña || '');
   const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
@@ -63,7 +63,7 @@ export default function GameForm() {
     try {
       if (editando) {
         // Actualizar el recurso existente
-        const { data: updateData, error: updateError } = await supabase
+        const { data: updatedData, error: updateError } = await supabase
           .from('recursovideojuego')
           .update({
             estado: estado,
@@ -90,7 +90,15 @@ export default function GameForm() {
           Alert.alert('Error', 'Hubo un problema al actualizar el videojuego. Inténtalo de nuevo.');
           console.error('Error al actualizar:', updateError);
         } else {
-          const gameResource: GameResource = updateData;
+		  // Adaptamos la respuesta para mantener compatibilidad
+		  const rawData = updatedData as any;
+		  const contentData = rawData.contenidovideojuego;
+		  delete rawData.contenidovideojuego;
+		  const gameResource: GameResource = {
+			...rawData,
+			contenido: contentData,
+		  };
+
           Alert.alert('¡Éxito!', `Has actualizado ${game.titulo || game.title} en tu colección.`);
 		  refreshData();
           router.replace({

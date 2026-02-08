@@ -37,7 +37,7 @@ export default function BookForm() {
   // Si es item, se edita, si no, es nuevo
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
-  const book: any = editando ? resource.contenidolibro : JSON.parse(bookData as string);
+  const book: any = editando ? resource.contenido : JSON.parse(bookData as string);
 
   const [reseña, setReseña] = useState(resource?.reseña || '');
   const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
@@ -92,7 +92,15 @@ export default function BookForm() {
           Alert.alert('Error', 'Hubo un problema al actualizar el libro. Inténtalo de nuevo.');
           console.error('Error al actualizar:', updateError);
         } else {
-          const bookResource: BookResource = updatedData;
+		  // Adaptamos la respuesta para mantener compatibilidad
+		  const rawData = updatedData as any;
+		  const contentData = rawData.contenidolibro;
+		  delete rawData.contenidolibro;
+		  const bookResource: BookResource = {
+			...rawData,
+			contenido: contentData,
+		  };
+
           Alert.alert('¡Éxito!', `Has actualizado ${book.title} en tu colección.`);
 		  refreshData();
           router.replace({

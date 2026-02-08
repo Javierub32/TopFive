@@ -1,8 +1,10 @@
+import { StateType } from "hooks/useResource";
+
 export interface FilmResource {
   id: number;
   usuarioId: string;
   idContenido: number;
-  estado: 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';
+  estado: StateType;
   reseña: string;
   calificacion: number;
   favorito: boolean;
@@ -23,7 +25,7 @@ export interface BookResource {
   id: number;
   usuarioId: string;
   idContenido: number;
-  estado: 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';
+  estado: StateType;
   reseña: string;
   calificacion: number;
   favorito: boolean;
@@ -47,7 +49,7 @@ export interface GameResource {
   id: number;
   usuarioId: string;
   idContenido: number;
-  estado: 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';
+  estado: StateType;
   reseña: string;
   calificacion: number;
   favorito: boolean;
@@ -74,7 +76,7 @@ export interface SongResource {
   id: number;
   usuarioId: string;
   idContenido: number;
-  estado: 'PENDIENTE' | 'COMPLETADO';
+  estado: StateType;
   reseña: string;
   calificacion: number;
   favorito: boolean;
@@ -97,7 +99,7 @@ export interface SeriesResource {
   id: number;
   usuarioId: string;
   idContenido: number;
-  estado: 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';
+  estado: StateType;
   reseña: string;
   calificacion: number;
   favorito: boolean;

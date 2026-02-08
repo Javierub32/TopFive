@@ -1,7 +1,7 @@
 import {  Pressable, View} from 'react-native';
 import { iconAdapter } from '../adapters/iconAdapter';
 import { useTheme } from 'context/ThemeContext';
-import { RESOURCE_TYPES, ResourceType } from 'hooks/useResource2';
+import { RESOURCE_TYPES, ResourceType } from 'hooks/useResource';
 
 interface Props {
   selected: ResourceType;

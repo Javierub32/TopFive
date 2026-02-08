@@ -1,5 +1,5 @@
 import { BookIcon, FilmIcon, ShowIcon, MusicIcon, GameIcon } from 'components/Icons';
-import { ResourceType } from 'hooks/useResource2';
+import { ResourceType } from 'hooks/useResource';
 
 export const iconAdapter = {
     getIcon : (category: ResourceType) => {

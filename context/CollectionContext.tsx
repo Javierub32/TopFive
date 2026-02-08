@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useContext } from 'react';
-import { useResource } from 'hooks/useResource';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useAuth } from './AuthContext';
+import { ResourceType, useResource } from 'hooks/useResource';
 
 const CollectionContext = createContext<any>(undefined);
 
@@ -10,19 +10,13 @@ export type CategoryType = 'Libros' | 'Películas' | 'Series' | 'Videojuegos' | 
 
 export const CollectionProvider = ({ children }: any) => {
   const { user } = useAuth();
-  const {
-    fetchCanciones,
-    fetchPeliculas,
-    fetchSeries,
-    fetchVideojuegos,
-    fetchLibros,
-    calcularTotal,
-  } = useResource();
 
-  const { initialResource } = useLocalSearchParams();
+  const { fetchResources, calcularTotal } = useResource();
+
+  const { initialResource } = useLocalSearchParams<{ initialResource?: ResourceType }>();
   const [inputBusqueda, setInputBusqueda] = useState('');
   const [busqueda, setBusqueda] = useState('');
-  const [categoriaActual, setCategoriaActual] = useState(initialResource ? initialResource : 'Películas');
+  const [categoriaActual, setCategoriaActual] = useState<ResourceType>(initialResource ? initialResource : 'pelicula');
   const [loading, setLoading] = useState(false);
   const [menuCategoriaAbierto, setMenuCategoriaAbierto] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -41,15 +35,7 @@ export const CollectionProvider = ({ children }: any) => {
 
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
-  const pageSize = 9; // Cantidad de items por página
-
-  const fetchMap: any = {
-    Películas: fetchPeliculas,
-    Series: fetchSeries,
-    Videojuegos: fetchVideojuegos,
-    Libros: fetchLibros,
-    Canciones: fetchCanciones,
-  };
+  const pageSize = 9;
 
   const handleSearch = async () => {
 	if (!user) return;
@@ -60,8 +46,7 @@ export const CollectionProvider = ({ children }: any) => {
     setBusqueda(inputBusqueda);
 	try {
 		setLoading(true);
-		const fetchFunction = fetchMap[categoriaActual as CategoryType];
-		const resultado = await fetchFunction(inputBusqueda, null, null, pageSize);
+		const resultado = await fetchResources(categoriaActual, inputBusqueda, null, null, pageSize);
 		setData(resultado || []);
 		setPage(1);
 		setHasMore(true);
@@ -85,8 +70,7 @@ export const CollectionProvider = ({ children }: any) => {
 	const to = from + pageSize - 1;
 	try {
 		setLoading(true);
-		const fetchFunction = fetchMap[categoriaActual as CategoryType];
-		const resultado = await fetchFunction(inputBusqueda, null, null, null, null, null, from, to);
+		const resultado = await fetchResources(categoriaActual, inputBusqueda, null, null, pageSize, null, null, from, to);
 		setData((prevData: any[]) => [...prevData, ...(resultado || [])]);
 		setPage((prevPage) => prevPage + 1);
 		if (!resultado || resultado.length < pageSize) {
@@ -116,8 +100,6 @@ export const CollectionProvider = ({ children }: any) => {
 
     setLoading(true);
     try {
-      const categoriaKey = categoriaActual as CategoryType;
-      const fetchFunction = fetchMap[categoriaKey];
       const [
         pendientes, 
         enCurso, 
@@ -126,12 +108,12 @@ export const CollectionProvider = ({ children }: any) => {
         totalEnCurso, 
         totalCompletados
       ] = await Promise.all([
-        fetchFunction(null, null, 'PENDIENTE', 5),
-        fetchFunction(null, null, 'EN_CURSO', 5),
-        fetchFunction(null, null, 'COMPLETADO', 5),
-        calcularTotal(categoriaKey, 'PENDIENTE'),
-        calcularTotal(categoriaKey, 'EN_CURSO'),
-        calcularTotal(categoriaKey, 'COMPLETADO')
+		fetchResources(categoriaActual, null, null, 'PENDIENTE', 5),
+        fetchResources(categoriaActual, null, null, 'EN_CURSO', 5),
+        fetchResources(categoriaActual, null, null, 'COMPLETADO', 5),
+        calcularTotal(categoriaActual, 'PENDIENTE'),
+        calcularTotal(categoriaActual, 'EN_CURSO'),
+        calcularTotal(categoriaActual, 'COMPLETADO')
       ]);
 
       setPendientes(pendientes || []);
@@ -180,15 +162,14 @@ export const CollectionProvider = ({ children }: any) => {
     });
   };
   const handleItemPress = (item: any) => {
-    const resourceTypeMap: any = {
-      Películas: 'film',
-      Series: 'series',
-      Videojuegos: 'game',
-      Libros: 'book',
-      Canciones: 'song',
+    const resourceTypeMap: Record<ResourceType, string> = {
+      pelicula: 'film',
+      serie: 'series',
+      videojuego: 'game',
+      libro: 'book',
+      cancion: 'song',
     };
-    const categoriaKey = categoriaActual as CategoryType;
-    const type = resourceTypeMap[categoriaKey];
+    const type = resourceTypeMap[categoriaActual];
     router.push({
       pathname: `/details/${type}/${type}Resource`,
       params: { item: JSON.stringify(item) },

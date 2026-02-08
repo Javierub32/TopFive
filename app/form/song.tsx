@@ -34,7 +34,7 @@ export default function SongForm() {
   
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
-  const song: any = editando ? resource.contenidocancion : JSON.parse(songData as string);
+  const song: any = editando ? resource.contenido : JSON.parse(songData as string);
 
   const [reseña, setReseña] = useState(resource?.reseña || '');
   const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
@@ -50,7 +50,7 @@ export default function SongForm() {
     try {
       if (editando) {
         // Modo edición: actualizar el recurso existente
-        const { data: updateData, error: updateError } = await supabase
+        const { data: updatedData, error: updateError } = await supabase
           .from('recursocancion')
           .update({
             estado: estado,
@@ -74,7 +74,15 @@ export default function SongForm() {
           Alert.alert('Error', 'Hubo un problema al actualizar la canción. Inténtalo de nuevo.');
           console.error('Error al actualizar:', updateError);
         } else {
-          const songResource: SongResource = updateData;
+		  // Adaptamos la respuesta para mantener compatibilidad
+		  const rawData = updatedData as any;
+		  const contentData = rawData.contenidocancion;
+		  delete rawData.contenidocancion;
+		  const songResource: SongResource = {
+			...rawData,
+			contenido: contentData,
+		  };
+
           Alert.alert('¡Éxito!', `Has actualizado ${song.titulo || song.title} en tu colección.`);
 		  refreshData();
           router.replace({

@@ -9,6 +9,7 @@ import { LoadingIndicator } from "components/LoadingIndicator";
 import { CollectionStructure } from "components/CollectionStructure";
 import { useTheme } from "context/ThemeContext";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { ResourceType } from "hooks/useResource";
 
 export default function ListDetails() {
   const { categoriaActual, handleItemPress } = useCollection();
@@ -22,7 +23,7 @@ export default function ListDetails() {
 		<ReturnButton 
 			title={"Detalles de la lista"} 
 			route="/Collection" 
-			params={{ initialResource: categoriaActual }}
+			params={{ initialResource: categoriaActual as ResourceType }}
 		/>
 		<LoadingIndicator />
 	  </Screen>
@@ -34,7 +35,7 @@ export default function ListDetails() {
 	  <ReturnButton 
 		title={"Detalles de la lista"} 
 		route="/Collection"
-		params={{ initialResource: categoriaActual }} 
+		params={{ initialResource: categoriaActual as ResourceType }}
 	  />
 	  
       {/* CABECERA DE LA LISTA */}

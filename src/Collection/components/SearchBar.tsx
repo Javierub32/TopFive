@@ -3,8 +3,27 @@ import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { CategoryType, useCollection } from 'context/CollectionContext';
 import { useTheme } from 'context/ThemeContext';
+import { ResourceType } from 'hooks/useResource';
 
-const OPCIONES_CATEGORIA: CategoryType[] = ['Libros', 'Películas', 'Series', 'Videojuegos', 'Canciones'];
+const OPCIONES_CATEGORIA: string[] = ['Libros', 'Películas', 'Series', 'Videojuegos', 'Canciones'];
+
+const resourceTypeMap: Record<ResourceType, string> = {
+  'pelicula': 'Películas',
+  'serie': 'Series',
+  'videojuego': 'Videojuegos',
+  'libro': 'Libros',
+  'cancion': 'Canciones',
+};
+
+const categoryToResourceMap: Record<string, ResourceType> = {
+  'Libros': 'libro',
+  'Películas': 'pelicula',
+  'Series': 'serie',
+  'Videojuegos': 'videojuego',
+  'Canciones': 'cancion',
+};
+
+
 
 export const SearchBar = () => {
   const { inputBusqueda, setInputBusqueda, handleSearch, categoriaActual, setCategoriaActual, menuCategoriaAbierto, setMenuCategoriaAbierto} = useCollection();
@@ -20,7 +39,7 @@ export const SearchBar = () => {
         {/* Input */}
         <TextInput
           className="h-full flex-1 px-3 text-base text-primaryText"
-          placeholder={`Buscar en ${categoriaActual}...`}
+          placeholder={`Buscar en ${resourceTypeMap[categoriaActual as ResourceType]}...`}
           placeholderTextColor={colors.placeholderText}
           value={inputBusqueda}
           onChangeText={setInputBusqueda}
@@ -39,7 +58,7 @@ export const SearchBar = () => {
           }}>
           <View className="max-w-[90px]">
             <Text className="mr-1 font-medium text-xs text-secondaryText" numberOfLines={1}>
-              {categoriaActual}
+              {resourceTypeMap[categoriaActual as ResourceType]}
             </Text>
           </View>
           <MaterialCommunityIcons
@@ -57,15 +76,15 @@ export const SearchBar = () => {
           {OPCIONES_CATEGORIA.map((opcion, index) => (
             <TouchableOpacity
               key={opcion}
-              className={`flex-row items-center justify-between p-3 ${index !== OPCIONES_CATEGORIA.length - 1 ? 'border-b border-borderButton' : ''} ${categoriaActual === opcion ? 'bg-borderButton' : 'active:bg-borderButton/50'}`}
+              className={`flex-row items-center justify-between p-3 ${index !== OPCIONES_CATEGORIA.length - 1 ? 'border-b border-borderButton' : ''} ${categoriaActual === categoryToResourceMap[opcion] ? 'bg-borderButton' : 'active:bg-borderButton/50'}`}
               onPress={() => {
-                setCategoriaActual(opcion);
+                setCategoriaActual(categoryToResourceMap[opcion]);
                 setMenuCategoriaAbierto(false);
               }}>
-              <Text className={`text-sm ${categoriaActual === opcion ? 'font-bold text-white' : 'text-secondaryText'}`}>
+              <Text className={`text-sm ${categoriaActual === categoryToResourceMap[opcion] ? 'font-bold text-white' : 'text-secondaryText'}`}>
                 {opcion}
               </Text>
-              {categoriaActual === opcion && <MaterialCommunityIcons name="check" size={14} color="#fff" />}
+              {categoriaActual === categoryToResourceMap[opcion] && <MaterialCommunityIcons name="check" size={14} color="#fff" />}
             </TouchableOpacity>
           ))}
         </View>

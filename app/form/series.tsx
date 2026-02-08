@@ -33,7 +33,7 @@ export default function SeriesForm() {
 
   const isEditing = !!item;
   const resource = isEditing ? JSON.parse(item as string) : null;
-  const series: any = isEditing ? resource.contenidoserie : JSON.parse(seriesData as string);
+  const series: any = isEditing ? resource.contenido : JSON.parse(seriesData as string);
 
   const [reseña, setReseña] = useState(resource?.reseña || '');
   const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
@@ -62,7 +62,7 @@ export default function SeriesForm() {
     try {
       if (isEditing) {
         // Modo edición: actualizar el recurso existente
-        const { data: updateData, error: updateError } = await supabase
+        const { data: updatedData, error: updateError } = await supabase
           .from('recursoserie')
           .update({
             estado: estado,
@@ -91,7 +91,15 @@ export default function SeriesForm() {
           Alert.alert('Error', 'Hubo un problema al actualizar la serie. Inténtalo de nuevo.');
           console.error('Error al actualizar:', updateError);
         } else {
-          const seriesResource: SeriesResource = updateData;
+		  // Adaptamos la respuesta para mantener compatibilidad
+		  const rawData = updatedData as any;
+		  const contentData = rawData.contenidoserie;
+		  delete rawData.contenidoserie;
+		  const seriesResource: SeriesResource = {
+			...rawData,
+			contenido: contentData,
+		  };
+
           Alert.alert('¡Éxito!', `Has actualizado ${series.titulo || series.title} en tu colección.`);
 		  refreshData();
           router.replace({

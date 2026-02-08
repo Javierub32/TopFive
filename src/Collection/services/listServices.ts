@@ -305,46 +305,37 @@ export const listServices = {
     let itemTable = '';
     let resourceTable = '';
     let contentTable = '';
-    // Esta variable es la clave para que funcione handleItemPress
-    // Las pantallas de detalle buscan: item.contenidopelicula, item.contenidolibro, etc.
-    let contentKey = '';
 
     switch (listType) {
       case 'LIBRO':
         itemTable = 'itemcoleccion_libro';
         resourceTable = 'recursolibro';
         contentTable = 'contenidolibro';
-        contentKey = 'contenidolibro';
         break;
       case 'PELICULA':
         itemTable = 'itemcoleccion_pelicula';
         resourceTable = 'recursopelicula';
         contentTable = 'contenidopelicula';
-        contentKey = 'contenidopelicula';
         break;
       case 'SERIE':
         itemTable = 'itemcoleccion_serie';
         resourceTable = 'recursoserie';
         contentTable = 'contenidoserie';
-        contentKey = 'contenidoserie';
         break;
       case 'VIDEOJUEGO':
         itemTable = 'itemcoleccion_videojuego';
         resourceTable = 'recursovideojuego';
         contentTable = 'contenidovideojuego';
-        contentKey = 'contenidovideojuego';
         break;
       case 'ALBUM':
         itemTable = 'itemcoleccion_album';
         resourceTable = 'recursoalbum';
         contentTable = 'contenidoalbum';
-        contentKey = 'contenidoalbum';
         break;
       case 'CANCION':
         itemTable = 'itemcoleccion_cancion';
         resourceTable = 'recursocancion';
         contentTable = 'contenidocancion';
-        contentKey = 'contenidocancion';
         break;
       default:
         throw new Error('Tipo de lista no soportado');
@@ -386,7 +377,7 @@ export const listServices = {
 
         // 2. Metemos el contenido DENTRO de la clave específica (ej: contenidopelicula)
         // Esto es lo que permite que las pantallas de detalle funcionen sin cambios.
-        [contentKey]: contenido,
+        contenido: contenido,
 
         // 3. (Opcional) Guardamos el ID de la relación con la lista por si acaso
         listItemId: item.id,

@@ -1,15 +1,14 @@
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { router, useLocalSearchParams, useRouter } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { GameResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
-import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
 import { AddToListButton } from 'components/AddToListButton';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
+import { ResourceType, useResource } from 'hooks/useResource';
 
 
 export default function GameDetail() {
@@ -33,7 +32,7 @@ export default function GameDetail() {
 			{ text: 'Confirmar', onPress: async () => {
 				await borrarRecurso(gameResource.id, 'videojuego');
 				refreshData();
-				router.replace({ pathname: '/Collection', params: { initialResource: 'Videojuegos' } })
+				router.replace({ pathname: '/Collection', params: { initialResource: 'videojuego' as ResourceType } })
 			} },
 			{ text: 'Cancelar', style: 'cancel' }
 		]);
@@ -62,8 +61,8 @@ export default function GameDetail() {
     );
   }
 
-  const { contenidovideojuego } = gameResource;
-  const releaseYear = contenidovideojuego.fechaLanzamiento ? new Date(contenidovideojuego.fechaLanzamiento).getFullYear() : 'N/A';
+  const { contenido } = gameResource;
+  const releaseYear = contenido.fechaLanzamiento ? new Date(contenido.fechaLanzamiento).getFullYear() : 'N/A';
   
   const getStatusText = (status: string) => {
     switch (status) {
@@ -100,7 +99,7 @@ export default function GameDetail() {
         {/* Header con botón de volver y botón de eliminar */}
         <View className="flex-row items-center justify-between px-4 pt-2 pb-4">
           <View className="flex-row items-center flex-1">
-            <ReturnButton route="/Collection" title={'Detalle del videojuego'} style={" "} params={{initialResource: 'Videojuegos'}}/>
+            <ReturnButton route="/Collection" title={'Detalle del videojuego'} style={" "} params={{initialResource: 'videojuego' as ResourceType}}/>
           </View>
           {/* Botón de editar */}
           <TouchableOpacity 
@@ -125,7 +124,7 @@ export default function GameDetail() {
         {/* Imagen del videojuego */}
         <View className="px-4 mb-4">
           <Image 
-            source={{ uri: contenidovideojuego.imagenUrl || 'https://via.placeholder.com/500x750' }}
+            source={{ uri: contenido.imagenUrl || 'https://via.placeholder.com/500x750' }}
             className="w-full h-[600px] rounded-2xl"
             style={{backgroundColor: colors.surfaceButton}}
             resizeMode="cover"
@@ -137,7 +136,7 @@ export default function GameDetail() {
             {/* Título y añadir a lista */}
             <View className="flex-1 flex-row items-center justify-between mb-2">
               <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
-              {contenidovideojuego.titulo || 'Sin título'}
+              {contenido.titulo || 'Sin título'}
               </Text>
               <AddToListButton resourceCategory="Videojuegos" resourceId={gameResource.id} />
             </View>

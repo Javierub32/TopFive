@@ -1,18 +1,19 @@
 // src/Collection/hooks/useListsDetails.ts
 import { useEffect, useState } from "react";
 import { CollectionType, listServices } from "../services/listServices";
+import { ResourceType } from "hooks/useResource";
 
-const categoryMap: Record<string, string> = {
-	'Películas': 'PELICULA',
-	'Series': 'SERIE',
-	'Videojuegos': 'VIDEOJUEGO',
-	'Libros': 'LIBRO',
-	'Canciones': 'CANCION',
+const categoryMap: Record<ResourceType, CollectionType> = {
+	'pelicula': 'PELICULA',
+	'serie': 'SERIE',
+	'videojuego': 'VIDEOJUEGO',
+	'libro': 'LIBRO',
+	'cancion': 'CANCION',
 };
 
 const PAGE_SIZE = 9; // Cantidad de elementos a cargar por página
 
-export const useListsDetails = (categoriaActual: string, listId: string) => {
+export const useListsDetails = (categoriaActual: ResourceType, listId: string) => {
 	const [loading, setLoading] = useState(false);
 	const [data, setData] = useState<any[]>([]);
 	const [page, setPage] = useState(0);

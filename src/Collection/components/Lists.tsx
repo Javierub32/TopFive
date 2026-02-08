@@ -8,6 +8,7 @@ import { router } from 'expo-router';
 import { useLists } from '../hooks/useLists';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useCollection } from 'context/CollectionContext';
+import { ResourceType } from 'hooks/useResource';
 
 // Datos de prueba para simular el backend
 const MOCK_LISTS = [
@@ -58,7 +59,7 @@ const MOCK_LISTS = [
 export default function Lists() {
   const { colors } = useTheme();
   const { categoriaActual } = useCollection();
-  const { lists, loading } = useLists(categoriaActual);
+  const { lists, loading } = useLists(categoriaActual as ResourceType);
 
   return (
       <View className="flex-1  mt-4" >

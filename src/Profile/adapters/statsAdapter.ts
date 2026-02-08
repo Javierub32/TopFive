@@ -1,4 +1,4 @@
-import { DATE_FIELDS, ResourceType } from "hooks/useResource2";
+import { DATE_FIELDS, ResourceType } from "hooks/useResource";
 
 // Fill the profile statistics data based on fetched resources
 // We dont use typed here for simplicity, but if needed we can add it

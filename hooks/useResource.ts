@@ -1,454 +1,189 @@
-// hooks/useResource.ts
-import { useContext, createContext, useState, useEffect, use } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from 'context/AuthContext';
-import { CategoryType } from 'context/CollectionContext';
+import { BookResource, FilmResource, GameResource, SeriesResource, SongResource } from 'app/types/Resources';
+
+// Definimos los tipos de recursos válidos y sus interfaces de configuración
+export type ResourceType = 'pelicula' | 'serie' | 'videojuego' | 'libro' | 'cancion';
+export const RESOURCE_TYPES: ResourceType[] = ['libro', 'pelicula', 'serie', 'videojuego', 'cancion'];
+
+export type StateType = 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';
+
+export type ResourceMap = {
+  pelicula: FilmResource;
+  serie: SeriesResource;
+  videojuego: GameResource;
+  libro: BookResource;
+  cancion: SongResource;
+};
+
+// Configuración de tablas para no tener que hacer un switch gigante para todo
+const RESOURCE_CONFIG: Record<ResourceType, { table: string; contentJoin: string }> = {
+  pelicula: { table: 'recursopelicula', contentJoin: 'contenidopelicula' },
+  serie: { table: 'recursoserie', contentJoin: 'contenidoserie' },
+  videojuego: { table: 'recursovideojuego', contentJoin: 'contenidovideojuego' },
+  libro: { table: 'recursolibro', contentJoin: 'contenidolibro' },
+  cancion: { table: 'recursocancion', contentJoin: 'contenidocancion' },
+};
+
+export const DATE_FIELDS: Record<ResourceType, string> = {
+  libro: 'fechaFin',
+  pelicula: 'fechaVisionado',
+  serie: 'fechaFin',
+  cancion: 'fechaEscucha',
+  videojuego: 'fechaFin',
+};
 
 export const useResource = () => {
-
-	const { user } = useAuth();
-
-
-	useEffect(() => {
-		const fetchData = async () => {
-		};
-
-		if (user) {
-			//fetchData();
-		}
-	}, [user]);
-
-	const fetchPeliculas = async (
-		term?: string | null,
-		favorito?: boolean | null,
-		estado?: number | null,
-		cantidad?: number | null,
-		ordenarPorFecha?: boolean | null,
-		profile?: boolean,
-		from?: number | null,
-		to?: number | null
-	) => {
-		try {
-			if (!user) throw new Error('User not authenticated');
-
-            // Detectar si hay búsqueda activa
-            const isSearch = term !== undefined && term !== null && term !== '';
-            // Si hay búsqueda, usamos !inner para filtrar las filas padre que no coincidan
-            const joinModifier = isSearch ? '!inner' : '';
-
-			let query = supabase
-				.from('recursopelicula') 
-				.select(`
-					*, 
-					contenidopelicula${joinModifier} (
-					titulo,
-					imagenUrl,
-					fechaLanzamiento
-					)
-				`) 
-				.eq('usuarioId', user.id);
-
-
-			if (profile) {
-				query = supabase
-					.from('recursopelicula')
-					.select(`fechaVisionado`)
-					.eq('usuarioId', user.id);
-			}
-
-			if ( from != undefined && to != null) {
-				query = query.range(from, to);
-			}
-
-			if (favorito === true) {
-				query = query.eq('favorito', true);
-			}
-
-			if (estado !== undefined && estado !== null) {
-				query = query.eq('estado', estado);
-			}
-
-			if (isSearch) {
-				query = query.ilike('contenidopelicula.titulo', `%${term}%`);
-			}
-
-			if (ordenarPorFecha === true) {
-				query = query.order('fechacreacion', { ascending: false }); 
-			} else if (ordenarPorFecha === false) {
-				query = query.order('fechacreacion', { ascending: true }); 
-			}
-
-			if (cantidad !== undefined && cantidad !== null) {
-				query = query.limit(cantidad);
-			}
-
-			const { data, error } = await query;
-
-			if (error) {
-				throw error;
-			}
-			console.log("Peliculas recuperadas:", data);
-			return data;
-		} catch (error) {
-			console.error('Error al obtener películas:', error);
-			return null;
-		}
-	};
-
-    const fetchSeries = async (
-		term?: string | null,
-		favorito?: boolean | null,
-		estado?: number | null,
-		cantidad?: number | null,
-		ordenarPorFecha?: boolean | null,
-		profile?: boolean,
-		from?: number | null,
-		to?: number | null
-	) => {
-		try {
-			if (!user) throw new Error('User not authenticated');
-
-            const isSearch = term !== undefined && term !== null && term !== '';
-            const joinModifier = isSearch ? '!inner' : '';
-
-			let query = supabase
-				.from('recursoserie') 
-				.select(`
-					*, 
-					contenidoserie${joinModifier} (
-						titulo,
-						imagenUrl,
-						fechaLanzamiento
-					)
-				`) 
-				.eq('usuarioId', user.id);
-
-			if (profile) {
-				query = supabase
-					.from('recursoserie')
-					.select(`fechaFin`)
-					.eq('usuarioId', user.id);
-			}
-
-			if ( from != undefined && to != null) {
-				query = query.range(from, to);
-			}
-
-			if (favorito === true) {
-				query = query.eq('favorito', true);
-			}
-
-			if (estado !== undefined && estado !== null) {
-				query = query.eq('estado', estado);
-			}
-
-			if (isSearch) {
-				query = query.ilike('contenidoserie.titulo', `%${term}%`);
-			}
-
-			if (ordenarPorFecha === true) {
-				query = query.order('fechacreacion', { ascending: false });
-			} else if (ordenarPorFecha === false) {
-				query = query.order('fechacreacion', { ascending: true });
-			}
-
-			if (cantidad !== undefined && cantidad !== null) {
-				query = query.limit(cantidad);
-			}
-
-			const { data, error } = await query;
-
-			if (error) throw error;
-			
-			console.log("Series recuperadas:", data);
-			return data;
-		} catch (error) {
-			console.error('Error al obtener series:', error);
-			return null;
-		}
-	};
-
-	const fetchVideojuegos = async (
-		term?: string | null,
-		favorito?: boolean | null,
-		estado?: number | null,
-		cantidad?: number | null,
-		ordenarPorFecha?: boolean | null,
-		profile?: boolean,
-		from?: number | null,
-		to?: number | null
-	) => {
-		try {
-			if (!user) throw new Error('User not authenticated');
-
-            const isSearch = term !== undefined && term !== null && term !== '';
-            const joinModifier = isSearch ? '!inner' : '';
-
-			let query = supabase
-				.from('recursovideojuego') 
-				.select(`
-					*, 
-					contenidovideojuego${joinModifier} (
-						titulo,
-						imagenUrl,
-						fechaLanzamiento
-					)
-				`) 
-				.eq('usuarioId', user.id);
-
-			if (profile) {
-				query = supabase
-					.from('recursovideojuego')
-					.select(`fechaFin`)
-					.eq('usuarioId', user.id);
-			}
-
-			if ( from != undefined && to != null) {
-				query = query.range(from, to);
-			}
-
-			if (favorito === true) {
-				query = query.eq('favorito', true);
-			}
-
-			if (estado !== undefined && estado !== null) {
-				query = query.eq('estado', estado);
-			}
-
-			if (isSearch) {
-				query = query.ilike('contenidovideojuego.titulo', `%${term}%`);
-			}
-
-			if (ordenarPorFecha === true) {
-				query = query.order('fechacreacion', { ascending: false });
-			} else if (ordenarPorFecha === false) {
-				query = query.order('fechacreacion', { ascending: true });
-			}
-
-			if (cantidad !== undefined && cantidad !== null) {
-				query = query.limit(cantidad);
-			}
-
-			const { data, error } = await query;
-
-			if (error) throw error;
-
-			console.log("Videojuegos recuperados:", data);
-			return data;
-		} catch (error) {
-			console.error('Error al obtener videojuegos:', error);
-			return null;
-		}
-	};
-
-	const fetchLibros = async (
-		term?: string | null,
-		favorito?: boolean | null,
-		estado?: number | null,
-		cantidad?: number | null,
-		ordenarPorFecha?: boolean | null,
-		profile?: boolean,
-		from?: number | null,
-		to?: number | null
-	) => {
-		try {
-			if (!user) throw new Error('User not authenticated');
-
-            const isSearch = term !== undefined && term !== null && term !== '';
-            const joinModifier = isSearch ? '!inner' : '';
-
-			let query = supabase
-				.from('recursolibro')
-				.select(`
-					*, 
-					contenidolibro${joinModifier} (
-						titulo,
-						imagenUrl,
-						fechaLanzamiento
-					)
-				`) 
-				.eq('usuarioId', user.id);
-
-			if (profile) {
-				query = supabase
-					.from('recursolibro')
-					.select(`fechaFin`)
-					.eq('usuarioId', user.id);
-			}
-
-			if ( from != undefined && to != null) {
-				query = query.range(from, to);
-			}
-
-			if (favorito === true) {
-				query = query.eq('favorito', true);
-			}
-
-			if (estado !== undefined && estado !== null) {
-				query = query.eq('estado', estado);
-			}
-
-			if (isSearch) {
-				query = query.ilike('contenidolibro.titulo', `%${term}%`);
-			}
-
-			if (ordenarPorFecha === true) {
-				query = query.order('fechacreacion', { ascending: false });
-			} else if (ordenarPorFecha === false) {
-				query = query.order('fechacreacion', { ascending: true });
-			}
-
-			if (cantidad !== undefined && cantidad !== null) {
-				query = query.limit(cantidad);
-			}
-
-			const { data, error } = await query;
-
-			if (error) throw error;
-
-			console.log("Libros recuperados:", data);
-			return data;
-		} catch (error) {
-			console.error('Error al obtener libros:', error);
-			return null;
-		}
-	};
-
-	const fetchCanciones = async (
-		term?: string | null,
-		favorito?: boolean | null,
-		estado?: number | null,
-		cantidad?: number | null,
-		ordenarPorFecha?: boolean | null,
-		profile?: boolean,
-		from?: number | null,
-		to?: number | null
-	) => {
-		try {
-			if (!user) throw new Error('User not authenticated');
-
-            const isSearch = term !== undefined && term !== null && term !== '';
-            const joinModifier = isSearch ? '!inner' : '';
-
-			let query = supabase
-				.from('recursocancion')
-				.select(`
-					*, 
-					contenidocancion${joinModifier} (
-						titulo,
-						imagenUrl,
-						fechaLanzamiento
-					)
-				`) 
-				.eq('usuarioId', user.id);
-
-			if (profile) {
-				query = supabase
-					.from('recursocancion')
-					.select(`fechaEscucha`)
-					.eq('usuarioId', user.id);
-			}
-
-			if ( from != undefined && to != null) {
-				query = query.range(from, to);
-			}
-
-			if (favorito === true) {
-				query = query.eq('favorito', true);
-			}
-
-			if (estado !== undefined && estado !== null) {
-				query = query.eq('estado', estado);
-			}
-
-			if (isSearch) {
-				query = query.ilike('contenidocancion.titulo', `%${term}%`);
-			}
-
-			if (ordenarPorFecha === true) {
-				query = query.order('fechacreacion', { ascending: false });
-			} else if (ordenarPorFecha === false) {
-				query = query.order('fechacreacion', { ascending: true });
-			}
-
-			if (cantidad !== undefined && cantidad !== null) {
-				query = query.limit(cantidad);
-			}
-
-			const { data, error } = await query;
-
-			if (error) throw error;
-
-			console.log("Canciones recuperadas:", data);
-			return data;
-		} catch (error) {
-			console.error('Error al obtener canciones:', error);
-			return null;
-		}
-	};
-
-	const borrarRecurso = async (recursoId: any, tipoRecurso: 'pelicula' | 'serie' | 'videojuego' | 'libro' | 'cancion') => {
-		try {
-			if (!user) throw new Error('User not authenticated');
-			const tableMap: Record<string, string> = {
-				pelicula: 'recursopelicula',
-				serie: 'recursoserie',
-				videojuego: 'recursovideojuego',
-				libro: 'recursolibro',
-				cancion: 'recursocancion'
-			};
-			const tableName = tableMap[tipoRecurso];
-			if (!tableName) throw new Error('Tipo de recurso inválido');
-			const { data, error } = await supabase
-				.from(tableName)
-				.delete()
-				.eq('usuarioId', user.id)
-				.eq('id', recursoId);
-			if (error) throw error;
-			console.log(`Recurso ${tipoRecurso} borrado:`, data);
-			return data;
-		} catch (error) {
-			console.error(`Error al borrar recurso ${tipoRecurso}:`, error);
-			return null;
-		}
-	};
- 
-
-  const calcularTotal = async (tipoRecurso: CategoryType, estado: 'COMPLETADO' | 'EN_CURSO' | 'PENDIENTE') => {
-	try {
-		if (!user) throw new Error('User not authenticated');
-		const tableMap: Record<string, string> = {
-			Películas: 'recursopelicula',
-			Series: 'recursoserie',
-			Videojuegos: 'recursovideojuego',
-			Libros: 'recursolibro',
-			Canciones: 'recursocancion'
-		};
-		const tableName = tableMap[tipoRecurso];
-		if (!tableName) throw new Error('Tipo de recurso inválido');
-		const { count, error } = await supabase
-			.from(tableName)
-			.select('id', { count: 'exact', head: true })
-			.eq('usuarioId', user.id)
-			.eq('estado', estado);
-		if (error) throw error;
-		console.log(`Total de ${tipoRecurso} en estado ${estado}:`, count);
-		return count || 0;
-	} catch (error) {
-		console.error(`Error al calcular total de ${tipoRecurso} en estado ${estado}:`, error);
-		return 0;
-	}
-   };
-
-  return {
-	fetchPeliculas,
-	fetchSeries,
-	fetchVideojuegos,
-	fetchLibros,
-	fetchCanciones,
-	borrarRecurso,
-	calcularTotal
+  const { user } = useAuth();
+
+  // Función genérica para todos los recursos
+  const fetchResources = async <K extends ResourceType>(
+    type: K,
+    term?: string | null,
+    favorito?: boolean | null,
+    estado?: StateType | null,
+    cantidad?: number | null,
+    ordenarPorFecha?: boolean | null,
+    profile?: boolean | null,
+    from?: number | null,
+    to?: number | null
+  ): Promise<ResourceMap[K][] | null> => {
+    try {
+      if (!user) throw new Error('User not authenticated');
+
+      const config = RESOURCE_CONFIG[type];
+      const isSearch = term !== undefined && term !== null && term !== '';
+      const joinModifier = isSearch ? '!inner' : '';
+
+      // Query base por defecto
+      let query = supabase
+        .from(config.table)
+        .select(`
+            *, 
+            ${config.contentJoin}${joinModifier} (
+                titulo,
+                imagenUrl,
+                fechaLanzamiento
+            )
+        ` as any)
+        .eq('usuarioId', user.id);
+
+
+      // Sobrescribimos la query para traer solo el campo de fecha necesario para las estadísticas generales
+      if (profile) {
+        let dateField = DATE_FIELDS[type];
+
+        query = supabase
+          .from(config.table)
+          .select(dateField as any)
+          .eq('usuarioId', user.id);
+      }
+
+      if (from != undefined && to != null) {
+        query = query.range(from, to);
+      }
+
+	  // Filtros adicionales
+      if (favorito === true) {
+        query = query.eq('favorito', true);
+      }
+
+      if (estado !== undefined && estado !== null) {
+        query = query.eq('estado', estado);
+      }
+
+      if (isSearch) {
+        query = query.ilike(`${config.contentJoin}.titulo`, `%${term}%`);
+      }
+
+      if (ordenarPorFecha === true) {
+        query = query.order('fechacreacion', { ascending: false });
+      } else if (ordenarPorFecha === false) {
+        query = query.order('fechacreacion', { ascending: true });
+      }
+
+      if (cantidad !== undefined && cantidad !== null) {
+        query = query.limit(cantidad);
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+      
+	// Normalizamos los datos para tenerlos en el mismo formato
+    if (data && !profile) {
+        const normalizedData = data.map((item: any) => {
+            if (item[config.contentJoin]) {
+                item.contenido = item[config.contentJoin];
+                delete item[config.contentJoin];
+            }
+            return item;
+        });
+        
+        console.log(`${type} recuperados y normalizados:`, normalizedData);
+        return normalizedData as unknown as ResourceMap[K][];
+    }
+
+    // Si es modo profile o no hay data, devolvemos tal cual
+    return data as unknown as ResourceMap[K][];
+
+    } catch (error) {
+      console.error(`Error al obtener ${type}:`, error);
+      return null;
+    }
   };
 
+  // Mantenemos la lógica de borrarRecurso
+  const borrarRecurso = async (
+    recursoId: any,
+    tipoRecurso: ResourceType
+  ) => {
+    try {
+      if (!user) throw new Error('User not authenticated');
+      
+      const config = RESOURCE_CONFIG[tipoRecurso];
+      
+      const { data, error } = await supabase
+        .from(config.table)
+        .delete()
+        .eq('usuarioId', user.id)
+        .eq('id', recursoId);
 
+      if (error) throw error;
+      console.log(`Recurso ${tipoRecurso} borrado:`, data);
+      return data;
+    } catch (error) {
+      console.error(`Error al borrar recurso ${tipoRecurso}:`, error);
+      return null;
+    }
+  };
+
+  const calcularTotal = async (
+    tipoRecurso: ResourceType,
+    estado: 'COMPLETADO' | 'EN_CURSO' | 'PENDIENTE'
+  ) => {
+    try {
+      if (!user) throw new Error('User not authenticated');
+      
+      const config = RESOURCE_CONFIG[tipoRecurso];
+
+      const { count, error } = await supabase
+        .from(config.table)
+        .select('id', { count: 'exact', head: true })
+        .eq('usuarioId', user.id)
+        .eq('estado', estado);
+
+      if (error) throw error;
+      return count || 0;
+    } catch (error) {
+      console.error(`Error total ${tipoRecurso}:`, error);
+      return 0;
+    }
+  };
+
+  return {
+    fetchResources,
+    borrarRecurso,
+    calcularTotal,
+  };
 };

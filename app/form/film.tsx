@@ -31,7 +31,7 @@ export default function FilmForm() {
   
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
-  const film: any = editando ? resource.contenidopelicula : JSON.parse(filmData as string);
+  const film: any = editando ? resource.contenido : JSON.parse(filmData as string);
 
   const [reseña, setReseña] = useState(resource?.reseña || '');
   const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
@@ -58,7 +58,7 @@ export default function FilmForm() {
     try {
       if (editando) {
         // Actualizar el recurso existente
-        const { data: updateData, error: updateError } = await supabase
+        const { data: updatedData, error: updateError } = await supabase
           .from('recursopelicula')
           .update({
             estado: estado,
@@ -83,7 +83,15 @@ export default function FilmForm() {
           Alert.alert('Error', 'Hubo un problema al actualizar la película. Inténtalo de nuevo.');
           console.error('Error al actualizar:', updateError);
         } else {
-          const filmResource: FilmResource = updateData;
+		  // Adaptamos la respuesta para mantener compatibilidad
+          const rawData = updatedData as any;
+          const contentData = rawData.contenidopelicula;
+          delete rawData.contenidopelicula;
+          const filmResource: FilmResource = {
+            ...rawData,
+            contenido: contentData,
+          };
+
           Alert.alert('¡Éxito!', `Has actualizado ${film.titulo || film.title} en tu colección.`);
 		  refreshData();
           router.replace({
@@ -194,6 +202,8 @@ export default function FilmForm() {
       </Screen>
     );
   }
+  console.log('Film data in form:', film);
+
 
   return (
     <Screen>

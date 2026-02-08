@@ -5,10 +5,10 @@ import { Screen } from 'components/Screen';
 import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { SongResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
-import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
 import { AddToListButton } from 'components/AddToListButton';
+import { ResourceType, useResource } from 'hooks/useResource';
 
 export default function SongDetail() {
   const { item } = useLocalSearchParams();
@@ -30,7 +30,7 @@ export default function SongDetail() {
 			{ text: 'Confirmar', onPress: async () => {
 				await borrarRecurso(songResource.id, 'cancion');
 				refreshData();
-				router.replace({ pathname: '/Collection', params: { initialResource: 'Canciones' } })
+				router.replace({ pathname: '/Collection', params: { initialResource: 'cancion' as ResourceType } })
 			} },
 			{ text: 'Cancelar', style: 'cancel' }
 		]);
@@ -59,8 +59,8 @@ export default function SongDetail() {
     );
   }
 
-  const { contenidocancion } = songResource;
-  const releaseYear = contenidocancion.fechaLanzamiento ? new Date(contenidocancion.fechaLanzamiento).getFullYear() : 'N/A';
+  const { contenido } = songResource;
+  const releaseYear = contenido.fechaLanzamiento ? new Date(contenido.fechaLanzamiento).getFullYear() : 'N/A';
   
   const getStatusText = (status: string) => {
     return status === 'PENDIENTE' ? 'Pendiente' : 'Escuchado';
@@ -76,7 +76,7 @@ export default function SongDetail() {
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center justify-between px-4 pt-2 pb-4">
           <View className="flex-row items-center flex-1">
-            <ReturnButton route="/Collection" title={'Detalle de la canción'} style={" "} params={{initialResource: 'Canciones'}}/>
+            <ReturnButton route="/Collection" title={'Detalle de la canción'} style={" "} params={{initialResource: 'cancion' as ResourceType}}/>
           </View>
           {/* Botón de editar */}
           <TouchableOpacity 
@@ -91,13 +91,13 @@ export default function SongDetail() {
           </TouchableOpacity>
         </View>
         <View className="px-4 mb-4">
-          <Image source={{ uri: contenidocancion.imagenUrl || 'https://via.placeholder.com/500x750' }} className="w-full h-[500px] rounded-2xl bg-background" resizeMode="cover" />
+          <Image source={{ uri: contenido.imagenUrl || 'https://via.placeholder.com/500x750' }} className="w-full h-[500px] rounded-2xl bg-background" resizeMode="cover" />
         </View>
         <View className="px-4 pb-6">
           <View className="mb-4">
 			<View className="flex-row items-center justify-between">
 				<Text className="text-3xl font-bold mb-2" style={{ color: colors.primaryText }}>
-				{contenidocancion.titulo || 'Sin título'}
+				{contenido.titulo || 'Sin título'}
 				</Text>
 				<AddToListButton resourceCategory="Canciones" resourceId={songResource.id} />
 			</View>
@@ -123,12 +123,12 @@ export default function SongDetail() {
                 <View className="flex-row items-center"><MaterialCommunityIcons name="calendar-check" size={20} color={colors.primary} /><Text className="text-primaryText text-sm ml-2">{new Date(songResource.fechaEscucha).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</Text></View>
               </View>
             )}
-            {contenidocancion.autor && (<View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Artista</Text><View className="flex-row items-center"><MaterialCommunityIcons name="account-music" size={24} color={colors.primary} /><Text className="text-primaryText text-base ml-2">{contenidocancion.autor}</Text></View></View>)}
-            {contenidocancion.albumTitulo && (<View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Álbum</Text><View className="flex-row items-center"><MaterialCommunityIcons name="album" size={24} color={colors.primary} /><Text className="text-primaryText text-base ml-2">{contenidocancion.albumTitulo}</Text></View></View>)}
-            {contenidocancion.genero && contenidocancion.genero.length > 0 && (
+            {contenido.autor && (<View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Artista</Text><View className="flex-row items-center"><MaterialCommunityIcons name="account-music" size={24} color={colors.primary} /><Text className="text-primaryText text-base ml-2">{contenido.autor}</Text></View></View>)}
+            {contenido.albumTitulo && (<View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Álbum</Text><View className="flex-row items-center"><MaterialCommunityIcons name="album" size={24} color={colors.primary} /><Text className="text-primaryText text-base ml-2">{contenido.albumTitulo}</Text></View></View>)}
+            {contenido.genero && contenido.genero.length > 0 && (
               <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
                 <Text className="text-title text-sm font-bold mb-2 uppercase">Géneros</Text>
-                <View className="flex-row flex-wrap gap-2">{contenidocancion.genero.map((genre, index) => (<View key={index} className="bg-marker px-3 py-1.5 rounded-lg border border-primary/30"><Text className="text-primary text-sm">{genre}</Text></View>))}</View>
+                <View className="flex-row flex-wrap gap-2">{contenido.genero.map((genre, index) => (<View key={index} className="bg-marker px-3 py-1.5 rounded-lg border border-primary/30"><Text className="text-primary text-sm">{genre}</Text></View>))}</View>
               </View>
             )}
             {songResource.reseña && (<View className="bg-surfaceButton p-4 rounded-xl border border-borderButton"><Text className="text-title text-sm font-bold mb-2 uppercase">Tu reseña</Text><Text className="text-secondaryText text-base leading-6">{songResource.reseña}</Text></View>)}

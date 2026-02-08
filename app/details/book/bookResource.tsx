@@ -5,12 +5,12 @@ import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import { BookResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
-import { useResource } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import { AddToListButton } from 'components/AddToListButton';
+import { ResourceType, useResource } from 'hooks/useResource';
 
 
 export default function BookDetail() {
@@ -64,7 +64,7 @@ export default function BookDetail() {
 			{ text: 'Confirmar', onPress: async () => {
 				await borrarRecurso(bookResource.id, 'libro');
 				refreshData();
-				router.replace({ pathname: '/Collection', params: { initialResource: 'Libros' } })} }
+				router.replace({ pathname: '/Collection', params: { initialResource: 'libro' as ResourceType } })} }
 		]);
 	}
   };
@@ -90,8 +90,8 @@ export default function BookDetail() {
     );
   }
 
-  const { contenidolibro } = bookResource;
-  const releaseYear = contenidolibro.fechaLanzamiento ? new Date(contenidolibro.fechaLanzamiento).getFullYear() : 'N/A';
+  const { contenido } = bookResource;
+  const releaseYear = contenido.fechaLanzamiento ? new Date(contenido.fechaLanzamiento).getFullYear() : 'N/A';
   
   const getStatusText = (status: string) => {
     switch (status) {
@@ -119,7 +119,7 @@ export default function BookDetail() {
         {/* Header con botón de volver y botón de eliminar */}
         <View className="flex-row items-center justify-between px-4 pt-2 pb-4">
           <View className="flex-row items-center flex-1">
-            <ReturnButton route="/Collection" title={'Detalle del libro'} style={" "} params={{initialResource: 'Libros'}}/>
+            <ReturnButton route="/Collection" title={'Detalle del libro'} style={" "} params={{initialResource: 'libro' as ResourceType}}/>
           </View>
           {/* Botón de editar */}
           <TouchableOpacity 
@@ -145,7 +145,7 @@ export default function BookDetail() {
         {/* Imagen del libro */}
         <View className="px-4 mb-4">
           <Image 
-            source={{ uri: contenidolibro.imagenUrl || 'https://via.placeholder.com/500x750' }}
+            source={{ uri: contenido.imagenUrl || 'https://via.placeholder.com/500x750' }}
             className="w-full h-[600px] rounded-2xl"
             style={{ backgroundColor: colors.surfaceButton }}
             resizeMode="cover"
@@ -157,7 +157,7 @@ export default function BookDetail() {
           <View className="mb-4">
             <View className="flex-1 flex-row items-center justify-between mb-2 ">
               <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
-              {contenidolibro.titulo || 'Sin título'}
+              {contenido.titulo || 'Sin título'}
               </Text>
               <AddToListButton resourceCategory="Libros" resourceId={bookResource.id} />
             </View>

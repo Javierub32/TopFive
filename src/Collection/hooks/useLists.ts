@@ -3,26 +3,25 @@ import { CollectionType, ListInfo, listServices } from "../services/listServices
 import { useAuth } from "context/AuthContext";
 import { Alert } from "react-native";
 import { router } from "expo-router";
+import { ResourceType } from "hooks/useResource";
 
-const categoryMap: Record<string, string> = {
-	'Películas': 'PELICULA',
-	'Series': 'SERIE',
-	'Videojuegos': 'VIDEOJUEGO',
-	'Libros': 'LIBRO',
-	'Canciones': 'CANCION',
+const categoryMap: Record<ResourceType, CollectionType> = {
+	'pelicula': 'PELICULA',
+	'serie': 'SERIE',
+	'videojuego': 'VIDEOJUEGO',
+	'libro': 'LIBRO',
+	'cancion': 'CANCION',
 };
 
 
-export const useLists = (categoriaActual: string) => {
+export const useLists = (categoriaActual: ResourceType) => {
 	const { user } = useAuth();
 	const [loading, setLoading] = useState(false);
 	const [lists, setLists] = useState<ListInfo[]>([]);
 	const [data, setData] = useState<any[]>([]);
 
 	useEffect(() => {
-		setLists([]); // Limpiar listas al cambiar de categoría para evitar mostrar datos obsoletos
-		console.log("Categoría actual:", categoriaActual);
-
+		setLists([]);
 		fetchListInfo();
 	}, [categoriaActual]);
 	
@@ -32,7 +31,7 @@ export const useLists = (categoriaActual: string) => {
 			await listServices.createList(user.id, nombre, descripcion, icono, color, categoryMap[categoriaActual] as CollectionType);
 			Alert.alert("Lista creada", `La lista "${nombre}" ha sido creada exitosamente.`,
 				[{ text: "OK", 
-					onPress: () => router.push({ pathname: '/Collection', params: { initialResource: categoriaActual } }) }]
+					onPress: () => router.push({ pathname: '/Collection', params: { initialResource: categoriaActual as ResourceType } }) }]
 			 );
 
 		}
@@ -85,19 +84,6 @@ export const useLists = (categoriaActual: string) => {
 		}
 	}
 
-	const fetchListDetails = async (listId: string) => {
-		try {
-			setLoading(true);
-			const listDetails = await listServices.fetchListDetails(listId, categoryMap[categoriaActual] as CollectionType);
-			setData(listDetails);
-		}
-		catch (error) {
-			console.error("Error fetching list details:", error);
-		}
-		finally {
-			setLoading(false);
-		}
-	}
 
 	return {
 		loading,
@@ -105,7 +91,6 @@ export const useLists = (categoriaActual: string) => {
 		createList,
 		updateList,
 		deleteList,
-		fetchListDetails,
 		data,
 	};
 };

@@ -8,6 +8,7 @@ import { useCollection } from 'context/CollectionContext';
 import { useLists } from '@/Collection/hooks/useLists';
 import { ReturnButton } from 'components/ReturnButton';
 import { router } from 'expo-router';
+import { ResourceType } from 'hooks/useResource';
 
 export default function ListForm() {
   const { colors } = useTheme();
@@ -63,7 +64,7 @@ export default function ListForm() {
       formData.description,
       formData.icon,
       formData.color,
-      categoriaActual
+      categoriaActual as ResourceType
     );
   };
 
@@ -76,7 +77,7 @@ export default function ListForm() {
             route="/Collection"
             title={'Crea tu lista'}
             style={' '}
-            params={{ initialResource: categoriaActual }}
+            params={{ initialResource: categoriaActual as ResourceType }}
           />
         </View>
         <View className="mb-4 items-center justify-center py-4">
