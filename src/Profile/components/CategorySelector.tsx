@@ -1,14 +1,12 @@
-import { ScrollView, Pressable, View, Text } from 'react-native';
-import { CategoryKey } from '../hooks/useProfile';
+import {  Pressable, View} from 'react-native';
 import { iconAdapter } from '../adapters/iconAdapter';
 import { useTheme } from 'context/ThemeContext';
+import { RESOURCE_TYPES, ResourceType } from 'hooks/useResource2';
 
 interface Props {
-  selected: CategoryKey;
-  onSelect: (cat: CategoryKey) => void;
+  selected: ResourceType;
+  onSelect: (cat: ResourceType) => void;
 }
-
-const CATEGORIES: CategoryKey[] = ['libros', 'películas', 'series', 'videojuegos', 'canciones'];
 
 
 export const CategorySelector = ({ selected, onSelect }: Props) => {
@@ -20,7 +18,7 @@ export const CategorySelector = ({ selected, onSelect }: Props) => {
       style={{ borderBottomWidth: 1, borderBottomColor: colors.placeholderText }}
     >
 
-      {CATEGORIES.map((cat) => {
+      {RESOURCE_TYPES.map((cat) => {
         const IconComponent = iconAdapter.getIcon(cat);
 
         return(

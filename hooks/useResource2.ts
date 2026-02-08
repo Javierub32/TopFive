@@ -4,6 +4,7 @@ import { BookResource, FilmResource, GameResource, SeriesResource, SongResource 
 
 // Definimos los tipos de recursos válidos y sus interfaces de configuración
 export type ResourceType = 'pelicula' | 'serie' | 'videojuego' | 'libro' | 'cancion';
+export const RESOURCE_TYPES: ResourceType[] = ['libro', 'pelicula', 'serie', 'videojuego', 'cancion'];
 
 export type ResourceMap = {
   pelicula: FilmResource;
@@ -20,6 +21,14 @@ const RESOURCE_CONFIG: Record<ResourceType, { table: string; contentJoin: string
   videojuego: { table: 'recursovideojuego', contentJoin: 'contenidovideojuego' },
   libro: { table: 'recursolibro', contentJoin: 'contenidolibro' },
   cancion: { table: 'recursocancion', contentJoin: 'contenidocancion' },
+};
+
+export const DATE_FIELDS: Record<ResourceType, string> = {
+  libro: 'fechaFin',
+  pelicula: 'fechaVisionado',
+  serie: 'fechaFin',
+  cancion: 'fechaEscucha',
+  videojuego: 'fechaFin',
 };
 
 export const useResource2 = () => {
@@ -60,27 +69,11 @@ export const useResource2 = () => {
 
       // Sobrescribimos la query para traer solo el campo de fecha necesario para las estadísticas generales
       if (profile) {
-        let dateField = '';
-
-        switch (type) {
-          case 'pelicula':
-            dateField = 'fechaVisionado';
-            break;
-          case 'cancion':
-            dateField = 'fechaEscucha';
-            break;
-          case 'serie':
-          case 'videojuego':
-          case 'libro':
-          default:
-            // Estos tres comparten el mismo nombre de campo
-            dateField = 'fechaFin';
-            break;
-        }
+        let dateField = DATE_FIELDS[type];
 
         query = supabase
           .from(config.table)
-          .select(dateField)
+          .select(dateField as any)
           .eq('usuarioId', user.id);
       }
 

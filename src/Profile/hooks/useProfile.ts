@@ -4,27 +4,27 @@ import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from 'context/AuthContext';
 import { userService } from '../services/profileService';
 import { createAdaptedResourceStats } from '../adapters/statsAdapter';
-import { useResource2 } from 'hooks/useResource2';
+import { ResourceType, useResource2 } from 'hooks/useResource2';
 
 export type CategoryKey = 'libros' | 'películas' | 'series' | 'canciones' | 'videojuegos';
 
 // Initial structure for category statistics
 const INITIAL_CATEGORY_DATA = {
-  libros: { title: 'Libros Leídos', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
-  películas: {
+  libro: { title: 'Libros Leídos', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
+  pelicula: {
     title: 'Películas Vistas',
     total: 0,
     average: 0.0,
     chartData: new Array(12).fill(0),
   },
-  series: { title: 'Series Vistas', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
-  canciones: {
+  serie: { title: 'Series Vistas', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
+  cancion: {
     title: 'Canciones Escuchadas',
     total: 0,
     average: 0.0,
     chartData: new Array(12).fill(0),
   },
-  videojuegos: {
+  videojuego: {
     title: 'Videojuegos Jugados',
     total: 0,
     average: 0.0,
@@ -48,7 +48,7 @@ export const useProfile = () => {
   const [statsLoading, setStatsLoading] = useState(false);
 
 
-  const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('libros');
+  const [selectedCategory, setSelectedCategory] = useState<ResourceType>('libro');
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
   const [userData, setUserData] = useState<User | null>(null);
   const [isPressed, setIsPressed] = useState(false);
@@ -90,34 +90,11 @@ export const useProfile = () => {
   }, [selectedCategory, selectedYear, previousYear]);
 
   const fetchResourceInfo = async () => {
-    let resourceData: any[] = [];
-    let dateField = '';
 	try {
 		setStatsLoading(true);
-		switch (selectedCategory) {
-		case 'libros':
-			resourceData = (await fetchResources('libro', null, null, null, null, true)) || [];
-			dateField = 'fechaFin';
-			break;
-		case 'películas':
-			resourceData = (await fetchResources('pelicula', null, null, null, null, true)) || [];
-			dateField = 'fechaVisionado';
-			break;
-		case 'series':
-			resourceData = (await fetchResources('serie', null, null, null, null, true)) || [];
-			dateField = 'fechaFin';
-			break;
-		case 'canciones':
-			resourceData = (await fetchResources('cancion', null, null, null, null, true)) || [];
-			dateField = 'fechaEscucha';
-			break;
-		case 'videojuegos':
-			resourceData = (await fetchResources('videojuego', null, null, null, null, true)) || [];
-			dateField = 'fechaFin';
-			break;
-		}
-
-		const stats = createAdaptedResourceStats(resourceData, dateField, selectedYear);
+		const resourceData = await fetchResources(selectedCategory, null, null, null, null, null, true);
+		
+		const stats = createAdaptedResourceStats(resourceData || [], selectedCategory, selectedYear);
 
 		updateStats(stats);
 	} catch (error) {
