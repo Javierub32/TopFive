@@ -17,7 +17,7 @@ export type ResourceMap = {
 };
 
 // Configuración de tablas para no tener que hacer un switch gigante para todo
-const RESOURCE_CONFIG: Record<ResourceType, { table: string; contentJoin: string }> = {
+export const RESOURCE_CONFIG: Record<ResourceType, { table: string; contentJoin: string }> = {
   pelicula: { table: 'recursopelicula', contentJoin: 'contenidopelicula' },
   serie: { table: 'recursoserie', contentJoin: 'contenidoserie' },
   videojuego: { table: 'recursovideojuego', contentJoin: 'contenidovideojuego' },

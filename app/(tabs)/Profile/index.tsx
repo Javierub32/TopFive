@@ -1,5 +1,4 @@
 import { View, Text, ScrollView, Pressable } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 
@@ -30,6 +29,8 @@ export default function ProfileScreen() {
     loading,
     currentStats,
   } = useProfile();
+
+
 
   if (loading) {
     return (
