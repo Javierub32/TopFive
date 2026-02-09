@@ -85,7 +85,7 @@ export default function GameDetail() {
   const getDificultyColor = (dificultad: string) => {
     switch(dificultad){
       case 'Fácil': return colors.success;
-      case 'Normal': return colors.surfaceButton;
+      case 'Normal': return colors.accent;
       case 'Difícil': return colors.warning;
       case 'Extremo': return colors.error;
     }
