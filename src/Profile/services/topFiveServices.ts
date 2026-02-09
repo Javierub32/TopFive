@@ -10,7 +10,7 @@ export interface TopFiveItem {
 
 
 export const topFiveService = {
- async insertToTopFive(userId: string, posicion: number, tipoRecurso: string, recursoId: string) {
+ async insertToTopFive(userId: string, posicion: number, tipoRecurso: string, recursoId: number) {
     // Comprobar si el usuario ya tiene una lista TopFive, si no, crearla (Upsert)
     const { data: topFive, error: listError } = await supabase
       .from('estadistica_topfive')
