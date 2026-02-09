@@ -1,14 +1,17 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from 'context/ThemeContext';
 import { ListInfo } from '../services/listServices';
 import { router } from 'expo-router';
+import { useCollection } from 'context/CollectionContext';
+import { useState } from 'react';
 
 export const ListItem = ({ list }: { list: ListInfo }) => {
 
   const { colors } = useTheme();
-  
-  return (
+  const [menuListasAbierto, setMenuListasAbierto] = useState(false);
+	
+	return (
 		<TouchableOpacity 
 			key={list.id} 
 			className="mb-4 p-4 rounded-2xl border shadow-sm"
@@ -48,10 +51,34 @@ export const ListItem = ({ list }: { list: ListInfo }) => {
 			  </View>
 
 			  {/* Botón de menú (3 puntos) */}
-			  <TouchableOpacity className="p-1">
-				<MaterialCommunityIcons name="dots-horizontal" size={24} color={colors.secondaryText} />
+			  <TouchableOpacity 
+					className="p-1"
+					onPress={(e) => {
+						e.stopPropagation(); // Evita que pase a la tarjeta y abra los detalles
+						setMenuListasAbierto(!menuListasAbierto);
+					}}>
+					<MaterialCommunityIcons 
+						name={menuListasAbierto ? "close" : "dots-horizontal"} 
+						size={24} 
+						color={colors.secondaryText} 
+					/>
 			  </TouchableOpacity>
 			</View>
+
+			{/* Desplegable de listas */}
+			{menuListasAbierto && (
+			  <View className="absolute right-4 top-14 z-50 w-30 overflow-hidden rounded-lg border border-borderButton bg-surfaceButton shadow-xl">
+					<TouchableOpacity className="px-4 py-2 flex-row items-center border-b" style={{ borderColor: `${colors.secondaryText}4D` }}>
+						<AntDesign name="edit" size={16} color={colors.primaryText} style={{ marginRight: 8 }} />
+						<Text className="text-m" style={{ color: colors.primaryText }}>Editar lista</Text>
+					</TouchableOpacity>
+
+					<TouchableOpacity className="px-4 py-2 flex-row items-center">
+						<MaterialCommunityIcons name="delete" size={16} color={colors.error} style={{ marginRight: 8 }} />
+						<Text className="text-m" style={{ color: colors.error }}>Eliminar lista</Text>
+					</TouchableOpacity>
+			  </View>
+			)}
 
 			{/* Fila de imágenes (Thumbnails) */}
 			<View className="flex-row gap-2">

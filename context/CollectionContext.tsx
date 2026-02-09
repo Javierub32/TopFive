@@ -161,7 +161,7 @@ export const CollectionProvider = ({ children }: any) => {
       params: { title, state, category },
     });
   };
-  const handleItemPress = (item: any) => {
+  const handleItemPress = (item: any, categoria?: ResourceType) => {
     const resourceTypeMap: Record<ResourceType, string> = {
       pelicula: 'film',
       serie: 'series',
@@ -169,7 +169,8 @@ export const CollectionProvider = ({ children }: any) => {
       libro: 'book',
       cancion: 'song',
     };
-    const type = resourceTypeMap[categoriaActual];
+    const type = resourceTypeMap[categoria || categoriaActual];
+	console.log(`/details/${type}/${type}Resource`)
     router.push({
       pathname: `/details/${type}/${type}Resource`,
       params: { item: JSON.stringify(item) },

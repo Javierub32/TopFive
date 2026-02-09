@@ -33,3 +33,4 @@ android
 
 repomix-output.xml
 pnpm-lock.yaml
+package-lock.json
