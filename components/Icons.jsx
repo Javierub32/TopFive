@@ -3,6 +3,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Feather from '@expo/vector-icons/Feather';
+import { useTheme } from 'context/ThemeContext';
 
 export const SocialIcon = (props) => (
   <FontAwesome name="users" size={24} color="black"  {...props} />
@@ -79,3 +80,31 @@ export const AcceptIcon = (props) => (
 export const WrenchIcon = (props) => (
   <MaterialCommunityIcons name="hammer-wrench" size={24} color="white" {...props} />
 );
+
+export const RatingIcon = (props) => {
+  const {colors} = useTheme();
+  return (
+    <MaterialCommunityIcons name="star-circle" size={20} color={colors.rating} {...props} />
+  )
+}
+
+export const ProgressIcon = (props) => {
+  const {colors} = useTheme();
+  return (
+    <MaterialCommunityIcons name="clock" size={20} color={colors.primary} {...props} />
+  )
+}
+
+export const ReviewIcon = (props) => {
+  const {colors} = useTheme();
+  return (
+    <MaterialCommunityIcons name="comment-quote" size={20} color={colors.secondary} {...props} />
+  )
+}
+
+export const CalendarIcon = (props) => {
+  const { colors } = useTheme();
+  return(
+    <MaterialCommunityIcons name="calendar" size={20} clor={colors.primary} {...props}/>
+  )
+}
