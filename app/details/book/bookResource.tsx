@@ -1,27 +1,26 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { router, useLocalSearchParams, useRouter } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import { View, Text, Image, ScrollView } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { BookResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
-import { useCollection } from 'context/CollectionContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
-import { AddToListButton } from 'components/AddToListButton';
-import { ResourceType, useResource } from 'hooks/useResource';
+import { ResourceType } from 'hooks/useResource';
 import { RatingCard } from '@/Details/components/RatingCard';
 import { ProgressCard } from '@/Details/components/ProgressCard';
 import { ReviewCard } from '@/Details/components/ReviewCard';
 import { DateCard } from '@/Details/components/DateCard';
+import { Atributes } from '@/Details/components/Atributes';
+import { TimeCard } from '@/Details/components/TimeCard';
+import { EditResourceButton } from '@/Details/components/EditResourceButton';
+import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
 
 
 export default function BookDetail() {
   const { item } = useLocalSearchParams();
-  const { borrarRecurso } = useResource();
-  const { refreshData } = useCollection();
   const { colors } = useTheme();
+  
   
   let bookResource: BookResource | null = null;
 
@@ -30,56 +29,6 @@ export default function BookDetail() {
   } catch (error) {
     console.error('Error parsing item:', error);
   }
-
-  const getReadingDuration = () => {
-    if (!bookResource?.fechaInicio) return null;
-
-    const start = new Date(bookResource.fechaInicio);
-    let end = new Date(); // Por defecto: hoy (para EN_CURSO)
-
-    // Si está completado y tiene fecha fin, usamos esa
-    if (bookResource.estado === 'COMPLETADO' && bookResource.fechaFin) {
-      end = new Date(bookResource.fechaFin);
-    } 
-    // Si está pendiente, no mostramos nada (o podrías retornar "0 días")
-    else if (bookResource.estado === 'PENDIENTE') {
-        return null;
-    }
-
-    // Normalizamos las horas para contar días naturales completos
-    start.setHours(0, 0, 0, 0);
-    end.setHours(0, 0, 0, 0);
-
-    const diffTime = end.getTime() - start.getTime();
-    // Convertimos milisegundos a días
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    if (diffDays < 0) return '0 días'; // Por si las fechas están al revés
-    if (diffDays === 0) return '1 día'; // Mismo día cuenta como 1
-    return `${diffDays} días`;
-  };
-
-  const readingTime = getReadingDuration();
-
-  const handleDelete = () => {
-	if (bookResource) {
-		Alert.alert('Recurso eliminado', 'Estás seguro de que quieres eliminar este libro de tu colección?', [
-      { text: 'Cancelar', style: 'cancel'},
-			{ text: 'Confirmar', onPress: async () => {
-				await borrarRecurso(bookResource.id, 'libro');
-				refreshData();
-				router.replace({ pathname: '/Collection', params: { initialResource: 'libro' as ResourceType } })} }
-		]);
-	}
-  };
-  const handleEdit = () => {
-  if (bookResource) {
-    router.push({
-      pathname: '/form/book',
-      params: { item: JSON.stringify(bookResource) }
-    });
-  }
-};
 
   if (!bookResource) {
     return (
@@ -95,57 +44,18 @@ export default function BookDetail() {
   }
 
   const { contenido } = bookResource;
-  const releaseYear = contenido.fechaLanzamiento ? new Date(contenido.fechaLanzamiento).getFullYear() : 'N/A';
-  
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'PENDIENTE': return 'Pendiente';
-      case 'EN_CURSO': return 'Leyendo';
-      case 'COMPLETADO': return 'Completado';
-      default: return status;
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'PENDIENTE': return colors.warning;
-      case 'EN_CURSO': return colors.accent;  
-      case 'COMPLETADO': return colors.success;
-      default: return colors.surfaceButton;
-    }
-  };
-
+ 
   return (
     <Screen>
       <ThemedStatusBar/>
-      
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        {/* Header con botón de volver y botón de eliminar */}
         <View className="flex-row items-center justify-between px-4 pt-2 pb-4">
           <View className="flex-row items-center flex-1">
             <ReturnButton route="/Collection" title={'Detalle del libro'} style={" "} params={{initialResource: 'libro' as ResourceType}}/>
           </View>
-          {/* Botón de editar */}
-          <TouchableOpacity 
-            onPress={() => handleEdit()}
-            className="h-10 w-10 items-center justify-center rounded-full mr-2 border-2"
-            style={{backgroundColor: `${colors.primary}99`, borderColor: colors.primary}}
-            activeOpacity={0.7}
-          >
-            <AntDesign name="edit" size={20} color={colors.primaryText} />
-          </TouchableOpacity>
-
-          {/* Botón de eliminar */}
-          <TouchableOpacity 
-            onPress={handleDelete}
-            className="h-10 w-10 items-center justify-center rounded-full mr-2 border-2"
-            style={{backgroundColor: `${colors.error}99`, borderColor: colors.error}}
-            activeOpacity={0.7}
-          >
-            <MaterialCommunityIcons name="delete" size={24} color={colors.primaryText} />
-          </TouchableOpacity>
+          <EditResourceButton resource={bookResource} type={'libro'}/>
+          <DeleteResourceButton resource={bookResource} type={'libro'}/>
         </View>
-
         {/* Imagen del libro */}
         <View className="px-4 mb-4">
           <Image 
@@ -155,80 +65,17 @@ export default function BookDetail() {
             resizeMode="cover"
           />
         </View>
-
         <View className="px-4 pb-6">
-          {/* Título y año */}
-          <View className="mb-4">
-            <View className="flex-1 flex-row items-center justify-between mb-2 ">
-              <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
-              {contenido.titulo || 'Sin título'}
-              </Text>
-              <AddToListButton resourceCategory="Libros" resourceId={bookResource.id} />
-            </View>
-            
-            <View className="flex-row items-stretch flex-wrap gap-2">
-              {/* Año de publicación */}
-              <View className="px-3 py-1.5 rounded-lg justify-center" style={{ backgroundColor: colors.surfaceButton}}>
-                <Text className="text-sm font-semibold" style={{ color: colors.markerText }}>
-                  {releaseYear}
-                </Text>
-              </View>
-
-              {/* Estado */}
-              <View className="px-3 py-1.5 rounded-lg justify-center" style={{backgroundColor: `${getStatusColor(bookResource.estado)}33`}}>
-                <Text className="text-sm font-semibold uppercase" style={{ color: getStatusColor(bookResource.estado) }}>
-                  {getStatusText(bookResource.estado)}
-                </Text>
-              </View>
-
-              {/* Favorito */}
-              {bookResource.favorito && (
-                <View className="px-3 py-1.5 rounded-lg justify-center" style={{ backgroundColor: `${colors.favorite}33`}}>
-                  <MaterialCommunityIcons name="heart" size={16} color={colors.favorite} />
-                </View>
-              )}
-            </View>
-          </View>
-
-          {/* Información en tarjetas */}
-          {/* Usamos flex-wrap y widths porcentuales para simular CSS Grid */}
+          <Atributes resource={bookResource}/>
           <View className="flex-col justify-between gap-y-3 gap-x-2">
 			      <View className="flex-row gap-2">
-              {/* CARD 1: Calificación */}
               <RatingCard rating={bookResource.calificacion}/>
-
-              {/* CARD 2: Progreso */}
               <ProgressCard progress={bookResource.paginasLeidas} unit='pags'/>
             </View>
-
-            {/* CARD 3: Reseña (100% width - Wide Item) */}
             <ReviewCard review={bookResource.reseña}/>
-
-            {/* CARD 4: Periodo de lectura */}
             <DateCard startDate={bookResource.fechaInicio} endDate={bookResource.fechaFin} isRange={true}/>
           </View>
-
-          {/* === NUEVA TARJETA: TIEMPO DE LECTURA === */}
-          {readingTime && (
-            <View className="mt-4">
-              <View 
-                className="rounded-2xl p-6 flex-row items-center justify-between shadow-lg" 
-                style={{ backgroundColor: `${colors.accent}BF` }}
-              >
-                <View>
-                  <Text className="text-sm font-medium uppercase tracking-widest mb-1" style={{ color: colors.primaryText }}>
-                    Tiempo de lectura total
-                  </Text>
-                  <Text className="text-2xl font-bold" style={{ color: colors.primaryText }}>
-                    {readingTime}
-                  </Text>
-                </View>
-                <View className="w-12 h-12 rounded-2xl items-center justify-center" style={{ backgroundColor: `${colors.primaryText}33` }}>
-                  <MaterialCommunityIcons name="timer-outline" size={24} color={colors.primaryText} />
-                </View>
-              </View>
-            </View>
-          )}
+          <TimeCard resource={bookResource}/>
         </View>
       </ScrollView>
     </Screen>

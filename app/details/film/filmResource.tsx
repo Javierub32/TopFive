@@ -1,21 +1,22 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { router, useLocalSearchParams, useRouter } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import { View, Text, Image, ScrollView } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
-import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FilmResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
-import { useCollection } from 'context/CollectionContext';
-import { AddToListButton } from 'components/AddToListButton';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
-import { ResourceType, useResource } from 'hooks/useResource';
+import { ResourceType } from 'hooks/useResource';
+import { Atributes } from '@/Details/components/Atributes';
+import { RatingCard } from '@/Details/components/RatingCard';
+import { DateCard } from '@/Details/components/DateCard';
+import { ReviewCard } from '@/Details/components/ReviewCard';
+import { EditResourceButton } from '@/Details/components/EditResourceButton';
+import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
 
 
 export default function FilmDetail() {
   const { item } = useLocalSearchParams();
-  const {borrarRecurso} = useResource();
-  const { refreshData } = useCollection();
   const {colors} = useTheme();
   
   let filmResource: FilmResource | null = null;
@@ -25,27 +26,6 @@ export default function FilmDetail() {
     } catch (error) {
       console.error('Error parsing item:', error);
     }
-  
-  const handleDelete = () => {
-	if (filmResource) {
-		Alert.alert('Recurso eliminado', 'Estás seguro de que quieres eliminar esta película de tu colección?', [
-			{ text: 'Confirmar', onPress: async () => {
-				await borrarRecurso(filmResource.id, 'pelicula');
-				refreshData();
-				router.replace({ pathname: '/Collection', params: { initialResource: 'pelicula' as ResourceType } })
-			} },
-			{ text: 'Cancelar', style: 'cancel' }
-		]);
-	}
-  };
-    const handleEdit = () => {
-  if (filmResource) {
-    router.push({
-      pathname: '/form/film',
-      params: { item: JSON.stringify(filmResource) }
-    });
-  }
-};
 
   if (!filmResource) {
     return (
@@ -61,58 +41,19 @@ export default function FilmDetail() {
   }
 
   const { contenido } = filmResource;
-  const releaseYear = contenido.fechaLanzamiento ? new Date(contenido.fechaLanzamiento).getFullYear() : 'N/A';
+
   
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'PENDIENTE': return 'Pendiente';
-      case 'EN_CURSO': return 'Viendo';
-      case 'COMPLETADO': return 'Completado';
-      default: return status;
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'PENDIENTE': return colors.warning;
-      case 'EN_CURSO': return colors.accent;
-      case 'COMPLETADO': return colors.success;
-      default: return colors.surfaceButton;
-    }
-  };
-
   return (
-    <Screen>
+    <Screen >
       <ThemedStatusBar/>
-      
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        {/* Header con botón de volver y botón de eliminar */}
         <View className="flex-row items-center justify-between px-4 pt-2 pb-4">
           <View className="flex-row items-center flex-1">
             <ReturnButton route="/Collection" title={'Detalle de la película'} style={" "} params={{initialResource: 'pelicula' as ResourceType}}/>
           </View>
-          {/* Botón de editar */}
-          <TouchableOpacity 
-            onPress={handleEdit}
-            className="h-10 w-10 items-center justify-center rounded-full mr-2 border-2"
-            style ={{backgroundColor: `${colors.primary}99`, borderColor: colors.primary}}
-            activeOpacity={0.7}
-          >
-            <AntDesign name="edit" size={20} color={colors.primaryText} />
-          </TouchableOpacity>
-          
-          {/* Botón de eliminar */}
-          <TouchableOpacity 
-            onPress={handleDelete}
-            className="h-10 w-10 items-center justify-center rounded-full mr-2 border-2"
-            style={{backgroundColor: `${colors.error}99`, borderColor: colors.error}}
-            activeOpacity={0.7}
-          >
-            <MaterialCommunityIcons name="delete" size={24} color={colors.primaryText}/>
-          </TouchableOpacity>
+          <EditResourceButton resource={filmResource} type={'pelicula'}/>
+          <DeleteResourceButton resource={filmResource} type={'pelicula'}/>
         </View>
-
-        {/* Imagen de la película */}
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: contenido.imagenUrl || 'https://via.placeholder.com/500x750' }}
@@ -122,92 +63,14 @@ export default function FilmDetail() {
         </View>
 
         <View className="px-4 pb-6">
-          {/* Título y añadir a lista */}
-          <View className="mb-4">
-            <View className="flex-1 flex-row justify-between mb-2 items-center">
-              <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
-              {contenido.titulo || 'Sin título'}
-              </Text>
-              <AddToListButton resourceCategory="Películas" resourceId={filmResource.id} />
-            </View>
-            
-            <View className="flex-row items-stretch flex-wrap gap-2">
-              {/* Año de estreno */}
-              <View className="px-3 py-1.5 rounded-lg justify-center" style={{backgroundColor: colors.surfaceButton}}>
-                <Text className="text-sm font-semibold" style={{color: colors.secondaryText}}>
-                  {releaseYear}
-                </Text>
-              </View>
-
-              {/* Estado */}
-              <View className="px-3 py-1.5 rounded-lg justify-center" style={{backgroundColor:`${getStatusColor(filmResource.estado)}33`}}>
-                <Text className="text-sm font-semibold uppercase" style={{color: getStatusColor(filmResource.estado)}}>
-                  {getStatusText(filmResource.estado)}
-                </Text>
-              </View>
-
-              {/* Favorito */}
-              {filmResource.favorito && (
-                <View className="px-3 py-1.5 rounded-lg justify-center" style={{backgroundColor: `${colors.favorite}33`}}>
-                  <MaterialCommunityIcons name="heart" size={16} color={colors.favorite} />
-                </View>
-              )}
-
-              {/* Número de visionados */}
-              {filmResource.numVisionados > 0 && (
-                <View className="px-3 py-1.5 rounded-lg flex-row items-center" style={{backgroundColor: `${colors.accent}33`}}>
-                  <MaterialCommunityIcons name="eye" size={16} color={colors.accent} />
-                  <Text className="text-xs font-bold ml-1" style={{color:colors.markerText}}>
-                    {filmResource.numVisionados}x
-                  </Text>
-                </View>
-              )}
-            </View>
-          </View>
+          <Atributes resource={filmResource}/>
 
           <View className='flex-1 flex-col justify-between gap-3'>
             <View className='flex-row gap-2'>
-              <View className='flex-1 p-4 rounded-2xl flex justify-between gap-2' style={{backgroundColor: `${colors.rating}1A`}}>
-                <View className='flex-row items-center gap-2'>
-                  <MaterialCommunityIcons name='star-circle' size={20} color={colors.rating}/>
-                  <Text className='text-sm font-bold uppercase tracling-widest' style={{color: colors.markerText}}>Calificación</Text>
-                </View>
-                <View className='flex-row'>
-                  {[1,2,3,4,5].map((star)=>(
-                    <FontAwesome5
-                      key={star}
-                      name="star"
-                      size={20}
-                      color={star <= filmResource.calificacion ? colors.rating : colors.markerText}
-                      solid={star <= filmResource.calificacion}
-                      style={{ marginRight: 4 }}
-                    />
-                  ))}
-                </View>
-              </View>
-
-              <View className='flex-1 p-4 rounded-2xl flex justify-between gap-2' style={{backgroundColor: `${colors.primary}1A`}}>
-                <View className='flex-row items-center gap-2'>
-                  <MaterialCommunityIcons name='calendar' size={20} color={colors.primary} />
-                  <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Última vez</Text>
-                </View>
-                <View className='flex-row items-baseline'>
-                  <Text className='text-xl font-bold' style={{ color: colors.primaryText}}>
-                    {filmResource.fechaVisionado ? new Date(filmResource.fechaVisionado).toLocaleDateString() : '-'}
-                  </Text>
-                </View>
-              </View>
+              <RatingCard rating={filmResource.calificacion}/>
+              <DateCard startDate={filmResource.fechaVisionado} isRange={false}/>
             </View>
-
-            <View className='flex-1 p-5 rounded-2xl gap-3 border-l-4' style={{backgroundColor:colors.surfaceButton, borderColor:colors.borderButton}}>
-              <View className='flex-row items-center gap-2'>
-                <MaterialCommunityIcons name="comment-quote" size={20} color={colors.secondary}/>
-                <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Reseña</Text>
-              </View>
-              <Text className='leading-relaxed italic' style={{color: colors.primaryText}}>
-                {filmResource.reseña || '-'}
-              </Text>
-            </View>
+            <ReviewCard review={filmResource.reseña}/>
           </View>
         </View>
       </ScrollView>

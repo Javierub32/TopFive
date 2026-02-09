@@ -105,6 +105,41 @@ export const ReviewIcon = (props) => {
 export const CalendarIcon = (props) => {
   const { colors } = useTheme();
   return(
-    <MaterialCommunityIcons name="calendar" size={20} clor={colors.primary} {...props}/>
+    <MaterialCommunityIcons name="calendar" size={24} color={colors.primary} {...props}/>
+  )
+}
+
+export const DeleteIcon = (props) => {
+  const { colors } = useTheme();
+  return(
+    <MaterialCommunityIcons name="delete" size={24} color={colors.primaryText}/>
+  )
+}
+
+export const FavoriteIcon = (props) => {
+  const { colors } = useTheme();
+  return (
+    <MaterialCommunityIcons name="heart" size={20} color={colors.favorite} />
+  )
+}
+
+export const TimerIcon = (props) => {
+  const { colors } = useTheme();
+  return (
+    <MaterialCommunityIcons name="timer-outline" size={24} color={colors.primaryText} />
+  )
+}
+
+export const TimesWatchedIcon = (props) => {
+  const { colors } = useTheme();
+  return (
+    <MaterialCommunityIcons name="eye" size={20} color={colors.accent}/>
+  )
+}
+
+export const DificultyIcon = (props) => {
+  const { colors } = useTheme();
+  return (
+    <MaterialCommunityIcons name="speedometer" size={20} color="white" {...props}/>
   )
 }

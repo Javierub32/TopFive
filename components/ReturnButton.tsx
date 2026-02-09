@@ -18,10 +18,10 @@ export const ReturnButton = ({ route, title, style, params }: ReturnButtonProps)
     <View className={`flex-row items-center ${style}`}>
       <TouchableOpacity
         onPress={() => route == 'back' ? router.back() : router.push({ pathname: route, params })}
-        className="mr-3 h-10 w-10 items-center justify-center rounded-full border"
-        style={{borderColor: colors.borderButton, backgroundColor: colors.surfaceButton}}
+        className="mr-3 h-10 w-10 items-center justify-center rounded-full"
+        style={{ backgroundColor: colors.accent}}
         activeOpacity={0.7}>
-        <LeftArrowIcon color={colors.primaryText} />
+        <LeftArrowIcon color={colors.background} />
       </TouchableOpacity>
       <Text className="flex-1 text-xl font-bold" style={{ color: colors.primaryText }} numberOfLines={1}>
         {title}

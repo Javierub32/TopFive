@@ -1,10 +1,11 @@
 import { View, Text } from "react-native"
 import { useTheme } from "context/ThemeContext"
 import { CalendarIcon } from "components/Icons"
+import { colorScheme } from "react-native-css-interop"
 
 interface Props {
     startDate : string | Date | null | undefined
-    endDate : string | Date | null | undefined
+    endDate? : string | Date | null | undefined
     isRange : boolean
 }
 
@@ -26,7 +27,7 @@ export const DateCard = ({startDate, endDate, isRange} : Props) => {
         return(
             <View className='flex-1 p-4 rounded-2xl flex justify-between gap-2' style={{backgroundColor: `${colors.primary}1A`}}>
                 <View className='flex-row items-center gap-2'>
-                    <CalendarIcon/>
+                    <CalendarIcon color={colors.primary}/>
                     <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Última vez</Text>
                 </View>
                 <View className='flex-row items-baseline'>
