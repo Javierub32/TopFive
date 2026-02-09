@@ -36,8 +36,8 @@ export const EditResourceButton = ({resource, type}: Props) => {
     return (
         <TouchableOpacity 
             onPress={() => handleEdit()}
-            className="h-10 w-10 items-center justify-center rounded-full mr-2 border-2"
-            style={{backgroundColor: `${colors.primary}99`, borderColor: colors.primary}}
+            className="h-10 w-10 items-center justify-center rounded-full mr-2"
+            style={{backgroundColor: `${colors.primary}99`}}
             activeOpacity={0.7}
           >
             <AntDesign name="edit" size={20} color={colors.primaryText} />

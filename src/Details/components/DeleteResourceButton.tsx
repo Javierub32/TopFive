@@ -34,8 +34,8 @@ export const DeleteResourceButton = ({resource, type}: Props) => {
     return (
         <TouchableOpacity 
         onPress={handleDelete}
-        className="h-10 w-10 items-center justify-center rounded-full mr-2 border-2"
-        style={{backgroundColor: `${colors.error}99`, borderColor: colors.error}}
+        className="h-10 w-10 items-center justify-center rounded-full mr-2"
+        style={{backgroundColor: `${colors.error}99`}}
         activeOpacity={0.7}
         >
             <DeleteIcon />

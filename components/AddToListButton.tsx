@@ -32,8 +32,8 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
       <TouchableOpacity
         onPress={() => setModalVisible(true)}
         disabled={loading}
-        className="mr-2 h-10 w-10 items-center justify-center rounded-full border-2"
-        style={{ backgroundColor: `${colors.accent}99`, borderColor: colors.accent }}
+        className="mr-2 h-10 w-10 items-center justify-center rounded-full"
+        style={{ backgroundColor: `${colors.accent}99`}}
         activeOpacity={0.7}>
         <MaterialCommunityIcons name="playlist-plus" size={20} color={colors.primaryText} />
       </TouchableOpacity>

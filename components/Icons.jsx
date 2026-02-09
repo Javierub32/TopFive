@@ -112,28 +112,28 @@ export const CalendarIcon = (props) => {
 export const DeleteIcon = (props) => {
   const { colors } = useTheme();
   return(
-    <MaterialCommunityIcons name="delete" size={24} color={colors.primaryText}/>
+    <MaterialCommunityIcons name="delete" size={24} color={colors.primaryText} {...props}/>
   )
 }
 
 export const FavoriteIcon = (props) => {
   const { colors } = useTheme();
   return (
-    <MaterialCommunityIcons name="heart" size={20} color={colors.favorite} />
+    <MaterialCommunityIcons name="heart" size={20} color={colors.favorite} {...props}/>
   )
 }
 
 export const TimerIcon = (props) => {
   const { colors } = useTheme();
   return (
-    <MaterialCommunityIcons name="timer-outline" size={24} color={colors.primaryText} />
+    <MaterialCommunityIcons name="timer-outline" size={24} color={colors.primaryText} {...props}/>
   )
 }
 
 export const TimesWatchedIcon = (props) => {
   const { colors } = useTheme();
   return (
-    <MaterialCommunityIcons name="eye" size={20} color={colors.accent}/>
+    <MaterialCommunityIcons name="eye" size={20} color={colors.accent} {...props}/>
   )
 }
 
