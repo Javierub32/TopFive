@@ -5,21 +5,24 @@ import { ListInfo } from '../services/listServices';
 import { router } from 'expo-router';
 import { useCollection } from 'context/CollectionContext';
 import { useState } from 'react';
-import { useLists } from '../hooks/useLists';
 
-export const ListItem = ({ list }: { list: ListInfo }) => {
+	interface ListItemProps {
+		list: ListInfo;
+		onDelete: (listId: string) => void;
+	}
+
+export const ListItem = ({ list, onDelete }: ListItemProps) => {
+
 
   const { colors } = useTheme();
   const [menuListasAbierto, setMenuListasAbierto] = useState(false);
-	const {categoriaActual, refreshData} = useCollection();
-	const { deleteList, fetchListInfo } = useLists(categoriaActual);
 	const handleDelete = () => {
 		if (list) {
 			Alert.alert('Lista eliminada', 'Estás seguro de que quieres eliminar esta lista de tu colección?', [
 				{ text: 'Cancelar', style: 'cancel'},
 				{ text: 'Confirmar', onPress: async () => {
-					await deleteList(list.id);
-					await fetchListInfo();
+					await onDelete(list.id);
+					setMenuListasAbierto(false);
 				} }
 			]);
 		}

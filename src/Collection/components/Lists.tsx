@@ -59,7 +59,7 @@ const MOCK_LISTS = [
 export default function Lists() {
   const { colors } = useTheme();
   const { categoriaActual } = useCollection();
-  const { lists, loading } = useLists(categoriaActual as ResourceType);
+  const { lists, loading, deleteList } = useLists(categoriaActual as ResourceType);
 
   return (
       <View className="flex-1  mt-4" >
@@ -78,7 +78,7 @@ export default function Lists() {
 			data={lists}
 			keyExtractor={(list) => list.id.toString()}
 			renderItem={({ item: list }) => (
-				<ListItem list={list} />
+				<ListItem list={list} onDelete={deleteList} />
 			)}
 			showsHorizontalScrollIndicator={false}
 			showsVerticalScrollIndicator={false}

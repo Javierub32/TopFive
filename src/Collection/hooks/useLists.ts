@@ -48,6 +48,7 @@ export const useLists = (categoriaActual: ResourceType) => {
 		try {
 			setLoading(true);
 			await listServices.updateList(user.id, listId, nombre, descripcion, icono, color);
+			fetchListInfo();
 		}
 		catch (error) {
 			console.error("Error updating list:", error);
@@ -61,6 +62,7 @@ export const useLists = (categoriaActual: ResourceType) => {
 		try {
 			setLoading(true);
 			await listServices.deleteList(user.id, listId);
+			fetchListInfo();
 		}
 		catch (error) {
 			console.error("Error deleting list:", error);
