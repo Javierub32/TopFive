@@ -1,15 +1,29 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import { AntDesign, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from 'context/ThemeContext';
 import { ListInfo } from '../services/listServices';
 import { router } from 'expo-router';
 import { useCollection } from 'context/CollectionContext';
 import { useState } from 'react';
+import { useLists } from '../hooks/useLists';
 
 export const ListItem = ({ list }: { list: ListInfo }) => {
 
   const { colors } = useTheme();
   const [menuListasAbierto, setMenuListasAbierto] = useState(false);
+	const {categoriaActual, refreshData} = useCollection();
+	const { deleteList, fetchListInfo } = useLists(categoriaActual);
+	const handleDelete = () => {
+		if (list) {
+			Alert.alert('Lista eliminada', 'Estás seguro de que quieres eliminar esta lista de tu colección?', [
+				{ text: 'Cancelar', style: 'cancel'},
+				{ text: 'Confirmar', onPress: async () => {
+					await deleteList(list.id);
+					await fetchListInfo();
+				} }
+			]);
+		}
+	};
 	
 	return (
 		<TouchableOpacity 
@@ -68,12 +82,25 @@ export const ListItem = ({ list }: { list: ListInfo }) => {
 			{/* Desplegable de listas */}
 			{menuListasAbierto && (
 			  <View className="absolute right-4 top-14 z-50 w-30 overflow-hidden rounded-lg border border-borderButton bg-surfaceButton shadow-xl">
-					<TouchableOpacity className="px-4 py-2 flex-row items-center border-b" style={{ borderColor: `${colors.secondaryText}4D` }}>
+					<TouchableOpacity 
+						className="px-4 py-2 flex-row items-center border-b" 	
+						style={{ borderColor: `${colors.secondaryText}4D` }}
+						onPress={() => {
+							router.push({ pathname: '/form/list', params: { listId: list.id, title: list.nombre, icon: list.icono, color: list.color, description: list.descripcion } });
+							setMenuListasAbierto(false);
+						}}
+					>
 						<AntDesign name="edit" size={16} color={colors.primaryText} style={{ marginRight: 8 }} />
 						<Text className="text-m" style={{ color: colors.primaryText }}>Editar lista</Text>
 					</TouchableOpacity>
 
-					<TouchableOpacity className="px-4 py-2 flex-row items-center">
+					<TouchableOpacity 
+						className="px-4 py-2 flex-row items-center"
+						onPress={() => {
+							setMenuListasAbierto(false);
+							handleDelete();
+						}}
+					>
 						<MaterialCommunityIcons name="delete" size={16} color={colors.error} style={{ marginRight: 8 }} />
 						<Text className="text-m" style={{ color: colors.error }}>Eliminar lista</Text>
 					</TouchableOpacity>

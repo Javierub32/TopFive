@@ -91,6 +91,7 @@ export const useLists = (categoriaActual: ResourceType) => {
 		createList,
 		updateList,
 		deleteList,
+		fetchListInfo,
 		data,
 	};
 };
