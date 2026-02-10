@@ -4,11 +4,13 @@ import { Screen } from 'components/Screen';
 import { useTheme } from 'context/ThemeContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ListItem } from './ListItem';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useLists } from '../hooks/useLists';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useCollection } from 'context/CollectionContext';
 import { ResourceType } from 'hooks/useResource';
+import ListDetails from 'app/details/list';
+import { ListInfo } from '../services/listServices';
 
 // Datos de prueba para simular el backend
 const MOCK_LISTS = [
@@ -60,7 +62,16 @@ export default function Lists() {
   const { colors } = useTheme();
   const { categoriaActual } = useCollection();
   const { lists, loading, deleteList } = useLists(categoriaActual as ResourceType);
+  const {item} = useLocalSearchParams();
+  let ListDetails : ListInfo | null = null;
 
+  try {
+    ListDetails = item ? JSON.parse(item as string) : null;
+  } catch (error) {
+    console.error('Error parsing item:', error);
+  }
+
+  const contenido = ListDetails
   return (
       <View className="flex-1  mt-4" >
         <View className="flex-row justify-between items-center mb-6">

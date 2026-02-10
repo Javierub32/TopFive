@@ -27,6 +27,15 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
 			]);
 		}
 	};
+
+	const handleEdit = () => {
+		if (list) {
+			router.push({
+				pathname: '/form/list',
+				params: { listData: JSON.stringify(list) }
+			});
+		}
+	}
 	
 	return (
 		<TouchableOpacity 
@@ -89,7 +98,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
 						className="px-4 py-2 flex-row items-center border-b" 	
 						style={{ borderColor: `${colors.secondaryText}4D` }}
 						onPress={() => {
-							router.push({ pathname: '/form/list', params: { listId: list.id, title: list.nombre, icon: list.icono, color: list.color, description: list.descripcion } });
+							handleEdit();
 							setMenuListasAbierto(false);
 						}}
 					>
