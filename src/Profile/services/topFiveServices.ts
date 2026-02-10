@@ -98,5 +98,26 @@ export const topFiveService = {
 
     // Filtramos nulos (por si algún recurso fue borrado de la DB pero seguía en el top5)
     return detailedItems.filter((item): item is TopFiveItem => item !== null);
-  }
+  },
+
+  async removeFromTopFive(userId: string, posicion: number) {
+	// Obtenemos la lista del usuario
+	const { data: list, error: listError } = await supabase
+	  .from('estadistica_topfive')
+	  .select('id')
+	  .eq('usuarioid', userId)
+	  .maybeSingle();
+	
+	if (listError) throw listError;
+	if (!list) throw new Error("No se pudo obtener la lista TopFive");
+
+	// Eliminamos el ítem en la posición especificada
+	const { error: deleteError } = await supabase
+	  .from('estadistica_topfive_item')
+	  .delete()
+	  .eq('topfiveid', list.id)
+	  .eq('posicion', posicion);
+
+	if (deleteError) throw deleteError;
+  },
 };

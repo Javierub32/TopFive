@@ -1,3 +1,5 @@
+import { ResourceType } from 'hooks/useResource';
+
 export type SearchResult = {
   id: string;
   title: string;
@@ -6,8 +8,8 @@ export type SearchResult = {
   genre: string;
 };
 
-export const searchAdapter = {
-  Libros: (book: any): SearchResult => ({
+export const searchAdapter: Record<ResourceType, (data: any) => SearchResult> = {
+  libro: (book: any): SearchResult => ({
     id: book.id || `book-${Math.random()}`,
     title: book.title || 'Sin título',
     artist: book.autor || 'Desconocido',
@@ -15,7 +17,7 @@ export const searchAdapter = {
     genre: book.genre?.[0] || 'Literatura',
   }),
 
-  Películas: (film: any): SearchResult => ({
+  pelicula: (film: any): SearchResult => ({
     id: film.id,
     title: film.title || 'Sin título',
     artist: film.rating ? `⭐ ${film.rating.toFixed(1)}` : 'Desconocido',
@@ -23,7 +25,7 @@ export const searchAdapter = {
     genre: film.releaseDate ? film.releaseDate.split('-')[0] : 'Desconocido',
   }),
 
-  Series: (series: any): SearchResult => ({
+  serie: (series: any): SearchResult => ({
     id: series.id,
     title: series.title || 'Sin título',
     artist: series.rating ? `⭐ ${series.rating.toFixed(1)}` : 'Desconocido',
@@ -31,7 +33,7 @@ export const searchAdapter = {
     genre: series.genre?.[0] || 'TV',
   }),
 
-  Videojuegos: (game: any): SearchResult => ({
+  videojuego: (game: any): SearchResult => ({
     id: game.id,
     title: game.title,
     artist: game.autor || 'Desconocido',
@@ -39,7 +41,7 @@ export const searchAdapter = {
     genre: game.genre?.[0] || 'Gaming',
   }),
 
-  Canciones: (song: any): SearchResult => ({
+  cancion: (song: any): SearchResult => ({
     id: song.id,
     title: song.title || 'Sin título',
     artist: song.autor || 'Desconocido',

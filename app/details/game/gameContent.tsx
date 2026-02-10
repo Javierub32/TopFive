@@ -48,7 +48,7 @@ export default function GameDetail() {
       <ThemedStatusBar/>
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <ReturnButton route="/Add?initialCategory=Videojuegos" title="Detalle del videojuego" />
+        <ReturnButton route="/Add?initialCategory=videojuego" title="Detalle del videojuego" />
 
         <View className="px-4 mb-4">
           <Image 

@@ -42,7 +42,7 @@ export default function SongDetail() {
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
 
-		<ReturnButton route="/Add?initialCategory=Canciones" title="Detalle de la canción" />
+		<ReturnButton route="/Add?initialCategory=cancion" title="Detalle de la canción" />
 
         <View className="px-4 mb-4">
           <Image 

@@ -2,12 +2,11 @@ import { useEffect, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { searchContentService } from '../services/searchContentService';
 import { searchAdapter, SearchResult } from '../../Add/adapters/searchResultsAdapter';
-
-export type CategoryKey = 'Libros' | 'Películas' | 'Series' | 'Videojuegos' | 'Canciones';
+import { ResourceType } from 'hooks/useResource';
 
 export const useSearchContent = () => {
   const [busqueda, setBusqueda] = useState('');
-  const [recursoBusqueda, setRecursoBusqueda] = useState<CategoryKey>('Películas');
+  const [recursoBusqueda, setRecursoBusqueda] = useState<ResourceType>('pelicula');
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [loading, setLoading] = useState(false);
   const [resultados, setResultados] = useState<SearchResult[]>([]);
@@ -18,7 +17,7 @@ export const useSearchContent = () => {
     // Aplicar la categoría inicial si viene en la URL
   useEffect(() => {
 	if (params.initialCategory && params.initialCategory !== recursoBusqueda) {
-	  setRecursoBusqueda(params.initialCategory as CategoryKey);
+	  setRecursoBusqueda(params.initialCategory as ResourceType);
 	  setResultados([]);
 	}
   }, [params.initialCategory]);
@@ -45,8 +44,20 @@ export const useSearchContent = () => {
   };
 
   const navigateToDetails = (index: number) => {
-    const typeMap = { Libros: 'book', Películas: 'film', Series: 'series', Videojuegos: 'game', Canciones: 'song' };
-    const paramMap = { Libros: 'bookData', Películas: 'filmData', Series: 'seriesData', Videojuegos: 'gameData', Canciones: 'songData' };
+    const typeMap: Record<ResourceType, string> = { 
+      libro: 'book', 
+      pelicula: 'film', 
+      serie: 'series', 
+      videojuego: 'game', 
+      cancion: 'song' 
+    };
+    const paramMap: Record<ResourceType, string> = { 
+      libro: 'bookData', 
+      pelicula: 'filmData', 
+      serie: 'seriesData', 
+      videojuego: 'gameData', 
+      cancion: 'songData' 
+    };
 
     const type = typeMap[recursoBusqueda];
     const itemOriginal = datosOriginales[index];

@@ -3,7 +3,7 @@ import { Tabs, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { HomeIcon, CardsIcon, UserIcon, SearchIcon, AddIcon } from 'components/Icons';
-import { AddModal } from '../../src/Add/components/AddModal';
+import { CategorySelectorModal } from 'components/CategorySelectorModal';
 import { useTheme } from 'context/ThemeContext';
 
 export default function TabLayout() {
@@ -15,10 +15,11 @@ export default function TabLayout() {
 
   return (
     <>
-      <AddModal
+      <CategorySelectorModal
         visible={showAddModal}
         onClose={() => setShowAddModal(false)}
-        onSelect={(type) => {
+        title="¿Qué quieres agregar?"
+        onSelectCategory={(type) => {
           router.push({
             pathname: 'Add/',
             params: { initialCategory: type }

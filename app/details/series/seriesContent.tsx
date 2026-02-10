@@ -42,7 +42,7 @@ export default function SeriesDetail() {
       <StatusBar style="light" />
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <ReturnButton route="/Add?initialCategory=Series" title="Detalle de la serie" />
+        <ReturnButton route="/Add?initialCategory=serie" title="Detalle de la serie" />
 
         <View className="px-4 mb-4">
           <Image 

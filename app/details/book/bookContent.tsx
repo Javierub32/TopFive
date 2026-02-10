@@ -54,7 +54,7 @@ export default function BookDetail() {
       <ThemedStatusBar/>
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <ReturnButton route="/Add?initialCategory=Libros" title="Detalle del libro" />
+        <ReturnButton route="/Add?initialCategory=libro" title="Detalle del libro" />
 
         <View className="px-4 mb-4">
           <Image 

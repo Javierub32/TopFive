@@ -1,19 +1,9 @@
 import { useAuth } from 'context/AuthContext';
 import { useTheme } from 'context/ThemeContext';
-import { View, Text, Pressable, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { useTopFive } from '../hooks/useTopFive';
 import { LoadingIndicator } from 'components/LoadingIndicator';
-import { useRouter } from 'expo-router';
-import { BookIcon, FilmIcon, GameIcon, MusicIcon, ShowIcon } from 'components/Icons';
-import { ResourceType } from 'hooks/useResource';
-
-const categories: { type: ResourceType; label: string; icon: any }[] = [
-  { type: 'libro', label: 'Libro', icon: BookIcon },
-  { type: 'pelicula', label: 'Película', icon: FilmIcon },
-  { type: 'serie', label: 'Serie', icon: ShowIcon },
-  { type: 'videojuego', label: 'Videojuego', icon: GameIcon },
-  { type: 'cancion', label: 'Canción', icon: MusicIcon },
-];
+import { CategorySelectorModal } from 'components/CategorySelectorModal';
 
 export const TopFiveSelector = () => {
   const slots = Array.from({ length: 5 });
@@ -26,6 +16,7 @@ export const TopFiveSelector = () => {
     handleCategorySelect,
     modalVisible,
     setModalVisible,
+	handleLongPress,
   } = useTopFive(user?.id || '');
 
   if (loading) {
@@ -55,11 +46,13 @@ export const TopFiveSelector = () => {
                 key={index}
                 className="flex-1 rounded-lg"
                 style={{ backgroundColor: colors.surfaceButton }}>
-                <Pressable
+                <TouchableOpacity
                   onPress={() => handlePress(position, item)}
-                  style={({ pressed }) => ({ opacity: pressed ? 0.7 : 1 })}>
+				  onLongPress={() => handleLongPress(position, item)}
+				 activeOpacity={0.7}>
+				  
                   <View
-                    className="aspect-[2/3] w-full items-center justify-center overflow-hidden rounded-lg border"
+                    className="aspect-[0.6] w-full items-center justify-center overflow-hidden rounded-lg border"
                     style={{
                       backgroundColor: colors.surfaceButton,
                       borderColor: colors.borderButton,
@@ -68,7 +61,7 @@ export const TopFiveSelector = () => {
                       +
                     </Text>
                   </View>
-                </Pressable>
+                </TouchableOpacity>
               </View>
             );
           }
@@ -78,78 +71,29 @@ export const TopFiveSelector = () => {
               key={index}
               className="flex-1 rounded-lg"
               style={{ backgroundColor: colors.surfaceButton }}>
-              <Pressable
+              <TouchableOpacity
                 onPress={() => handlePress(position, item)}
-                style={({ pressed }) => ({ opacity: pressed ? 0.7 : 1 })}>
+                onLongPress={() => handleLongPress(position, item)}
+				activeOpacity={0.7}>
                 <View
-                  className="aspect-[2/3] w-full items-center justify-center overflow-hidden rounded-lg border"
+                  className="aspect-[0.6] w-full items-center justify-center overflow-hidden rounded-lg "
                   style={{
                     backgroundColor: colors.surfaceButton,
-                    borderColor: colors.borderButton,
                   }}>
                   <Image source={{ uri: imageUrl }} className="h-full w-full" resizeMode="cover" />
                 </View>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           );
         })}
       </View>
 
-      {modalVisible && (
-        <Pressable
-          style={[
-            StyleSheet.absoluteFill,
-            {
-              zIndex: 999,
-              backgroundColor: 'rgba(0,0,0,0.7)',
-              justifyContent: 'center',
-              alignItems: 'center',
-            },
-          ]}
-          onPress={() => setModalVisible(false)} 
-        >
-
-          <Pressable
-            className="w-[80%] rounded-2xl border p-4 shadow-xl"
-            style={{ backgroundColor: colors.surfaceButton, borderColor: colors.borderButton }}
-            onPress={(e) => e.stopPropagation()} // Evita cerrar al tocar dentro
-          >
-            <Text
-              className="mb-4 text-center text-xl font-bold"
-              style={{ color: colors.primaryText }}>
-              Seleccionar Categoría
-            </Text>
-
-            <View className="gap-3">
-              {categories.map((cat) => {
-                const Icon = cat.icon;
-                return (
-                  <TouchableOpacity
-                    key={cat.type}
-                    className="flex-row items-center rounded-xl border p-3"
-                    style={{ backgroundColor: colors.background, borderColor: colors.borderButton }}
-                    onPress={() => handleCategorySelect(cat.type)}>
-                    <View className="mr-3">
-                      <Icon size={20} color={colors.secondaryText} />
-                    </View>
-                    <Text className="text-base font-semibold" style={{ color: colors.primaryText }}>
-                      {cat.label}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-
-            <TouchableOpacity
-              className="mt-4 items-center rounded-xl p-3"
-              onPress={() => setModalVisible(false)}>
-              <Text className="text-base font-bold" style={{ color: colors.error }}>
-                Cancelar
-              </Text>
-            </TouchableOpacity>
-          </Pressable>
-        </Pressable>
-      )}
+      <CategorySelectorModal
+	    title='Selecciona tu Top 5'
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onSelectCategory={(category) => handleCategorySelect(category)}
+      />
     </View>
   );
 };

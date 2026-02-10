@@ -57,7 +57,7 @@ export default function FilmDetail() {
       <ThemedStatusBar/>
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <ReturnButton route="/Add?initialCategory=Películas" title="Detalle de la película" />
+        <ReturnButton route="/Add?initialCategory=pelicula" title="Detalle de la película" />
 
         <View className="px-4 mb-4">
           <Image 

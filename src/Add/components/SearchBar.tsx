@@ -1,19 +1,27 @@
 import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { CategoryKey } from '../hooks/useSearchContent';
+import { ResourceType } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 
 interface SearchBarProps {
   value: string;
   onChangeText: (text: string) => void;
   onSearch: () => void;
-  selectedCategory: CategoryKey;
-  onCategoryChange: (category: CategoryKey) => void;
+  selectedCategory: ResourceType;
+  onCategoryChange: (category: ResourceType) => void;
   menuAbierto: boolean;
   setMenuAbierto: (abierto: boolean) => void;
 }
 
-const OPCIONES: CategoryKey[] = ['Libros', 'Películas', 'Series', 'Videojuegos', 'Canciones'];
+const OPCIONES: ResourceType[] = ['libro', 'pelicula', 'serie', 'videojuego', 'cancion'];
+
+const CATEGORY_LABELS: Record<ResourceType, string> = {
+  libro: 'Libros',
+  pelicula: 'Películas',
+  serie: 'Series',
+  videojuego: 'Videojuegos',
+  cancion: 'Canciones',
+};
 
 export const SearchBar = ({
   value,
@@ -25,6 +33,7 @@ export const SearchBar = ({
   setMenuAbierto,
 }: SearchBarProps) => {
   const { colors } = useTheme();
+  const categoryLabel = CATEGORY_LABELS[selectedCategory] || 'contenido';
   
   return (
     <View className="relative z-50">
@@ -38,7 +47,7 @@ export const SearchBar = ({
         <TextInput
           className="h-full flex-1 px-3 text-base"
           style={{color: colors.primaryText}}
-          placeholder={`Buscar ${selectedCategory}...`}
+          placeholder={`Buscar ${categoryLabel}...`}
           placeholderTextColor={colors.placeholderText}
           value={value}
           onChangeText={onChangeText}
@@ -57,7 +66,7 @@ export const SearchBar = ({
         >
           <View className="max-w-[80px]">
             <Text className="mr-1 font-medium" style={{color: colors.secondaryText}} numberOfLines={1}>
-              {selectedCategory}
+              {categoryLabel}
             </Text>
           </View>
           <MaterialCommunityIcons
@@ -83,7 +92,7 @@ export const SearchBar = ({
               onPress={() => onCategoryChange(opcion)}
             >
               <Text className="text-base" style={{fontWeight: selectedCategory === opcion ? 'bold' : 'normal', color: selectedCategory === opcion ? colors.primaryText : colors.secondaryText}}>
-                {opcion}
+                {CATEGORY_LABELS[opcion]}
               </Text>
               {selectedCategory === opcion && (
                 <MaterialCommunityIcons name="check" size={16} color={colors.primaryText} />

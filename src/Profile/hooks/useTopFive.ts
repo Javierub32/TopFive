@@ -4,6 +4,7 @@ import { TopFiveItem, topFiveService } from '../services/topFiveServices';
 import { ResourceType } from 'hooks/useResource';
 import { router } from 'expo-router';
 import { useCollection } from 'context/CollectionContext';
+import { Alert } from 'react-native';
 
 export const useTopFive = (userId: string) => {
   const { user } = useAuth();
@@ -21,6 +22,7 @@ export const useTopFive = (userId: string) => {
     if (!userId) return;
     try {
       setLoading(true);
+	  setTopFiveItems([]);
       const topFiveData = await topFiveService.fetchTopFive(userId);
       setTopFiveItems(topFiveData);
     } catch (error) {
@@ -40,6 +42,31 @@ export const useTopFive = (userId: string) => {
       setModalVisible(true);
     }
   };
+
+  const handleLongPress = (position: number, item: TopFiveItem | undefined) => {
+	if (item) {
+		Alert.alert(
+			'Eliminar de Top 5',
+			'¿Deseas eliminar este item de tu Top 5?',
+			[
+				{ text: 'Cancelar', style: 'cancel' },
+				{
+					text: 'Eliminar',
+					style: 'destructive',
+					onPress: async () => {
+						try {
+							await topFiveService.removeFromTopFive(userId, position);
+							fetchTopFive();
+						} catch (error) {
+							console.error('Error al eliminar item del Top 5:', error);
+						}
+					},
+				},
+			],
+			{ cancelable: true }
+		);
+	}
+  }
 
   const handleCategorySelect = (category: string) => {
     if (selectedPosition !== null) {
@@ -62,5 +89,6 @@ export const useTopFive = (userId: string) => {
 	handleCategorySelect,
 	modalVisible,
 	setModalVisible,
+	handleLongPress,
   };
 };

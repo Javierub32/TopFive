@@ -7,7 +7,7 @@ import { ResourceType } from 'hooks/useResource';
 
 const OPCIONES_CATEGORIA: string[] = ['Libros', 'Películas', 'Series', 'Videojuegos', 'Canciones'];
 
-const resourceTypeMap: Record<ResourceType, string> = {
+export const resourceTypeMap: Record<ResourceType, string> = {
   'pelicula': 'Películas',
   'serie': 'Series',
   'videojuego': 'Videojuegos',
@@ -15,7 +15,7 @@ const resourceTypeMap: Record<ResourceType, string> = {
   'cancion': 'Canciones',
 };
 
-const categoryToResourceMap: Record<string, ResourceType> = {
+export const categoryToResourceMap: Record<string, ResourceType> = {
   'Libros': 'libro',
   'Películas': 'pelicula',
   'Series': 'serie',

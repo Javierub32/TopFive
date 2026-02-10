@@ -1,6 +1,4 @@
-import React from 'react';
 import { View, Text, FlatList } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { useSearchContent } from 'src/Add/hooks/useSearchContent';
 

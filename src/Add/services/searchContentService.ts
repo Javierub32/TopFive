@@ -1,13 +1,15 @@
-const BASE_URLS: Record<string, string> = {
-  Libros: 'https://javierub-topfive.hf.space/fetchBooks',
-  Películas: 'https://javierub-topfive.hf.space/fetchFilms',
-  Series: 'https://javierub-topfive.hf.space/fetchSeries',
-  Videojuegos: 'https://javierub-topfive.hf.space/fetchGames',
-  Canciones: 'https://javierub-topfive.hf.space/fetchSong',
+import { ResourceType } from 'hooks/useResource';
+
+const BASE_URLS: Record<ResourceType, string> = {
+  libro: 'https://javierub-topfive.hf.space/fetchBooks',
+  pelicula: 'https://javierub-topfive.hf.space/fetchFilms',
+  serie: 'https://javierub-topfive.hf.space/fetchSeries',
+  videojuego: 'https://javierub-topfive.hf.space/fetchGames',
+  cancion: 'https://javierub-topfive.hf.space/fetchSong',
 };
 
 export const searchContentService = {
-  async fetchResources(termino: string, tipo: string) {
+  async fetchResources(termino: string, tipo: ResourceType) {
     const apiUrl = BASE_URLS[tipo];
     if (!apiUrl) throw new Error(`No API for ${tipo}`);
 
