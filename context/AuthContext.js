@@ -86,21 +86,56 @@ export const AuthProvider = ({ children }) => {
 		if (error) throw error;
 	};
 
-	const signUp = async (email, password, username) => { // <--- Añade username aquí
-		// 1. Crear el usuario en el sistema de Autenticación
-		const { data, error: authError } = await supabase.auth.signUp({
-			email,
-			password,
-			options: {
-				data: {
-					username: username, // <--- Esto se enviará a raw_user_meta_data
-					// avatar_url: '...' // Puedes añadir más campos aquí si quieres
-				}
-			}
-		});
+const signUp = async (email, password, username) => {
+    
+    // A. Campos vacíos
+    if (!email || !password || !username) {
+        throw new Error("Por favor completa todos los campos.");
+    }
 
-		if (authError) throw authError;
-	};
+    // B. Validación básica de Email
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(email)) {
+        throw new Error("El correo electrónico no es válido.");
+    }
+
+    // C. Contraseña muy corta
+    if (password.length < 6) {
+        throw new Error("La contraseña debe tener al menos 6 caracteres.");
+    }
+
+    // D. Verificar si el Username ya existe
+    const { data: existingUser } = await supabase
+        .from('usuario')
+        .select('username')
+        .eq('username', username)
+        .maybeSingle();
+
+    if (existingUser) {
+        throw new Error("El nombre de usuario ya está en uso. Por favor elige otro.");
+    }
+
+    // --- 2. CREAR USUARIO EN SUPABASE ---
+    const {data, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+            data: { username: username }
+        }
+    });
+
+    if (authError) {
+        // Traducir error de Supabase si es necesario, o lanzarlo directo
+        if (authError.message.includes("User already registered")) {
+             throw new Error("Este correo ya está registrado.");
+        }
+        throw authError; 
+    }
+
+	if (data?.user?.identities?.length === 0) {
+        throw new Error("Este correo ya está registrado.");
+    }
+};
 
 	const signOut = async () => {
 		await supabase.auth.signOut();

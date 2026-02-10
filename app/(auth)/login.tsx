@@ -36,7 +36,7 @@ export default function Login() {
       await signIn(email, password);
       // No necesitamos navegar manualmente, el _layout.js lo hará al detectar la sesión
     } catch (error) {
-      Alert.alert('Error Login', 'Credenciales inválidas. Por favor, inténtalo de nuevo.');
+      Alert.alert('Error', 'Credenciales inválidas. \n Por favor, inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }

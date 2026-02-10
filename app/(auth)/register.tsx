@@ -19,24 +19,13 @@ export default function Register() {
   const { colors } = useTheme();
 
   const handleRegister = async () => {
-    if (!username || !email || !password) {
-      Alert.alert('Error', 'Por favor llena todos los campos');
-      return;
-    }
-
     setLoading(true);
     try {
-      console.log('Registering user:', { username, email, password });
       await signUp(email, password, username);
-
-      Alert.alert('Cuenta Creada', 'Por favor confirma tu email antes de iniciar sesión.', [
-        { text: 'OK', onPress: () => router.back() },
-      ]);
-    } catch (error: string | any) {
-      Alert.alert(
-        'Error Registro',
-        error.message || 'El nombre de usuario o correo ya está registrado.'
-      );
+	  Alert.alert('Éxito', 'Tu cuenta ha sido creada. \nConfirma tu correo para iniciar sesión.');
+    } catch (error: any) {
+      console.log(error);
+	  Alert.alert('Error', error.message || 'Hubo un error al crear tu cuenta.');
     } finally {
       setLoading(false);
     }
