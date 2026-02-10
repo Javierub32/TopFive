@@ -7,7 +7,7 @@ import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { ResourceType } from 'hooks/useResource';
-import { Atributes } from '@/Details/components/Atributes';
+import { ResourceAttributes } from '@/Details/components/ResourceAttributes';
 import { RatingCard } from '@/Details/components/RatingCard';
 import { ProgressCard } from '@/Details/components/ProgressCard';
 import { ReviewCard } from '@/Details/components/ReviewCard';
@@ -67,8 +67,8 @@ export default function GameDetail() {
           />
         </View>
 
-        <View className="px-4 pb-6">
-          <Atributes resource={gameResource}/>
+        <View className="px-4 pb-6 mb-14">
+          <ResourceAttributes resource={gameResource}/>
           <View className='flex-col justify-between gap-3'>
             <View className='flex-row gap-2'>
               <RatingCard rating={gameResource.calificacion}/>

@@ -10,7 +10,7 @@ interface Props {
     resource : BookResource | FilmResource | SeriesResource | SongResource | GameResource
 }
 
-export const Atributes = ({resource} : Props) => {
+export const ResourceAttributes = ({resource} : Props) => {
 
     const {colors} = useTheme();
     const { item } = useLocalSearchParams();
@@ -71,9 +71,9 @@ export const Atributes = ({resource} : Props) => {
     }
 
     return (
-        <View className="mb-4">
-            <View className="flex-1 flex-row items-center justify-between mb-2 ">
-                <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
+        <View className=" flex-1 mb-4">
+            <View className="flex-1 flex-row items-center justify-between">
+                <Text className="flex-1 text-3xl font-bold" style={{ color: colors.primaryText }}>
                 {contenido.titulo || 'Sin título'}
                 </Text>
                 <AddToListButton resourceCategory="Libros" resourceId={resource.id} />

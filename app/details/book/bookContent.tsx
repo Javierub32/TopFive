@@ -10,6 +10,7 @@ import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { useState } from 'react';
 import { cleanHtmlDescription } from '@/Details/utils/descriptionUtils';
+import { ContentTags } from "@/Details/components/ContentTags";
 
 export default function BookDetail() {
   const { bookData } = useLocalSearchParams();
@@ -47,7 +48,6 @@ export default function BookDetail() {
     );
   }
 
-  const releaseYear = book.releaseDate ? new Date(book.releaseDate).getFullYear() : 'N/A';
 
   return (
     <Screen>
@@ -66,36 +66,9 @@ export default function BookDetail() {
         </View>
 
         <View className="px-4 pb-6">
-          <Text className="text-3xl font-bold mb-4" style={{ color: colors.primaryText }}>
-            {book.title || 'Sin título'}
-          </Text>
-
-          <View className="flex-row items-stretch flex-wrap gap-2 mb-4">
-            <View className="px-3 py-1.5 rounded-lg justify-center"
-            style={{backgroundColor: colors.surfaceButton}}>
-              <Text className="text-sm font-semibold" style={{color: colors.markerText}}>
-                {releaseYear}
-              </Text>
-            </View>
-
-            {!!book.rating && (
-              <View className="px-3 py-1.5 rounded-lg flex-row items-center border" style={{backgroundColor: colors.surfaceButton, borderColor: colors.rating}}>
-                <MaterialCommunityIcons name="star" size={20} color={colors.rating} />
-                <Text className="text-sm font-bold ml-1" style={{color: colors.markerText}}>
-                  {book.rating.toFixed(1)}
-                </Text>
-              </View>
-            )}
-
-            {book.genre && book.genre.length > 0 && (
-              <View className="px-3 py-1.5 rounded-lg" style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton}}>
-                <Text className="text-sm" numberOfLines={1} style={{color: colors.markerText}}>
-                  {book.genre.join(', ')}
-                </Text>
-              </View>
-            )}
+          
             
-          </View>
+          <ContentTags content={book}/>
 
           <View className="flex-col justify-between gap-3">
             <View className="flex-row gap-2">

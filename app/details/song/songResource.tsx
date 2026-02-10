@@ -9,25 +9,25 @@ import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
 import { AddToListButton } from 'components/AddToListButton';
 import { ResourceType, useResource } from 'hooks/useResource';
-import { EditResourceButton } from "@/Details/components/EditResourceButton";
-import { DeleteIcon } from "components/Icons";
-import { DeleteResourceButton } from "@/Details/components/DeleteResourceButton";
-import { ThemedStatusBar } from "components/ThemedStatusBar";
-import { Atributes } from "@/Details/components/Atributes";
-import { RatingCard } from "@/Details/components/RatingCard";
-import { DateCard } from "@/Details/components/DateCard";
-import { ReviewCard } from "@/Details/components/ReviewCard";
+import { EditResourceButton } from '@/Details/components/EditResourceButton';
+import { DeleteIcon } from 'components/Icons';
+import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
+import { ThemedStatusBar } from 'components/ThemedStatusBar';
+import { ResourceAttributes } from '@/Details/components/ResourceAttributes';
+import { RatingCard } from '@/Details/components/RatingCard';
+import { DateCard } from '@/Details/components/DateCard';
+import { ReviewCard } from '@/Details/components/ReviewCard';
 
 export default function SongDetail() {
   const { item } = useLocalSearchParams();
-    
+
   let songResource: SongResource | null = null;
-  
+
   try {
     songResource = item ? JSON.parse(item as string) : null;
   } catch (error) {
     console.error('Error parsing item:', error);
-  }  
+  }
 
   if (!songResource) {
     return (
@@ -35,8 +35,10 @@ export default function SongDetail() {
         <StatusBar style="light" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>
-          <Text className="text-secondaryText text-center mt-2">No se pudo cargar la información de la canción</Text>
+          <Text className="mt-4 text-xl font-bold text-primaryText">Error al cargar</Text>
+          <Text className="mt-2 text-center text-secondaryText">
+            No se pudo cargar la información de la canción
+          </Text>
         </View>
       </Screen>
     );
@@ -67,9 +69,9 @@ export default function SongDetail() {
             resizeMode="cover"
           />
         </View>
-        <View className="px-4 pb-6">
-          <Atributes resource={songResource} />
-          <View className="mb-6 gap-4">
+        <View className="mb-14 px-4 pb-6">
+          <ResourceAttributes resource={songResource} />
+          <View className="flex-col justify-between gap-3">
             <View className="flex-row gap-2">
               <RatingCard rating={songResource.calificacion} />
               <DateCard startDate={songResource.fechaEscucha} isRange={false} />

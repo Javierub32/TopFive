@@ -9,49 +9,57 @@ import { ThemeContext, useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
 import { AddToListButton } from 'components/AddToListButton';
 import { ResourceType, useResource } from 'hooks/useResource';
-import { ThemedStatusBar } from "components/ThemedStatusBar";
-import { EditResourceButton } from "@/Details/components/EditResourceButton";
-import { DeleteResourceButton } from "@/Details/components/DeleteResourceButton";
-import { Atributes } from "@/Details/components/Atributes";
-import { RatingCard } from "@/Details/components/RatingCard";
-import { ProgressCard } from "@/Details/components/ProgressCard";
-import { DateCard } from "@/Details/components/DateCard";
-import { ReviewCard } from "@/Details/components/ReviewCard";
+import { ThemedStatusBar } from 'components/ThemedStatusBar';
+import { EditResourceButton } from '@/Details/components/EditResourceButton';
+import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
+import { ResourceAttributes } from '@/Details/components/ResourceAttributes';
+import { RatingCard } from '@/Details/components/RatingCard';
+import { ProgressCard } from '@/Details/components/ProgressCard';
+import { DateCard } from '@/Details/components/DateCard';
+import { ReviewCard } from '@/Details/components/ReviewCard';
 
 export default function SeriesDetail() {
   const { item } = useLocalSearchParams();
-  const {borrarRecurso} = useResource();
+  const { borrarRecurso } = useResource();
   const { refreshData } = useCollection();
-  const { colors } = useTheme();    
+  const { colors } = useTheme();
 
-  
   let seriesResource: SeriesResource | null = null;
-    
-    try {
-      seriesResource = item ? JSON.parse(item as string) : null;
-    } catch (error) {
-      console.error('Error parsing item:', error);
-    }
-  
+
+  try {
+    seriesResource = item ? JSON.parse(item as string) : null;
+  } catch (error) {
+    console.error('Error parsing item:', error);
+  }
 
   const handleDelete = () => {
-	if (seriesResource) {
-		Alert.alert('Recurso eliminado', 'Estás seguro de que quieres eliminar esta serie de tu colección?', [
-			{ text: 'Confirmar', onPress: async () => {
-				await borrarRecurso(seriesResource.id, 'serie');
-				refreshData();
-				router.replace({ pathname: '/Collection', params: { initialResource: 'serie' as ResourceType } })
-			} },
-			{ text: 'Cancelar', style: 'cancel' }
-		]);
-	}
+    if (seriesResource) {
+      Alert.alert(
+        'Recurso eliminado',
+        'Estás seguro de que quieres eliminar esta serie de tu colección?',
+        [
+          {
+            text: 'Confirmar',
+            onPress: async () => {
+              await borrarRecurso(seriesResource.id, 'serie');
+              refreshData();
+              router.replace({
+                pathname: '/Collection',
+                params: { initialResource: 'serie' as ResourceType },
+              });
+            },
+          },
+          { text: 'Cancelar', style: 'cancel' },
+        ]
+      );
+    }
   };
 
   const handleEdit = () => {
     if (seriesResource) {
       router.push({
         pathname: '/form/series',
-        params: { item: JSON.stringify(seriesResource) }
+        params: { item: JSON.stringify(seriesResource) },
       });
     }
   };
@@ -62,8 +70,10 @@ export default function SeriesDetail() {
         <StatusBar style="light" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>
-          <Text className="text-secondaryText text-center mt-2">No se pudo cargar la información de la serie</Text>
+          <Text className="mt-4 text-xl font-bold text-primaryText">Error al cargar</Text>
+          <Text className="mt-2 text-center text-secondaryText">
+            No se pudo cargar la información de la serie
+          </Text>
         </View>
       </Screen>
     );
@@ -73,31 +83,44 @@ export default function SeriesDetail() {
 
   const getProgress = () => {
     return seriesResource.temporadaActual + '-' + seriesResource.episodioActual;
-  }
+  };
 
   return (
     <Screen>
-      <ThemedStatusBar/>
+      <ThemedStatusBar />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="flex-row items-center justify-between px-4 pt-2 pb-4">
-          <View className="flex-row items-center flex-1"> 
-            <ReturnButton route="/Collection" title={'Detalle de la serie'} style={" "} params={{initialResource: 'serie' as ResourceType}}/>
+        <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
+          <View className="flex-1 flex-row items-center">
+            <ReturnButton
+              route="/Collection"
+              title={'Detalle de la serie'}
+              style={' '}
+              params={{ initialResource: 'serie' as ResourceType }}
+            />
           </View>
-          <EditResourceButton resource={seriesResource} type='serie'/>
-          <DeleteResourceButton resource={seriesResource} type='serie'/>
+          <EditResourceButton resource={seriesResource} type="serie" />
+          <DeleteResourceButton resource={seriesResource} type="serie" />
         </View>
-        <View className="px-4 mb-4">
-          <Image source={{ uri: contenido.imagenUrl || 'https://via.placeholder.com/500x750' }} className="w-full h-[500px] rounded-2xl bg-background" resizeMode="cover" />
+        <View className="mb-4 px-4">
+          <Image
+            source={{ uri: contenido.imagenUrl || 'https://via.placeholder.com/500x750' }}
+            className="h-[500px] w-full rounded-2xl bg-background"
+            resizeMode="cover"
+          />
         </View>
-        <View className="px-4 pb-6">
-          <Atributes resource={seriesResource}/>
-          <View className="gap-4 mb-6">
+        <View className="mb-14 px-4 pb-6">
+          <ResourceAttributes resource={seriesResource} />
+          <View className="flex-col justify-between gap-3">
             <View className="flex-row gap-2">
-              <RatingCard rating={seriesResource.calificacion}/>
-              <ProgressCard progress={getProgress()}/>
-            </View>  
-            <ReviewCard review={seriesResource.reseña}/>          
-            <DateCard startDate={seriesResource.fechaInicio} endDate={seriesResource.fechaFin} isRange/>
+              <RatingCard rating={seriesResource.calificacion} />
+              <ProgressCard progress={getProgress()} />
+            </View>
+            <ReviewCard review={seriesResource.reseña} />
+            <DateCard
+              startDate={seriesResource.fechaInicio}
+              endDate={seriesResource.fechaFin}
+              isRange
+            />
           </View>
         </View>
       </ScrollView>
