@@ -10,9 +10,10 @@ export const extraAdapter = {
     },
 
     getTitle : (category: string) => {
-        const map: Record<string, any> = {
+        const map: Record<string, string> = {
             'cancion': "Álbum",
             'videojuego': "Modos de Juego",
-        }
+        };
+        return map[category]
     }
 }

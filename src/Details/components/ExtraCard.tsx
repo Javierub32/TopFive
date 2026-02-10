@@ -33,7 +33,7 @@ export const ExtraCard = ({extra, type}: Props) => {
                 <Icono color={colors.accent}/>
                 <Text className="text-sm font-bold uppercase tracking-widest"
                 style={{ color: colors.markerText }}>
-                    {`${extraTitle}`}
+                    {extraTitle}
                 </Text>
             </View>
             <View className="flex-1 justify-center items-center">
