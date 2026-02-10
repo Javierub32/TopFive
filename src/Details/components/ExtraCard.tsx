@@ -1,6 +1,6 @@
 import { useTheme } from "context/ThemeContext";
 import { Text, View } from "react-native";
-import { iconAdapter } from "src/Details/adapter/iconAdapter"
+import { extraAdapter } from "@/Details/adapter/extraAdapter"
 
 interface Props {
     extra : string[] | string | null;
@@ -21,19 +21,19 @@ export const ExtraCard = ({extra, type}: Props) => {
     }
 
     const extraText = getExtraText();
-
-    const Icono = iconAdapter.getIcon(type);
+    const extraTitle = extraAdapter.getTitle(type)
+    const Icono = extraAdapter.getIcon(type);
 
 
     return(
         <View 
         className="justify-between rounded-2xl p-4 gap-2"
-        style={{ backgroundColor: colors.surfaceButton }}>
+        style={{ backgroundColor: `${colors.accent}33` }}>
             <View className="flex-row items-center gap-2">
-                <Icono/>
+                <Icono color={colors.accent}/>
                 <Text className="text-sm font-bold uppercase tracking-widest"
                 style={{ color: colors.markerText }}>
-                Modos de Juego
+                    {`${extraTitle}`}
                 </Text>
             </View>
             <View className="flex-1 justify-center items-center">
