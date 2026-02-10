@@ -5,7 +5,7 @@ import { CollectionStructure } from 'components/CollectionStructure';
 import { ReturnButton } from 'components/ReturnButton';
 import { Screen } from 'components/Screen';
 import { useAuth } from 'context/AuthContext';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { ResourceMap, ResourceType } from 'hooks/useResource';
 import { useEffect } from 'react';
 import { Alert, View } from 'react-native';
@@ -38,6 +38,7 @@ export default function TopFiveSelectorScreen() {
             onPress: async () => {
               const posicion = parseInt(position);
               await insertToTopFive(posicion, resourceType, item.id);
+			  router.replace('/Profile'); 
             },
           },
         ],
@@ -49,7 +50,7 @@ export default function TopFiveSelectorScreen() {
   return (
     <Screen>
       <ReturnButton route="/Profile" title="Volver a perfil" />
-      <View className="mt-4 flex-1">
+      <View className=" flex-1 px-4">
         <CollectionStructure
           data={data}
           categoriaActual={resourceType}

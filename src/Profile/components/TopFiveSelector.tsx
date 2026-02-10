@@ -52,7 +52,7 @@ export const TopFiveSelector = () => {
 				 activeOpacity={0.7}>
 				  
                   <View
-                    className="aspect-[0.6] w-full items-center justify-center overflow-hidden rounded-lg border"
+                    className="aspect-[2/3] w-full items-center justify-center overflow-hidden rounded-lg border"
                     style={{
                       backgroundColor: colors.surfaceButton,
                       borderColor: colors.borderButton,
@@ -76,7 +76,7 @@ export const TopFiveSelector = () => {
                 onLongPress={() => handleLongPress(position, item)}
 				activeOpacity={0.7}>
                 <View
-                  className="aspect-[0.6] w-full items-center justify-center overflow-hidden rounded-lg "
+                  className="aspect-[2/3] w-full items-center justify-center overflow-hidden rounded-lg "
                   style={{
                     backgroundColor: colors.surfaceButton,
                   }}>
