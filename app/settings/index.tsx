@@ -1,37 +1,34 @@
 import { ReturnButton } from "components/ReturnButton";
 import { Pressable, View, Text, TextComponent} from "react-native";
 import { Screen } from 'components/Screen';
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from '@expo/vector-icons/';
 
 import { useProfile } from 'src/Profile/hooks/useProfile';
 import { useTheme } from "context/ThemeContext";
+import { router, useLocalSearchParams } from "expo-router";
 
 export default function SettingsScreen() {
-
     const {
-    user,
-    userData,
-    selectedCategory,
-    isPressed,
-    categoryData,
-    setSelectedCategory,
-    setIsPressed,
-    pickImage,
     signOut,
-    selectedYear,
-    setSelectedYear,
   } = useProfile();
 
   const { colors, toggleTheme} = useTheme();
+  const { username , description } = useLocalSearchParams();
 
 
     return (
         <Screen>
             <ReturnButton route='/(tabs)/Profile' title='Configuración' />
             <View className="flex-1 p-4">
-                <Text className="text-lg pb-4" style= {{color: colors.secondaryText}}>Settings content goes here</Text>
                 <View className="flex-col justify-center gap-2">
+					<Pressable
+                        className="w-full flex-row justify-between items-center rounded-xl border-2 p-3"
+                        style={{borderColor: colors.borderButton, backgroundColor: `${colors.buttonBackground}1A`}}
+                        onPress={() => router.push({ pathname: '/editProfile' , params: { username, description } })}>
+                        <Text className="text-lg" style={{color: colors.primaryText}}>Editar perfil</Text>
+                        <AntDesign name="edit" size={20} color={colors.primaryText} />
+                    </Pressable>
                     <Pressable
                         className="w-full flex-row justify-between items-center rounded-xl border-2 p-3"
                         style={{borderColor: colors.borderButton, backgroundColor: `${colors.buttonBackground}1A`}}
