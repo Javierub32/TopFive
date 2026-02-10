@@ -17,7 +17,7 @@ export const RatingCard =({rating}: Props) => {
                 <RatingIcon/>
                 <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Calificación</Text>
             </View>
-            <View className="flex-row">
+            <View className="flex-1 flex-row justify-center items-center">
                 {[1, 2, 3, 4, 5].map((star) => (
                 <FontAwesome5
                     key={star}

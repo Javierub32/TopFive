@@ -7,19 +7,16 @@ import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Series } from 'app/types/Content';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
+import { ContentTags } from "@/Details/components/ContentTags";
+import { DescriptionCard } from "@/Details/components/DescriptionCard";
+import { AddToCollectionButton } from "@/Details/components/AddToCollectionButton";
+import { ContentDateCard } from "@/Details/components/ContentDateCard";
+import { ThemedStatusBar } from "components/ThemedStatusBar";
 
 export default function SeriesDetail() {
   const { seriesData } = useLocalSearchParams();
-  const router = useRouter();
   const series: Series = JSON.parse(seriesData as string);
-  const { colors } = useTheme();  
-
-  const openForm = (series: Series) => {
-	router.push({
-	  pathname: '/form/series',
-	  params: { seriesData: JSON.stringify(series) }
-	});
-  }
+  const { colors } = useTheme();
 
   if (!series) {
     return (
@@ -34,12 +31,9 @@ export default function SeriesDetail() {
     );
   }
 
-  const releaseYear = series.releaseDate ? new Date(series.releaseDate).getFullYear() : 'N/A';
-  const endedYear = series.ended ? new Date(series.ended).getFullYear() : null;
-
   return (
     <Screen>
-      <StatusBar style="light" />
+      <ThemedStatusBar/>
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <ReturnButton route="/Add?initialCategory=serie" title="Detalle de la serie" />
@@ -47,97 +41,19 @@ export default function SeriesDetail() {
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: series.imageFull || series.image || 'https://via.placeholder.com/500x750' }}
-            className="w-full h-[500px] rounded-2xl bg-background"
+            className="aspect-[2/3] rounded-2xl"
+            style={{backgroundColor: colors.surfaceButton}}
             resizeMode="cover"
           />
         </View>
 
-        <View className="px-4 mb-14">
-          <Text className="text-primaryText text-3xl font-bold mb-3">
-            {series.title}
-          </Text>
-
-          <View className="flex-row items-center mb-4 flex-wrap">
-            <View className="bg-surfaceButton px-3 py-1.5 rounded-lg mr-2 mb-2 border border-borderButton">
-              <Text className="text-secondaryText text-sm font-semibold">
-                {endedYear ? `${releaseYear} - ${endedYear}` : `${releaseYear} - Presente`}
-              </Text>
-            </View>
-
-            {series.rating && (
-              <View className="bg-marker px-3 py-1.5 rounded-lg mr-2 mb-2 border border-primary/30 flex-row items-center">
-                <MaterialCommunityIcons name="star" size={16} color="#fbbf24" />
-                <Text className="text-markerText text-sm font-bold ml-1">
-                  {series.rating.toFixed(1)}
-                </Text>
-              </View>
-            )}
-
-            {series.genre && series.genre.length > 0 && (
-              <View className="bg-surfaceButton px-3 py-1.5 rounded-lg mb-2 border border-borderButton">
-                <Text className="text-secondaryText text-sm">
-                  {series.genre.join(', ')}
-                </Text>
-              </View>
-            )}
+        <View className="px-4 mb-14 pb-6">
+          <ContentTags content={series} type='serie'/>
+          <View className="flex justify-between gap-3">
+            <ContentDateCard releaseDate={series.releaseDate}/>
+            <DescriptionCard description={series.description}/>   
           </View>
-
-          {series.releaseDate && (
-            <View className="mb-6">
-              <Text className="text-title text-lg font-bold mb-2">
-                Fecha de Estreno
-              </Text>
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="calendar" size={24} color={colors.primary} />
-                <Text className="text-secondaryText text-base ml-3">
-                  {new Date(series.releaseDate).toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </Text>
-              </View>
-            </View>
-          )}
-
-          {series.ended && (
-            <View className="mb-6">
-              <Text className="text-title text-lg font-bold mb-2">
-                Fecha de Finalización
-              </Text>
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="calendar-check" size={24} color={colors.primary} />
-                <Text className="text-secondaryText text-base ml-3">
-                  {new Date(series.ended).toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </Text>
-              </View>
-            </View>
-          )}
-
-          {series.description && (
-            <View className="mb-6">
-              <Text className="text-title text-lg font-bold mb-2">
-                Sinopsis
-              </Text>
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-secondaryText text-base leading-6">
-                  {series.description}
-                </Text>
-              </View>
-            </View>
-          )}
-
-          <TouchableOpacity 
-            onPress={() => openForm(series)} 
-            className="flex-1 bg-primary py-4 rounded-xl items-center flex-row justify-center"
-          >
-            <FontAwesome5 name="cloud-upload-alt" size={16} color="white" />
-            <Text className="text-primaryText font-bold ml-2">Añadir a colección</Text>
-          </TouchableOpacity>
+          <AddToCollectionButton content={series} type='serie'/>
         </View>
       </ScrollView>
     </Screen>

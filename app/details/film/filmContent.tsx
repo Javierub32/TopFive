@@ -7,8 +7,11 @@ import { Film } from 'app/types/Content';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
-import { cleanHtmlDescription } from '@/Details/utils/descriptionUtils';
 import { Float } from 'react-native/Libraries/Types/CodegenTypes';
+import { DescriptionCard } from "@/Details/components/DescriptionCard";
+import { ContentTags } from "@/Details/components/ContentTags";
+import { ContentDateCard } from "@/Details/components/ContentDateCard";
+import { AddToCollectionButton } from "@/Details/components/AddToCollectionButton";
 
 export default function FilmDetail() {
   const { filmData } = useLocalSearchParams();
@@ -16,14 +19,6 @@ export default function FilmDetail() {
   const film: Film = JSON.parse(filmData as string);
   const { colors } = useTheme();
   
-  const [ isExpanded, setIsExpanded ] = React.useState(false);
-  const MAX_LENGTH = 200;
-  const shouldTruncate = film.description && film.description.length > MAX_LENGTH;
-  const rawDescription = film.description || 'Sin descripción disponible.';
-  const descriptionText = cleanHtmlDescription(rawDescription);
-  const displayedDescription = shouldTruncate && !isExpanded
-    ? descriptionText.slice(0, MAX_LENGTH) + '...'
-    : descriptionText;
 
   const openForm = (film: Film) => {
     router.push({
@@ -62,83 +57,19 @@ export default function FilmDetail() {
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: film.image || 'https://via.placeholder.com/500x750' }}
-            className="w-full h-[600px] rounded-2xl"
+            className="aspect-[2/3] rounded-2xl"
             style={{ backgroundColor: colors.surfaceButton }}
             resizeMode="cover"
           />
         </View>
-
-        <View className="px-4 mb-14">
-          <Text className="text-3xl font-bold mb-3" style={{color: colors.primaryText}}>
-            {film.title || 'Sin título'}
-          </Text>
-
-          <View className="flex-row items-stretch mb-4 flex-wrap gap-2">
-            <View className="px-3 py-1.5 rounded-lg justify-center" 
-            style={{ backgroundColor: colors.surfaceButton}}>
-              <Text className="text-sm font-semibold" style={{color: colors.markerText}}>
-                {releaseYear}
-              </Text>
-            </View>  
-
-            {!!film.rating && (
-              <View className="px-3 py-1.5 rounded-lg flex-row items-center border" style={{backgroundColor: colors.surfaceButton, borderColor: colors.rating}}>
-                <MaterialCommunityIcons name="star" size={20} color={colors.rating} />
-                <Text className="text-sm font-bold ml-1" style={{color: colors.markerText}}>
-                  {ratingValue(film.rating)}
-                </Text>
-              </View>
-            )}
-          </View>
-
+        
+        <View className="px-4 mb-14 pb-6">
+          <ContentTags content={film} type='pelicula'/>
           <View className='flex-col justify-between gap-3'>
-            {film.releaseDate && (
-              <View className="p-4 rounded-2xl flex justify-between gap-2" style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton}}>
-                <View className="flex-row items-center gap-2">
-                  <MaterialCommunityIcons name="calendar" size={20} color={colors.primary} />
-                  <Text className="text-sm font-bold uppercase tracking-widest" style={{color:colors.title}}>
-                    Publicado
-                  </Text>
-                </View>
-                <Text className="text-base ml-3" style={{color: colors.secondaryText}}>
-                  {new Date(film.releaseDate).toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </Text>
-              </View>
-            )}
-
-            {descriptionText && (
-              <View className='p-5 rounded-2xl space-y-3 border-l-4' style={{backgroundColor: colors.surfaceButton, borderColor:colors.borderButton}}>
-                <View className='flex-row items-center gap-2'>
-                  <MaterialCommunityIcons name="book-open-page-variant" size={20} color={colors.primary}/>
-                  <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.title}}>Sinopsis</Text>
-                </View>
-                <Text style={{color: colors.secondaryText}}>
-                  <Text className='leading-relaxed italic'>
-                    {displayedDescription}
-                  </Text>
-                  {shouldTruncate && (
-                    <Text className='font-bold' style= {{ color: colors.primary}} onPress={() => setIsExpanded(!isExpanded)}>
-                      {isExpanded? 'Leer menos' : 'Leer más'}
-                    </Text>
-                  )}
-                </Text>
-              </View>
-            )}
+            <ContentDateCard releaseDate={film.releaseDate}/>
+            <DescriptionCard description={film.description}/>
           </View>
-
-		      
-          <TouchableOpacity 
-            onPress={() => {openForm(film)}}
-            className="flex-1 py-4 rounded-xl items-center flex-row justify-center mt-4"
-            style={{backgroundColor: `${colors.primary}`}}
-          >
-            <FontAwesome5 name="cloud-upload-alt" size={16} color={colors.background} style={{marginRight: 8}} />
-            <Text className="font-bold" style={{color: colors.background}}>Añadir a colección</Text>
-          </TouchableOpacity>
+          <AddToCollectionButton content={film} type='pelicula'/>
         </View>
       </ScrollView>
     </Screen>

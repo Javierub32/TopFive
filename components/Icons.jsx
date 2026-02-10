@@ -143,3 +143,39 @@ export const DificultyIcon = (props) => {
     <MaterialCommunityIcons name="speedometer" size={20} color="white" {...props}/>
   )
 }
+
+export const RatingStarIcon = (props) => {
+  const { colors } = useTheme();
+  return(
+    <FontAwesome5 name="star" size={16} color={colors.rating} solid={true} {...props}/>
+  )
+}
+
+export const AuthorIcon = (props) => {
+  const { colors } = useTheme();
+  return(
+    <MaterialCommunityIcons name="account" size={20} color={colors.primary} {...props} />
+
+  )
+}
+
+export const UploadIcon = (props) => {
+  const { colors } = useTheme();
+  return (
+    <FontAwesome5 name="cloud-upload-alt" size={20} color={colors.background} {...props}/>
+  )
+}
+
+export const GameModeIcon = (props) => {
+  const { colors } = useTheme();
+  return (
+    <Ionicons name="game-controller" size={20} color={colors.primary} {...props}/>
+  )
+}
+
+export const AlbumIcon = (props) => {
+  const { colors } = useTheme();
+  return (
+    <MaterialCommunityIcons name="album" size={20} color={colors.primary} {...props}/>
+  )
+}

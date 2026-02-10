@@ -9,24 +9,18 @@ import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { Float } from 'react-native/Libraries/Types/CodegenTypes';
+import { ContentTags } from "@/Details/components/ContentTags";
+import { AuthorCard } from "@/Details/components/AuthorCard";
+import { ContentDateCard } from "@/Details/components/ContentDateCard";
+import { DescriptionCard } from "@/Details/components/DescriptionCard";
+import { AddToCollectionButton } from "@/Details/components/AddToCollectionButton";
+import { ExtraCard } from "@/Details/components/ExtraCard";
 
 export default function GameDetail() {
   const { gameData } = useLocalSearchParams();
-  const router = useRouter();
   const game: Game = JSON.parse(gameData as string);
   const { colors } = useTheme();
 
-  const openForm = (game: Game) => {
-	router.push({
-	  pathname: '/form/game',
-	  params: { gameData: JSON.stringify(game) }
-	});
-  }
-
-  const ratingValue = (rating: Float) => {
-    if (!rating) return null;
-    return (rating/20).toFixed(1);
-  }
 
   if (!game) {
     return (
@@ -41,7 +35,6 @@ export default function GameDetail() {
     );
   }
 
-  const releaseYear = game.releaseDate ? new Date(game.releaseDate).getFullYear() : 'N/A';
 
   return (
     <Screen>
@@ -53,120 +46,21 @@ export default function GameDetail() {
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: game.image || 'https://via.placeholder.com/500x750' }}
-            className="w-full h-[600px] rounded-2xl"
+            className="aspect-[2/3] rounded-2xl"
             style={{backgroundColor: colors.surfaceButton}}
             resizeMode="cover"
           />
         </View>
 
-        <View className="px-4 pb-6">
-          <Text className="text-3xl font-bold mb-4" style={{color: colors.primaryText}}>
-            {game.title || 'Sin título'}
-          </Text>
-
-          <View className="flex-row items-stretch flex-wrap gap-2 mb-4">
-            <View className="px-3 py-1.5 rounded-lg justify-center" style={{backgroundColor: colors.surfaceButton}}>
-              <Text className="text-sm font-semibold" style={{color: colors.markerText}}>
-                {releaseYear}
-              </Text>
-            </View>
-
-            {game.rating && (
-              <View className="px-3 py-1.5 rounded-lg border flex-row justify-center items-center" style={{backgroundColor: colors.surfaceButton, borderColor: colors.rating}}>
-                <MaterialCommunityIcons name="star" size={20} color={colors.rating} />
-                <Text className="text-sm font-bold ml-1" style={{color: colors.markerText}}>
-                  {ratingValue(game.rating)}
-                </Text>
-              </View>
-            )}
-
-            {game.genre && game.genre.length > 0 && (
-              <View className="px-3 py-1.5 rounded-lg" style= {{backgroundColor: colors.surfaceButton}}>
-                <Text className="text-sm" style={{color: colors.markerText}}>
-                  {game.genre.join(', ')}
-                </Text>
-              </View>
-            )}
+        <View className="px-4 pb-6 gap-3">
+          <ContentTags content={game} type='videojuego'/>
+          <View className="flex-row gap-2">
+            <AuthorCard autor={game.autor}/>
+            <ContentDateCard releaseDate={game.releaseDate}/>
           </View>
-
-          {game.autor && (
-            <View className="mb-6">
-              <Text className="text-title text-lg font-bold mb-2">
-                Desarrollador
-              </Text>
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="domain" size={24} color={colors.primary} />
-                <Text className="text-secondaryText text-base ml-3">
-                  {game.autor}
-                </Text>
-              </View>
-            </View>
-          )}
-
-          {game.platforms && game.platforms.length > 0 && (
-            <View className="mb-6">
-              <Text className="text-title text-lg font-bold mb-2">
-                Plataformas
-              </Text>
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-secondaryText text-base leading-6">
-                  {game.platforms.join(', ')}
-                </Text>
-              </View>
-            </View>
-          )}
-
-          {game.gamemodes && game.gamemodes.length > 0 && (
-            <View className="mb-6">
-              <Text className="text-title text-lg font-bold mb-2">
-                Modos de Juego
-              </Text>
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-secondaryText text-base leading-6">
-                  {game.gamemodes.join(', ')}
-                </Text>
-              </View>
-            </View>
-          )}
-
-          {game.releaseDate && (
-            <View className="mb-6">
-              <Text className="text-title text-lg font-bold mb-2">
-                Fecha de Lanzamiento
-              </Text>
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="calendar" size={24} color={colors.primary} />
-                <Text className="text-secondaryText text-base ml-3">
-                  {new Date(game.releaseDate).toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </Text>
-              </View>
-            </View>
-          )}
-
-          {game.description && (
-            <View className="mb-6">
-              <Text className="text-title text-lg font-bold mb-2">
-                Descripción
-              </Text>
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton">
-                <Text className="text-secondaryText text-base leading-6">
-                  {game.description}
-                </Text>
-              </View>
-            </View>
-          )}
-
-          <TouchableOpacity 
-            onPress={() => openForm(game)} 
-            className="flex-1 bg-primary py-4 rounded-xl items-center flex-row justify-center"
-          >
-            <FontAwesome5 name="cloud-upload-alt" size={16} color="white" style={{marginRight: 8}} />
-            <Text className="text-primaryText font-bold">Añadir a colección</Text>
-          </TouchableOpacity>
+          <ExtraCard extra={game.gamemodes} type='videojuego'/>
+          <DescriptionCard description={game.description}/>
+          <AddToCollectionButton content={game} type='videojuego'/>
         </View>
       </ScrollView>
     </Screen>

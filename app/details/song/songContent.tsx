@@ -7,6 +7,12 @@ import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Song } from 'app/types/Content';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
+import { ThemedStatusBar } from "components/ThemedStatusBar";
+import { ContentTags } from "@/Details/components/ContentTags";
+import { AuthorCard } from "@/Details/components/AuthorCard";
+import { ContentDateCard } from "@/Details/components/ContentDateCard";
+import { AddToCollectionButton } from "@/Details/components/AddToCollectionButton";
+import { ExtraCard } from "@/Details/components/ExtraCard";
 
 export default function SongDetail() {
   const { songData } = useLocalSearchParams();
@@ -38,94 +44,28 @@ export default function SongDetail() {
 
   return (
     <Screen>
-      <StatusBar style="light" />
+      <ThemedStatusBar/>
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-
-		<ReturnButton route="/Add?initialCategory=cancion" title="Detalle de la canción" />
+		    <ReturnButton route="/Add?initialCategory=cancion" title="Detalle de la canción" />
 
         <View className="px-4 mb-4">
           <Image 
             source={{ uri: song.imageFull || song.image || 'https://via.placeholder.com/500x750' }}
-            className="w-full h-[500px] rounded-2xl bg-background"
+            className="aspect-[2/3] rounded-2xl bg-background"
             resizeMode="cover"
           />
         </View>
 
-        <View className="px-4 mb-14">
-          <Text className="text-primaryText text-3xl font-bold mb-3">
-            {song.title || 'Sin título'}
-          </Text>
-
-          <View className="flex-row items-center mb-4 flex-wrap">
-            <View className="bg-surfaceButton px-3 py-1.5 rounded-lg mr-2 mb-2 border border-borderButton">
-              <Text className="text-secondaryText text-sm font-semibold">
-                {releaseYear}
-              </Text>
-            </View>
-
-            {song.genre && (
-              <View className="bg-surfaceButton px-3 py-1.5 rounded-lg mb-2 border border-borderButton">
-                <Text className="text-secondaryText text-sm">
-                  {song.genre}
-                </Text>
-              </View>
-            )}
+        <View className="px-4 mb-14 pb-6 gap-3">
+          <ContentTags content={song} type='cancion'/>
+          <View className="flex-row gap-2">
+            <AuthorCard autor={song.autor}/>
+            <ContentDateCard releaseDate={song.releaseDate}/>
           </View>
 
-          {song.autor && (
-            <View className="mb-6">
-              <Text className="text-title text-lg font-bold mb-2">
-                Artista
-              </Text>
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="account-music" size={24} color={colors.primary} />
-                <Text className="text-secondaryText text-base ml-3">
-                  {song.autor}
-                </Text>
-              </View>
-            </View>
-          )}
-
-          {song.album && (
-            <View className="mb-6">
-              <Text className="text-title text-lg font-bold mb-2">
-                Álbum
-              </Text>
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="album" size={24} color={colors.primary} />
-                <Text className="text-secondaryText text-base ml-3">
-                  {song.album}
-                </Text>
-              </View>
-            </View>
-          )}
-
-          {song.releaseDate && (
-            <View className="mb-6">
-              <Text className="text-title text-lg font-bold mb-2">
-                Fecha de Lanzamiento
-              </Text>
-              <View className="bg-surfaceButton p-4 rounded-xl border border-borderButton flex-row items-center">
-                <MaterialCommunityIcons name="calendar" size={24} color={colors.primary} />
-                <Text className="text-secondaryText text-base ml-3">
-                  {new Date(song.releaseDate).toLocaleDateString('es-ES', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </Text>
-              </View>
-            </View>
-          )}
-
-          <TouchableOpacity 
-            onPress={() => {openForm(song);}} 
-            className="flex-1 bg-primary py-4 rounded-xl items-center flex-row justify-center"
-          >
-            <FontAwesome5 name="cloud-upload-alt" size={16} color="white" style={{marginRight: 8}} />
-            <Text className="text-primaryText font-bold">Añadir a colección</Text>
-          </TouchableOpacity>
+          <ExtraCard extra={song.album} type='cancion'/>
+          <AddToCollectionButton content={song} type='cancion'/>
         </View>
       </ScrollView>
     </Screen>

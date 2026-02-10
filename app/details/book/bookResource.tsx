@@ -64,10 +64,10 @@ export default function BookDetail() {
           <DeleteResourceButton resource={bookResource} type={'libro'} />
         </View>
         {/* Imagen del libro */}
-        <View className="mb-4 px-4">
+        <View className="px-4 mb-4">
           <Image
             source={{ uri: contenido.imagenUrl || 'https://via.placeholder.com/500x750' }}
-            className="h-[600px] w-full rounded-2xl"
+            className="aspect-[2/3] rounded-2xl"
             style={{ backgroundColor: colors.surfaceButton }}
             resizeMode="cover"
           />

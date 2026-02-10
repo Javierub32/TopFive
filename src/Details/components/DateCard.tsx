@@ -31,7 +31,7 @@ export const DateCard = ({startDate, endDate, isRange} : Props) => {
                     <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Última vez</Text>
                 </View>
                 <View className='flex-row items-baseline'>
-                    <Text className='text-xl font-bold' style={{ color: colors.primaryText}}>
+                    <Text className='text-base ml-3' style={{ color: colors.secondaryText}}>
                     {formatDate(startDate)}
                     </Text>
                 </View>
