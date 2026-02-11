@@ -72,7 +72,7 @@ export const useProfile = () => {
           setLoading(false);
         });
     }
-  }, [user]);
+  }, [user?.id]);
 
   // Fetch stats when category or year changes
   useEffect(() => {    

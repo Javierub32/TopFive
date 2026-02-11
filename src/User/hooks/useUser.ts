@@ -22,7 +22,7 @@ interface UseUserResult {
 
 export const useUser = (username: string) => {
 	const {user} = useAuth();
-	const [userData, setUserData] = useState<any>(null);
+	const [userData, setUserData] = useState<User | null>(null);
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
@@ -32,6 +32,7 @@ export const useUser = (username: string) => {
 				const userId = await userService.getUserIdByUsername(username);
 				if (!userId) throw new Error("User not found");
 				const data = await userService.fetchUserById(userId, user?.id);
+				if (data?.id === user?.id) data.following_status = 'accepted';
 				setUserData(data);
 			} catch (error) {
 				console.error("Error fetching user data:", error);
@@ -48,7 +49,7 @@ export const useUser = (username: string) => {
 			const userId = await userService.getUserIdByUsername(username);
 			if (!userId) throw new Error("User not found");
 			await userService.requestFollow(user.id, userId);
-			setUserData((prevData: User) => ({
+			setUserData((prevData: any) => ({
 				...prevData,
 				is_requested: true,
 				following_status: 'pending'
@@ -64,7 +65,7 @@ export const useUser = (username: string) => {
 			const userId = await userService.getUserIdByUsername(username);
 			if (!userId) throw new Error("User not found");
 			await userService.unfollow(user.id, userId);
-			setUserData((prevData: User) => ({
+			setUserData((prevData: any) => ({
 				...prevData,
 				is_requested: false,
 				following_status: null
