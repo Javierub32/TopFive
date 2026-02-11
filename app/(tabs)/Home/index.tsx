@@ -30,14 +30,14 @@ export default function HomeScreen() {
 				data={activities}
 				keyExtractor={(item, index) => `${item.recurso_id}-${index}`}
 				renderItem={({ item }) => <ActivityItem item={item} />}
-				contentContainerStyle={activities.length === 0 ? { flex: 1, paddingHorizontal: 16 } : { paddingHorizontal: 16, paddingBottom: 16 }}
+				contentContainerStyle={activities.length === 0 ? { flex: 1, paddingHorizontal: 16, paddingVertical: 150 } : { paddingHorizontal: 16, paddingBottom: 16 }}
 				onEndReached={fetchActivities}
 				onEndReachedThreshold={0.5}
 				refreshControl={
 					<RefreshControl refreshing={refreshing} onRefresh={refreshActivities} tintColor={colors.primaryText} />	
 				}
 				ListEmptyComponent={() => (
-					<View className="flex-1 items-center justify-center px-4">
+					<View className="flex-1 items-center px-4 ">
 						<SocialBubblesIcon className="mb-4" size={100} color={colors.primaryText} />
 						<Text className="text-2xl text-center mb-4 font-bold" style={{color: colors.primaryText}}>
 							No tienes ningún amigo con reseñas acabadas.
@@ -48,7 +48,7 @@ export default function HomeScreen() {
 						<TouchableOpacity
 							onPress={() => router.push('/(tabs)/Search')}
 							className="px-6 py-3 rounded-3xl"
-							style={{backgroundColor: colors.secondary}}
+							style={{backgroundColor: colors.primary}}
 						>
 							<Text className="text-white text-base font-bold">Buscar amigos </Text>
 							

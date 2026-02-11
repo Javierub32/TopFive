@@ -3,6 +3,7 @@ import { useTheme } from 'context/ThemeContext';
 import React from 'react';
 import { View, Text, Image, Pressable } from 'react-native';
 import { Activity } from '../hooks/useActivity';
+import { UserIcon } from 'components/Icons';
 
 
 
@@ -29,11 +30,20 @@ export default function ActivityItem({ item}: { item: Activity }) {
       {/* Header: Usuario e info */}
       <View className="flex-row items-center justify-between mb-4">
         <View className="flex-row items-center gap-3">
-          <Image 
-            source={{ uri: item.avatar_url || 'https://via.placeholder.com/150' }}
-            className="w-10 h-10 rounded-full"
-            style={{ borderWidth: 1, borderColor: colors.borderButton }}
-          />
+          {item.avatar_url ? (
+            <Image 
+              source={{ uri: item.avatar_url}}
+              className="w-10 h-10 rounded-full"
+              style={{ borderWidth: 1, borderColor: colors.borderButton}}
+            />
+          ) : (
+            <View className="h-10 w-10 items-center justify-center rounded-full" style={{ backgroundColor: colors.surfaceButton, borderWidth: 1, borderColor: colors.borderButton }}>
+            <Text className="text-xl font-bold" style={{ color: colors.secondaryText }}>
+              {item.username.charAt(0).toUpperCase()}
+            </Text>
+          </View>
+          )}
+          
           <View className="flex-col">
             <Text className="font-bold text-base" style={{ color: colors.primaryText }}>{item.username}</Text>
             <Text className="text-xs" style={{ color: colors.secondaryText }}>{getRelativeTime(item.fecha_actividad)}</Text>
