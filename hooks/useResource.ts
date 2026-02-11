@@ -46,10 +46,15 @@ export const useResource = () => {
     ordenarPorFecha?: boolean | null,
     profile?: boolean | null,
     from?: number | null,
-    to?: number | null
+    to?: number | null,
+    targetUserId?: string | null
+
   ): Promise<ResourceMap[K][] | null> => {
     try {
       if (!user) throw new Error('User not authenticated');
+
+      const userIdToQuery = targetUserId || user.id; 
+
 
       const config = RESOURCE_CONFIG[type];
       const isSearch = term !== undefined && term !== null && term !== '';
@@ -66,7 +71,7 @@ export const useResource = () => {
                 fechaLanzamiento
             )
         ` as any)
-        .eq('usuarioId', user.id);
+        .eq('usuarioId', userIdToQuery);
 
 
       // Sobrescribimos la query para traer solo el campo de fecha necesario para las estadísticas generales
@@ -76,7 +81,7 @@ export const useResource = () => {
         query = supabase
           .from(config.table)
           .select(dateField as any)
-          .eq('usuarioId', user.id);
+          .eq('usuarioId', userIdToQuery);
       }
 
       if (from != undefined && to != null) {

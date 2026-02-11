@@ -28,6 +28,7 @@ export default function ProfileScreen() {
     setSelectedYear,
     loading,
     currentStats,
+	statsLoading
   } = useProfile();
 
 
@@ -78,19 +79,26 @@ export default function ProfileScreen() {
             />
           </ProfileData>
 
-          <TopFiveSelector />
+          {userData?.id && <TopFiveSelector userId={userData.id} />}
           <CategorySelector selected={selectedCategory} onSelect={setSelectedCategory} />
-
-          <StatsGrid
-            title={currentStats.title}
-            total={currentStats.total}
-            average={currentStats.average}
-          />
-          <StatsChart
-            data={currentStats.chartData}
-            selectedYear={selectedYear}
-            setSelectedYear={setSelectedYear}
-          />
+		  {statsLoading ? (
+			<View className="mb-4 flex items-center justify-center py-10">
+			  <LoadingIndicator />
+			</View>
+		  ) : (
+			<>
+				<StatsGrid
+					title={currentStats.title}
+					total={currentStats.total}
+					average={currentStats.average}
+				/>
+				<StatsChart
+					data={currentStats.chartData}
+					selectedYear={selectedYear}
+					setSelectedYear={setSelectedYear}
+				/>
+			</>
+		  )}
         </ScrollView>
       </View>
     </Screen>

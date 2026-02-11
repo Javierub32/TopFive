@@ -1,11 +1,11 @@
-import { useAuth } from 'context/AuthContext';
 import { useTheme } from 'context/ThemeContext';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { useTopFive } from '../hooks/useTopFive';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { CategorySelectorModal } from 'components/CategorySelectorModal';
+import { useAuth } from 'context/AuthContext';
 
-export const TopFiveSelector = () => {
+export const TopFiveSelector = ({ userId }: { userId: string }) => {
   const slots = Array.from({ length: 5 });
   const { colors } = useTheme();
   const { user } = useAuth();
@@ -17,18 +17,20 @@ export const TopFiveSelector = () => {
     modalVisible,
     setModalVisible,
 	handleLongPress,
-  } = useTopFive(user?.id || '');
+  } = useTopFive(userId);
+
+  const isOwnProfile = user?.id === userId;
 
   if (loading) {
     return (
-      <View className="flex items-center justify-center">
+      <View className="mb-4 flex items-center justify-center py-10">
         <LoadingIndicator />
       </View>
     );
   }
 
   return (
-    <View className="z-50 mb-4">
+    <View className="mb-4 mt-4">
       <Text className="mb-2 text-lg font-bold" style={{ color: colors.primaryText }}>
         Mi Top 5
       </Text>
@@ -43,13 +45,14 @@ export const TopFiveSelector = () => {
           if (!item) {
             return (
               <View
-                key={index}
+                key={`empty-slot-${position}`}
                 className="flex-1 rounded-lg"
                 style={{ backgroundColor: colors.surfaceButton }}>
                 <TouchableOpacity
-                  onPress={() => handlePress(position, item)}
-				  onLongPress={() => handleLongPress(position, item)}
-				 activeOpacity={0.7}>
+                  disabled={!isOwnProfile}
+                  onPress={() => isOwnProfile && handlePress(position, item)}
+                  onLongPress={() => isOwnProfile && handleLongPress(position, item)}
+                  activeOpacity={0.7}>
 				  
                   <View
                     className="aspect-[2/3] w-full items-center justify-center overflow-hidden rounded-lg border"
@@ -68,19 +71,23 @@ export const TopFiveSelector = () => {
 
           return (
             <View
-              key={index}
+              key={`slot-${position}-${item.id || index}`}
               className="flex-1 rounded-lg"
               style={{ backgroundColor: colors.surfaceButton }}>
               <TouchableOpacity
                 onPress={() => handlePress(position, item)}
-                onLongPress={() => handleLongPress(position, item)}
-				activeOpacity={0.7}>
+                onLongPress={() => isOwnProfile && handleLongPress(position, item)}
+                activeOpacity={0.7}>
                 <View
                   className="aspect-[2/3] w-full items-center justify-center overflow-hidden rounded-lg "
                   style={{
                     backgroundColor: colors.surfaceButton,
                   }}>
-                  <Image source={{ uri: imageUrl }} className="h-full w-full" resizeMode="cover" />
+                  {imageUrl ? (
+                    <Image source={{ uri: imageUrl }} className="h-full w-full" resizeMode="cover" />
+                  ) : (
+                    <Text style={{ color: colors.secondaryText }}>Sin imagen</Text>
+                  )}
                 </View>
               </TouchableOpacity>
             </View>

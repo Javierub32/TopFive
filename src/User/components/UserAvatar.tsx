@@ -13,30 +13,22 @@ export function UserAvatar({ avatarUrl }: Props) {
   const { colors } = useTheme();
 
   return (
-    <View style={{ position: 'relative' }}>
-      <TouchableOpacity
-        onPressIn={() => setIsPressed(true)}
-        onPressOut={() => setIsPressed(false)}
-        activeOpacity={0.7}>
-        {avatarUrl ? (
-          <Image
-            source={{ uri: avatarUrl }}
-            className="w-28 h-28 rounded-full border-2"
-            style={{borderColor: colors.background}}
-          />
-        ) : (
-          <View 
-            className="w-28 h-28 rounded-full justify-center items-center border-2"
-            style={{
-                backgroundColor: colors.surfaceButton,
-                borderColor: colors.background
-            }}>
-            <MaterialCommunityIcons name="account" size={60} color={colors.secondaryText} />
-          </View>
-        )}
-      </TouchableOpacity>
+    <View className="items-center justify-center">
+      <View style={{ position: 'relative', paddingTop: 0 }}>
+        <TouchableOpacity
+          onPressIn={() => setIsPressed(true)}
+          onPressOut={() => setIsPressed(false)}
+          activeOpacity={0.7}
+        >
+          {avatarUrl ? (
+            <Image source={{ uri: avatarUrl }} className="w-28 h-28 rounded-full border-2" style={{ borderColor: colors.background }} />
+          ) : (
+            <View className="w-28 h-28 rounded-full justify-center items-center border-2" style={{ borderColor: colors.background, backgroundColor: colors.surfaceButton }}>
+              <MaterialCommunityIcons name="account" size={60} color={colors.secondaryText} />
+            </View>
+          )}
 
-      <Image
+          <Image
           source={require('../../../assets/gorro-navideño.png')}
           style={{
             position: 'absolute',
@@ -48,7 +40,8 @@ export function UserAvatar({ avatarUrl }: Props) {
           }}
           resizeMode="contain"
           />
-
+        </TouchableOpacity>      
+      </View>
     </View>
   );
 }
