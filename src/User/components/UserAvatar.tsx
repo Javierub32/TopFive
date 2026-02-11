@@ -44,7 +44,7 @@ export function UserAvatar({ avatarUrl }: Props) {
             right: isPressed ? -10 : -5,
             width: isPressed ? 55 : 50,
             height: isPressed ? 65 : 60,
-            transform: [{ rotate: '20deg' }],
+            transform: [{ rotate: '70deg' }],
           }}
           resizeMode="contain"
           />

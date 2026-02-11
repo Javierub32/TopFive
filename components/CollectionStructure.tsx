@@ -2,9 +2,19 @@ import { CollectionGroup } from '@/Collection/components/CollectionGroup';
 import { FlatList, useWindowDimensions } from 'react-native';
 import { LoadingIndicator } from './LoadingIndicator';
 import { View } from 'react-native-reanimated/lib/typescript/Animated';
+import { ResourceType } from 'hooks/useResource';
+import { CollectionType } from '@/Collection/services/listServices';
+
+const categoryMap: Record<ResourceType, CollectionType> = {
+	'pelicula': 'PELICULA',
+	'serie': 'SERIE',
+	'videojuego': 'VIDEOJUEGO',
+	'libro': 'LIBRO',
+	'cancion': 'CANCION',
+};
 
 
-export const CollectionStructure = ({ data, categoriaActual, handleItemPress, handleSearchPagination, showStatus, loading }: any) => {
+export const CollectionStructure = ({ data, categoriaActual, handleItemPress, handleSearchPagination, showStatus, loading, handleLongPress }: any) => {
 	
   const { width } = useWindowDimensions();
   const PADDING_PANTALLA = 40; 
@@ -39,6 +49,7 @@ export const CollectionStructure = ({ data, categoriaActual, handleItemPress, ha
           posterWidth={itemWidth}
           posterHeight={itemHeight}
           showStatus={showStatus}
+          onLongPress={() => handleLongPress(item.id, categoryMap[categoriaActual as ResourceType])}
         />
       )}
     />

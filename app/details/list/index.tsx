@@ -13,8 +13,9 @@ import { ResourceType } from "hooks/useResource";
 
 export default function ListDetails() {
   const { categoriaActual, handleItemPress } = useCollection();
-  const { listId, title, icon, color, description } = useLocalSearchParams<{ listId: string; title?: string; icon?: string; color?: string; description?: string }>();
-  const { loading, data, handleLoadMore } = useListsDetails(categoriaActual, listId!);
+  const { listData } = useLocalSearchParams<{ listData: any }>();
+  const parsedListData = listData ? JSON.parse(listData) : null;
+  const { loading, data, handleLoadMore, handleDeleteItem } = useListsDetails(categoriaActual, parsedListData?.id!);
   const { colors } = useTheme();
 
   if (loading && data.length === 0) {
@@ -39,7 +40,7 @@ export default function ListDetails() {
 	  />
 	  
       {/* CABECERA DE LA LISTA */}
-      {title && (
+      {parsedListData?.nombre && (
         <View 
             className="mx-2 mb-4 mt-2 flex-row items-start rounded-2xl border p-4 shadow-sm"
             style={{ 
@@ -50,10 +51,10 @@ export default function ListDetails() {
             {/* Icono con fondo de color */}
             <View 
                 className="h-16 w-16 items-center justify-center rounded-2xl shadow-sm mr-4"
-                style={{ backgroundColor: color || colors.primary }}
+                style={{ backgroundColor: parsedListData?.color || colors.primary }}
             >
                 <MaterialCommunityIcons
-                    name={icon as any || 'folder'} 
+                    name={parsedListData?.icono as any || 'folder'} 
                     size={32} 
                     color={colors.primaryText} 
                 />
@@ -65,14 +66,14 @@ export default function ListDetails() {
                     className="text-2xl font-bold leading-tight mb-1" 
                     style={{ color: colors.primaryText }}
                 >
-                    {title}
+                    {parsedListData?.nombre}
                 </Text>
-                {description ? (
+                {parsedListData?.descripcion ? (
                     <Text 
                         className="text-sm leading-5" 
                         style={{ color: colors.secondaryText }}
                     >
-                        {description}
+                        {parsedListData?.descripcion}
                     </Text>
                 ) : (
                     <Text className="text-xs italic" style={{ color: colors.placeholderText }}>
@@ -89,6 +90,7 @@ export default function ListDetails() {
 		  data={data}
 		  categoriaActual={categoriaActual}
 		  handleItemPress={handleItemPress}
+		  handleLongPress={handleDeleteItem}
 		  handleSearchPagination={handleLoadMore} 
 		  showStatus={true}
 		  loading={loading}

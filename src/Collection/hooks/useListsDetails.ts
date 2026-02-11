@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { CollectionType, listServices } from "../services/listServices";
 import { ResourceType } from "hooks/useResource";
+import { Alert } from "react-native";
 
 const categoryMap: Record<ResourceType, CollectionType> = {
 	'pelicula': 'PELICULA',
@@ -72,10 +73,44 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
 		}
 	};
 
+	const resetListDetails = () => {
+		setData([]);
+		setPage(0);
+		setHasMore(true);
+		fetchListDetails(0);
+	}
+
+	const deleteItemFromList = async (itemId: string, type: CollectionType ) => {
+		try {
+			setLoading(true);
+			await listServices.removeItemFromList(listId, itemId, type);
+	}
+		catch (error) {
+			console.error("Error deleting item from list:", error);
+		}
+		finally {
+			setLoading(false);
+		}
+	}
+
+	const handleDeleteItem = async (itemId: string, type: CollectionType) => {
+		Alert.alert('Eliminar de la lista', '¿Estás seguro de que quieres eliminar este ítem de la lista?', [
+			{ text: 'Cancelar', style: 'cancel' },
+			{ 
+				text: 'Confirmar', 
+				onPress: async () => {
+					await deleteItemFromList(itemId, type);
+					await resetListDetails();
+				}
+			}
+		]);
+	}
+
 	return {
 		loading,
 		data,
-		handleLoadMore, // Exportamos la función
-        hasMore
+		handleLoadMore,
+        hasMore,
+		handleDeleteItem,
 	};
 };

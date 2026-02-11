@@ -2,7 +2,7 @@ import { TouchableOpacity, Image, View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { collectionAdapter } from '../adapters/collectionAdapter';
 
-export const CollectionGroup = ({ item, category, onPress, posterWidth, posterHeight, showStatus }: any) => {
+export const CollectionGroup = ({ item, category, onPress, posterWidth, posterHeight, showStatus, onLongPress }: any) => {
   const title = collectionAdapter.getTitle(item, category);
   const image = collectionAdapter.getImage(item, category);
   const year = item.fechacreacion ? new Date(item.fechacreacion).getFullYear() : '';
@@ -17,6 +17,7 @@ export const CollectionGroup = ({ item, category, onPress, posterWidth, posterHe
       className="flex-col mb-2" 
       style={{ width: finalWidth, marginRight: marginRight, marginBottom: 24 , marginTop: 10}}
       onPress={onPress}
+      onLongPress={onLongPress}
       activeOpacity={0.8}
     >
       {/* Imagen */}
