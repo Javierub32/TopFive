@@ -13,10 +13,12 @@ import { DateCard } from '@/Details/components/DateCard';
 import { ReviewCard } from '@/Details/components/ReviewCard';
 import { EditResourceButton } from '@/Details/components/EditResourceButton';
 import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
+import { useAuth } from "context/AuthContext";
 
 export default function FilmDetail() {
   const { item } = useLocalSearchParams();
   const { colors } = useTheme();
+  const { user } = useAuth();
 
   let filmResource: FilmResource | null = null;
 
@@ -26,6 +28,8 @@ export default function FilmDetail() {
     console.error('Error parsing item:', error);
   }
 
+  const isOwner = filmResource?.usuarioId === user?.id
+  
   if (!filmResource) {
     return (
       <Screen>
@@ -58,8 +62,12 @@ export default function FilmDetail() {
               params={{ initialResource: 'pelicula' as ResourceType }}
             />
           </View>
-          <EditResourceButton resource={filmResource} type={'pelicula'} />
-          <DeleteResourceButton resource={filmResource} type={'pelicula'} />
+          {isOwner && (
+            <>
+            <EditResourceButton resource={filmResource} type={'pelicula'} />
+            <DeleteResourceButton resource={filmResource} type={'pelicula'} />
+            </>
+          )}
         </View>
         <View className="mb-4 px-4">
           <Image

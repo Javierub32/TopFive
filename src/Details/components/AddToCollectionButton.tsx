@@ -8,9 +8,10 @@ import { Text, TouchableOpacity } from "react-native";
 interface Props {
   content: Book | Film | Series | Song | Game;
   type: ResourceType;
+  data: any
 }
 
-export const AddToCollectionButton = ({ content, type }: Props) => {
+export const AddToCollectionButton = ({ content, type, data }: Props) => {
   const { colors } = useTheme();
 
   const ResourceMap : Record<ResourceType, string> = {
@@ -21,10 +22,11 @@ export const AddToCollectionButton = ({ content, type }: Props) => {
     cancion: 'song'
   }; 
 
+
   const openForm = (content: Book | Film | Series | Song | Game) => {
 	router.push({
 	  pathname: '/form/' + ResourceMap[type],
-	  params: { bookData: JSON.stringify(content) },
+	  params: { data: JSON.stringify(content) },
 	});
   };
 

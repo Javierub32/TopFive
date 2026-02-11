@@ -65,7 +65,7 @@ export default function SongDetail() {
           </View>
 
           <ExtraCard extra={song.album} type='cancion'/>
-          <AddToCollectionButton content={song} type='cancion'/>
+          <AddToCollectionButton content={song} type='cancion' data={songData}/>
         </View>
       </ScrollView>
     </Screen>

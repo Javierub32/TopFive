@@ -14,10 +14,12 @@ import { ReviewCard } from '@/Details/components/ReviewCard';
 import { DateCard } from '@/Details/components/DateCard';
 import { EditResourceButton } from '@/Details/components/EditResourceButton';
 import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
+import { useAuth } from "context/AuthContext";
 
 export default function GameDetail() {
   const { item } = useLocalSearchParams();
   const { colors } = useTheme();
+  const { user } = useAuth();
 
   let gameResource: GameResource | null = null;
 
@@ -26,6 +28,8 @@ export default function GameDetail() {
   } catch (error) {
     console.error('Error parsing item:', error);
   }
+
+  const isOwner = gameResource?.usuarioId === user?.id;
 
   if (!gameResource) {
     return (
@@ -61,8 +65,13 @@ export default function GameDetail() {
               params={{ initialResource: 'videojuego' as ResourceType }}
             />
           </View>
-          <EditResourceButton resource={gameResource} type="videojuego" />
-          <DeleteResourceButton resource={gameResource} type="videojuego" />
+          {isOwner && (
+            <>
+            <EditResourceButton resource={gameResource} type="videojuego" />
+            <DeleteResourceButton resource={gameResource} type="videojuego" />
+            </>
+
+          )}
         </View>
 
         {/* Imagen del videojuego */}

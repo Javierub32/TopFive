@@ -16,7 +16,7 @@
     "@react-native-community/datetimepicker": "^8.5.1",
     "@supabase/supabase-js": "^2.86.0",
     "base64-arraybuffer": "^1.0.2",
-    "expo": "^54.0.31",
+    "expo": "^54.0.33",
     "expo-camera": "~17.0.9",
     "expo-constants": "~18.0.10",
     "expo-font": "~14.0.10",

@@ -69,7 +69,7 @@ export default function FilmDetail() {
             <ContentDateCard releaseDate={film.releaseDate}/>
             <DescriptionCard description={film.description}/>
           </View>
-          <AddToCollectionButton content={film} type='pelicula'/>
+          <AddToCollectionButton content={film} type='pelicula' data={filmData}/>
         </View>
       </ScrollView>
     </Screen>

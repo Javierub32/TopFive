@@ -60,7 +60,7 @@ export default function GameDetail() {
           </View>
           <ExtraCard extra={game.gamemodes} type='videojuego'/>
           <DescriptionCard description={game.description}/>
-          <AddToCollectionButton content={game} type='videojuego'/>
+          <AddToCollectionButton content={game} type='videojuego' data={gameData}/>
         </View>
       </ScrollView>
     </Screen>

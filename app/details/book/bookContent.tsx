@@ -56,7 +56,7 @@ export default function BookDetail() {
             </View>
             <DescriptionCard description={book.description}/>
           </View>
-          <AddToCollectionButton content={book} type='libro'/>
+          <AddToCollectionButton content={book} type='libro' data={bookData}/>
         </View>
       </ScrollView>
     </Screen>

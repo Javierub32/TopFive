@@ -17,12 +17,14 @@ import { RatingCard } from '@/Details/components/RatingCard';
 import { ProgressCard } from '@/Details/components/ProgressCard';
 import { DateCard } from '@/Details/components/DateCard';
 import { ReviewCard } from '@/Details/components/ReviewCard';
+import { useAuth } from "context/AuthContext";
 
 export default function SeriesDetail() {
   const { item } = useLocalSearchParams();
   const { borrarRecurso } = useResource();
   const { refreshData } = useCollection();
   const { colors } = useTheme();
+  const { user } = useAuth();
 
   let seriesResource: SeriesResource | null = null;
 
@@ -31,6 +33,8 @@ export default function SeriesDetail() {
   } catch (error) {
     console.error('Error parsing item:', error);
   }
+
+  const isOwner = seriesResource?.usuarioId === user?.id;
 
   const handleDelete = () => {
     if (seriesResource) {
@@ -98,8 +102,13 @@ export default function SeriesDetail() {
               params={{ initialResource: 'serie' as ResourceType }}
             />
           </View>
-          <EditResourceButton resource={seriesResource} type="serie" />
-          <DeleteResourceButton resource={seriesResource} type="serie" />
+          {isOwner && (
+            <>
+            <EditResourceButton resource={seriesResource} type="serie" />
+            <DeleteResourceButton resource={seriesResource} type="serie" />
+            </>
+          )}
+          
         </View>
         <View className="mb-4 px-4">
           <Image
