@@ -149,7 +149,7 @@ export const CollectionProvider = ({ children }: any) => {
     setData([]); 
     
     fetchInitialData();
-  }, [categoriaActual, refreshTrigger, user]); 
+  }, [categoriaActual, refreshTrigger, user?.id]); 
 
   const refreshData = () => {
     setRefreshTrigger(prev => prev + 1);
