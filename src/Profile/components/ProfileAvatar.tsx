@@ -33,8 +33,8 @@ export const ProfileAvatar = ({ avatarUrl, isPressed, onPickImage, setIsPressed 
           source={require('../../../assets/gorro-navideño.png')}
           style={{
             position: 'absolute',
-            top: isPressed ? -15 : -10,
-            right: isPressed ? -10 : -5,
+            top: isPressed ? -18 : -15,
+            right: isPressed ? -13 : -10,
             width: isPressed ? 55 : 50,
             height: isPressed ? 65 : 60,
             transform: [{ rotate: '70deg' }],
