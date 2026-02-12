@@ -53,7 +53,7 @@ export default function SeriesDetail() {
             <ContentDateCard releaseDate={series.releaseDate}/>
             <DescriptionCard description={series.description}/>   
           </View>
-          <AddToCollectionButton content={series} type='serie'/>
+          <AddToCollectionButton content={series} type='serie' data={seriesData}/>
         </View>
       </ScrollView>
     </Screen>

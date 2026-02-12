@@ -17,9 +17,11 @@ import { ResourceAttributes } from '@/Details/components/ResourceAttributes';
 import { RatingCard } from '@/Details/components/RatingCard';
 import { DateCard } from '@/Details/components/DateCard';
 import { ReviewCard } from '@/Details/components/ReviewCard';
+import { useAuth } from "context/AuthContext";
 
 export default function SongDetail() {
   const { item } = useLocalSearchParams();
+  const { user } = useAuth();
 
   let songResource: SongResource | null = null;
 
@@ -28,6 +30,8 @@ export default function SongDetail() {
   } catch (error) {
     console.error('Error parsing item:', error);
   }
+
+  const isOwner = songResource?.usuarioId === user?.id;
 
   if (!songResource) {
     return (
@@ -59,8 +63,14 @@ export default function SongDetail() {
               params={{ initialResource: 'cancion' as ResourceType }}
             />
           </View>
-          <EditResourceButton resource={songResource} type="cancion" />
-          <DeleteResourceButton resource={songResource} type="cancion" />
+          {isOwner && (
+            <>
+            <EditResourceButton resource={songResource} type="cancion" />
+            <DeleteResourceButton resource={songResource} type="cancion" />
+            </>
+
+          )}
+
         </View>
         <View className="mb-4 px-4">
           <Image

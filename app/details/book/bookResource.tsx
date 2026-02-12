@@ -15,10 +15,12 @@ import { ResourceAttributes } from '@/Details/components/ResourceAttributes';
 import { TimeCard } from '@/Details/components/TimeCard';
 import { EditResourceButton } from '@/Details/components/EditResourceButton';
 import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
+import { useAuth } from "context/AuthContext";
 
 export default function BookDetail() {
   const { item } = useLocalSearchParams();
   const { colors } = useTheme();
+  const { user } = useAuth();
 
   let bookResource: BookResource | null = null;
 
@@ -27,6 +29,8 @@ export default function BookDetail() {
   } catch (error) {
     console.error('Error parsing item:', error);
   }
+
+  const isOwner = bookResource?.usuarioId === user?.id;
 
   if (!bookResource) {
     return (
@@ -60,8 +64,13 @@ export default function BookDetail() {
               params={{ initialResource: 'libro' as ResourceType }}
             />
           </View>
-          <EditResourceButton resource={bookResource} type={'libro'} />
-          <DeleteResourceButton resource={bookResource} type={'libro'} />
+          {isOwner && (
+            <>
+            <EditResourceButton resource={bookResource} type={'libro'} />
+            <DeleteResourceButton resource={bookResource} type={'libro'} />
+            </>
+          )}
+          
         </View>
         {/* Imagen del libro */}
         <View className="px-4 mb-4">

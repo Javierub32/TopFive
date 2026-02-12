@@ -21,6 +21,7 @@ export const AddToCollectionButton = ({ content, type }: Props) => {
     cancion: {path: 'song', param: 'songData'}
   }; 
 
+
   const openForm = (content: Book | Film | Series | Song | Game) => {
 	router.push({
 	  pathname: '/form/' + ResourceMap[type].path,
