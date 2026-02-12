@@ -85,7 +85,7 @@ export default function GameDetail() {
         </View>
 
         <View className="mb-14 px-4 pb-6">
-          <ResourceAttributes resource={gameResource} />
+          <ResourceAttributes resource={gameResource} isOwner={isOwner} />
           <View className="flex-col justify-between gap-3">
             <View className="flex-row gap-2">
               <RatingCard rating={gameResource.calificacion} />

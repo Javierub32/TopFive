@@ -13,9 +13,10 @@ import { useLocalSearchParams } from 'expo-router';
 
 interface Props {
   resource: BookResource | FilmResource | SeriesResource | SongResource | GameResource;
+  isOwner?: boolean;
 }
 
-export const ResourceAttributes = ({ resource }: Props) => {
+export const ResourceAttributes = ({ resource, isOwner }: Props) => {
   const { colors } = useTheme();
   const { item } = useLocalSearchParams();
   const { contenido } = resource;
@@ -92,7 +93,7 @@ export const ResourceAttributes = ({ resource }: Props) => {
         <Text className="flex-1 text-3xl font-bold" style={{ color: colors.primaryText }}>
           {contenido.titulo || 'Sin título'}
         </Text>
-        <AddToListButton resourceCategory="Libros" resourceId={resource.id} />
+        {isOwner && <AddToListButton resourceCategory="Libros" resourceId={resource.id} />}
       </View>
 
       <View className="flex-row flex-wrap items-stretch gap-2 pt-1">

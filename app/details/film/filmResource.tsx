@@ -78,7 +78,7 @@ export default function FilmDetail() {
         </View>
 
         <View className="mb-14 px-4 pb-6">
-          <ResourceAttributes resource={filmResource} />
+          <ResourceAttributes resource={filmResource} isOwner={isOwner} />
           <View className="flex-col justify-between gap-3">
             <View className="flex-row gap-2">
               <RatingCard rating={filmResource.calificacion} />

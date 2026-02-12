@@ -118,7 +118,7 @@ export default function SeriesDetail() {
           />
         </View>
         <View className="mb-14 px-4 pb-6">
-          <ResourceAttributes resource={seriesResource} />
+          <ResourceAttributes resource={seriesResource} isOwner={isOwner} />
           <View className="flex-col justify-between gap-3">
             <View className="flex-row gap-2">
               <RatingCard rating={seriesResource.calificacion} />

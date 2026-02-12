@@ -82,7 +82,7 @@ export default function BookDetail() {
           />
         </View>
         <View className="mb-14 px-4 pb-6">
-          <ResourceAttributes resource={bookResource} />
+          <ResourceAttributes resource={bookResource} isOwner={isOwner} />
           <View className="flex-col justify-between gap-3">
             <View className="flex-row gap-2">
               <RatingCard rating={bookResource.calificacion} />
