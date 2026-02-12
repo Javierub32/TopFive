@@ -1,5 +1,5 @@
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { router, useLocalSearchParams, useRouter } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Book } from 'app/types/Content';
@@ -56,7 +56,7 @@ export default function BookDetail() {
             </View>
             <DescriptionCard description={book.description}/>
           </View>
-          <AddToCollectionButton content={book} type='libro'/>
+          	<AddToCollectionButton content={book} type='libro'/>
         </View>
       </ScrollView>
     </Screen>

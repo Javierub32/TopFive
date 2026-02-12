@@ -13,18 +13,18 @@ interface Props {
 export const AddToCollectionButton = ({ content, type }: Props) => {
   const { colors } = useTheme();
 
-  const ResourceMap : Record<ResourceType, string> = {
-    pelicula: 'film',
-    serie: 'series',
-    videojuego: 'games',
-    libro: 'book',
-    cancion: 'song'
+  const ResourceMap : Record<ResourceType, {path: string, param: string}> = {
+    pelicula: {path: 'film', param: 'filmData'},
+    serie: {path: 'series', param: 'seriesData'},
+    videojuego: {path: 'game', param: 'gameData'},
+    libro: {path: 'book', param: 'bookData'},
+    cancion: {path: 'song', param: 'songData'}
   }; 
 
   const openForm = (content: Book | Film | Series | Song | Game) => {
 	router.push({
-	  pathname: '/form/' + ResourceMap[type],
-	  params: { bookData: JSON.stringify(content) },
+	  pathname: '/form/' + ResourceMap[type].path,
+	  params: { [ResourceMap[type].param]: JSON.stringify(content) },
 	});
   };
 
