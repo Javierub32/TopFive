@@ -5,6 +5,7 @@ import { View, Text, Image, Pressable, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Activity } from '../hooks/useActivity';
 import { UserIcon } from 'components/Icons';
+import { router } from 'expo-router';
 
 
 
@@ -86,29 +87,41 @@ export default function ActivityItem({ item}: { item: Activity }) {
           {/* Línea separadora */}
           <View className="mx-2 h-[1px] " style={{ backgroundColor: colors.placeholderText }} />
         </LinearGradient>
-      
-      
-
+                    
       {/* Header: Usuario e info */}
       <View className="p-4" style={{ backgroundColor: colors.surfaceButton }}>
         <View className="flex-row items-center gap-3">
           {item.avatar_url ? (
-            <Image 
-              source={{ uri: item.avatar_url}}
-              className="w-10 h-10 rounded-full"
-              style={{ borderWidth: 0, borderColor: colors.borderButton}}
-            />
+            <Pressable onPress={() => router.push({
+                    pathname: 'details/user/',
+                    params: { username: item.username }
+              })}>
+              <Image 
+                source={{ uri: item.avatar_url}}
+                className="w-10 h-10 rounded-full"
+                style={{ borderWidth: 0, borderColor: colors.borderButton}}
+              />
+            </Pressable>
           ) : (
             <View className="h-10 w-10 items-center justify-center rounded-full" style={{ backgroundColor: colors.primary, borderWidth: 0, borderColor: colors.borderButton }}>
-              <Text className="text-xl font-bold" style={{ color: colors.primaryText }}>
-                {item.username.charAt(0).toUpperCase()}
-              </Text>
+                <Text 
+                  onPress={() => router.push({
+                    pathname: 'details/user/',
+                    params: { username: item.username }
+                  })} 
+                  className="text-xl font-bold" style={{ color: colors.primaryText }}>{item.username.charAt(0).toUpperCase()}
+                </Text>
             </View>
           )}
           
           <View className="flex-col">
             <Text>
-              <Text className="font-bold text-base" style={{ color: colors.primaryText }}>{item.username}  </Text>
+              <Text 
+              onPress={() => router.push({
+                    pathname: 'details/user/',
+                    params: { username: item.username }
+                  })} 
+              className="font-bold text-base" style={{ color: colors.primaryText }}>{item.username}  </Text>
               <Text className="text-xs" style={{ color: colors.secondaryText }}>{getRelativeTime(item.fecha_actividad)}</Text>
             </Text>
           </View>
