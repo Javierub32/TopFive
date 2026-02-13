@@ -1,17 +1,21 @@
-import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from 'react';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { BookResource } from 'app/types/Resources';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
-
+import { ThemedStatusBar } from "components/ThemedStatusBar";
+import { ReturnButton } from "components/ReturnButton";
+import { FavoriteSetter } from "@/Form/components/FavoriteSetter";
+import { ReviewSetter } from "@/Form/components/ReviewSetter";
+import { StateSetter } from "@/Form/components/StateSetter";
+import { RatingSetter } from "@/Form/components/RatingSetter";
+import { ProgressSetter } from "@/Form/components/ProgressSetter";
+import { DateSetter } from "@/Form/components/DateSetter";
 
 interface Book {
   id: number | null;
@@ -46,8 +50,6 @@ export default function BookForm() {
   const [paginasLeidas, setPaginasLeidas] = useState(resource?.paginasLeidas?.toString() || '');
   const [fechaInicio, setFechaInicio] = useState<Date | null>(resource?.fechaInicio ? new Date(resource.fechaInicio) : null);
   const [fechaFin, setFechaFin] = useState<Date | null>(resource?.fechaFin ? new Date(resource.fechaFin) : null);
-  const [showDatePickerInicio, setShowDatePickerInicio] = useState(false);
-  const [showDatePickerFin, setShowDatePickerFin] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -202,18 +204,14 @@ export default function BookForm() {
     }
   };
 
-  const handleBack = () => {
-    router.back();
-  };
-
   if (!book) {
     return (
       <Screen>
-        <StatusBar style="light" />
+        <ThemedStatusBar/>
         <View className="flex-1 items-center justify-center px-4">
-          <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="mt-4 text-xl font-bold text-primaryText">Error al cargar</Text>
-          <Text className="mt-2 text-center text-secondaryText">
+          <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
+          <Text className="mt-4 text-xl font-bold" style={{color: colors.primaryText}}>Error al cargar</Text>
+          <Text className="mt-2 text-center" style={{color: colors.secondaryText}}>
             No se pudo cargar la información del libro
           </Text>
         </View>
@@ -223,224 +221,40 @@ export default function BookForm() {
 
   return (
     <Screen>
-      <StatusBar style="light" />
-      <ScrollView className="flex-1 px-4 py-6">
-        <TouchableOpacity
-          onPress={handleBack}
-          className="mb-4 flex-row items-center"
-          activeOpacity={0.7}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
-          <Text className="ml-2 text-lg text-primaryText">Volver</Text>
-        </TouchableOpacity>
-
-        <View className="mb-6 flex-row items-center rounded-xl border border-borderButton/50 bg-surfaceButton/50 px-4 py-4">
-          <Image
-            source={{ uri: book.imagenUrl || book.imageFull || 'https://via.placeholder.com/100x150' }}
-            className="mr-4 h-24 w-16 rounded-lg border border-borderButton bg-surfaceButton"
-            resizeMode="cover"
-          />
-          <View className="flex-1">
-            <Text className="text-xl font-bold text-primaryText" numberOfLines={2}>
-              {book.titulo || book.title}
-            </Text>
-            <Text className="mt-1 text-secondaryText">{book.autor || 'Autor desconocido'}</Text>
-            <Text className="mt-1 text-secondaryText text-sm">
-              {book.fechaLanzamiento || book.releaseDate ? new Date(book.fechaLanzamiento || book.releaseDate).getFullYear() : 'N/A'}
-            </Text>
+      <ThemedStatusBar/>
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+        <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
+          <View className="flex-1 flex-row items-center">
+            <ReturnButton route="back" title={book.titulo || book.title} style={' '}/>
           </View>
-          <TouchableOpacity onPress={() => setFavorito(!favorito)} className="p-2">
-            <MaterialCommunityIcons
-              name={favorito ? 'heart' : 'heart-outline'}
-              size={32}
-              color={favorito ? '#ef4444' : '#94a3b8'}
-            />
-          </TouchableOpacity>
+          <FavoriteSetter resource={resource}/>
+        </View>
+
+        <View className="flex-1 flex-row justify-between gap-2 px-4 mb-4 items-stretch">
+          <Image source={{uri: book.imagenUrl || book.imageFull || 'https://via.placeholder.com/100x150'}}
+          className="aspect-[2/3] h-32 rounded-lg" style={{backgroundColor: colors.surfaceButton}} resizeMode="cover"/>
+          <ReviewSetter resource={resource}/>
         </View>
 
         <View className="gap-6">
-          <View>
-            <Text className="mb-3 text-lg font-semibold text-primaryText">Estado</Text>
-            <View className="flex-row gap-2">
-              {(['PENDIENTE', 'EN_CURSO', 'COMPLETADO'] as const).map((est) => (
-                <TouchableOpacity
-                  key={est}
-                  onPress={() => setEstado(est)}
-                  className={`flex-1 rounded-lg border py-3 ${
-                    estado === est
-                      ? 'border-primary bg-marker'
-                      : 'border-borderButton bg-surfaceButton'
-                  }`}>
-                  <Text
-                    className={`text-center text-sm ${
-                      estado === est ? 'text-primary' : 'text-secondaryText'
-                    }`}>
-                    {est === 'PENDIENTE'
-                      ? 'Pendiente'
-                      : est === 'EN_CURSO'
-                        ? 'Leyendo'
-                        : 'Completado'}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-            <View className="mt-4 h-[1px] bg-borderButton/50" />
-          </View>
+          <StateSetter resource={resource} inProgressLabel="Leyendo"/>
+          <RatingSetter resource={resource}/>
 
-          <View>
-            <Text className="mb-3 text-lg font-semibold text-primaryText">Tu calificación</Text>
-            <View className="flex-row justify-center gap-2 py-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <TouchableOpacity key={star} onPress={() => setCalificacionPersonal(star)}>
-                  <FontAwesome5
-                    name="star"
-                    size={32}
-                    color={star <= calificacionPersonal ? '#fbbf24' : '#475569'}
-                    solid={star <= calificacionPersonal}
-                  />
-                </TouchableOpacity>
-              ))}
-            </View>
-            <View className="mt-4 h-[1px] bg-borderButton/50" />
-          </View>
+          <ProgressSetter resource={resource} type='libro'/>
 
-          <View>
-            <Text className="mb-3 text-lg font-semibold text-primaryText">Páginas leídas</Text>
-            <TextInput
-              value={paginasLeidas}
-              onChangeText={(text) => {
-                // Solo permitir números y limitar a 2000
-                const numericText = text.replace(/[^0-9]/g, '');
-                const num = parseInt(numericText) || 0;
-                if (num <= 2000 || numericText === '') {
-                  setPaginasLeidas(numericText);
-                }
-              }}
-              placeholder="Número de páginas"
-              placeholderTextColor={colors.placeholderText}
-              keyboardType="numeric"
-              maxLength={4}
-              className="rounded-lg border border-borderButton bg-surfaceButton p-3 text-base text-primaryText"
-            />
-            <View className="mt-4 h-[1px] bg-borderButton/50" />
-          </View>
-
-          <View>
-            <Text className="mb-3 text-lg font-semibold text-primaryText">Fechas de lectura</Text>
-            <View className="flex-row gap-3">
-              <View className="flex-1">
-                <TouchableOpacity
-                  onPress={() => setShowDatePickerInicio(true)}
-                  className="flex-row items-center justify-center rounded-xl border border-borderButton bg-surfaceButton px-3 py-2">
-                  <MaterialCommunityIcons name="calendar-start" size={20} color="#a855f7" />
-                  <View className="ml-3 items-center">
-                    <Text className="text-xs text-secondaryText">Inicio</Text>
-                    <Text className="text-sm font-bold text-primaryText">
-                      {fechaInicio
-                        ? fechaInicio.toLocaleDateString('es-ES', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric',
-                          })
-                        : 'Sin fecha'}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                {fechaInicio && (
-                  <TouchableOpacity
-                    onPress={() => setFechaInicio(null)}
-                    className="mt-2 items-center py-1">
-                    <Text className="text-xs text-red-400">Quitar fecha</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-
-              <View className="flex-1">
-                <TouchableOpacity
-                  onPress={() => setShowDatePickerFin(true)}
-                  className="flex-row items-center justify-center rounded-xl border border-borderButton bg-surfaceButton px-3 py-2">
-                  <MaterialCommunityIcons name="calendar-end" size={20} color="#a855f7" />
-                  <View className="ml-3 items-center">
-                    <Text className="text-xs text-secondaryText">Fin</Text>
-                    <Text className="text-sm font-bold text-primaryText">
-                      {fechaFin
-                        ? fechaFin.toLocaleDateString('es-ES', {
-                            day: '2-digit',
-                            month: '2-digit',
-                            year: 'numeric',
-                          })
-                        : 'Sin fecha'}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                {fechaFin && (
-                  <TouchableOpacity
-                    onPress={() => setFechaFin(null)}
-                    className="mt-2 items-center py-1">
-                    <Text className="text-xs text-red-400">Quitar fecha</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-            </View>
-
-            {showDatePickerInicio && (
-              <DateTimePicker
-                value={fechaInicio || new Date()}
-                mode="date"
-                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                onChange={(_event: any, selectedDate?: Date) => {
-                  setShowDatePickerInicio(Platform.OS === 'ios');
-                  if (selectedDate) {
-                    setFechaInicio(selectedDate);
-                  }
-                }}
-                maximumDate={new Date()}
-              />
-            )}
-
-            {showDatePickerFin && (
-              <DateTimePicker
-                value={fechaFin || new Date()}
-                mode="date"
-                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                onChange={(_event: any, selectedDate?: Date) => {
-                  setShowDatePickerFin(Platform.OS === 'ios');
-                  if (selectedDate) {
-                    setFechaFin(selectedDate);
-                  }
-                }}
-                maximumDate={new Date()}
-              />
-            )}
-            <View className="mt-4 h-[1px] bg-borderButton/50" />
-          </View>
-
-          <View>
-            <Text className="mb-3 text-lg font-semibold text-primaryText">Tu reseña</Text>
-            <TextInput
-              value={reseña}
-              onChangeText={setReseña}
-              placeholder="Escribe tu opinión sobre el libro..."
-              placeholderTextColor={colors.placeholderText}
-              multiline
-              numberOfLines={4}
-              maxLength={500}
-              className="min-h-[100px] rounded-lg border border-borderButton bg-surfaceButton p-3 text-base text-primaryText"
-              textAlignVertical="top"
-            />
-            <Text className="mt-1 text-right text-xs text-secondaryText">{reseña.length}/500</Text>
-          </View>
-
-		  {/* Botón Guardar */}
-		  <TouchableOpacity
-			onPress={handleSubmit}
-			disabled={loading}
-			className="mb-24 mt-4 rounded-lg bg-primary py-3"
-			activeOpacity={0.8}>
-			<Text className="text-center text-lg font-bold text-primaryText">
-			  {loading ? 'Guardando...' : 'Guardar'}
-			</Text>
-		  </TouchableOpacity>
+          <DateSetter resource={resource} isRange={true}/>
         </View>
+        
+        <TouchableOpacity
+          onPress={handleSubmit}
+          disabled={loading}
+          className="mb-14 rounded-lg py-3 mx-4 mt-4"
+          style= {{ backgroundColor: colors.primary}}
+          activeOpacity={0.8}>
+            <Text className="text-center text-lg font-bold" style={{color: colors.background}}>
+              {loading ? 'Guardando...' : 'Guardar'}
+            </Text>
+          </TouchableOpacity>
       </ScrollView>
     </Screen>
   );

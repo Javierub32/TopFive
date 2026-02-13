@@ -127,6 +127,13 @@ export const FavoriteIcon = (props) => {
   )
 }
 
+export const NonFavoriteIcon = (props) => {
+  const { colors } = useTheme();
+  return (
+    <MaterialCommunityIcons name="heart-outline" size={20} color={colors.secondaryText} {...props} />
+  )
+}
+
 export const TimerIcon = (props) => {
   const { colors } = useTheme();
   return (
@@ -181,5 +188,19 @@ export const AlbumIcon = (props) => {
   const { colors } = useTheme();
   return (
     <MaterialCommunityIcons name="album" size={20} color={colors.primary} {...props}/>
+  )
+}
+
+export const CalendarStartIcon = (props) => {
+  const { colors } = useTheme();
+  return (
+    <MaterialCommunityIcons name="calendar-start" size={24} color={colors.primary} {...props}/>
+  )
+}
+
+export const CalendarEndIcon = (props) => {
+  const { colors } = useTheme();
+  return (
+    <MaterialCommunityIcons name="calendar-end" size={24} color={colors.primary} {...props}/>
   )
 }

@@ -10,6 +10,13 @@ import { useAuth } from 'context/AuthContext';
 import { SongResource } from 'app/types/Resources';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
+import { ThemedStatusBar } from "components/ThemedStatusBar";
+import { ReturnButton } from "components/ReturnButton";
+import { FavoriteSetter } from "@/Form/components/FavoriteSetter";
+import { ReviewSetter } from "@/Form/components/ReviewSetter";
+import { StateSetter } from "@/Form/components/StateSetter";
+import { RatingSetter } from "@/Form/components/RatingSetter";
+import { DateSetter } from "@/Form/components/DateSetter";
 
 interface Song {
   id: number | null;
@@ -187,12 +194,12 @@ export default function SongForm() {
   if (!song) {
     return (
       <Screen>
-        <StatusBar style="light" />
+        <ThemedStatusBar/>
         <View className="flex-1 items-center justify-center px-4">
-          <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="mt-4 text-xl font-bold text-primaryText">Error al cargar</Text>
-          <Text className="mt-2 text-center text-secondaryText">
-            No se pudo cargar la información de la canción
+          <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
+          <Text className="mt-4 text-xl font-bold" style={{color: colors.primaryText}}>Error al cargar</Text>
+          <Text className="mt-2 text-center" style={{color: colors.secondaryText}}>
+            No se pudo cargar la información de la cancion
           </Text>
         </View>
       </Screen>
@@ -201,160 +208,37 @@ export default function SongForm() {
 
   return (
     <Screen>
-      <StatusBar style="light" />
-      <ScrollView className="flex-1 px-4 py-4">
-        <TouchableOpacity
-          onPress={handleBack}
-          className="mb-4 flex-row items-center"
-          activeOpacity={0.7}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color="#fff" />
-          <Text className="ml-2 text-lg text-primaryText">Volver</Text>
-        </TouchableOpacity>
-
-        <View className="mb-6 flex-row items-center rounded-xl border border-borderButton/50 bg-surfaceButton/50 px-4 py-4">
-          <Image
-            source={{ uri: song.imagenUrl || song.imageFull || 'https://via.placeholder.com/100x100' }}
-            className="mr-4 h-20 w-20 rounded-lg border border-borderButton bg-surfaceButton"
-            resizeMode="cover"
-          />
-          <View className="flex-1">
-            <Text className="text-xl font-bold text-primaryText" numberOfLines={2}>
-              {song.titulo || song.title}
-            </Text>
-            <Text className="mt-1 text-secondaryText">{song.autor || 'Artista desconocido'}</Text>
-            {(song.albumTitulo || song.album) && (
-              <Text className="mt-1 text-secondaryText text-sm" numberOfLines={1}>
-                {song.albumTitulo || song.album}
-              </Text>
-            )}
-            <Text className="mt-1 text-secondaryText text-sm">
-              {song.fechaLanzamiento || song.releaseDate ? new Date(song.fechaLanzamiento || song.releaseDate).getFullYear() : 'N/A'}
-            </Text>
+      <ThemedStatusBar/>
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+        <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
+          <View className="flex-1 flex-row items-center">
+            <ReturnButton route="back" title={song.titulo || song.title} style={' '}/>
           </View>
-          <TouchableOpacity onPress={() => setFavorita(!favorita)} className="p-2">
-            <MaterialCommunityIcons
-              name={favorita ? 'heart' : 'heart-outline'}
-              size={32}
-              color={favorita ? '#ef4444' : '#94a3b8'}
-            />
-          </TouchableOpacity>
+          <FavoriteSetter resource={resource}/>
+        </View>
+        <View className="flex-1 flex-row justify-between gap-2 px-4 mb-4 items-stretch">
+          <Image source={{uri: song.imagenUrl || song.image || 'https://via.placeholder.com/100x150'}}
+          className="aspect-[2/3] h-32 rounded-lg" style={{backgroundColor: colors.surfaceButton}}
+          resizeMode="cover"/>
+          <ReviewSetter resource={resource}/>
         </View>
 
         <View className="gap-6">
-          <View>
-            <Text className="mb-3 text-lg font-semibold text-primaryText">Estado</Text>
-            <View className="flex-row justify-center gap-4 px-8">
-              {(['PENDIENTE', 'COMPLETADO'] as const).map((est) => (
-                <TouchableOpacity
-                  key={est}
-                  onPress={() => setEstado(est)}
-                  className={`flex-1 rounded-lg border py-3 ${
-                    estado === est
-                      ? 'border-primary bg-marker'
-                      : 'border-borderButton bg-surfaceButton'
-                  }`}>
-                  <Text
-                    className={`text-center text-sm ${
-                      estado === est ? 'text-primary' : 'text-secondaryText'
-                    }`}>
-                    {est === 'PENDIENTE' ? 'Pendiente' : 'Completado'}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-            <View className="mt-4 h-[1px] bg-borderButton/50" />
-          </View>
-
-          <View>
-            <Text className="mb-3 text-lg font-semibold text-primaryText">Tu calificación</Text>
-            <View className="flex-row justify-center gap-2 py-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <TouchableOpacity key={star} onPress={() => setCalificacionPersonal(star)}>
-                  <FontAwesome5
-                    name="star"
-                    size={32}
-                    color={star <= calificacionPersonal ? '#fbbf24' : '#475569'}
-                    solid={star <= calificacionPersonal}
-                  />
-                </TouchableOpacity>
-              ))}
-            </View>
-            <View className="mt-4 h-[1px] bg-borderButton/50" />
-          </View>
-
-          <View>
-            <Text className="mb-3 text-lg font-semibold text-primaryText">Fecha de escucha</Text>
-            <View className="items-center">
-              <TouchableOpacity
-                onPress={() => setShowDatePicker(true)}
-                className="w-[70%] flex-row items-center justify-center rounded-xl border border-borderButton bg-surfaceButton px-4 py-3">
-                <MaterialCommunityIcons name="calendar" size={24} color="#a855f7" />
-                <View className="ml-3 items-center">
-                  <Text className="text-sm text-secondaryText">Última escucha</Text>
-                  <Text className="text-base font-bold text-primaryText">
-                    {fechaEscuchado
-                      ? fechaEscuchado.toLocaleDateString('es-ES', {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric',
-                        })
-                      : 'Sin fecha'}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              {fechaEscuchado && (
-                <TouchableOpacity
-                  onPress={() => setFechaEscuchado(null)}
-                  className="mt-2 items-center py-1">
-                  <Text className="text-xs text-red-400">Quitar fecha</Text>
-                </TouchableOpacity>
-              )}
-            </View>
-
-            {showDatePicker && (
-              <DateTimePicker
-                value={fechaEscuchado || new Date()}
-                mode="date"
-                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                onChange={(_event: any, selectedDate?: Date) => {
-                  setShowDatePicker(Platform.OS === 'ios');
-                  if (selectedDate) {
-                    setFechaEscuchado(selectedDate);
-                  }
-                }}
-                maximumDate={new Date()}
-              />
-            )}
-            <View className="mt-4 h-[1px] bg-borderButton/50" />
-          </View>
-
-          <View>
-            <Text className="mb-3 text-lg font-semibold text-primaryText">Tu reseña</Text>
-            <TextInput
-              value={reseña}
-              onChangeText={setReseña}
-              placeholder="Escribe tu opinión sobre la canción..."
-              placeholderTextColor={colors.placeholderText}
-              multiline
-              numberOfLines={4}
-              maxLength={500}
-              className="min-h-[100px] rounded-lg border border-borderButton bg-surfaceButton p-3 text-base text-primaryText"
-              textAlignVertical="top"
-            />
-            <Text className="mt-1 text-right text-xs text-secondaryText">{reseña.length}/500</Text>
-          </View>
-
-		  {/* Botón Guardar */}
-		  <TouchableOpacity
-			onPress={handleSubmit}
-			disabled={loading}
-			className="mb-24 mt-4 rounded-lg bg-primary py-3"
-			activeOpacity={0.8}>
-			<Text className="text-center text-lg font-bold text-primaryText">
-			  {loading ? 'Guardando...' : 'Guardar'}
-			</Text>
-		  </TouchableOpacity>
+          <StateSetter resource={resource}/>
+          <RatingSetter resource={resource}/>
+          <DateSetter resource={resource} isRange={false}/>
         </View>
+
+        <TouchableOpacity
+            onPress={handleSubmit}
+            disabled={loading}
+            className="mb-14 rounded-lg py-3 mx-4 mt-4"
+            style={{backgroundColor: colors.primary}}
+            activeOpacity={0.8}>
+            <Text className="text-center text-lg font-bold" style={{color:colors.background}}>
+              {loading ? 'Guardando...' : 'Guardar'}
+            </Text>
+          </TouchableOpacity>
       </ScrollView>
     </Screen>
   );
