@@ -42,6 +42,7 @@ export const activityService = {
 	  .eq('estado', 'COMPLETADO') // Solo actividades de recursos finalizados
       .not('fecha_actividad', 'is', null)
       .order('fecha_actividad', { ascending: false })
+	  .order('fechacreacion', { ascending: false })
       .range(from, to);
 
     if (error) throw error;
