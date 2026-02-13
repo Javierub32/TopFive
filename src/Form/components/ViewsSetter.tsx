@@ -2,7 +2,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TimesWatchedIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext";
 import { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 interface Props {
     resource : any;
@@ -27,7 +27,19 @@ export const ViewsSetter = ({resource} : Props) => {
                     <MaterialCommunityIcons name="minus" size={16} color="white" />
                 </TouchableOpacity>
 
-                <Text className="text-lg font-bold text-primaryText">{numVisionados}</Text>
+                <TextInput
+                    value={numVisionados} onChangeText={(text) => {
+                        const numericText = text.replace(/[^0-9]/g, '');
+                        const num = parseInt(numericText) || 0;
+                        if (num <= 50 || numericText === '') {
+                            setNumVisionados(numericText)
+                        }}}
+                    keyboardType="numeric"
+                    maxLength={4}
+                    className="w-12 text-center text-lg font-bold border-b pb-0"                                
+                    style={{color: colors.primaryText, borderBottomColor: colors.placeholderText}}
+                />
+                
 
                 <TouchableOpacity
                     onPress={() => setNumVisionados(numVisionados + 1)}

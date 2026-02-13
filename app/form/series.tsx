@@ -245,9 +245,9 @@ export default function SeriesForm() {
           <StateSetter resource={resource}/>
           <RatingSetter resource={resource}/>
           <ProgressSetter resource={resource} type='serie'/>
-          
+          <ViewsSetter resource={resource}/> 
           <DateSetter resource={resource} isRange={true}/>
-          <ViewsSetter resource={resource}/>            
+                     
 
         </View>  
         <TouchableOpacity

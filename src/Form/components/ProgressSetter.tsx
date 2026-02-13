@@ -44,41 +44,60 @@ export const ProgressSetter = ({resource, type} : Props) => {
                 <View className="flex-row justify-between gap-6 pb-4">
                     <View className="flex-1 gap-1" style={{borderColor: colors.placeholderText}}>
                         <Text className="font-semibold text-center" style={{color: colors.secondaryText}}>Temporada Actual</Text>
-                        <View className="flex-row justify-center gap-6">
+                        <View className="flex-row justify-center items-center gap-3">
                             <TouchableOpacity
                             onPress={() => setTemporadaActual(Math.max(0, temporadaActual - 1))}
-                            className="rounded-lg p-2 items-center"
-                            style= {{backgroundColor: colors.error}}>
-                                <MaterialCommunityIcons name="minus" size={16} color="white" />
+                            className="rounded-lg p-2 items-center">
+                                <MaterialCommunityIcons name="minus" size={16} color={colors.error} />
                             </TouchableOpacity>
 
-                            <Text className="text-lg font-bold text-primaryText">{temporadaActual}</Text>
+                            <TextInput
+                                value={ProgressMap[type]?.progressValue} onChangeText={(text) => {
+                                    const numericText = text.replace(/[^0-9]/g, '');
+                                    const num = parseInt(numericText) || 0;
+                                    if (num <= 50 || numericText === '') {
+                                        ProgressMap[type]?.setProgressMethod(numericText)
+                                    }}}
+                                keyboardType="numeric"
+                                maxLength={4}
+                                className="w-12 text-center text-lg font-bold border-b pb-0"                                
+                                style={{color: colors.primaryText, borderBottomColor: colors.placeholderText}}
+                            />
 
                             <TouchableOpacity
                                 onPress={() => setTemporadaActual(temporadaActual + 1)}
-                                className="rounded-lg p-2"
-                                style={{backgroundColor: colors.success}}>
-                                <MaterialCommunityIcons name="plus" size={16} color="white" />
+                                className="rounded-lg p-2">
+                                <MaterialCommunityIcons name="plus" size={16} color={colors.success} />
                             </TouchableOpacity>
                         </View> 
                     </View>
                     <View className="flex-1 gap-1">
                         <Text className="font-semibold text-center" style={{color: colors.secondaryText}}>Episodio actual</Text>
-                        <View className="flex-row justify-center gap-6">
+                        <View className="flex-row justify-center items-center gap-3">
                             <TouchableOpacity
                             onPress={() => setEpisodioActual(Math.max(0, episodioActual - 1))}
-                            className="rounded-lg p-2 items-center"
-                            style= {{backgroundColor: colors.error}}>
-                                <MaterialCommunityIcons name="minus" size={16} color="white" />
+                            className="rounded-lg p-2 items-center">
+                                <MaterialCommunityIcons name="minus" size={16} color={colors.error} />
                             </TouchableOpacity>
 
-                            <Text className="text-lg font-bold text-primaryText">{episodioActual}</Text>
+                            <TextInput
+                                value={ProgressMap[type]?.progressValue2} onChangeText={(text) => {
+                                    const numericText = text.replace(/[^0-9]/g, '');
+                                    const num = parseInt(numericText) || 0;
+                                    if (num <= 50 || numericText === '') {
+                                        ProgressMap[type]?.setProgresMethod2(numericText)
+                                    }}}
+                                keyboardType="numeric"
+                                maxLength={4}
+                                className="w-12 text-center text-lg font-bold border-b pb-0"  
+                                style={{color: colors.primaryText, borderBottomColor: colors.placeholderText}}
+                            />
+
 
                             <TouchableOpacity
                                 onPress={() => setEpisodioActual(episodioActual + 1)}
-                                className="rounded-lg p-2"
-                                style={{backgroundColor: colors.success}}>
-                                <MaterialCommunityIcons name="plus" size={16} color="white" />
+                                className="rounded-lg p-2">
+                                <MaterialCommunityIcons name="plus" size={16} color={colors.success} />
                             </TouchableOpacity>
                         </View> 
                     </View>
