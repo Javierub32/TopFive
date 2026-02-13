@@ -7,7 +7,13 @@ import { CollectionStructure } from 'components/CollectionStructure';
 import { useGroupData } from 'src/Collection/hooks/useGroupData';
 import { ReturnButton } from 'components/ReturnButton';
 import { useEffect } from 'react';
-import { ResourceType } from 'hooks/useResource';
+import { ResourceType, StateType } from 'hooks/useResource';
+
+const stateMap: Record<string, StateType> = {
+	enCurso: 'EN_CURSO',
+	pendientes: 'PENDIENTE',
+	completados: 'COMPLETADO',
+};
 
 export default function GroupScreen() {
   const params = useLocalSearchParams();
@@ -16,7 +22,7 @@ export default function GroupScreen() {
   const category = params.category as string;
 
   const { handleItemPress, setIsSearchVisible } = useCollection();
-  const { loading, data } = useGroupData(category as ResourceType, state as any);
+  const { loading, data, handleLoadMore } = useGroupData(category as ResourceType, stateMap[state]);
 
   useEffect(() => {
 		setIsSearchVisible(false);
@@ -26,7 +32,7 @@ export default function GroupScreen() {
     <Screen>
       <View className="flex-1 px-4 pt-4">
         <ReturnButton route="/Collection" title={title} style={" "} params={{initialResource: category as ResourceType }}/>
-        {loading ? (
+        {loading && data.length === 0 ? (
           <LoadingIndicator />
         ) : (
           <CollectionStructure
@@ -34,6 +40,8 @@ export default function GroupScreen() {
             categoriaActual={category}
             handleItemPress={handleItemPress}
 			showStatus={false}
+			handleSearchPagination={handleLoadMore}
+			loading={loading}
           />
         )}
       </View>

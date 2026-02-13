@@ -58,6 +58,7 @@ export default function HomeScreen() {
 				ListFooterComponent={() => 
 					loading ? <LoadingIndicator  /> : null
 				}
+				showsVerticalScrollIndicator={false}
 			/>
 			)}
 		</Screen>
