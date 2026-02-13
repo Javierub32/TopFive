@@ -1,4 +1,4 @@
-import { View, Text, FlatList, RefreshControl, Touchable, TouchableOpacity} from 'react-native';
+import { View, Text, FlatList, RefreshControl, TouchableOpacity} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { router } from 'expo-router';
 import { Screen } from 'components/Screen';
@@ -6,10 +6,7 @@ import { useTheme } from 'context/ThemeContext';;
 import { useActivity } from '@/Home/hooks/useActivity';
 import ActivityItem from '@/Home/components/RenderResource';
 import { LoadingIndicator } from 'components/LoadingIndicator';
-import { SearchBar } from '@/Add/components/SearchBar';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { AddIcon, SocialBubblesIcon } from 'components/Icons';
-import { AntDesign, EvilIcons, FontAwesome5 } from '@expo/vector-icons';
+import { SocialBubblesIcon } from 'components/Icons';
 
 
 

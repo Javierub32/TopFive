@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "scheme": "topfive",
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./assets/icon.png",
       "bundler": "metro",
       "build": {
         "babel": {
@@ -28,7 +28,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#5781b3"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -39,7 +39,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#5781b3"
       },
       "package": "com.anonymous.topfive",
       "enableProguardInReleaseBuilds": true,

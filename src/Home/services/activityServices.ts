@@ -39,6 +39,7 @@ export const activityService = {
 		`
       )
       .in('usuarioId', friendIds) // Solo actividades de amigos
+	  .eq('estado', 'COMPLETADO') // Solo actividades de recursos finalizados
       .not('fecha_actividad', 'is', null)
       .order('fecha_actividad', { ascending: false })
       .range(from, to);
