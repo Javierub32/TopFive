@@ -1,9 +1,11 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from 'context/ThemeContext';
 import React from 'react';
-import { View, Text, Image, Pressable } from 'react-native';
+import { View, Text, Image, Pressable, ImageBackground } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Activity } from '../hooks/useActivity';
 import { UserIcon } from 'components/Icons';
+import { router } from 'expo-router';
 
 
 
@@ -26,68 +28,106 @@ export default function ActivityItem({ item}: { item: Activity }) {
   };
 
   return (
-    <View className="max-w-xl p-4 rounded-2xl shadow-xl mb-4" style={{ backgroundColor: colors.surfaceButton, borderWidth: 1, borderColor: colors.borderButton }}>
+    <View className=" rounded-2xl shadow-xl mb-4 overflow-hidden" style={{ borderWidth: 0, borderColor: colors.borderButton }}>
+      {/* Imagen de fonde */}
+      <ImageBackground 
+        source={{ uri: item.imagen_url || 'https://via.placeholder.com/150' }}
+        style={{ width: '100%' }}
+        imageStyle={{ opacity: 0.2 }}
+      >
+        {/* Gradiente */}
+        <LinearGradient
+          colors={['rgba(0,0,0,0)', colors.surfaceButton]}
+          locations={[0, 0.6]}
+          style={{ width: '100%' }}
+        >
+          {/* Tipo del recurso */}
+          <View className="p-4">
+            <View className="rounded-full" style={{ alignSelf: 'flex-start', backgroundColor: colors.placeholderText, paddingHorizontal: 12, paddingVertical: 4, marginBottom: 50 }}>
+              <Text className="font-semibold text-xs" style={{ color: colors.primaryText}}>{item.tipo_contenido}</Text>
+            </View>
+            
+            {/* Contenido del recurso */}
+            <View className="flex-row gap-4">
+              {/* Poster con Badge de Año */}
+              <View className="relative items-center justify-center">
+                <Image 
+                  source={{ uri: item.imagen_url || 'https://via.placeholder.com/150' }}
+                  className="w-24 h-36 rounded-xl"
+                  style={{ borderWidth: 0, borderColor: colors.borderButton }}
+                />
+              </View>
+
+              {/* Detalles del Recurso */}
+              <View className="flex-col flex-1">
+                <View className="flex-row justify-between items-start">
+                  <View className='flex-1'>
+                    <Text className="font-bold text-base leading-tight mr-2 mb-2" style={{ color: colors.primaryText }}>{item.titulo}</Text>
+                    {/* Calificación */}
+                    <View className="flex-row items-center gap-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <MaterialCommunityIcons 
+                          key={star}
+                          name="star" 
+                          size={16} 
+                          color={star <= (item.calificacion || 0) ? colors.rating : colors.secondaryText} 
+                        />
+                      ))}
+                    </View>
+                  </View>
+                </View>
+                {/* Reseña */}
+                <Text className="mt-3 text-sm leading-relaxed italic" numberOfLines={4} style={{ color: colors.secondaryText }}>
+                  "{item.comentario || 'Sin reseña'}"
+                </Text>
+              </View>
+            </View>
+            
+          </View>
+          {/* Línea separadora */}
+          <View className="mx-2 h-[1px] " style={{ backgroundColor: colors.placeholderText }} />
+        </LinearGradient>
+                    
       {/* Header: Usuario e info */}
-      <View className="flex-row items-center justify-between mb-4">
+      <View className="p-4" style={{ backgroundColor: colors.surfaceButton }}>
         <View className="flex-row items-center gap-3">
           {item.avatar_url ? (
-            <Image 
-              source={{ uri: item.avatar_url}}
-              className="w-10 h-10 rounded-full"
-              style={{ borderWidth: 1, borderColor: colors.borderButton}}
-            />
+            <Pressable onPress={() => router.push({
+                    pathname: 'details/user/',
+                    params: { username: item.username }
+              })}>
+              <Image 
+                source={{ uri: item.avatar_url}}
+                className="w-10 h-10 rounded-full"
+                style={{ borderWidth: 0, borderColor: colors.borderButton}}
+              />
+            </Pressable>
           ) : (
-            <View className="h-10 w-10 items-center justify-center rounded-full" style={{ backgroundColor: colors.surfaceButton, borderWidth: 1, borderColor: colors.borderButton }}>
-            <Text className="text-xl font-bold" style={{ color: colors.secondaryText }}>
-              {item.username.charAt(0).toUpperCase()}
-            </Text>
-          </View>
+            <View className="h-10 w-10 items-center justify-center rounded-full" style={{ backgroundColor: colors.primary, borderWidth: 0, borderColor: colors.borderButton }}>
+                <Text 
+                  onPress={() => router.push({
+                    pathname: 'details/user/',
+                    params: { username: item.username }
+                  })} 
+                  className="text-xl font-bold" style={{ color: colors.primaryText }}>{item.username.charAt(0).toUpperCase()}
+                </Text>
+            </View>
           )}
           
           <View className="flex-col">
-            <Text className="font-bold text-base" style={{ color: colors.primaryText }}>{item.username}</Text>
-            <Text className="text-xs" style={{ color: colors.secondaryText }}>{getRelativeTime(item.fecha_actividad)}</Text>
+            <Text>
+              <Text 
+              onPress={() => router.push({
+                    pathname: 'details/user/',
+                    params: { username: item.username }
+                  })} 
+              className="font-bold text-base" style={{ color: colors.primaryText }}>{item.username}  </Text>
+              <Text className="text-xs" style={{ color: colors.secondaryText }}>{getRelativeTime(item.fecha_actividad)}</Text>
+            </Text>
           </View>
         </View>
-        <Pressable>
-          <Text className="text-xl" style={{ color: colors.secondaryText }}>...</Text>
-        </Pressable>
       </View>
-
-      {/* Contenido Principal */}
-      <View className="flex-row gap-4">
-        {/* Poster con Badge de Año */}
-        <View className="relative flex-shrink-0">
-          <Image 
-            source={{ uri: item.imagen_url || 'https://via.placeholder.com/150' }}
-            className="w-24 h-36 rounded-xl"
-            style={{ borderWidth: 1, borderColor: colors.borderButton }}
-          />
-        </View>
-
-        {/* Detalles del Recurso */}
-        <View className="flex-col flex-1">
-          <View className="flex-row justify-between items-start">
-            <View className='flex-1'>
-              <Text className="font-bold text-base leading-tight mr-2" style={{ color: colors.primaryText }}>{item.titulo}</Text>
-              <Text className="text-xs mt-1 uppercase tracking-wider" style={{ color: colors.secondaryText }}>{item.tipo_contenido}</Text>
-            </View>
-            
-            {/* Calificación */}
-            <View className="flex-row items-center gap-1 bg-black/30 px-2 py-1 rounded-lg">
-			  <View className="w-4 h-4 rounded-full items-center justify-center">
-				<MaterialCommunityIcons name="star" size={16} color={colors.rating} />
-			  </View>
-              <Text className="font-bold text-sm" style={{ color: colors.primaryText }}>{item.calificacion}</Text>
-            </View>
-          </View>
-
-          {/* Reseña */}
-          <Text className="mt-3 text-sm leading-relaxed italic" numberOfLines={4} style={{ color: colors.secondaryText }}>
-            "{item.comentario || 'Sin reseña'}"
-          </Text>
-        </View>
-      </View>
+      </ImageBackground>
     </View>
   );
 };
