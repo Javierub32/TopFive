@@ -3,25 +3,26 @@ import { CalendarEndIcon, CalendarIcon, CalendarStartIcon } from "components/Ico
 import { useTheme } from "context/ThemeContext"
 import { useState } from "react";
 import { Platform, Text, TouchableOpacity, View } from "react-native";
-import { transparent } from "tailwindcss/colors";
 
 interface Props {
-    resource: any,
+    startDate: Date | null;
+    setStartDate: any;
+    endDate?: Date | null;
+    setEndDate?: any;
     isRange: boolean
 }
 
-export const DateSetter = ({resource, isRange}: Props) => {
+export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRange}: Props) => {
     const { colors } = useTheme();
-    const [fechaInicio, setFechaInicio] = useState<Date | null>(resource?.fechaInicio ? new Date(resource.fechaInicio) : null);
-    const [fechaFin, setFechaFin] = useState<Date | null>(resource?.fechaFin ? new Date(resource.fechaFin) : null);
+
     const [showDatePickerInicio, setShowDatePickerInicio] = useState(false);
     const [showDatePickerFin, setShowDatePickerFin] = useState(false);
       
 
     if (!isRange) {
         return (
-            <View className='flex-1 mx-4'>
-                <TouchableOpacity className='flex-1 rounded-2xl flex justify-between gap-2 p-4' 
+            <View className='flex-1'>
+                <TouchableOpacity className='flex-1 p-4 rounded-2xl flex justify-between gap-2' 
                 style={{backgroundColor: `${colors.primary}1A`}}
                 onPress={() => setShowDatePickerInicio(true)}>
                     <View className='flex-row items-center gap-2'>
@@ -30,8 +31,8 @@ export const DateSetter = ({resource, isRange}: Props) => {
                     </View>
                     <View className='flex-row justify-center'>
                         <Text className="text-sm font-bold p-4" style={{color: colors.primaryText}}>
-                            {fechaInicio
-                            ? fechaInicio.toLocaleDateString('es-ES', {
+                            {startDate
+                            ? startDate.toLocaleDateString('es-ES', {
                                 day: '2-digit',
                                 month: '2-digit',
                                 year: 'numeric',
@@ -40,20 +41,20 @@ export const DateSetter = ({resource, isRange}: Props) => {
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setFechaInicio(null)} disabled={!fechaInicio}
-                className="mt-2 items-center">
-                    <Text className="text-xs" style={fechaInicio? {color: colors.error} : {color: colors.background}}>Limpiar fecha</Text>
+                <TouchableOpacity onPress={() => setStartDate(null)} disabled={!startDate}
+                className="mt-1 items-center">
+                    <Text className="text-xs" style={startDate? {color: colors.error} : {color: colors.background}}>Limpiar fecha</Text>
                 </TouchableOpacity>
 
                 {showDatePickerInicio && (
                     <DateTimePicker
-                        value={fechaInicio || new Date()}
+                        value={startDate || new Date()}
                         mode="date"
                         display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                         onChange={(_event: any, selectedDate?: Date) => {
                         setShowDatePickerInicio(Platform.OS === 'ios');
                         if (selectedDate) {
-                            setFechaInicio(selectedDate);
+                            setStartDate(selectedDate);
                         }
                         }}
                         maximumDate={new Date()}
@@ -75,8 +76,8 @@ export const DateSetter = ({resource, isRange}: Props) => {
                     </View>
                     <View className='flex-row justify-center'>
                         <Text className="text-sm font-bold text-primaryText">
-                            {fechaInicio
-                            ? fechaInicio.toLocaleDateString('es-ES', {
+                            {startDate
+                            ? startDate.toLocaleDateString('es-ES', {
                                 day: '2-digit',
                                 month: '2-digit',
                                 year: 'numeric',
@@ -85,9 +86,9 @@ export const DateSetter = ({resource, isRange}: Props) => {
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setFechaInicio(null)} disabled={!fechaInicio}
+                <TouchableOpacity onPress={() => setStartDate(null)} disabled={!startDate}
                 className="mt-1 items-center">
-                    <Text className="text-xs" style={fechaInicio? {color: colors.error} : {color: colors.background}}>Limpiar fecha</Text>
+                    <Text className="text-xs" style={startDate? {color: colors.error} : {color: colors.background}}>Limpiar fecha</Text>
                 </TouchableOpacity>
             </View>            
 
@@ -101,8 +102,8 @@ export const DateSetter = ({resource, isRange}: Props) => {
                     </View>
                     <View className='flex-row justify-center'>
                         <Text className="text-sm font-bold text-primaryText">
-                            {fechaFin
-                            ? fechaFin.toLocaleDateString('es-ES', {
+                            {endDate
+                            ? endDate.toLocaleDateString('es-ES', {
                                 day: '2-digit',
                                 month: '2-digit',
                                 year: 'numeric',
@@ -111,22 +112,22 @@ export const DateSetter = ({resource, isRange}: Props) => {
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setFechaFin(null)} disabled={!fechaFin}
+                <TouchableOpacity onPress={() => setEndDate(null)} disabled={!endDate}
                 className="mt-1 items-center">
-                    <Text className="text-xs" style={fechaFin ? {color: colors.error} : {color: colors.background}}>Limpiar fecha</Text>
+                    <Text className="text-xs" style={endDate ? {color: colors.error} : {color: colors.background}}>Limpiar fecha</Text>
                 </TouchableOpacity>
             
             </View>
 
             {showDatePickerInicio && (
                 <DateTimePicker
-                    value={fechaInicio || new Date()}
+                    value={startDate || new Date()}
                     mode="date"
                     display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                     onChange={(_event: any, selectedDate?: Date) => {
                     setShowDatePickerInicio(Platform.OS === 'ios');
                     if (selectedDate) {
-                        setFechaInicio(selectedDate);
+                        setStartDate(selectedDate);
                     }
                     }}
                     maximumDate={new Date()}
@@ -135,13 +136,13 @@ export const DateSetter = ({resource, isRange}: Props) => {
 
             {showDatePickerFin && (
                 <DateTimePicker
-                    value={fechaFin || new Date()}
+                    value={endDate || new Date()}
                     mode="date"
                     display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                     onChange={(_event: any, selectedDate?: Date) => {
                     setShowDatePickerFin(Platform.OS === 'ios');
                     if (selectedDate) {
-                        setFechaFin(selectedDate);
+                        setEndDate(selectedDate);
                     }
                     }}
                     maximumDate={new Date()}

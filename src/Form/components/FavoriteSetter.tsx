@@ -4,19 +4,19 @@ import { useState } from "react";
 import { TouchableOpacity } from "react-native";
 
 interface Props {
-    resource: any
+    favorite: any;
+    setFavorite: any;
 }
 
-export const FavoriteSetter = ({resource} : Props) => {
+export const FavoriteSetter = ({favorite, setFavorite} : Props) => {
     const { colors } = useTheme();
-    const [ favorito, setFavorito] = useState(resource?.favorito || false);
 
     return (
-        <TouchableOpacity onPress={() => setFavorito(!favorito)} className="p-2 rounded-full items-center" style={{backgroundColor: `${colors.favorite}1A`}}>
-            {favorito && (
+        <TouchableOpacity onPress={() => setFavorite(!favorite)} className="p-2 rounded-full items-center" style={{backgroundColor: `${colors.favorite}1A`}}>
+            {favorite && (
                 <FavoriteIcon size={24}/>
             )}
-            {!favorito && (
+            {!favorite && (
                 <NonFavoriteIcon size={24}/>
             )}
         </TouchableOpacity>

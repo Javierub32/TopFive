@@ -4,12 +4,12 @@ import { StateType } from "hooks/useResource";
 import { View, TouchableOpacity, Text } from "react-native";
 
 interface Props {
-    resource : any
-    inProgressLabel?: string}
+    difficulty: any;
+    setDifficulty: any;
+}
 
-export const DifficultySetter = ({resource, inProgressLabel} : Props) => {
+export const DifficultySetter = ({difficulty, setDifficulty} : Props) => {
     const { colors } = useTheme();
-    const [dificultad, setDificultad] = useState<string>(resource?.dificultad || 'Normal');
     
     const options = ['Fácil','Normal','Difícil','Extremo']
 
@@ -26,11 +26,11 @@ export const DifficultySetter = ({resource, inProgressLabel} : Props) => {
     return ( 
         <View className="flex-row px-4 pt-2 rounded-lg">
             {options.map((dif) => {
-                const isSelected = dificultad === dif;
+                const isSelected = difficulty === dif;
                     return ( 
                         <TouchableOpacity
                             key={dif}
-                            onPress={() => setDificultad(dif)}
+                            onPress={() => setDifficulty(dif)}
                             className={`flex-1 py-3 ${dif == options[0] ? 'rounded-l-lg': ''} ${dif == options[options.length-1] ? 'rounded-r-lg': '' }`}
                             style = { isSelected ? {backgroundColor: `${getDifficultyColor(dif)}1A`} : {backgroundColor: colors.surfaceButton}}
                             activeOpacity={0.7}

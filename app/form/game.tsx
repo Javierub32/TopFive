@@ -224,22 +224,22 @@ export default function GameForm() {
           <View className="flex-1 flex-row items-center">
             <ReturnButton route="back" title={game.titulo || game.title} style={' '}/>
           </View>
-          <FavoriteSetter resource={resource}/>
+          <FavoriteSetter favorite={favorito} setFavorite={setFavorito}/>
         </View>
 
         <View className="flex-1 flex-row justify-between gap-2 px-4 mb-4 items-stretch">
           <Image source={{uri:game.imagenUrl || game.image || 'https://via.placeholder.com/100x150'}} 
           className="aspect-[2/3] h-32 rounded-lg" style={{backgroundColor: colors.surfaceButton}}
           resizeMode="cover"/>
-          <ReviewSetter resource={resource}/>
+          <ReviewSetter review={reseña} setReview={setReseña}/>
         </View>
 
         <View className="gap-6">
           <StateSetter resource={resource}/>
-          <RatingSetter resource={resource}/>
-          <DifficultySetter resource={resource}/>
-          <ProgressSetter resource={resource} type='videojuego'/>
-          <DateSetter resource={resource} isRange={true}/>
+          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
+          <DifficultySetter difficulty={dificultad} setDifficulty={setDificultad}/>
+          <ProgressSetter progress={horasJugadas} setProgress={setHorasJugadas} type='videojuego'/>
+          <DateSetter startDate={fechaInicio} setStartDate={setFechaInicio} endDate={fechaFin} setEndDate={setFechaFin} isRange={true}/>
 
           <TouchableOpacity
             onPress={handleSubmit}

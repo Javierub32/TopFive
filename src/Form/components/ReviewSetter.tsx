@@ -3,16 +3,17 @@ import { useState } from "react";
 import { TextInput, Text, View } from "react-native"
 
 interface Props {
-    resource: any;
+    review: any;
+    setReview: any;
 }
 
-export const ReviewSetter = ({resource} : Props) => {
+export const ReviewSetter = ({review, setReview} : Props) => {
     const { colors } = useTheme();
-    const [reseña, setReseña] = useState(resource?.reseña || '');
+
     return (
         <View className="flex-1">
-            <TextInput value={reseña}
-            onChangeText={setReseña}
+            <TextInput value={review}
+            onChangeText={setReview}
             placeholder="Escribe tu opinión..."
             placeholderTextColor={colors.placeholderText}
             multiline
@@ -21,7 +22,7 @@ export const ReviewSetter = ({resource} : Props) => {
             className="min-h-24 rounded-lg p-3 text-base"
             style={{backgroundColor: colors.surfaceButton, color: colors.primaryText}}
             textAlignVertical="top"/>
-            <Text className="mt-1 text-right text-xs" style={{color: colors.secondaryText}}>{reseña.length}/500</Text>
+            <Text className="mt-1 text-right text-xs" style={{color: colors.secondaryText}}>{review.length}/500</Text>
         </View>
     )
 }

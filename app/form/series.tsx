@@ -231,22 +231,22 @@ export default function SeriesForm() {
           <View className="flex-1 flex-row items-center">
             <ReturnButton route="back" title={series.titulo || series.title} style={' '}/>
           </View>
-          <FavoriteSetter resource={resource}/>
+          <FavoriteSetter favorite={favorita} setFavorite={setFavorita}/>
         </View>
 
         <View className="flex-1 flex-row justify-between gap-2 px-4 mb-4 items-stretch">
           <Image source={{uri: series.imagenUrl || series.image || 'https://via.placeholder.com/100x150'}}
           className="aspect-[2/3] h-32 rounded-lg" style={{backgroundColor: colors.surfaceButton}}
           resizeMode="cover"/>
-          <ReviewSetter resource={resource}/>
+          <ReviewSetter review={reseña} setReview={setReseña}/>
         </View>        
 
         <View className="gap-6">
           <StateSetter resource={resource}/>
-          <RatingSetter resource={resource}/>
-          <ProgressSetter resource={resource} type='serie'/>
-          <ViewsSetter resource={resource}/> 
-          <DateSetter resource={resource} isRange={true}/>
+          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
+          <ProgressSetter progress={temporadaActual} setProgress={setTemporadaActual} progressExtra={episodioActual} setProgressExtra={setEpisodioActual} type='serie'/>
+          <ViewsSetter views={numVisualizaciones} setViews={numVisualizaciones}/> 
+          <DateSetter startDate={fechaInicio} setStartDate={setFechaInicio} endDate={fechaFin} setEndDate={setFechaFin} isRange={true}/>
                      
 
         </View>  

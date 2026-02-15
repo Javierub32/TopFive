@@ -43,6 +43,7 @@ export default function BookForm() {
   const resource = editando ? JSON.parse(item as string) : null;
   const book: any = editando ? resource.contenido : JSON.parse(bookData as string);
 
+
   const [reseña, setReseña] = useState(resource?.reseña || '');
   const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
   const [favorito, setFavorito] = useState(resource?.favorito || false);
@@ -227,22 +228,22 @@ export default function BookForm() {
           <View className="flex-1 flex-row items-center">
             <ReturnButton route="back" title={book.titulo || book.title} style={' '}/>
           </View>
-          <FavoriteSetter resource={resource}/>
+          <FavoriteSetter favorite={favorito} setFavorite={setFavorito}/>
         </View>
 
         <View className="flex-1 flex-row justify-between gap-2 px-4 mb-4 items-stretch">
           <Image source={{uri: book.imagenUrl || book.imageFull || 'https://via.placeholder.com/100x150'}}
           className="aspect-[2/3] h-32 rounded-lg" style={{backgroundColor: colors.surfaceButton}} resizeMode="cover"/>
-          <ReviewSetter resource={resource}/>
+          <ReviewSetter review={reseña} setReview={setReseña}/>
         </View>
 
         <View className="gap-6">
           <StateSetter resource={resource} inProgressLabel="Leyendo"/>
-          <RatingSetter resource={resource}/>
+          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
 
-          <ProgressSetter resource={resource} type='libro'/>
+          <ProgressSetter progress={paginasLeidas} setProgress={setPaginasLeidas} type='libro'/>
 
-          <DateSetter resource={resource} isRange={true}/>
+          <DateSetter startDate={fechaInicio} setStartDate={setFechaInicio} endDate={fechaFin} setEndDate={setFechaFin} isRange={true}/>
         </View>
         
         <TouchableOpacity

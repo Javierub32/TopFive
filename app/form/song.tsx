@@ -214,19 +214,19 @@ export default function SongForm() {
           <View className="flex-1 flex-row items-center">
             <ReturnButton route="back" title={song.titulo || song.title} style={' '}/>
           </View>
-          <FavoriteSetter resource={resource}/>
+          <FavoriteSetter favorite={favorita} setFavorite={setFavorita}/>
         </View>
         <View className="flex-1 flex-row justify-between gap-2 px-4 mb-4 items-stretch">
           <Image source={{uri: song.imagenUrl || song.image || 'https://via.placeholder.com/100x150'}}
           className="aspect-[2/3] h-32 rounded-lg" style={{backgroundColor: colors.surfaceButton}}
           resizeMode="cover"/>
-          <ReviewSetter resource={resource}/>
+          <ReviewSetter review={reseña} setReview={setReseña}/>
         </View>
 
         <View className="gap-6">
           <StateSetter resource={resource}/>
-          <RatingSetter resource={resource}/>
-          <DateSetter resource={resource} isRange={false}/>
+          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
+          <DateSetter startDate={fechaEscuchado} setStartDate={setFechaEscuchado} isRange={false}/>
         </View>
 
         <TouchableOpacity

@@ -219,7 +219,7 @@ export default function FilmForm() {
           <View className="flex-1 flex-row items-center">
             <ReturnButton route="back" title={film.titulo || film.title} style={' '}/>
           </View>
-          <FavoriteSetter resource={resource}/>
+          <FavoriteSetter favorite={favorita} setFavorite={setFavorita}/>
         </View>
 
 
@@ -227,16 +227,16 @@ export default function FilmForm() {
           <Image source={{uri: film.imagenUrl || film.image || 'https://via.placeholder.com/100x150'}}
           className="aspect-[2/3] h-32 rounded-lg" style={{backgroundColor: colors.surfaceButton}}
           resizeMode="cover"/>
-          <ReviewSetter resource={resource}/>
+          <ReviewSetter review={reseña} setReview={setReseña}/>
         </View>
 
         <View className="gap-6">
           <StateSetter resource={resource}/>
-          <RatingSetter resource={resource}/>
+          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
 
-          <View className="flex-row justify-between gap-3 px-4 pt-2">
-            <ViewsSetter resource={resource}/>
-            <DateSetter resource={resource} isRange={false}/>
+          <View className="flex-row mr-4">
+            <ViewsSetter views={numVisionados} setViews={setNumVisionados}/>
+            <DateSetter startDate={fechaVisionado} setStartDate={setFechaVisionado} isRange={false}/>
           </View>
         </View>
 
