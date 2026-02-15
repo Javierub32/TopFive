@@ -52,6 +52,7 @@ export default function AddScreen() {
               />
             )}
             contentContainerStyle={{ paddingBottom: 40, paddingTop: 10 }}
+			showsVerticalScrollIndicator={false}
           />
         ) : (
           <SearchPlaceholder category={recursoBusqueda} loading={loading} />

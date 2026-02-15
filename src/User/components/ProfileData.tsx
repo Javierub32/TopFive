@@ -21,7 +21,7 @@ export function ProfileData({
   const { colors } = useTheme();
 
   return (
-    <View className="p-4">
+    <View className="p-4 pb-1">
       {/* Se le pasa por props el avatar porque así podemos mostrar las estadísticas del usuario tanto con el perfil (puede actualizar su foto), como en la página de búsqueda (no se permite modificar la foto de otros usuarios) */}
       <View className="flex-row items-center">
         <View className="mb-4 items-center justify-center justify-self-start">{children}</View>
