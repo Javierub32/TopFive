@@ -17,7 +17,7 @@ export const EditResourceButton = ({resource, type}: Props) => {
     const ResourceMap : Record<ResourceType, string> = {
         pelicula: 'film',
         serie: 'series',
-        videojuego: 'games',
+        videojuego: 'game',
         libro: 'book',
         cancion: 'song'
     };    

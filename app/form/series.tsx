@@ -242,7 +242,7 @@ export default function SeriesForm() {
         </View>        
 
         <View className="gap-6">
-          <StateSetter state={estado} setState={setEstado}/>
+          <StateSetter state={estado} setState={setEstado} inProgressLabel='Viendo'/>
           <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
           <ProgressSetter progress={temporadaActual} setProgress={setTemporadaActual} progressExtra={episodioActual} setProgressExtra={setEpisodioActual} type='serie'/>
           <ViewsSetter views={numVisualizaciones} setViews={setNumVisualizaciones}/> 

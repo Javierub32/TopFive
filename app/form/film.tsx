@@ -45,7 +45,7 @@ export default function FilmForm() {
   const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
   const [favorita, setFavorita] = useState(resource?.favorito || false);
   const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(resource?.estado || 'PENDIENTE');
-  const [fechaVisionado, setFechaVisionado] = useState<Date>(resource?.fechaVisionado ? new Date(resource.fechaVisionado) : new Date());
+  const [fechaVisionado, setFechaVisionado] = useState<Date | null>(resource?.fechaVisionado ? new Date(resource.fechaVisionado) : new Date());
   const [numVisionados, setNumVisionados] = useState(resource?.numVisionados || 0);
 
   const [loading, setLoading] = useState(false);
@@ -56,8 +56,8 @@ export default function FilmForm() {
       calificacionPersonal,
       favorita,
       estado,
-      fechaVisionado: fechaVisionado.toISOString().split('T')[0],
-	  fechaSinFormato: fechaVisionado.toISOString(),
+      fechaVisionado: fechaVisionado ? fechaVisionado.toISOString().split('T')[0] : null,
+	  fechaSinFormato: fechaVisionado ? fechaVisionado.toISOString() : null,
       numVisionados,
     });
 
@@ -72,13 +72,13 @@ export default function FilmForm() {
             reseña: reseña,
             calificacion: calificacionPersonal,
             favorito: favorita,
-            fechaVisionado: fechaVisionado.toISOString().split('T')[0],
+            fechaVisionado: fechaVisionado ? fechaVisionado.toISOString().split('T')[0] : null,
             numVisionados: numVisionados,
           })
           .eq('id', resource.id)
           .select(`
             *,
-            contenidopelicula (
+            contenidopelicula:idContenido (
               titulo,
               imagenUrl,
               fechaLanzamiento
@@ -171,7 +171,7 @@ export default function FilmForm() {
 			reseña: reseña,
 			calificacion: calificacionPersonal,
 			favorito: favorita,
-			fechaVisionado: fechaVisionado.toISOString().split('T')[0],
+			fechaVisionado: fechaVisionado ? fechaVisionado.toISOString().split('T')[0] : null,
 			numVisionados: numVisionados,
         });
 
@@ -234,9 +234,13 @@ export default function FilmForm() {
           <StateSetter state={estado} setState={setEstado}/>
           <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
 
-          <View className="flex-row mr-4">
-            <ViewsSetter views={numVisionados} setViews={setNumVisionados}/>
-            <DateSetter startDate={fechaVisionado} setStartDate={setFechaVisionado} isRange={false}/>
+          <View className="flex-row items-start mr-4">
+            <View className="flex-1">
+               <ViewsSetter views={numVisionados} setViews={setNumVisionados}/>
+            </View>
+            <View className="flex-1">
+               <DateSetter startDate={fechaVisionado} setStartDate={setFechaVisionado} isRange={false}/>
+            </View>
           </View>
         </View>
 

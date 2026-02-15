@@ -235,7 +235,7 @@ export default function GameForm() {
         </View>
 
         <View className="gap-6">
-          <StateSetter state={estado} setState={setEstado}/>
+          <StateSetter state={estado} setState={setEstado} inProgressLabel='Jugando'/>
           <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
           <DifficultySetter difficulty={dificultad} setDifficulty={setDificultad}/>
           <ProgressSetter progress={horasJugadas} setProgress={setHorasJugadas} type='videojuego'/>

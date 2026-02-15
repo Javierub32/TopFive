@@ -9,10 +9,11 @@ interface Props {
     setStartDate: any;
     endDate?: Date | null;
     setEndDate?: any;
-    isRange: boolean
+    isRange: boolean;
+	style?: string;
 }
 
-export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRange}: Props) => {
+export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRange, style}: Props) => {
     const { colors } = useTheme();
 
     const [showDatePickerInicio, setShowDatePickerInicio] = useState(false);
@@ -21,16 +22,16 @@ export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRang
 
     if (!isRange) {
         return (
-            <View className='flex-1'>
-                <TouchableOpacity className='flex-1 p-4 rounded-2xl flex justify-between gap-2' 
+            <View className={`${style}`}>
+                <TouchableOpacity className='p-2 rounded-2xl flex justify-between gap-2' 
                 style={{backgroundColor: `${colors.primary}1A`}}
                 onPress={() => setShowDatePickerInicio(true)}>
-                    <View className='flex-row items-center gap-2'>
+                    <View className='flex-row items-center gap-2 p-1'>
                         <CalendarIcon/>
                         <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Ultima Vez</Text>
                     </View>
                     <View className='flex-row justify-center'>
-                        <Text className="text-sm font-bold p-4" style={{color: colors.primaryText}}>
+                        <Text className="text-sm font-bold p-3" style={{color: colors.primaryText}}>
                             {startDate
                             ? startDate.toLocaleDateString('es-ES', {
                                 day: '2-digit',
@@ -67,7 +68,7 @@ export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRang
     }
 
     return ( 
-        <View className="px-4 pt-2 flex-row gap-2">
+        <View className={`px-4 pt-2 flex-row gap-2 ${style}`}>
             <View className="flex-1">
                 <TouchableOpacity className='flex-1 p-4 rounded-2xl flex justify-between gap-2' 
                 style={{backgroundColor: `${colors.primary}1A`}}

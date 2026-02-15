@@ -226,7 +226,7 @@ export default function SongForm() {
         <View className="gap-6">
           <StateSetter state={estado} setState={setEstado}/>
           <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
-          <DateSetter startDate={fechaEscuchado} setStartDate={setFechaEscuchado} isRange={false}/>
+          <DateSetter startDate={fechaEscuchado} setStartDate={setFechaEscuchado} isRange={false} style='mx-10'/>
         </View>
 
         <TouchableOpacity

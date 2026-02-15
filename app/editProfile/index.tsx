@@ -22,7 +22,7 @@ export default function EditProfileScreen() {
 	return (
 		<Screen>
 			
-			<ReturnButton route="/settings" title="Editar perfil" />
+			<ReturnButton route="/settings" title="Editar perfil" params={{ username: uname, description: udesc }}/>
 			<View className="flex-col gap-2 py-4 px-6">
 			<FormInput		
 				description={uname}

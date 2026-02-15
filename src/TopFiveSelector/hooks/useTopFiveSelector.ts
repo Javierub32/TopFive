@@ -15,7 +15,7 @@ export const useTopFiveSelector = () => {
   const PAGE_SIZE = 9; // Cantidad de elementos a cargar por página
 
   const fetchTopFiveSelector = async (category: ResourceType) => {
-    if (loading) return; // Evitar fetch si ya está cargando
+    if (loading || !user || !hasMore) return; // Evitar fetch si ya está cargando o no hay usuario
     setLoading(true);
     try {
       const from = page * PAGE_SIZE;

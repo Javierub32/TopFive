@@ -104,7 +104,7 @@ export default function BookForm() {
 			contenido: contentData,
 		  };
 
-          Alert.alert('¡Éxito!', `Has actualizado ${book.title} en tu colección.`);
+          Alert.alert('¡Éxito!', `Has actualizado ${book.titulo || book.title} en tu colección.`);
 		  refreshData();
           router.replace({
             pathname: '/details/book/bookResource',
