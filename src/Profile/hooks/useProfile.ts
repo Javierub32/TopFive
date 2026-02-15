@@ -76,17 +76,11 @@ export const useProfile = () => {
 
   // Fetch stats when category or year changes
   useEffect(() => {    
-    // Si cambió el año, resetear todos los datos
-    if (selectedYear !== previousYear) {
+
       setFullCategoryData(INITIAL_CATEGORY_DATA);
       setPreviousYear(selectedYear);
 	  fetchResourceInfo();
 	  return;
-    }
-    
-    if (fullCategoryData[selectedCategory].total === 0) {
-      fetchResourceInfo();
-    }
   }, [selectedCategory, selectedYear, previousYear]);
 
   const fetchResourceInfo = async () => {

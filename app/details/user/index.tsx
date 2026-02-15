@@ -32,7 +32,7 @@ export default function UserDetailsScreen() {
   if (loading) {
     return (
       <Screen>
-        <ReturnButton route='/(tabs)/Search' title='Detalles del Usuario' />
+        <ReturnButton route='/(tabs)/Search' title='' />
         <LoadingIndicator />
       </Screen>
     );
