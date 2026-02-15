@@ -32,7 +32,7 @@ export default function ActivityItem({ item}: { item: Activity }) {
       {/* Imagen de fonde */}
       <ImageBackground 
         source={{ uri: item.imagen_url || 'https://via.placeholder.com/150' }}
-        style={{ width: '100%' }}
+        style={{ width: '100%', backgroundColor: colors.surfaceButton }}
         imageStyle={{ opacity: 0.2 }}
       >
         {/* Gradiente */}
