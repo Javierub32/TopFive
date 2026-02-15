@@ -4,12 +4,12 @@ import { StateType } from "hooks/useResource";
 import { View, TouchableOpacity, Text } from "react-native";
 
 interface Props {
-    resource : any
+    state: any;
+    setState: any;
     inProgressLabel?: string}
 
-export const StateSetter = ({resource, inProgressLabel} : Props) => {
+export const StateSetter = ({state, setState, inProgressLabel} : Props) => {
     const { colors } = useTheme();
-    const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(resource?.estado || 'COMPLETADO');
     const options: StateType[] = ['PENDIENTE'];
 
     if(inProgressLabel) {
@@ -38,11 +38,11 @@ export const StateSetter = ({resource, inProgressLabel} : Props) => {
     return ( 
         <View className="flex-row px-4 pt-2 rounded-lg">
             {options.map((est) => {
-                const isSelected = estado === est;
+                const isSelected = state === est;
                     return ( 
                         <TouchableOpacity
                             key={est}
-                            onPress={() => setEstado(est)}
+                            onPress={() => setState(est)}
                             className={`flex-1 py-3 ${est == options[0] ? 'rounded-l-lg': ''} ${est == options[options.length-1] ? 'rounded-r-lg': '' }`}
                             style = { isSelected ? {backgroundColor: `${getStatusColor(est)}1A`} : {backgroundColor: colors.surfaceButton}}
                             activeOpacity={0.7}

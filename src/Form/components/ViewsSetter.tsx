@@ -37,6 +37,7 @@ export const ViewsSetter = ({views, setViews} : Props) => {
                     maxLength={4}
                     className="w-12 text-center text-lg font-bold border-b pb-0"                                
                     style={{color: colors.primaryText, borderBottomColor: colors.placeholderText}}
+                    selectTextOnFocus={true}
                 />
                 
 

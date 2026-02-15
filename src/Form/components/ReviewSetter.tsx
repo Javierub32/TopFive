@@ -1,5 +1,4 @@
 import { useTheme } from "context/ThemeContext"
-import { useState } from "react";
 import { TextInput, Text, View } from "react-native"
 
 interface Props {
@@ -11,7 +10,7 @@ export const ReviewSetter = ({review, setReview} : Props) => {
     const { colors } = useTheme();
 
     return (
-        <View className="flex-1">
+        <View className="flex-1 min-h-24">
             <TextInput value={review}
             onChangeText={setReview}
             placeholder="Escribe tu opinión..."

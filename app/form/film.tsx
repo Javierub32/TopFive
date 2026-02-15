@@ -231,7 +231,7 @@ export default function FilmForm() {
         </View>
 
         <View className="gap-6">
-          <StateSetter resource={resource}/>
+          <StateSetter state={estado} setState={setEstado}/>
           <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
 
           <View className="flex-row mr-4">

@@ -41,10 +41,12 @@ export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRang
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setStartDate(null)} disabled={!startDate}
-                className="mt-1 items-center">
-                    <Text className="text-xs" style={startDate? {color: colors.error} : {color: colors.background}}>Limpiar fecha</Text>
-                </TouchableOpacity>
+                {startDate && (
+                    <TouchableOpacity onPress={() => setStartDate(null)}
+                    className="mt-1 items-center">
+                        <Text className="text-xs" style={{color: colors.error}}>Limpiar fecha</Text>
+                    </TouchableOpacity>
+                )}                
 
                 {showDatePickerInicio && (
                     <DateTimePicker

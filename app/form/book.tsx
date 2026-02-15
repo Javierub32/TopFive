@@ -238,7 +238,7 @@ export default function BookForm() {
         </View>
 
         <View className="gap-6">
-          <StateSetter resource={resource} inProgressLabel="Leyendo"/>
+          <StateSetter state={estado} setState={setEstado} inProgressLabel="Leyendo"/>
           <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
 
           <ProgressSetter progress={paginasLeidas} setProgress={setPaginasLeidas} type='libro'/>

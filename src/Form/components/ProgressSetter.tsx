@@ -2,7 +2,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TimerIcon, TimesWatchedIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext"
 import { ResourceType } from "hooks/useResource";
-import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 interface Props {
@@ -13,13 +12,6 @@ interface Props {
     type : ResourceType;
 }
 
-interface ProgressConfig {
-    progressValue: string ;
-    progressValue2?: string ;
-    placeholderProgress: string;
-    setProgressMethod: any;
-    setProgresMethod2?: any;
-}
 
 export const ProgressSetter = ({progress, setProgress, progressExtra, setProgressExtra, type} : Props) => {
     const { colors } = useTheme();
@@ -45,7 +37,7 @@ export const ProgressSetter = ({progress, setProgress, progressExtra, setProgres
                         <Text className="font-semibold text-center" style={{color: colors.secondaryText}}>Temporada Actual</Text>
                         <View className="flex-row justify-center items-center gap-3">
                             <TouchableOpacity
-                            onPress={() => setProgress(Math.max(0, progress - 1))}
+                            onPress={() => setProgress(Math.max(0, progress as number - 1))}
                             className="rounded-lg p-2 items-center">
                                 <MaterialCommunityIcons name="minus" size={16} color={colors.error} />
                             </TouchableOpacity>
@@ -61,10 +53,11 @@ export const ProgressSetter = ({progress, setProgress, progressExtra, setProgres
                                 maxLength={4}
                                 className="w-12 text-center text-lg font-bold border-b pb-0"                                
                                 style={{color: colors.primaryText, borderBottomColor: colors.placeholderText}}
+                                selectTextOnFocus={true}
                             />
 
                             <TouchableOpacity
-                                onPress={() => setProgress(progress + 1)}
+                                onPress={() => setProgress(Number(progress) + 1)}
                                 className="rounded-lg p-2">
                                 <MaterialCommunityIcons name="plus" size={16} color={colors.success} />
                             </TouchableOpacity>
@@ -74,7 +67,7 @@ export const ProgressSetter = ({progress, setProgress, progressExtra, setProgres
                         <Text className="font-semibold text-center" style={{color: colors.secondaryText}}>Episodio actual</Text>
                         <View className="flex-row justify-center items-center gap-3">
                             <TouchableOpacity
-                            onPress={() => setProgressExtra(Math.max(0, progressExtra - 1))}
+                            onPress={() => setProgressExtra(Math.max(0, progressExtra as number - 1))}
                             className="rounded-lg p-2 items-center">
                                 <MaterialCommunityIcons name="minus" size={16} color={colors.error} />
                             </TouchableOpacity>
@@ -90,11 +83,12 @@ export const ProgressSetter = ({progress, setProgress, progressExtra, setProgres
                                 maxLength={4}
                                 className="w-12 text-center text-lg font-bold border-b pb-0"  
                                 style={{color: colors.primaryText, borderBottomColor: colors.placeholderText}}
+                                selectTextOnFocus={true}
                             />
 
 
                             <TouchableOpacity
-                                onPress={() => setProgressExtra(progressExtra + 1)}
+                                onPress={() => setProgressExtra(Number(progressExtra) + 1)}
                                 className="rounded-lg p-2">
                                 <MaterialCommunityIcons name="plus" size={16} color={colors.success} />
                             </TouchableOpacity>

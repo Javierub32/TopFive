@@ -224,7 +224,7 @@ export default function SongForm() {
         </View>
 
         <View className="gap-6">
-          <StateSetter resource={resource}/>
+          <StateSetter state={estado} setState={setEstado}/>
           <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
           <DateSetter startDate={fechaEscuchado} setStartDate={setFechaEscuchado} isRange={false}/>
         </View>
