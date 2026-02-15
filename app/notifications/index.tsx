@@ -10,7 +10,6 @@ import { router } from 'expo-router';
 export default function NotificationsScreen() {
   const { loading, notifications, handleAcceptNotification, handleDeclineNotification } =
     useNotification();
-  console.log('Notifications:', notifications);
 
   if (loading) {
     return (

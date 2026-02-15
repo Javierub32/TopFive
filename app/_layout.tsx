@@ -39,8 +39,6 @@ function InitialLayout() {
   }, [appIsReady]);
 
   useEffect(() => {
-	console.log('Auth State Changed: ', { session, loading, segments, appIsReady });
-
     if (loading || !appIsReady) return;
 
     const inAuthGroup = segments[0] === '(auth)';

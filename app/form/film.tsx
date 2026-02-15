@@ -51,16 +51,6 @@ export default function FilmForm() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    console.log({
-      reseña,
-      calificacionPersonal,
-      favorita,
-      estado,
-      fechaVisionado: fechaVisionado ? fechaVisionado.toISOString().split('T')[0] : null,
-	  fechaSinFormato: fechaVisionado ? fechaVisionado.toISOString() : null,
-      numVisionados,
-    });
-
     setLoading(true);
     try {
       if (editando) {

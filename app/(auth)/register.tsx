@@ -24,7 +24,6 @@ export default function Register() {
       await signUp(email, password, username);
 	  Alert.alert('Éxito', 'Tu cuenta ha sido creada. \nConfirma tu correo para iniciar sesión.');
     } catch (error: any) {
-      console.log(error);
 	  Alert.alert('Error', error.message || 'Hubo un error al crear tu cuenta.');
     } finally {
       setLoading(false);

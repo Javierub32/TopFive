@@ -21,8 +21,6 @@ export const followersServices = {
 			console.error('Error al obtener seguidores:', error.message);
 			return [];
 		}
-		console.log('Fetched followers data:', data);
-		console.log('Mapped followers:', data.map((item: any) => item.follower));
 
 		return data.map((item: any) => item.follower);
 	},

@@ -41,7 +41,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#5781b3"
       },
-      "package": "com.anonymous.topfive",
+      "package": "com.leftjoiners.topfive",
       "enableProguardInReleaseBuilds": true,
       "enableShrinkResourcesInReleaseBuilds": true,
       "versionCode": 1

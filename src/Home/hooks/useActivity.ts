@@ -35,9 +35,7 @@ export const useActivity = () => {
 		try {
 			const from = page * pageSize;
 			const to = from + pageSize - 1;
-			console.log(`Cargando actividades desde ${from} hasta ${to}...`);
 			const activities = await activityService.getUltimosRecursosActivos(from, to, user?.id || '');
-			console.log(`Actividades cargadas: ${activities.length}`);
 			setActivities((prev) => [...prev, ...activities]);
 			setPage((prev) => prev + 1);
 			if (activities.length < pageSize) {

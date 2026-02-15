@@ -21,7 +21,7 @@ export const userService = {
         await supabase.storage.from('avatars').remove([oldPath]);
       }
     } catch (error) {
-      console.log('No se pudo eliminar la foto anterior:', error);
+		console.error('Error al eliminar avatar anterior:', error);
     }
   },
 

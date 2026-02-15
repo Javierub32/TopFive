@@ -124,8 +124,6 @@ export const useResource = () => {
             }
             return item;
         });
-        
-        console.log(`${type} recuperados y normalizados:`, normalizedData);
         return normalizedData as unknown as ResourceMap[K][];
     }
 
@@ -155,7 +153,6 @@ export const useResource = () => {
         .eq('id', recursoId);
 
       if (error) throw error;
-      console.log(`Recurso ${tipoRecurso} borrado:`, data);
       return data;
     } catch (error) {
       console.error(`Error al borrar recurso ${tipoRecurso}:`, error);
