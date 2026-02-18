@@ -72,7 +72,7 @@ export default function Login() {
                 <View className="flex-row items-center rounded-xl px-4 py-3 mb-3" style= {{backgroundColor: colors.surfaceButton}}>
                   <MaterialCommunityIcons name="email-outline" size={24} color={colors.secondaryText}/>
                   <TextInput 
-                    placeholder="tu@email.com" 
+                    placeholder="tu@gmail.com" 
                     placeholderTextColor={colors.placeholderText}
                     value={email} 
                     onChangeText={setEmail} 
@@ -105,7 +105,19 @@ export default function Login() {
                     />
                   </TouchableOpacity>
                 </View>
-                <View className="mt-6" style={{}}>
+				
+				<View className="my-4 pr-1" style={{}}>
+                  <TouchableOpacity
+                    onPress={() => router.push('/(auth)/forgot-password')}
+                    disabled={loading}
+                    className="items-end"
+                  >
+                    <Text className="" style={{color: colors.secondaryText}}>
+                      ¿Has olvidado tu contraseña?
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View className="" style={{}}>
                   <TouchableOpacity
                     onPress={handleLogin}
                     disabled={loading}
@@ -117,6 +129,8 @@ export default function Login() {
                     </Text>
                   </TouchableOpacity>
                 </View>
+				
+
               </View>
           </View>
 

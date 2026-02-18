@@ -141,8 +141,25 @@ const signUp = async (email, password, username) => {
 		await supabase.auth.signOut();
 	};
 
+	const requestReset = async (email) => {
+		const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+			// Esta es la página de tu web donde el usuario escribirá la NUEVA clave
+			redirectTo: 'https://www.topfive5.me/reset-password', 
+		})
+		
+		if (error) throw error;
+	}
+
+	const changePassword = async (newPassword) => {
+		const { error } = await supabase.auth.updateUser({
+			password: newPassword
+		})
+
+		if (error) throw error;
+	}
+
 	return (
-		<AuthContext.Provider value={{ user, session, loading, signIn, signUp, signOut }}>
+		<AuthContext.Provider value={{ user, session, loading, signIn, signUp, signOut, requestReset, changePassword }}>
 			{children}
 		</AuthContext.Provider>
 	);

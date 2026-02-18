@@ -43,7 +43,11 @@ function InitialLayout() {
 
     const inAuthGroup = segments[0] === '(auth)';
 
+    const isResettingPassword = segments.length > 1 && (segments as string[])[1] === 'reset-password';
+
+
     if (session) {
+	  if (isResettingPassword) return;
       // SI hay usuario:
       // Redirigir a Home si intenta entrar a login/registro (AuthGroup) 
       // O si está en la raíz (segments.length === 0)

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Alert, TouchableOpacity, Platform } from 'react-native';
+import { View, TextInput, Text, Alert, TouchableOpacity, Platform, ScrollView } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter, Link } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -15,12 +15,18 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const { colors } = useTheme();
 
   const handleRegister = async () => {
     setLoading(true);
     try {
+      if (password !== confirmPassword) {
+        Alert.alert('Error', 'Las contraseñas no coinciden. \n Por favor, inténtalo de nuevo.');
+        setLoading(false);
+        return;
+      }
       await signUp(email, password, username);
 	  Alert.alert('Éxito', 'Tu cuenta ha sido creada. \nConfirma tu correo para iniciar sesión.');
     } catch (error: any) {
@@ -31,21 +37,19 @@ export default function Register() {
   };
 
   return (
-    <View className="flex-1">
+    <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
       <LinearGradient
         colors={[colors.background, colors.secondary, colors.secondary]}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
         <View style={{ width: '100%', maxWidth: 550 }}>
-          <Text
-            style={{
-              fontSize: 24,
-              fontWeight: 'bold',
-              marginBottom: 10,
-              textAlign: 'center',
-              color: colors.primaryText,
-            }}>
-            TopFive
-          </Text>
+          <View className="flex-row items-center justify-center mb-4">
+					  <View className="rounded-full p-3 mr-3" style= {{backgroundColor: `${colors.primaryText}20`}}>
+						<MaterialCommunityIcons name="movie-open" size={40} color={colors.primaryText} />
+					  </View>
+					  <Text style={{fontSize: 24, fontWeight: 'bold', color: colors.primaryText}}>
+						TopFive
+					  </Text>
+					</View>
 
           <Text
             style={{
@@ -79,7 +83,7 @@ export default function Register() {
               <View className="flex-row items-center rounded-xl px-4 py-3 mb-3" style={{backgroundColor: colors.surfaceButton}}>
                 <MaterialCommunityIcons name="email-outline" size={24} color={colors.secondaryText} />
                 <TextInput
-                  placeholder="tu@email.com"
+                  placeholder="tu@gmail.com"
                   value={email}
                   onChangeText={setEmail}
                   autoCapitalize="none"
@@ -103,12 +107,34 @@ export default function Register() {
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="ml-2">
                   <MaterialCommunityIcons
-                    name={showPassword ? 'eye-off' : 'eye'}
+                    name={!showPassword ? 'eye-off' : 'eye'}
                     size={24}
                     color={colors.secondaryText}
                   />
                 </TouchableOpacity>
               </View>
+
+              <Text className="mb-2 ml-1 mt-4 font-semibold" style={{color: colors.primaryText}}>Confirmar contraseña</Text>
+              <View className="flex-row items-center rounded-xl px-4 py-3" style={{backgroundColor: colors.surfaceButton}}>
+                <MaterialCommunityIcons name="lock-outline" size={24} color={colors.secondaryText} />
+                <TextInput
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  className="ml-3 flex-1 text-base"
+                  placeholderTextColor={colors.placeholderText}
+                  secureTextEntry={!showPassword}
+                  style={{color: colors.primaryText}}
+                />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="ml-2">
+                  <MaterialCommunityIcons
+                    name={!showPassword ? 'eye-off' : 'eye'}
+                    size={24}
+                    color={colors.secondaryText}
+                  />
+                </TouchableOpacity>
+              </View>
+
               <View className="mt-6">
                 <TouchableOpacity
                   onPress={handleRegister}
@@ -133,6 +159,6 @@ export default function Register() {
           </View>
         </View>
       </LinearGradient>
-    </View>
+    </ScrollView>
   );
 }
