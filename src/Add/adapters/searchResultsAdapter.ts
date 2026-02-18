@@ -6,31 +6,39 @@ export type SearchResult = {
   artist: string;
   cover: string;
   genre: string;
+  date: string;
+  rating: string;
 };
 
 export const searchAdapter: Record<ResourceType, (data: any) => SearchResult> = {
   libro: (book: any): SearchResult => ({
-    id: book.id || `book-${Math.random()}`,
+    id: book.id ,
     title: book.title || 'Sin título',
-    artist: book.autor || 'Desconocido',
+    artist: book.autor || '',
     cover: book.image || '',
-    genre: book.genre?.[0] || 'Literatura',
+    genre: book.genre?.[0] || '',
+    date: book.releaseDate?.split('-')[0] || '',
+    rating: book.rating ? `⭐ ${book.rating}` : '',
   }),
 
   pelicula: (film: any): SearchResult => ({
     id: film.id,
     title: film.title || 'Sin título',
-    artist: film.rating ? `⭐ ${film.rating.toFixed(1)}` : 'Desconocido',
+    artist: film.director || '',
     cover: film.image || '',
-    genre: film.releaseDate ? film.releaseDate.split('-')[0] : 'Desconocido',
+    genre: film.genre?.[0] || '',
+    date: film.releaseDate?.split('-')[0] || '',
+    rating: film.rating ? `⭐ ${film.rating.toFixed(1)}` : '',
   }),
 
   serie: (series: any): SearchResult => ({
     id: series.id,
     title: series.title || 'Sin título',
-    artist: series.rating ? `⭐ ${series.rating.toFixed(1)}` : 'Desconocido',
+    artist: series.director || '',
     cover: series.image || '',
-    genre: series.genre?.[0] || 'TV',
+    genre: series.genre?.[0] || '',
+    date: series.releaseDate?.split('-')[0]  || '',
+    rating: series.rating ? `⭐ ${series.rating.toFixed(1)}` : '',
   }),
 
   videojuego: (game: any): SearchResult => ({
@@ -38,7 +46,9 @@ export const searchAdapter: Record<ResourceType, (data: any) => SearchResult> = 
     title: game.title,
     artist: game.autor || 'Desconocido',
     cover: game.image || '',
-    genre: game.genre?.[0] || 'Gaming',
+    genre: game.genre?.[0] || '',
+    date: game.releaseDate?.split('-')[0] || '',
+    rating: game.rating ? `⭐ ${(game.rating/20).toFixed(1)}` : '',
   }),
 
   cancion: (song: any): SearchResult => ({
@@ -46,6 +56,8 @@ export const searchAdapter: Record<ResourceType, (data: any) => SearchResult> = 
     title: song.title || 'Sin título',
     artist: song.autor || 'Desconocido',
     cover: song.image || '',
-    genre: song.genre || 'Música',
+    genre: song.genre || '',
+    date: song.releaseDate?.split('-')[0] || '',
+    rating: song.rating ? `⭐ ${song.rating.toFixed(1)}` : '',
   }),
 };

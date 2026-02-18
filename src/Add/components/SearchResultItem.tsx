@@ -15,37 +15,50 @@ export const SearchResultItem = ({ item, onPress }: SearchResultItemProps) => {
   
   return (
     <TouchableOpacity
-      className="mb-3 flex-row overflow-hidden rounded-xl border border-borderButton bg-surfaceButton shadow-sm active:bg-borderButton"
-      style= {{borderColor: colors.borderButton, backgroundColor: colors.surfaceButton}}
+      className="mb-6 flex-row overflow-hidden "
       onPress={onPress}
       activeOpacity={0.7}
+      
     >
       {/* Imagen de Portada */}
       <Image
         source={{ uri: item.cover || 'https://via.placeholder.com/150' }}
-        className="h-36 w-24 bg-background"
+        className="h-36 w-24 bg-background rounded-xl"
         resizeMode="cover"
       />
 
       {/* Información del Recurso */}
-      <View className="flex-1 justify-center p-3">
+      <View className="flex-1 justify-center p-3 ">
         <Text className="mb-1 text-lg font-bold leading-tight" style={{color: colors.primaryText}} numberOfLines={2}>
           {item.title}
         </Text>
 
-        {/* Artista / Autor / Rating */}
         <Text className="mb-2 text-sm" style={{color: colors.secondaryText}} numberOfLines={1}>
           {item.artist}
         </Text>
 
+        {/* Fecha/Rating */}
+        {!item.date || !item.rating ? (
+          <Text className="mb-2 text-sm" style={{color: colors.secondaryText}} numberOfLines={1}>
+            {item.date}  {item.rating}
+          </Text>
+        ):(
+          <Text className="mb-2 text-sm" style={{color: colors.secondaryText}} numberOfLines={1}>
+          {item.date} | {item.rating}
+        </Text>
+        )}
+        
         {/* Badge de Género */}
-        <View className="flex-row">
-          <View className="rounded border px-2 py-1" style={{borderColor: colors.accent, backgroundColor: `${colors.accent}50`}}>
-            <Text className="text-xs font-bold uppercase tracking-wider" style={{color: colors.markerText}}>
-              {item.genre}
-            </Text>
-          </View>
-        </View>
+       
+            {item.genre ? (
+               <View className="flex-row">
+                <View className="mr-2 rounded-lg px-3 py-1.5" style={{ backgroundColor: colors.surfaceButton }}>
+                  <Text className="font-semibold text-xs" style={{ color: colors.markerText }}>
+                    {item.genre}
+                  </Text>
+                </View>
+              </View>
+            ) : null}
       </View>
 
       {/* Icono de flecha lateral */}
