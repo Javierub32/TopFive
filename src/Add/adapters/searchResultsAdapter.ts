@@ -28,7 +28,7 @@ export const searchAdapter: Record<ResourceType, (data: any) => SearchResult> = 
     cover: film.image || '',
     genre: film.genre?.[0] || '',
     date: film.releaseDate?.split('-')[0] || '',
-    rating: film.rating ? `⭐ ${film.rating.toFixed(1)}` : '',
+    rating: film.rating ? `⭐ ${(film.rating/2).toFixed(1)}` : '',
   }),
 
   serie: (series: any): SearchResult => ({
@@ -38,7 +38,7 @@ export const searchAdapter: Record<ResourceType, (data: any) => SearchResult> = 
     cover: series.image || '',
     genre: series.genre?.[0] || '',
     date: series.releaseDate?.split('-')[0]  || '',
-    rating: series.rating ? `⭐ ${series.rating.toFixed(1)}` : '',
+    rating: series.rating ? `⭐ ${(series.rating/2).toFixed(1)}` : '',
   }),
 
   videojuego: (game: any): SearchResult => ({
