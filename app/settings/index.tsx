@@ -7,6 +7,7 @@ import { FontAwesome5 } from '@expo/vector-icons/';
 import { useProfile } from 'src/Profile/hooks/useProfile';
 import { useTheme } from "context/ThemeContext";
 import { router, useLocalSearchParams } from "expo-router";
+import { FeedbackFormButton } from "@/Settings/components/FeedbackFormButton";
 
 export default function SettingsScreen() {
     const {
@@ -20,30 +21,47 @@ export default function SettingsScreen() {
     return (
         <Screen>
             <ReturnButton route='/(tabs)/Profile' title='Configuración' />
-            <View className="flex-1 p-4">
-                <View className="flex-col justify-center gap-2">
-					<Pressable
-                        className="w-full flex-row justify-between items-center rounded-xl border-2 p-3"
-                        style={{borderColor: colors.borderButton, backgroundColor: `${colors.buttonBackground}1A`}}
-                        onPress={() => router.push({ pathname: '/editProfile' , params: { username, description } })}>
-                        <Text className="text-lg" style={{color: colors.primaryText}}>Editar perfil</Text>
-                        <AntDesign name="edit" size={20} color={colors.primaryText} />
-                    </Pressable>
-                    <Pressable
-                        className="w-full flex-row justify-between items-center rounded-xl border-2 p-3"
-                        style={{borderColor: colors.borderButton, backgroundColor: `${colors.buttonBackground}1A`}}
-                        onPress={toggleTheme}>
-                        <Text className="text-lg" style={{color: colors.primaryText}}>Alternar tema</Text>
-                        <FontAwesome5 name="palette" size={24} color={colors.primaryText} />
-                    </Pressable>
+            <View className="flex-1 p-4 mb-14">
+                <View className="flex-1 justify-between">
+                    <View className="flex-col justify-center gap-2 rounded-2xl p-4" style={{backgroundColor: `${colors.accent}1A`}}>
+                        <Text className="font-bold text-xl border-b p-1 mb-3" style={{color: colors.primaryText, borderColor: colors.secondaryText}}>
+                            Personalización
+                        </Text>
+                        <Pressable
+                            className="w-full flex-row justify-between items-center rounded-xl p-3"
+                            style={{backgroundColor: `${colors.accent}33`}}
+                            onPress={() => router.push({ pathname: '/editProfile' , params: { username, description } })}>
+                            <Text className="text-lg" style={{color: colors.primaryText}}>Editar perfil</Text>
+                            <AntDesign name="edit" size={20} color={colors.primaryText} />
+                        </Pressable>
+                        <Pressable
+                            className="w-full flex-row justify-between items-center rounded-2xl p-3"
+                            style={{backgroundColor: `${colors.accent}33`}}
+                            onPress={toggleTheme}>
+                            <Text className="text-lg" style={{color: colors.primaryText}}>Cambiar tema</Text>
+                            <FontAwesome5 name="palette" size={24} color={colors.primaryText} />
+                        </Pressable>
+                    </View>
+                    
+					
+                    <View className="flex-col justify-center gap-2">
+                        
 
-                    <Pressable
-                        className="w-full flex-row justify-between items-center rounded-xl border-2 bg-error/10 p-3"
-                        style={{borderColor: colors.error, backgroundColor: `${colors.error}1A`}}
-                        onPress={signOut}>
-                        <Text className="text-lg" style={{color: colors.primaryText}}>Cerrar sesión</Text>
-                        <Ionicons name="log-out-outline" size={24} color={colors.primaryText} />
-                    </Pressable>
+                        <FeedbackFormButton></FeedbackFormButton>
+
+                        <Pressable
+                            className="w-full flex-row justify-between items-center rounded-2xl p-3"
+                            style={{backgroundColor: `${colors.error}33`}}
+                            onPress={signOut}>
+                            <Text className="text-lg" style={{color: colors.error}}>Cerrar sesión</Text>
+                            <Ionicons name="log-out-outline" size={24} color={colors.primaryText} />
+                        </Pressable>
+                    </View>
+                    
+                    
+
+
+
                 </View>
                 
             </View>
