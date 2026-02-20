@@ -42,7 +42,7 @@ interface User {
 }
 
 export const useProfile = () => {
-  const { signOut, user } = useAuth();
+  const { user } = useAuth();
   const { fetchResources } = useResource()
   const [loading, setLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(false);
@@ -156,7 +156,6 @@ export const useProfile = () => {
     setSelectedYear,
     setIsPressed,
     pickImage,
-    signOut,
 	statsLoading,
 	currentStats: fullCategoryData[selectedCategory],
   };

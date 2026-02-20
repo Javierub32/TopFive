@@ -158,8 +158,22 @@ const signUp = async (email, password, username) => {
 		if (error) throw error;
 	}
 
+	const deleteAccount = async () => {
+	try {
+		const { error } = await supabase.rpc('delete_user_account');
+		
+		if (error) throw error;
+
+		await signOut(); 
+		
+	} catch (error) {
+		console.error("Error al eliminar la cuenta:", error.message);
+		throw error;
+	}
+	};
+
 	return (
-		<AuthContext.Provider value={{ user, session, loading, signIn, signUp, signOut, requestReset, changePassword }}>
+		<AuthContext.Provider value={{ user, session, loading, signIn, signUp, signOut, requestReset, changePassword, deleteAccount }}>
 			{children}
 		</AuthContext.Provider>
 	);
