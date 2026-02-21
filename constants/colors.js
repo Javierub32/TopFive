@@ -20,6 +20,7 @@ const COMMON_COLORS = {
     //Colores para elementos
     marker: 'rgb(48 101 165 / 0.4)', 	// azul utilizado para el fondo de los marcadores en los contenidos
     statsColor: '71, 181, 83', // marron utilizado para las barras de la gráfica (en la implementación se le añade una opacidad)       //cambiado
+
   };
 
   export const DARK_MODE_COLORS = {
@@ -49,6 +50,13 @@ const COMMON_COLORS = {
     markerText: '#9ca3af', 			// gris claro utilizado para el texto dentro de los marcadores
 
     statsLabelColor: '156, 163, 175', // gris utilizado para las etiquetas de la barra de la gráfica (en la implementación se añade opacidad)
+
+    //Colores para el selector de contenido
+    ground1: '#007556',
+    ground2: '#0076FF',
+    ground3: '#FF3E5D',
+    ground4: '#D19200',
+    ground5: '#AF50FF',
 
     ...COMMON_COLORS
   };
@@ -81,6 +89,12 @@ const COMMON_COLORS = {
 
     statsLabelColor: '79, 87, 99',  // gris oscuro utilizado para las etiquetas de la barra de la gráfica (en la implementación se añade opacidad)
 
+    //Colores para el selector de contenido
+    ground1: '#00a176',
+    ground2: '#0077ff',
+    ground3: '#c20020',
+    ground4: '#e26b02',
+    ground5: '#5f00ad',
     ...COMMON_COLORS
   };
 

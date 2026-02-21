@@ -54,13 +54,13 @@ export const CategorySelectorModal = ({
         style={{
           flex: 1,
           backgroundColor: 'rgba(0,0,0,0.7)',
-          justifyContent: 'center',
+          justifyContent: 'flex-end',
           alignItems: 'center',
         }}
         activeOpacity={1}
         onPress={onClose}>
         <TouchableOpacity
-          className="w-[80%] rounded-2xl border p-4 shadow-xl"
+          className="w-[100%] rounded-xl p-4 shadow-xl"
           style={{ backgroundColor: colors.surfaceButton, borderColor: colors.borderButton }}
           activeOpacity={1}
           onPress={(e) => e.stopPropagation()}>
@@ -70,19 +70,20 @@ export const CategorySelectorModal = ({
             {title}
           </Text>
 
-          <View className="gap-3">
+          <View className="flex-row justify-around items-center">
             {categories.map((cat) => {
               const Icon = cat.icon;
               return (
                 <TouchableOpacity
                   key={cat.type}
-                  className="flex-row items-center rounded-xl border p-3"
-                  style={{ backgroundColor: colors.background, borderColor: colors.borderButton }}
+                  className="items-center"
                   onPress={() => handleCategoryPress(cat.type)}>
-                  <View className="mr-3">
-                    <Icon size={20} color={colors.secondaryText} />
+                  <View 
+                    className="w-14 h-14 rounded-full items-center justify-center mb-2 "
+                    style={{ backgroundColor: `${colors[`ground${categories.indexOf(cat) + 1}`]}26`, borderWidth: 0 }}>
+                    <Icon size={24} color={`${colors[`ground${categories.indexOf(cat) + 1}`]}FF`} />
                   </View>
-                  <Text className="text-base font-semibold" style={{ color: colors.primaryText }}>
+                  <Text className="text-xs text-center" style={{ color: colors.primaryText }}>
                     {cat.label}
                   </Text>
                 </TouchableOpacity>
@@ -91,8 +92,9 @@ export const CategorySelectorModal = ({
           </View>
 
           <TouchableOpacity
-            className="mt-4 items-center rounded-xl p-3"
-            onPress={onClose}>
+            className="mt-6 items-center rounded-xl p-3"
+            onPress={onClose}
+            style={{ backgroundColor: colors.background }}>
             <Text className="text-base font-bold" style={{ color: colors.error }}>
               Cancelar
             </Text>
