@@ -18,7 +18,6 @@ interface CategorySelectorModalProps {
   onSelectCategory?: (category: ResourceType, params?: any) => void;
   routePath?: string;
   params?: Record<string, any>;
-  title?: string;
 }
 
 export const CategorySelectorModal = ({
@@ -27,7 +26,6 @@ export const CategorySelectorModal = ({
   onSelectCategory,
   routePath,
   params,
-  title = 'Seleccionar Categoría',
 }: CategorySelectorModalProps) => {
   const { colors } = useTheme();
   const router = useRouter();
@@ -67,7 +65,7 @@ export const CategorySelectorModal = ({
           <Text
             className="mb-4 text-center text-xl font-bold"
             style={{ color: colors.primaryText }}>
-            {title}
+            {'¿Qué quieres buscar?'}
           </Text>
 
           <View className="flex-row justify-around items-center">
