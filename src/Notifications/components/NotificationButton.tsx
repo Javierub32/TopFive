@@ -1,37 +1,40 @@
-import { User } from '@/User/hooks/useUser';
-import { AcceptIcon, CancelIcon } from 'components/Icons';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { UserResultItem } from '@/Search/components/UserResultItem';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useTheme } from 'context/ThemeContext';
+import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Pressable, Text, View } from 'react-native';
+import { notificationServices } from '../services/notificationServices';
+import { useAuth } from 'context/AuthContext';
 
-interface NotificationButtonProps {
-  user: User;
-  handleAccept: () => void;
-  handleDecline: () => void;
-  onUserPress?: () => void;
-}
+export const NotificationButton = () => {
+  const { colors } = useTheme();
+  const { user } = useAuth();
+  const [notificationCount, setNotificationCount] = useState(0);
+  useEffect(() => {
+	const fetchNotifications = async () => {
+		try {
+		if (!user?.id) return;
 
-export function NotificationButton({ user, handleAccept, handleDecline, onUserPress }: NotificationButtonProps) {
+		const count = await notificationServices.countPendingNotifications(user.id);
+		setNotificationCount(count);
+		} catch (error) {
+		console.error('Error counting notifications:', error);
+		}
+	};
+	fetchNotifications();
+  }, []);
+
+  const visibility = notificationCount > 0;
+  const displayCount = notificationCount > 10 ? '10+' : notificationCount.toString();
   return (
-    <View className="flex-row items-center">
-      {/* Avatar e información del usuario (clickeable) */}
-      <View className="flex-1">
-        <UserResultItem item={user} onPress={onUserPress} />
-      </View>
-
-	  {/* Botón de cancelar */}
-		<TouchableOpacity
-			  onPress={handleDecline}
-			  className="mr-3 h-10 w-10 items-center justify-center rounded-full border border-borderButton bg-surfaceButton"
-			  activeOpacity={0.7}>
-			<CancelIcon />
-		</TouchableOpacity>
-
-				<TouchableOpacity
-			  onPress={handleAccept}
-			  className="mr-1 h-10 w-10 items-center justify-center rounded-full border border-borderButton bg-surfaceButton"
-			  activeOpacity={0.7}>
-			<AcceptIcon />
-		</TouchableOpacity>
-    </View>
+  <Pressable
+    className="rounded-full p-3"
+    style={{ backgroundColor: `${colors.primaryText}30` }}
+    onPress={() => router.push('/notifications')}>
+    <MaterialIcons name="notifications-none" size={24} color={colors.primaryText} />
+	<View className="absolute top-[0.67rem] left-[1.6rem] px-1 rounded-full flex-1  " style={{backgroundColor: colors.error, display: visibility ? 'flex' : 'none'}}>
+		<Text className="text-[0.6rem] mb-[0.05rem]" style={{color: colors.primaryText}}>{displayCount}</Text>
+	</View>
+  </Pressable>
   );
-}
+};

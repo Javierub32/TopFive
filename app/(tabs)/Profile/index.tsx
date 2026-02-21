@@ -13,6 +13,7 @@ import { router } from 'expo-router';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
+import { NotificationButton } from '@/Notifications/components/NotificationButton';
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
@@ -51,12 +52,7 @@ export default function ProfileScreen() {
 
         {/* Botones de configuración y notificaciones */}
         <View className="absolute right-4 top-5 z-10 flex-row gap-x-2">
-          <Pressable
-            className="rounded-full p-3"
-            style={{ backgroundColor: `${colors.primaryText}30` }}
-            onPress={() => router.push('/notifications')}>
-            <MaterialIcons name="notifications-none" size={24} color={colors.primaryText} />
-          </Pressable>
+          <NotificationButton />
           <Pressable
             className="rounded-full p-3"
             style={{ backgroundColor: `${colors.primaryText}30` }}

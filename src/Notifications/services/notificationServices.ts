@@ -49,5 +49,17 @@ export const notificationServices = {
 			.eq('follower_id', followerId);
 		
 		if (error) throw error;
+	},
+
+	async countPendingNotifications(userId: string) {
+		const { count, error } = await supabase
+			.from('relationships')
+			.select('*', { count: 'exact' })
+			.eq('following_id', userId)
+			.eq('status', 'pending');
+		
+		if (error) throw error;
+		return count || 0;
 	}
+
 }

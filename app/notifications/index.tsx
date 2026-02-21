@@ -3,7 +3,7 @@ import { FlatList } from 'react-native';
 import { Screen } from 'components/Screen';
 import { ReturnButton } from 'components/ReturnButton';
 import { useNotification } from '@/Notifications/hooks/useNotification';
-import { NotificationButton } from '@/Notifications/components/NotificationButton';
+import { NotificationItem } from '@/Notifications/components/NotificationItems';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { router } from 'expo-router';
 
@@ -27,7 +27,7 @@ export default function NotificationsScreen() {
         data={notifications}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <NotificationButton
+          <NotificationItem
             user={item.user}
             handleAccept={() =>
               handleAcceptNotification(item.id, item.follower_id, item.following_id)

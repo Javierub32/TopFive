@@ -6,7 +6,8 @@ import { useTheme } from 'context/ThemeContext';;
 import { useActivity } from '@/Home/hooks/useActivity';
 import ActivityItem from '@/Home/components/RenderResource';
 import { LoadingIndicator } from 'components/LoadingIndicator';
-import { SocialBubblesIcon } from 'components/Icons';
+import { SearchIcon, SearchIcon2, SocialBubblesIcon } from 'components/Icons';
+import { NotificationButton } from '@/Notifications/components/NotificationButton';
 
 
 
@@ -17,9 +18,23 @@ export default function HomeScreen() {
 	return (
 		<Screen>
 			<StatusBar style="light" />
-			<View className="px-4 pt-6">
-				<Text className="mb-4 text-3xl font-bold" style={{color: colors.primaryText}}>Inicio</Text>
+			<View className="flex px-4 py-6">
+				<Text className="mb-4 text-3xl font-bold" style={{ color: colors.primaryText }}>
+					Inicio
+				</Text>
+
+				<View className="absolute right-4 top-5 z-10 flex-row gap-x-2">
+				<NotificationButton />
+						<TouchableOpacity
+							onPress={() => router.push('/(tabs)/Search')}
+							className="rounded-full p-3"
+							style={{ backgroundColor: `${colors.primaryText}30` }}
+						>
+							<SearchIcon2 size={24} color={colors.primaryText} />
+						</TouchableOpacity>
+				</View>
 			</View>
+
 			{loading && activities.length === 0 ? (
 				<LoadingIndicator />
 			) : (
