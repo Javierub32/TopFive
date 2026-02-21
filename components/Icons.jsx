@@ -26,7 +26,7 @@ export const HomeIcon = (props) => (
 );
 
 export const AddIcon = (props) => (
-	<FontAwesome name="plus-circle" size={24} color="black" {...props} />
+	<FontAwesome name="search-plus" size={24} color="black" {...props} />
 );
 
 export const SettingsIcon = (props) => (
