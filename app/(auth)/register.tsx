@@ -28,7 +28,7 @@ export default function Register() {
         return;
       }
       await signUp(email, password, username);
-	  Alert.alert('Éxito', 'Tu cuenta ha sido creada. \nConfirma tu correo para iniciar sesión.');
+	  Alert.alert('Éxito', 'Tu cuenta ha sido creada. \nRevisa la bandeja de spam y confirma tu correo para iniciar sesión.');
     } catch (error: any) {
 	  Alert.alert('Error', error.message || 'Hubo un error al crear tu cuenta.');
     } finally {
