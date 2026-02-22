@@ -1,26 +1,17 @@
 import { ResourceType } from 'hooks/useResource';
-
-const BASE_URLS: Record<ResourceType, string> = {
-  libro: 'https://javierub-topfive.hf.space/fetchBooks',
-  pelicula: 'https://javierub-topfive.hf.space/fetchFilms',
-  serie: 'https://javierub-topfive.hf.space/fetchSeries',
-  videojuego: 'https://javierub-topfive.hf.space/fetchGames',
-  cancion: 'https://javierub-topfive.hf.space/fetchSong',
-};
+import { supabase } from 'lib/supabase';
 
 export const searchContentService = {
   async fetchResources(termino: string, tipo: ResourceType) {
-    const apiUrl = BASE_URLS[tipo];
-    if (!apiUrl) throw new Error(`No API for ${tipo}`);
-
-    const apiKey = process.env.EXPO_PUBLIC_API_KEY;
-    const url = `${apiUrl}?term=${encodeURIComponent(termino)}`;
-
-    const response = await fetch(url, {
-      headers: { 'X-API-Key': apiKey || '' },
+    const { data, error } = await supabase.functions.invoke('search-content', {
+      body: { term: termino, type: tipo },
     });
 
-    if (!response.ok) throw new Error('Error en la red');
-    return await response.json();
+    if (error) {
+      console.error('Error invocando Edge Function:', error);
+      throw new Error('Error al buscar contenido');
+    }
+
+    return data;
   }
 };
