@@ -18,16 +18,34 @@ export const RatingCard =({rating}: Props) => {
                 <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Calificación</Text>
             </View>
             <View className="flex-1 flex-row justify-center items-center">
-                {[1, 2, 3, 4, 5].map((star) => (
-                <FontAwesome5
-                    key={star}
-                    name="star"
-                    size={20}
-                    color={star <= rating ? colors.rating : colors.markerText}
-                    solid={star <= rating}
-                    style={{ marginRight: 4 }}
-                />
-                ))}
+                {[1, 2, 3, 4, 5].map((star) => {
+                    let iconName = "star";
+                    let isSolid = true;
+                    let iconColor = colors.rating;
+
+                    if (rating >= star) {
+                        iconName = "star";
+                        isSolid = true;
+                    } else if (rating >= star - 0.5) {
+                        iconName = "star-half-alt"; // Muestra la media estrella
+                        isSolid = true;
+                    } else {
+                        iconName = "star";
+                        isSolid = false;
+                        iconColor = colors.markerText;
+                    }
+
+                    return (
+                        <FontAwesome5
+                            key={star}
+                            name={iconName}
+                            size={20}
+                            color={iconColor}
+                            solid={isSolid}
+                            style={{ marginRight: 4 }}
+                        />
+                    );
+                })}
             </View>
         </View>
     )

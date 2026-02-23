@@ -9,14 +9,14 @@ import { router } from 'expo-router';
 
 
 
-export default function ActivityItem({ item}: { item: Activity }) {
-	const { colors } = useTheme();
-  
+export default function ActivityItem({ item }: { item: Activity }) {
+  const { colors } = useTheme();
+
   const getRelativeTime = (date: string | Date) => {
     const now = new Date();
     const then = new Date(date);
     const diffInSeconds = Math.floor((now.getTime() - then.getTime()) / 1000);
-    
+
     if (diffInSeconds < 60) return 'Ahora mismo';
     const minutes = Math.floor(diffInSeconds / 60);
     if (minutes < 60) return minutes == 1 ? `Hace 1 minuto` : `Hace ${minutes} minutos`;
@@ -24,13 +24,13 @@ export default function ActivityItem({ item}: { item: Activity }) {
     if (hours < 24) return hours == 1 ? `Hace 1 hora` : `Hace ${hours} horas`;
     const days = Math.floor(hours / 24);
     if (days < 7) return days == 1 ? `Hace 1 día` : `Hace ${days} días`;
-	return then.toLocaleDateString(); // Si es más de una semana, mostrar fecha completa
+    return then.toLocaleDateString(); // Si es más de una semana, mostrar fecha completa
   };
 
   return (
     <View className=" rounded-2xl shadow-xl mb-4 overflow-hidden" style={{ borderWidth: 0, borderColor: colors.borderButton }}>
       {/* Imagen de fonde */}
-      <ImageBackground 
+      <ImageBackground
         source={{ uri: item.imagen_url || 'https://via.placeholder.com/150' }}
         style={{ width: '100%', backgroundColor: colors.surfaceButton }}
         imageStyle={{ opacity: 0.2 }}
@@ -44,14 +44,14 @@ export default function ActivityItem({ item}: { item: Activity }) {
           {/* Tipo del recurso */}
           <View className="p-4">
             <View className="rounded-full" style={{ alignSelf: 'flex-start', backgroundColor: colors.placeholderText, paddingHorizontal: 12, paddingVertical: 4, marginBottom: 50 }}>
-              <Text className="font-semibold text-xs" style={{ color: colors.primaryText}}>{item.tipo_contenido}</Text>
+              <Text className="font-semibold text-xs" style={{ color: colors.primaryText }}>{item.tipo_contenido}</Text>
             </View>
-            
+
             {/* Contenido del recurso */}
             <View className="flex-row gap-4">
               {/* Poster con Badge de Año */}
               <View className="relative items-center justify-center">
-                <Image 
+                <Image
                   source={{ uri: item.imagen_url || 'https://via.placeholder.com/150' }}
                   className="w-24 h-36 rounded-xl"
                   style={{ borderWidth: 0, borderColor: colors.borderButton }}
@@ -65,14 +65,27 @@ export default function ActivityItem({ item}: { item: Activity }) {
                     <Text className="font-bold text-base leading-tight mr-2 mb-2" style={{ color: colors.primaryText }}>{item.titulo}</Text>
                     {/* Calificación */}
                     <View className="flex-row items-center gap-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <MaterialCommunityIcons 
-                          key={star}
-                          name="star" 
-                          size={16} 
-                          color={star <= (item.calificacion || 0) ? colors.rating : colors.secondaryText} 
-                        />
-                      ))}
+                      {[1, 2, 3, 4, 5].map((star) => {
+                        const rating = item.calificacion || 0;
+                        let iconName: any = "star";
+
+                        if (rating >= star) {
+                          iconName = "star";
+                        } else if (rating >= star - 0.5) {
+                          iconName = "star-half-full"; // Nombre del icono de media estrella en MaterialCommunityIcons
+                        } else {
+                          iconName = "star";
+                        }
+
+                        return (
+                          <MaterialCommunityIcons
+                            key={star}
+                            name={iconName}
+                            size={16}
+                            color={rating >= star - 0.5 ? colors.rating : colors.secondaryText}
+                          />
+                        );
+                      })}
                     </View>
                   </View>
                 </View>
@@ -82,51 +95,51 @@ export default function ActivityItem({ item}: { item: Activity }) {
                 </Text>
               </View>
             </View>
-            
+
           </View>
           {/* Línea separadora */}
           <View className="mx-2 h-[1px] " style={{ backgroundColor: colors.placeholderText }} />
         </LinearGradient>
-                    
-      {/* Header: Usuario e info */}
-      <View className="p-4" style={{ backgroundColor: colors.surfaceButton }}>
-        <View className="flex-row items-center gap-3">
-          {item.avatar_url ? (
-            <Pressable onPress={() => router.push({
-                    pathname: 'details/user/',
-                    params: { username: item.username }
+
+        {/* Header: Usuario e info */}
+        <View className="p-4" style={{ backgroundColor: colors.surfaceButton }}>
+          <View className="flex-row items-center gap-3">
+            {item.avatar_url ? (
+              <Pressable onPress={() => router.push({
+                pathname: 'details/user/',
+                params: { username: item.username }
               })}>
-              <Image 
-                source={{ uri: item.avatar_url}}
-                className="w-10 h-10 rounded-full"
-                style={{ borderWidth: 0, borderColor: colors.borderButton}}
-              />
-            </Pressable>
-          ) : (
-            <View className="h-10 w-10 items-center justify-center rounded-full" style={{ backgroundColor: colors.primary, borderWidth: 0, borderColor: colors.borderButton }}>
-                <Text 
+                <Image
+                  source={{ uri: item.avatar_url }}
+                  className="w-10 h-10 rounded-full"
+                  style={{ borderWidth: 0, borderColor: colors.borderButton }}
+                />
+              </Pressable>
+            ) : (
+              <View className="h-10 w-10 items-center justify-center rounded-full" style={{ backgroundColor: colors.primary, borderWidth: 0, borderColor: colors.borderButton }}>
+                <Text
                   onPress={() => router.push({
                     pathname: 'details/user/',
                     params: { username: item.username }
-                  })} 
+                  })}
                   className="text-xl font-bold" style={{ color: colors.primaryText }}>{item.username.charAt(0).toUpperCase()}
                 </Text>
-            </View>
-          )}
-          
-          <View className="flex-col">
-            <Text>
-              <Text 
-              onPress={() => router.push({
+              </View>
+            )}
+
+            <View className="flex-col">
+              <Text>
+                <Text
+                  onPress={() => router.push({
                     pathname: 'details/user/',
                     params: { username: item.username }
-                  })} 
-              className="font-bold text-base" style={{ color: colors.primaryText }}>{item.username}  </Text>
-              <Text className="text-xs" style={{ color: colors.secondaryText }}>{getRelativeTime(item.fecha_actividad)}</Text>
-            </Text>
+                  })}
+                  className="font-bold text-base" style={{ color: colors.primaryText }}>{item.username}  </Text>
+                <Text className="text-xs" style={{ color: colors.secondaryText }}>{getRelativeTime(item.fecha_actividad)}</Text>
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
       </ImageBackground>
     </View>
   );

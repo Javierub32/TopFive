@@ -21,7 +21,7 @@ export const CollectionGroup = ({ item, category, onPress, posterWidth, posterHe
       activeOpacity={0.8}
     >
       {/* Imagen */}
-      <View className="relative w-full rounded-lg overflow-hidden bg-surfaceButton border border-borderButton shadow-sm" style={{ height: finalHeight }}>
+      <View className="relative w-full rounded-lg overflow-hidden bg-surfaceButton shadow-sm" style={{ height: finalHeight }}>
         <Image 
           source={{ uri: image }} 
           className="w-full h-full bg-background" 
