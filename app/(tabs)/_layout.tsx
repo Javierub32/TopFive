@@ -18,7 +18,6 @@ export default function TabLayout() {
       <CategorySelectorModal
         visible={showAddModal}
         onClose={() => setShowAddModal(false)}
-        title="¿Qué quieres agregar?"
         onSelectCategory={(type) => {
           router.push({
             pathname: 'Add/',
@@ -35,11 +34,13 @@ export default function TabLayout() {
           headerTintColor: colors.primaryText,
           tabBarStyle: {
             backgroundColor: colors.tabBarBackgroundColor,
-            borderTopColor: colors.tabBarBorderTopColor,
-            borderTopWidth: 2,
+            borderTopWidth: 0,
             height: 52 + insets.bottom,
             paddingBottom: insets.bottom,
             paddingTop: 10,
+            shadowColor: colors.backgroundColor,
+            shadowRadius: 20,
+            shadowOpacity: 0.75,
           },
           tabBarLabelStyle: {
             fontSize: 12,
