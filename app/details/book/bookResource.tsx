@@ -32,6 +32,9 @@ export default function BookDetail() {
 
   const isOwner = bookResource?.usuarioId === user?.id;
 
+  const isPending = bookResource?.estado === "PENDIENTE";
+  const isCompleted = bookResource?.estado === "COMPLETADO";
+
   if (!bookResource) {
     return (
       <Screen>
@@ -83,18 +86,25 @@ export default function BookDetail() {
         </View>
         <View className="mb-14 px-4 pb-6">
           <ResourceAttributes resource={bookResource} isOwner={isOwner} />
-          <View className="flex-col justify-between gap-3">
-            <View className="flex-row gap-2">
-              <RatingCard rating={bookResource.calificacion} />
-              <ProgressCard progress={bookResource.paginasLeidas} unit="pags" />
+          {!isPending && (
+              <View className="flex-col justify-between gap-3">
+              <View className="flex-row gap-2">
+                {bookResource?.calificacion > 0 && (
+                  <RatingCard rating={bookResource.calificacion} />
+                )}
+                {!isCompleted && (
+                  <ProgressCard progress={bookResource.paginasLeidas} unit="pags" />
+                )}
+              </View>
+              <ReviewCard review={bookResource.reseña} />
+              <DateCard
+                startDate={bookResource.fechaInicio}
+                endDate={bookResource.fechaFin}
+                isRange={true}
+              />
             </View>
-            <ReviewCard review={bookResource.reseña} />
-            <DateCard
-              startDate={bookResource.fechaInicio}
-              endDate={bookResource.fechaFin}
-              isRange={true}
-            />
-          </View>
+          )}
+          
           <TimeCard resource={bookResource} />
         </View>
       </ScrollView>

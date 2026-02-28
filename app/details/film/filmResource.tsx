@@ -29,6 +29,8 @@ export default function FilmDetail() {
   }
 
   const isOwner = filmResource?.usuarioId === user?.id
+  const isPending = filmResource?.estado === "PENDIENTE"
+  const isCompleted = filmResource?.estado === "COMPLETADO"
   
   if (!filmResource) {
     return (
@@ -79,13 +81,18 @@ export default function FilmDetail() {
 
         <View className="mb-14 px-4 pb-6">
           <ResourceAttributes resource={filmResource} isOwner={isOwner} />
-          <View className="flex-col justify-between gap-3">
-            <View className="flex-row gap-2">
-              <RatingCard rating={filmResource.calificacion} />
-              <DateCard startDate={filmResource.fechaVisionado} isRange={false} />
+          {!isPending && (
+            <View className="flex-col justify-between gap-3">
+              <View className="flex-row gap-2">
+                {filmResource?.calificacion > 0 && (
+                  <RatingCard rating={filmResource.calificacion} />
+                )}
+                <DateCard startDate={filmResource.fechaVisionado} isRange={false} />
+              </View>
+              <ReviewCard review={filmResource.reseña} />
             </View>
-            <ReviewCard review={filmResource.reseña} />
-          </View>
+          )}
+          
         </View>
       </ScrollView>
     </Screen>

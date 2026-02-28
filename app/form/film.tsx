@@ -45,7 +45,7 @@ export default function FilmForm() {
   const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
   const [favorita, setFavorita] = useState(resource?.favorito || false);
   const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(resource?.estado || 'PENDIENTE');
-  const [fechaVisionado, setFechaVisionado] = useState<Date | null>(resource?.fechaVisionado ? new Date(resource.fechaVisionado) : new Date());
+  const [fechaVisionado, setFechaVisionado] = useState<Date | null>(resource?.fechaVisionado ? new Date(resource.fechaVisionado) : null);
   const [numVisionados, setNumVisionados] = useState(resource?.numVisionados || 0);
 
   const [loading, setLoading] = useState(false);

@@ -30,6 +30,8 @@ export default function GameDetail() {
   }
 
   const isOwner = gameResource?.usuarioId === user?.id;
+  const isPending = gameResource?.estado === "PENDIENTE"
+  const isCompleted = gameResource?.estado === "COMPLETADO"
 
   if (!gameResource) {
     return (
@@ -86,10 +88,15 @@ export default function GameDetail() {
 
         <View className="mb-14 px-4 pb-6">
           <ResourceAttributes resource={gameResource} isOwner={isOwner} />
-          <View className="flex-col justify-between gap-3">
+          {!isPending && (
+            <View className="flex-col justify-between gap-3">
             <View className="flex-row gap-2">
-              <RatingCard rating={gameResource.calificacion} />
-              <ProgressCard progress={gameResource.horasJugadas} unit="horas" />
+              {gameResource?.calificacion > 0 && (
+                <RatingCard rating={gameResource.calificacion} />
+              )}
+              {!isCompleted && (
+                <ProgressCard progress={gameResource.horasJugadas} unit="horas" />
+              )}              
             </View>
             <ReviewCard review={gameResource.reseña} />
             <DateCard
@@ -98,6 +105,7 @@ export default function GameDetail() {
               isRange
             />
           </View>
+          )}          
         </View>
       </ScrollView>
     </Screen>

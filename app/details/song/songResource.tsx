@@ -33,6 +33,8 @@ export default function SongDetail() {
 
   const isOwner = songResource?.usuarioId === user?.id;
 
+  const isPending = songResource?.estado === "PENDIENTE";
+
   if (!songResource) {
     return (
       <Screen>
@@ -81,13 +83,17 @@ export default function SongDetail() {
         </View>
         <View className="mb-14 px-4 pb-6">
           <ResourceAttributes resource={songResource} isOwner={isOwner} />
-          <View className="flex-col justify-between gap-3">
-            <View className="flex-row gap-2">
-              <RatingCard rating={songResource.calificacion} />
-              <DateCard startDate={songResource.fechaEscucha} isRange={false} />
+          {!isPending && (
+            <View className="flex-col justify-between gap-3">
+              <View className="flex-row gap-2">
+                {songResource?.calificacion > 0 && (
+                  <RatingCard rating={songResource.calificacion} />
+                )}
+                <DateCard startDate={songResource.fechaEscucha} isRange={false} />
+              </View>
+              <ReviewCard review={songResource.reseña} />
             </View>
-            <ReviewCard review={songResource.reseña} />
-          </View>
+          )}          
         </View>
       </ScrollView>
     </Screen>

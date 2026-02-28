@@ -35,6 +35,9 @@ export default function SeriesDetail() {
   }
 
   const isOwner = seriesResource?.usuarioId === user?.id;
+  
+  const isPending = seriesResource?.estado === "PENDIENTE"
+  const isCompleted = seriesResource?.estado === "COMPLETADO"
 
   const handleDelete = () => {
     if (seriesResource) {
@@ -119,18 +122,25 @@ export default function SeriesDetail() {
         </View>
         <View className="mb-14 px-4 pb-6">
           <ResourceAttributes resource={seriesResource} isOwner={isOwner} />
-          <View className="flex-col justify-between gap-3">
-            <View className="flex-row gap-2">
-              <RatingCard rating={seriesResource.calificacion} />
-              <ProgressCard progress={getProgress()} />
+          {!isPending && (
+            <View className="flex-col justify-between gap-3">
+              <View className="flex-row gap-2">
+                {seriesResource?.calificacion > 0 && (
+                  <RatingCard rating={seriesResource.calificacion} />
+                )}
+                {!isCompleted && (
+                  <ProgressCard progress={getProgress()} />
+                )}
+              </View>
+              <ReviewCard review={seriesResource.reseña} />
+              <DateCard
+                startDate={seriesResource.fechaInicio}
+                endDate={seriesResource.fechaFin}
+                isRange
+              />
             </View>
-            <ReviewCard review={seriesResource.reseña} />
-            <DateCard
-              startDate={seriesResource.fechaInicio}
-              endDate={seriesResource.fechaFin}
-              isRange
-            />
-          </View>
+          )}
+          
         </View>
       </ScrollView>
     </Screen>
