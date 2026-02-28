@@ -52,11 +52,18 @@ const COMMON_COLORS = {
     statsLabelColor: '156, 163, 175', // gris utilizado para las etiquetas de la barra de la gráfica (en la implementación se añade opacidad)
 
     //Colores para el selector de contenido
-    ground1: '#007556',
+    ground1: '#13d65a',
+    //ground2: '#60A5FA',
+    ground3: '#F43F5E',
+    ground4: '#FBBF24',
+    //ground5: '#A78BFA',
+
+    //ground1: '#007556',
     ground2: '#0076FF',
-    ground3: '#FF3E5D',
-    ground4: '#D19200',
+    //ground3: '#FF3E5D',
+    //ground4: '#D19200',
     ground5: '#AF50FF',
+
 
     ...COMMON_COLORS
   };
@@ -90,11 +97,11 @@ const COMMON_COLORS = {
     statsLabelColor: '79, 87, 99',  // gris oscuro utilizado para las etiquetas de la barra de la gráfica (en la implementación se añade opacidad)
 
     //Colores para el selector de contenido
-    ground1: '#00a176',
-    ground2: '#0077ff',
-    ground3: '#c20020',
-    ground4: '#e26b02',
-    ground5: '#5f00ad',
+    ground1: '#10B981',
+    ground2: '#3B82F6',
+    ground3: '#E11D48',
+    ground4: '#F59E0B',
+    ground5: '#8B5CF6',
     ...COMMON_COLORS
   };
 

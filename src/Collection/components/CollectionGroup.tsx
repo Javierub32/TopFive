@@ -38,7 +38,7 @@ export const CollectionGroup = ({ item, category, onPress, posterWidth, posterHe
         ) : null}
 
         {/* Rating (Arriba Derecha) */}
-        {item.estado !== 'PENDIENTE' ? (
+        {item.estado !== 'PENDIENTE' && item.calificacion > 0 ? (
           <View className="absolute top-2 right-2 flex-row items-center bg-black/30 px-1 rounded-sm">
             <MaterialCommunityIcons name="star" size={12} color="#fbbf24" />
             <Text className="text-white text-xs font-bold ml-1">

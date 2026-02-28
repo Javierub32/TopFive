@@ -50,7 +50,7 @@ export const FilmIcon = (props) => (
 );
 
 export const ShowIcon = (props) => (
-  <MaterialCommunityIcons name="television-play" size={24} color="white" {...props}/>
+  <MaterialCommunityIcons name="play-box-multiple" size={24} color="white" {...props}/>
 );
 
 export const SearchIcon2 = (props) => (

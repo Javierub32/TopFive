@@ -4,7 +4,7 @@ import React from 'react';
 import { View, Text, Image, Pressable, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Activity } from '../hooks/useActivity';
-import { UserIcon } from 'components/Icons';
+import { BookIcon, FilmIcon, GameIcon, MusicIcon, RatingStarIcon, ShowIcon, UserIcon } from 'components/Icons';
 import { router } from 'expo-router';
 
 
@@ -27,6 +27,16 @@ export default function ActivityItem({ item }: { item: Activity }) {
     return then.toLocaleDateString(); // Si es más de una semana, mostrar fecha completa
   };
 
+  const categoryMap: Record<string, {color: any, icon: any}> = {
+    LIBRO: {color: colors.ground1, icon: BookIcon},
+    PELICULA: {color: colors.ground2, icon: FilmIcon},
+    SERIE: {color: colors.ground3, icon: ShowIcon},
+    VIDEOJUEGO: {color: colors.ground4, icon: GameIcon},
+    CANCION: {color: colors.ground5, icon: MusicIcon}
+  };
+
+  const rating = item.calificacion || 0;
+
   return (
     <View className=" rounded-2xl shadow-xl mb-4 overflow-hidden" style={{ borderWidth: 0, borderColor: colors.borderButton }}>
       {/* Imagen de fonde */}
@@ -43,8 +53,13 @@ export default function ActivityItem({ item }: { item: Activity }) {
         >
           {/* Tipo del recurso */}
           <View className="p-4">
-            <View className="rounded-full" style={{ alignSelf: 'flex-start', backgroundColor: colors.placeholderText, paddingHorizontal: 12, paddingVertical: 4, marginBottom: 50 }}>
-              <Text className="font-semibold text-xs" style={{ color: colors.primaryText }}>{item.tipo_contenido}</Text>
+            <View className="rounded-full" style={{ alignSelf: 'flex-start', backgroundColor: `${categoryMap[item.tipo_contenido].color}33`, paddingHorizontal: 12, padding: 4, marginBottom: 30 }}>
+              {(()=> {
+                const IconComponent = categoryMap[item.tipo_contenido].icon;
+                return IconComponent ? (
+                  <IconComponent size={18} color={categoryMap[item.tipo_contenido].color} style={{padding: 4}} />
+                ) : null;
+              })()}
             </View>
 
             {/* Contenido del recurso */}
@@ -64,34 +79,36 @@ export default function ActivityItem({ item }: { item: Activity }) {
                   <View className='flex-1'>
                     <Text className="font-bold text-base leading-tight mr-2 mb-2" style={{ color: colors.primaryText }}>{item.titulo}</Text>
                     {/* Calificación */}
-                    <View className="flex-row items-center gap-1">
-                      {[1, 2, 3, 4, 5].map((star) => {
-                        const rating = item.calificacion || 0;
-                        let iconName: any = "star";
+                    {rating > 0 && (
+                      <View className="flex-row items-center gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => {
+                          const rating = item.calificacion || 0;
+                          let iconName: any = "star";
 
-                        if (rating >= star) {
-                          iconName = "star";
-                        } else if (rating >= star - 0.5) {
-                          iconName = "star-half-full"; // Nombre del icono de media estrella en MaterialCommunityIcons
-                        } else {
-                          iconName = "star";
-                        }
+                          if (rating >= star) {
+                            iconName = "star";
+                          } else if (rating >= star - 0.5) {
+                            iconName = "star-half-full"; // Nombre del icono de media estrella en MaterialCommunityIcons
+                          } else {
+                            iconName = "star";
+                          }
 
-                        return (
-                          <MaterialCommunityIcons
-                            key={star}
-                            name={iconName}
-                            size={16}
-                            color={rating >= star - 0.5 ? colors.rating : colors.secondaryText}
-                          />
-                        );
-                      })}
-                    </View>
+                          return (
+                            <RatingStarIcon
+                              key={star}
+                              name={iconName}
+                              size={12}
+                              color={rating >= star - 0.5 ? colors.rating : colors.secondaryText}
+                            />
+                          );
+                        })}
+                      </View>
+                    )}
                   </View>
                 </View>
                 {/* Reseña */}
                 <Text className="mt-3 text-sm leading-relaxed italic" numberOfLines={4} style={{ color: colors.secondaryText }}>
-                  "{item.comentario || 'Sin reseña'}"
+                  {item.comentario || '--Sin reseña--'}
                 </Text>
               </View>
             </View>
