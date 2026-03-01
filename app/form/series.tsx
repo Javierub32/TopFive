@@ -234,7 +234,7 @@ export default function SeriesForm() {
           <FavoriteSetter favorite={favorita} setFavorite={setFavorita}/>
         </View>
 
-        <View className="flex-1 flex-row justify-between gap-2 px-4 mb-4 items-stretch">
+        <View className="flex-row justify-between gap-2 px-4 mb-4 items-stretch">
           <Image source={{uri: series.imagenUrl || series.image || 'https://via.placeholder.com/100x150'}}
           className="aspect-[2/3] h-32 rounded-lg" style={{backgroundColor: colors.surfaceButton}}
           resizeMode="cover"/>

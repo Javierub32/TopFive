@@ -27,7 +27,7 @@ export const ProgressSetter = ({progress, setProgress, progressExtra, setProgres
 
     if(type == 'serie'){
         return ( 
-            <View className="mx-4 flex-1 p-4 rounded-2xl flex justify-between gap-2" style={{backgroundColor: colors.surfaceButton}}>
+            <View className="mx-4 p-4 rounded-2xl flex justify-between gap-2" style={{backgroundColor: colors.surfaceButton}}>
                 <View className="flex-row items-center gap-2">
                     <TimerIcon color={colors.primary}/>
                     <Text className="text-sm font-bold uppercase tracking-widest" style={{color: colors.markerText}}>Progreso</Text>

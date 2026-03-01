@@ -50,9 +50,10 @@ export default function FilmDetail() {
   return (
     <Screen>
       <ThemedStatusBar/>
-      
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <ReturnButton route="/Add?initialCategory=pelicula" title="Detalle de la película" />
+        <View className="px-4 pt-2 pb-4">
+          <ReturnButton route="/Add?initialCategory=pelicula" title="Detalle de la película" style={' '}/>
+        </View>
 
         <View className="px-4 mb-4">
           <Image 
@@ -63,7 +64,7 @@ export default function FilmDetail() {
           />
         </View>
         
-        <View className="px-4 mb-14 pb-6">
+        <View className="mb-14 px-4 pb-6">
           <ContentTags content={film} type='pelicula'/>
           <View className='flex-col justify-between gap-3'>
             <ContentDateCard releaseDate={film.releaseDate}/>

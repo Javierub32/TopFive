@@ -70,7 +70,7 @@ export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRang
     return ( 
         <View className={`px-4 pt-2 flex-row gap-2 ${style}`}>
             <View className="flex-1">
-                <TouchableOpacity className='flex-1 p-4 rounded-2xl flex justify-between gap-2' 
+                <TouchableOpacity className='p-4 rounded-2xl flex justify-between gap-2' 
                 style={{backgroundColor: `${colors.primary}1A`}}
                 onPress={() => setShowDatePickerInicio(true)}>
                     <View className='flex-row items-center gap-2'>
@@ -96,7 +96,7 @@ export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRang
             </View>            
 
             <View className="flex-1">
-                <TouchableOpacity className='flex-1 p-4 rounded-2xl flex justify-between gap-2' 
+                <TouchableOpacity className='p-4 rounded-2xl flex justify-between gap-2' 
                 style={{backgroundColor: `${colors.primary}1A`}}
                 onPress={() => setShowDatePickerFin(true)}>
                     <View className='flex-row items-center gap-2'>

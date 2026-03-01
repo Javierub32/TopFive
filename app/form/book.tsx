@@ -231,7 +231,7 @@ export default function BookForm() {
           <FavoriteSetter favorite={favorito} setFavorite={setFavorito}/>
         </View>
 
-        <View className="flex-1 flex-row justify-between gap-2 px-4 mb-4 items-stretch">
+        <View className="flex-row justify-between gap-2 px-4 mb-4 items-stretch">
           <Image source={{uri: book.imagenUrl || book.imageFull || 'https://via.placeholder.com/100x150'}}
           className="aspect-[2/3] h-32 rounded-lg" style={{backgroundColor: colors.surfaceButton}} resizeMode="cover"/>
           <ReviewSetter review={reseña} setReview={setReseña}/>

@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from 'context/ThemeContext';
 import React from 'react';
 import { View, Text, Image, Pressable, ImageBackground } from 'react-native';
@@ -84,19 +84,24 @@ export default function ActivityItem({ item }: { item: Activity }) {
                         {[1, 2, 3, 4, 5].map((star) => {
                           const rating = item.calificacion || 0;
                           let iconName: any = "star";
+                          let isSolid = true;
 
                           if (rating >= star) {
                             iconName = "star";
+                            isSolid = true;
                           } else if (rating >= star - 0.5) {
-                            iconName = "star-half-full"; // Nombre del icono de media estrella en MaterialCommunityIcons
+                            iconName = "star-half-alt"; // Nombre del icono de media estrella en MaterialCommunityIcons
+                            isSolid = true
                           } else {
                             iconName = "star";
+                            isSolid = false
                           }
 
                           return (
-                            <RatingStarIcon
+                            <FontAwesome5
                               key={star}
                               name={iconName}
+                              solid={isSolid}
                               size={12}
                               color={rating >= star - 0.5 ? colors.rating : colors.secondaryText}
                             />

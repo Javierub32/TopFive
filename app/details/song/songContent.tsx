@@ -47,7 +47,10 @@ export default function SongDetail() {
       <ThemedStatusBar/>
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-		    <ReturnButton route="/Add?initialCategory=cancion" title="Detalle de la canción" />
+        <View>
+          <ReturnButton route="/Add?initialCategory=cancion" title="Detalle de la canción" style={' '} />
+        </View>
+		    
 
         <View className="px-4 mb-4">
           <Image 
@@ -65,7 +68,7 @@ export default function SongDetail() {
           </View>
 
           <ExtraCard extra={song.album} type='cancion'/>
-          <AddToCollectionButton content={song} type='cancion' data={songData}/>
+          <AddToCollectionButton content={song} type='cancion'/>
         </View>
       </ScrollView>
     </Screen>

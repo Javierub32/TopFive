@@ -86,6 +86,14 @@ const handleDeleteAccount = async () => {
                         
 
                         <FeedbackFormButton></FeedbackFormButton>
+                        <Pressable
+                            className="w-full flex-row justify-between items-center rounded-2xl p-3"
+                            style={{backgroundColor: `${colors.accent}33`}}
+                            onPress={signOut}>
+                            <Text className="text-lg" style={{color: colors.primaryText}}>Cerrar sesión</Text>
+                            <Ionicons name="log-out-outline" size={24} color={colors.primaryText} />
+                        </Pressable>
+
 						<Pressable
                             className="w-full flex-row justify-between items-center rounded-2xl p-3"
                             style={{backgroundColor: `${colors.error}33`}}
@@ -94,13 +102,7 @@ const handleDeleteAccount = async () => {
                             <Ionicons name="trash-outline" size={24} color={colors.primaryText} />
                         </Pressable>
 
-                        <Pressable
-                            className="w-full flex-row justify-between items-center rounded-2xl p-3"
-                            style={{backgroundColor: `${colors.error}33`}}
-                            onPress={signOut}>
-                            <Text className="text-lg" style={{color: colors.error}}>Cerrar sesión</Text>
-                            <Ionicons name="log-out-outline" size={24} color={colors.primaryText} />
-                        </Pressable>
+                        
                     </View>
                     
                     

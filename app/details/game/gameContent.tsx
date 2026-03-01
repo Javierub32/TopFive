@@ -41,7 +41,10 @@ export default function GameDetail() {
       <ThemedStatusBar/>
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <ReturnButton route="/Add?initialCategory=videojuego" title="Detalle del videojuego" />
+        <View className="px-4 pt-2 pb-4">
+          <ReturnButton route="/Add?initialCategory=videojuego" title="Detalle del videojuego" style={' '} /> 
+        </View>
+        
 
         <View className="px-4 mb-4">
           <Image 
@@ -60,7 +63,7 @@ export default function GameDetail() {
           </View>
           <ExtraCard extra={game.gamemodes} type='videojuego'/>
           <DescriptionCard description={game.description}/>
-          <AddToCollectionButton content={game} type='videojuego' data={gameData}/>
+          <AddToCollectionButton content={game} type='videojuego'/>
         </View>
       </ScrollView>
     </Screen>

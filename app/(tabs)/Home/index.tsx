@@ -19,7 +19,7 @@ export default function HomeScreen() {
 			<View className="px-4 pt-6">
 				<View className="mb-4 flex-row items-center justify-between">
 					<Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
-						Mi Biblioteca
+						Inicio
 					</Text>
 					
 					<View className="flex-row gap-x-2">

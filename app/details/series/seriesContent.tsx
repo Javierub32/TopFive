@@ -36,7 +36,10 @@ export default function SeriesDetail() {
       <ThemedStatusBar/>
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <ReturnButton route="/Add?initialCategory=serie" title="Detalle de la serie" />
+        <View className="px-4 pt-2 pb-4">
+          <ReturnButton route="/Add?initialCategory=serie" title="Detalle de la serie" style={' '}/>
+        </View>
+        
 
         <View className="px-4 mb-4">
           <Image 
@@ -53,7 +56,7 @@ export default function SeriesDetail() {
             <ContentDateCard releaseDate={series.releaseDate}/>
             <DescriptionCard description={series.description}/>   
           </View>
-          <AddToCollectionButton content={series} type='serie' data={seriesData}/>
+          <AddToCollectionButton content={series} type='serie'/>
         </View>
       </ScrollView>
     </Screen>
