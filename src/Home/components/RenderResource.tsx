@@ -108,7 +108,7 @@ export default function ActivityItem({ item }: { item: Activity }) {
                 </View>
                 {/* Reseña */}
                 <Text className="mt-3 text-sm leading-relaxed italic" numberOfLines={4} style={{ color: colors.secondaryText }}>
-                  {item.comentario || '--Sin reseña--'}
+                  {item.comentario || ''}
                 </Text>
               </View>
             </View>
