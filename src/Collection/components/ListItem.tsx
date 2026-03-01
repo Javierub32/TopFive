@@ -1,9 +1,8 @@
 import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
-import { AntDesign, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from 'context/ThemeContext';
 import { ListInfo } from '../services/listServices';
 import { router } from 'expo-router';
-import { useCollection } from 'context/CollectionContext';
 import { useState } from 'react';
 
 	interface ListItemProps {
@@ -44,7 +43,6 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
 			onPress={() => router.push({ pathname: '/details/list', params: { listData: JSON.stringify(list) } })}
 			style={{ 
 			  backgroundColor: colors.surfaceButton,
-			  borderColor: colors.borderButton,
 			  shadowColor: "#000",
 			  shadowOffset: { width: 0, height: 2 },
 			  shadowOpacity: 0.2,

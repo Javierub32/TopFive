@@ -26,7 +26,7 @@ export const categoryToResourceMap: Record<string, ResourceType> = {
 
 
 export const SearchBar = () => {
-  const { inputBusqueda, setInputBusqueda, handleSearch, categoriaActual, setCategoriaActual, menuCategoriaAbierto, setMenuCategoriaAbierto} = useCollection();
+  const { inputBusqueda, setInputBusqueda, handleSearch, categoriaActual} = useCollection();
   const { colors } = useTheme();
   return (
     <View className="relative z-50 mb-3">
@@ -35,8 +35,6 @@ export const SearchBar = () => {
         <View className="justify-center pl-3">
           <MaterialCommunityIcons name="magnify" size={20} color={colors.secondaryText} />
         </View>
-
-        {/* Input */}
         <TextInput
           className="h-full flex-1 px-3 text-base text-primaryText"
           placeholder={`Buscar en ${resourceTypeMap[categoriaActual as ResourceType]}...`}
@@ -46,49 +44,7 @@ export const SearchBar = () => {
           onSubmitEditing={handleSearch}
           returnKeyType="search"
         />
-
-        <View className="h-6 w-[1px] bg-borderButton" />
-
-        {/* Selector de Categoría */}
-        <TouchableOpacity
-          className="h-full flex-row items-center justify-center px-3"
-          activeOpacity={0.7}
-          onPress={() => {
-            setMenuCategoriaAbierto(!menuCategoriaAbierto);
-          }}>
-          <View className="max-w-[90px]">
-            <Text className="mr-1 font-medium text-xs text-secondaryText" numberOfLines={1}>
-              {resourceTypeMap[categoriaActual as ResourceType]}
-            </Text>
-          </View>
-          <MaterialCommunityIcons
-            name={menuCategoriaAbierto ? 'chevron-up' : 'chevron-down'}
-            size={16}
-            color="#94a3b8"
-          />
-        </TouchableOpacity>
-
       </View>
-
-      {/* Desplegable de Categorías */}
-      {menuCategoriaAbierto && (
-        <View className="absolute right-0 top-14 z-50 w-48 overflow-hidden rounded-lg border border-borderButton bg-surfaceButton shadow-xl">
-          {OPCIONES_CATEGORIA.map((opcion, index) => (
-            <TouchableOpacity
-              key={opcion}
-              className={`flex-row items-center justify-between p-3 ${index !== OPCIONES_CATEGORIA.length - 1 ? 'border-b border-borderButton' : ''} ${categoriaActual === categoryToResourceMap[opcion] ? 'bg-borderButton' : 'active:bg-borderButton/50'}`}
-              onPress={() => {
-                setCategoriaActual(categoryToResourceMap[opcion]);
-                setMenuCategoriaAbierto(false);
-              }}>
-              <Text className={`text-sm ${categoriaActual === categoryToResourceMap[opcion] ? 'font-bold text-white' : 'text-secondaryText'}`}>
-                {opcion}
-              </Text>
-              {categoriaActual === categoryToResourceMap[opcion] && <MaterialCommunityIcons name="check" size={14} color="#fff" />}
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
     </View>
   );
 };

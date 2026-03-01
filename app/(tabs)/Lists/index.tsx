@@ -11,13 +11,14 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { router } from 'expo-router';
 import { TabView } from 'react-native-tab-view';
 import { BookIcon, FilmIcon, ShowIcon, GameIcon, MusicIcon } from 'components/Icons';
+import { CategoryTabBar } from 'components/CategoryTarBar';
+import Lists from '@/Collection/components/Lists';
 
 export default function ListScreen() {
   const { colors } = useTheme();
   const layout = useWindowDimensions();
   const { categoriaActual, setCategoriaActual } = useCollection();
   const [isChanging, setIsChanging] = useState(false);
-  const [tabBarWidth, setTabBarWidth] = useState(0);
 
   const { lists, loading, deleteList } = useLists(categoriaActual as ResourceType);
 
@@ -43,76 +44,7 @@ export default function ListScreen() {
     }, 350); 
   };
 
-  const renderTabBar = (props: any) => {
-    const tabCount = props.navigationState.routes.length;
-    
-    // Calculamos el ancho de cada pestaña en píxeles
-    // El -8 es para compensar el padding (p-1 = 4px por lado) del contenedor
-    const availableWidth = tabBarWidth - 8;
-    const tabWidth = availableWidth / tabCount;
 
-    // Interpolación usando PÍXELES (obligatorio para Android)
-    const translateX = props.position.interpolate({
-      inputRange: props.navigationState.routes.map((_: any, i: number) => i),
-      outputRange: props.navigationState.routes.map((_: any, i: number) => i * tabWidth),
-    });
-
-    return (
-      <View className="py-2 bg-transparent mb-2">
-        <View 
-          className="rounded-lg border border-borderButton bg-surfaceButton p-1 shadow-lg"
-          onLayout={(e: LayoutChangeEvent) => setTabBarWidth(e.nativeEvent.layout.width)}
-        >
-          <View className="flex-row relative h-10">
-            
-            {/* --- FONDO ANIMADO (PASTILLA AZUL) --- */}
-            {tabBarWidth > 0 && (
-              <Animated.View 
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  bottom: 0,
-                  left: 0,
-                  width: tabWidth, 
-                  backgroundColor: colors.secondary,
-                  borderRadius: 6,
-                  transform: [{ translateX }] 
-                }} 
-              />
-            )}
-
-            {/* --- ICONOS (FRENTE) --- */}
-            {props.navigationState.routes.map((route: any, i: number) => {
-              const isActive = props.navigationState.index === i;
-              const iconColor = isActive ? 'white' : '#94a3b8';
-              const iconProps = { size: 24, color: iconColor }; 
-              
-              let IconComponent = null;
-              switch (route.key) {
-                case 'libro': IconComponent = <BookIcon {...iconProps} />; break;
-                case 'pelicula': IconComponent = <FilmIcon {...iconProps} />; break;
-                case 'serie': IconComponent = <ShowIcon {...iconProps} />; break;
-                case 'videojuego': IconComponent = <GameIcon {...iconProps} />; break;
-                case 'cancion': IconComponent = <MusicIcon {...iconProps} />; break;
-              }
-
-              return (
-                <TouchableOpacity
-                  key={route.key}
-                  activeOpacity={0.7}
-                  style={{ flex: 1, justifyContent: 'center', alignItems: 'center', zIndex: 10 }}
-                  onPress={() => props.jumpTo(route.key)}
-                >
-                  {IconComponent}
-                </TouchableOpacity>
-              );
-            })}
-
-          </View>
-        </View>
-      </View>
-    );
-  };
 
   const renderScene = ({ route }: any) => {
     if (isChanging || route.key !== categoriaActual || loading) {
@@ -132,23 +64,9 @@ export default function ListScreen() {
     }
 
     return (
-      <FlatList
-        data={lists}
-        keyExtractor={(list) => list.id.toString()}
-        renderItem={({ item: list }) => (
-          <ListItem list={list} onDelete={deleteList} />
-        )}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 4 }}
-        ListEmptyComponent={
-          <View className="items-center justify-center mt-10 px-4">
-            <Text className="text-center italic" style={{ color: colors.secondaryText }}>
-              No tienes listas de {route.nombre.toLowerCase()}.
-            </Text>
-          </View>
-        }
-      />
+	  <Lists data={lists} placeholder={route.nombre.toLowerCase()} deleteList={deleteList} />
     );
+	
   };
 
   return (
@@ -166,13 +84,12 @@ export default function ListScreen() {
         <TabView
           navigationState={{ index: safeIndex, routes }}
           renderScene={renderScene}
-          renderTabBar={renderTabBar}
+          renderTabBar={(props) => <CategoryTabBar {...props} />}
           onIndexChange={handleIndexChange}
           initialLayout={{ width: layout.width }}
           swipeEnabled={true} 
           style={{ flex: 1 }}
         />
-        
       </View>
     </Screen>
   );

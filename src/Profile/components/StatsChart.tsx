@@ -92,12 +92,13 @@ export const StatsChart = ({
         */}
         <View className="w-full items-center justify-center overflow-hidden">
           <BarChart
-            data={barData}
+			data={barData}
             width={chartWidth} // Usamos el ancho con tope
             height={200}
             barWidth={barWidth}
             initialSpacing={spacing / 2} 
             noOfSections={4} 
+			
             
             // Estilos
             rulesColor={colors.borderButton} 
@@ -108,7 +109,7 @@ export const StatsChart = ({
             hideYAxisText={true} 
             
             // Animación
-            isAnimated
+            isAnimated={false}
             animationDuration={400}
             
             // Configuración
