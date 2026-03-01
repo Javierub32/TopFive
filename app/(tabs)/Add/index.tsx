@@ -25,7 +25,7 @@ export default function AddScreen() {
     <Screen>
       <ThemedStatusBar/>
       <View className="flex-1 px-4 pt-6">
-        <Text className="mb-4 text-3xl font-bold" style={{color: colors.primaryText}}>Búsqueda</Text>
+        <Text className="mt-2 mb-4 text-3xl font-bold" style={{color: colors.primaryText}}>Búsqueda</Text>
 
         <SearchBar 
           value={busqueda}

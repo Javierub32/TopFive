@@ -23,7 +23,7 @@ export default function ListDetails() {
 	  <Screen>
 		<ReturnButton 
 			title={"Detalles de la lista"} 
-			route="/Collection" 
+			route="/(tabs)/Lists" 
 			params={{ initialResource: categoriaActual as ResourceType }}
 		/>
 		<LoadingIndicator />
@@ -35,7 +35,7 @@ export default function ListDetails() {
 	<Screen>
 	  <ReturnButton 
 		title={"Detalles de la lista"} 
-		route="/Collection"
+		route="/(tabs)/Lists"
 		params={{ initialResource: categoriaActual as ResourceType }}
 	  />
 	  

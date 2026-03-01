@@ -32,7 +32,7 @@ export default function UserDetailsScreen() {
   if (loading) {
     return (
       <Screen>
-        <ReturnButton route='/(tabs)/Search' title='' />
+        <ReturnButton route='/search' title='' />
         <LoadingIndicator />
       </Screen>
     );
@@ -40,7 +40,7 @@ export default function UserDetailsScreen() {
 
   return (
     <Screen>
-      <ReturnButton route='/(tabs)/Search' title={userData?.username || 'Detalles del Usuario'}  />
+      <ReturnButton route='/search' title={userData?.username || 'Detalles del Usuario'}  />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="px-4 pb-6"> 
           <ProfileData 

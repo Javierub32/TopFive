@@ -9,7 +9,7 @@ interface UserSearchPlaceholderProps {
 export const UserSearchPlaceholder = ({ loading }: UserSearchPlaceholderProps) => {
 	const { colors } = useTheme();
 	return (
-		<View className={`-z-10 flex-1 items-center justify-center ${loading ? 'hidden' : ''}`} style={{ backgroundColor: colors.background }}>
+		<View className={`-z-10 flex-1 items-center justify-center mb-40 ${loading ? 'hidden' : ''}`} style={{ backgroundColor: colors.background }}>
 			{/* Contenedor del Icono  */}
 			<View className="mb-6 h-32 w-32 items-center justify-center rounded-full" style={{ backgroundColor: colors.surfaceButton }}>
 				<View className="h-28 w-28 items-center justify-center rounded-full" style={{ backgroundColor: colors.secondary }}>

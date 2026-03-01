@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Tabs, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { HomeIcon, CardsIcon, UserIcon, SearchIcon, AddIcon } from 'components/Icons';
+import { HomeIcon, CardsIcon, UserIcon, SearchIcon, AddIcon, ListIcon } from 'components/Icons';
 import { CategorySelectorModal } from 'components/CategorySelectorModal';
 import { useTheme } from 'context/ThemeContext';
 
@@ -54,10 +54,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="Search/index"
+        name="Lists/index"
         options={{
-          title: 'Search',
-          tabBarIcon: ({ color, size }) => <SearchIcon color={color} size={26} />,
+          title: 'List',
+          tabBarIcon: ({ color, size }) => <ListIcon color={color} size={30} />,
         }}
       />
       <Tabs.Screen

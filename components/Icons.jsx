@@ -3,7 +3,11 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Feather from '@expo/vector-icons/Feather';
+import Entypo from '@expo/vector-icons/Entypo';
+import AntDesign from '@expo/vector-icons/AntDesign';
+
 import { useTheme } from 'context/ThemeContext';
+
 
 export const SocialIcon = (props) => (
   <FontAwesome name="users" size={24} color="black"  {...props} />
@@ -204,3 +208,11 @@ export const CalendarEndIcon = (props) => {
     <MaterialCommunityIcons name="calendar-end" size={24} color={colors.primary} {...props}/>
   )
 }
+
+export const ListIcon = (props) => {
+  const { colors } = useTheme();
+  return (
+	<MaterialCommunityIcons name="format-list-bulleted" size={24} color={colors.primaryText} {...props} />
+  )
+}
+

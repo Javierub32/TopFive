@@ -74,7 +74,7 @@ const handleSubmit = async () => {
 					formData.color
 				);
 					Alert.alert('Lista actualizada', `La lista "${formData.name}" ha sido actualizada exitosamente.`);
-					router.replace({ pathname: '/Collection', 
+					router.replace({ pathname: '/(tabs)/Lists', 
 						params: { 
 							item: JSON.stringify(formData) } });
 			}	else {
@@ -104,7 +104,7 @@ const handleSubmit = async () => {
       <ScrollView className="flex-1 px-4 pt-2">
         <View className="flex-1 flex-row items-center">
           <ReturnButton
-            route="/Collection"
+            route="/(tabs)/Lists"
             title={editando ? 'Actualiza tu lista' : 'Crea tu lista'}
             style={' '}
             params={{ initialResource: categoriaActual as ResourceType }}

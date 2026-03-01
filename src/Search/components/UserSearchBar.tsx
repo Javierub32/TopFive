@@ -36,9 +36,6 @@ export function UserSearchBar({
           onSubmitEditing={onSearch}
           returnKeyType="search"
         />
-
-        {/* Separador vertical */}
-        <View className="h-6 w-[1px]" style={{ backgroundColor: colors.borderButton }} />
       </View>
     </View>
   );

@@ -1,5 +1,4 @@
 import { View, Text, FlatList, RefreshControl, TouchableOpacity} from 'react-native';
-import { StatusBar } from 'expo-status-bar';
 import { router } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { useTheme } from 'context/ThemeContext';;
@@ -17,20 +16,21 @@ export default function HomeScreen() {
 
 	return (
 		<Screen>
-			<StatusBar style="light" />
-			<View className="flex px-4 py-6">
-				<Text className="mb-4 text-3xl font-bold" style={{ color: colors.primaryText }}>
-					Inicio
-				</Text>
-
-				<View className="absolute right-4 top-5 z-10 flex-row gap-x-2">
-				<NotificationButton />
+			<View className="px-4 pt-6">
+				<View className="mb-4 flex-row items-center justify-between">
+					<Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
+						Mi Biblioteca
+					</Text>
+					
+					<View className="flex-row gap-x-2">
+						<NotificationButton />
 						<TouchableOpacity
-							onPress={() => router.push('/(tabs)/Search')}
+							onPress={() => router.push('/search')}
 							className="rounded-full p-3"
 						>
 							<SearchIcon2 size={24} color={colors.primaryText} />
 						</TouchableOpacity>
+					</View>
 				</View>
 			</View>
 
@@ -57,7 +57,7 @@ export default function HomeScreen() {
 							Agrega amigos para poder ver sus reseñas.
 						</Text>
 						<TouchableOpacity
-							onPress={() => router.push('/(tabs)/Search')}
+							onPress={() => router.push('/search')}
 							className="px-6 py-3 rounded-3xl"
 							style={{backgroundColor: colors.primary}}
 						>

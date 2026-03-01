@@ -6,7 +6,7 @@ import ResourceList from '@/Collection/components/ResourceList';
 import { useNavigable } from '@/Collection/hooks/useNavigable';
 import { SceneMap, TabView } from 'react-native-tab-view';
 import Lists from '@/Collection/components/Lists';
-import { CancelIcon2, SearchIcon } from 'components/Icons';
+import { CancelIcon2, SearchIcon, SearchIcon2 } from 'components/Icons';
 import renderTabBar from '@/Collection/components/TabBar';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
@@ -25,7 +25,6 @@ export default function CollectionScreen() {
 
   return (
     <Screen>
-      <StatusBar style="light" />
       <View className="flex-1 px-4 pt-6">
         <View className="mb-4 flex-row items-center justify-between">
           <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
@@ -34,11 +33,11 @@ export default function CollectionScreen() {
 
           <TouchableOpacity
             onPress={toggleSearch}
-            className="rounded-full p-2">
+            className="rounded-full p-3">
             {isSearchVisible ? (
               <CancelIcon2 size={24} color={colors.primaryText} />
             ) : (
-              <SearchIcon size={24} color={colors.primaryText} />
+              <SearchIcon2 size={24} color={colors.primaryText} />
             )}
           </TouchableOpacity>
         </View>
