@@ -65,7 +65,7 @@ export const CategorySelectorModal = ({
           <Text
             className="mb-4 text-center text-xl font-bold"
             style={{ color: colors.primaryText }}>
-            {'¿Qué quieres buscar?'}
+            {'¿Qué quieres añadir?'}
           </Text>
 
           <View className="flex-row justify-around items-center">

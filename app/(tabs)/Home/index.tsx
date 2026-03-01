@@ -28,7 +28,6 @@ export default function HomeScreen() {
 						<TouchableOpacity
 							onPress={() => router.push('/(tabs)/Search')}
 							className="rounded-full p-3"
-							style={{ backgroundColor: `${colors.primaryText}30` }}
 						>
 							<SearchIcon2 size={24} color={colors.primaryText} />
 						</TouchableOpacity>

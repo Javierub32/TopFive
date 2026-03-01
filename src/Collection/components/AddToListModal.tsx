@@ -38,7 +38,7 @@ const ModalListItem = ({ list, onSelect, colors }: any) => (
 
 
 export function AddToListModal({ visible, onClose, resourceCategory, onSelect }: any) {
-  const { colors, isDark } = useTheme();
+  const { colors } = useTheme();
   const { categoriaActual } = useCollection();
   const { lists, loading } = useLists(categoriaActual);
 

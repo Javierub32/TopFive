@@ -55,7 +55,6 @@ export default function ProfileScreen() {
           <NotificationButton />
           <Pressable
             className="rounded-full p-3"
-            style={{ backgroundColor: `${colors.primaryText}30` }}
             onPress={() => router.push({ pathname: '/settings' , params: { username: userData?.username, description: userData?.description } })}>
             <Feather name="settings" size={24} color={colors.primaryText} />
           </Pressable>

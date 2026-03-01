@@ -29,7 +29,6 @@ export const NotificationButton = () => {
   return (
   <Pressable
     className="rounded-full p-3"
-    style={{ backgroundColor: `${colors.primaryText}30` }}
     onPress={() => router.push('/notifications')}>
     <MaterialIcons name="notifications-none" size={24} color={colors.primaryText} />
 	<View className="absolute top-[0.67rem] left-[1.6rem] px-1 rounded-full flex-1  " style={{backgroundColor: colors.error, display: visibility ? 'flex' : 'none'}}>
