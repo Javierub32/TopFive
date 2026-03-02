@@ -1,7 +1,7 @@
 import { ReturnButton } from "components/ReturnButton";
-import { Pressable, View, Text, TextComponent, Alert} from "react-native";
+import { TouchableOpacity, View, Text, TextComponent, Alert, Linking} from "react-native";
 import { Screen } from 'components/Screen';
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign, FontAwesome, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from '@expo/vector-icons/';
 
 import { useProfile } from 'src/Profile/hooks/useProfile';
@@ -60,64 +60,117 @@ const handleDeleteAccount = async () => {
         <Screen>
             <ReturnButton route='/(tabs)/Profile' title='Configuración' />
             <View className="flex-1 p-4 mb-14">
-                <View className="flex-1 justify-between">
-                    <View className="flex-col justify-center gap-2 rounded-2xl p-4" style={{backgroundColor: `${colors.accent}1A`}}>
-                        <Text className="font-bold text-xl border-b p-1 mb-3" style={{color: colors.primaryText, borderColor: colors.secondaryText}}>
+                <View className="flex-1 gap-4">
+                    <View>
+                        <Text className="font-bold text-xl p-1 mb-1" style={{color: colors.primaryText}}>
                             Personalización
                         </Text>
-                        <Pressable
-                            className="w-full flex-row justify-between items-center rounded-xl p-3"
-                            style={{backgroundColor: `${colors.accent}33`}}
-                            onPress={() => router.push({ pathname: '/editProfile' , params: { username, description } })}>
-                            <Text className="text-lg" style={{color: colors.primaryText}}>Editar perfil</Text>
-                            <AntDesign name="edit" size={20} color={colors.primaryText} />
-                        </Pressable>
-                        <Pressable
-                            className="w-full flex-row justify-between items-center rounded-2xl p-3"
-                            style={{backgroundColor: `${colors.accent}33`}}
-                            onPress={toggleTheme}>
-                            <Text className="text-lg" style={{color: colors.primaryText}}>Cambiar tema</Text>
-                            <FontAwesome5 name="palette" size={24} color={colors.primaryText} />
-                        </Pressable>
+                        <View className="flex-col justify-center gap-2 rounded-2xl p-2" style={{backgroundColor: `${colors.accent}33`}}>
+                            <View className="border-b" style={{borderColor: `${colors.secondaryText}4D`}}>
+                                <TouchableOpacity
+                                    className="w-full flex-row gap-4 justify-between items-center p-2 pb-4"
+                                    activeOpacity={0.4}
+                                    onPress={() => router.push({ pathname: '/editProfile' , params: { username, description } })}>
+                                    <View className="flex-row items-center gap-2 justify-start">
+                                        <AntDesign name="edit" size={24} color={colors.primaryText} />
+                                        <Text className="text-lg" style={{color: colors.primaryText}}>Editar perfil</Text>
+                                    </View>         
+                                    <View>
+                                        <MaterialCommunityIcons name="chevron-right" size={20} color={colors.secondaryText}/>
+                                    </View>                       
+                                </TouchableOpacity>
+                            </View>
+                            
+                            <TouchableOpacity
+                                className="w-full flex-row gap-4 justify-between items-center p-2"
+                                activeOpacity={0.4}
+                                onPress={toggleTheme}>
+                                <View className="flex-row items-center gap-2 justify-start">
+                                    <FontAwesome5 name="palette" size={24} color={colors.primaryText} />
+                                    <Text className="text-lg" style={{color: colors.primaryText}}>Cambiar tema</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    
-					
-                    <View className="flex-col justify-center gap-2">
-                        
 
-                        <FeedbackFormButton></FeedbackFormButton>
-						<Pressable
-                            className="w-full flex-row justify-between items-center rounded-2xl p-3"
-                            style={{backgroundColor: `${colors.accent}33`}}
-                            onPress={() => router.push('/aboutUs')}>
-                            <Text className="text-lg" style={{color: colors.primaryText}}>Sobre nosotros</Text>
-                            <Ionicons name="information-circle-outline" size={24} color={colors.primaryText} />
-                        </Pressable>
-                        <Pressable
-                            className="w-full flex-row justify-between items-center rounded-2xl p-3"
-                            style={{backgroundColor: `${colors.accent}33`}}
-                            onPress={signOut}>
-                            <Text className="text-lg" style={{color: colors.primaryText}}>Cerrar sesión</Text>
-                            <Ionicons name="log-out-outline" size={24} color={colors.primaryText} />
-                        </Pressable>
-
-						<Pressable
-                            className="w-full flex-row justify-between items-center rounded-2xl p-3"
-                            style={{backgroundColor: `${colors.error}33`}}
-                            onPress={handleDeleteAccount}>
-                            <Text className="text-lg" style={{color: colors.error}}>Eliminar cuenta</Text>
-                            <Ionicons name="trash-outline" size={24} color={colors.primaryText} />
-                        </Pressable>
-
-                        
+                    <View>
+                        <Text className="font-bold text-xl p-1 mb-1" style={{color: colors.primaryText}}>
+                            Cuenta
+                        </Text>
+                        <View className="flex-col justify-center gap-2 rounded-2xl p-2" style={{backgroundColor: `${colors.accent}33`}}>
+                            <View className="border-b" style={{borderColor: `${colors.secondaryText}4D`}}>
+                                <TouchableOpacity
+                                    className="w-full flex-row gap-4 justify-between items-center p-2 pb-4"
+                                    activeOpacity={0.4}
+                                    onPress={signOut}>
+                                    <View className="flex-row items-center justify-start gap-2">
+                                        <Ionicons name="log-out-outline" size={24} color={colors.primaryText} />
+                                        <Text className="text-lg" style={{color: colors.primaryText}}>Cerrar sesión</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            
+                            <TouchableOpacity
+                                className="w-full flex-row gap-4 justify-between items-center p-2"
+                                activeOpacity={0.4}
+                                onPress={handleDeleteAccount}>
+                                <View className="flex-row items-center justify-start gap-2">
+                                    <Ionicons name="trash-outline" size={24} color={colors.error} />
+                                    <Text className="text-lg font-bold" style={{color: colors.error}}>Eliminar cuenta</Text>
+                                </View>                                
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    
-                    
 
-
-
+                    <View>
+                        <Text className="font-bold text-xl p-1 mb-1" style={{color: colors.primaryText}}>
+                            Soporte y legal
+                        </Text>
+                        <View className="flex-col justify-center gap-2 rounded-2xl p-2" style={{backgroundColor: `${colors.accent}33`}}>
+                            <View className="border-b" style={{borderColor: `${colors.secondaryText}4D`}}>
+                                <TouchableOpacity
+                                    className="w-full flex-row gap-4 justify-between items-center p-2 pb-4"
+                                    activeOpacity={0.4}
+                                    onPress={() => Linking.openURL('https://forms.gle/2FCL2eyicn4yLuTw8')}>
+                                    <View className="flex-row items-center justify-start gap-2">
+                                        <MaterialIcons name="feedback" size={24} color={colors.primaryText}/>
+                                        <Text className="text-lg" style={{color: colors.primaryText}}>Enviar feedback</Text>
+                                    </View>
+                                    <View>
+                                        <MaterialCommunityIcons name="chevron-right" size={20} color={colors.secondaryText}/>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            <View className="border-b" style={{borderColor: `${colors.secondaryText}4D`}}>
+                                <TouchableOpacity
+                                    className="w-full flex-row gap-4 justify-between items-center p-2 pb-4"
+                                    activeOpacity={0.4}
+                                    onPress={() => router.push('/aboutUs')}>
+                                    <View className="flex-row items-center justify-start gap-2">
+                                        <Ionicons name="information-circle-outline" size={24} color={colors.primaryText} />
+                                        <Text className="text-lg" style={{color: colors.primaryText}}>Sobre nosotros</Text>
+                                    </View>
+                                    <View>
+                                        <MaterialCommunityIcons name="chevron-right" size={20} color={colors.secondaryText}/>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            
+                            <TouchableOpacity
+                                className="w-full flex-row gap-4 justify-between items-center p-2"
+                                activeOpacity={0.4}
+                                onPress={() => Linking.openURL('https://topfive-politica-privacidad.vercel.app/')}>
+                                <View className="flex-row items-center justify-start gap-2">
+                                    <FontAwesome name="check-circle-o" size={24} color={colors.primaryText} />
+                                    <Text className="text-lg" style={{color: colors.primaryText}}>Política de privacidad</Text>
+                                </View>
+                                <View>
+                                    <MaterialCommunityIcons name="chevron-right" size={20} color={colors.secondaryText}/>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
-                
             </View>
         </Screen>
     );
