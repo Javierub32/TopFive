@@ -86,6 +86,13 @@ const handleDeleteAccount = async () => {
                         
 
                         <FeedbackFormButton></FeedbackFormButton>
+						<Pressable
+                            className="w-full flex-row justify-between items-center rounded-2xl p-3"
+                            style={{backgroundColor: `${colors.accent}33`}}
+                            onPress={() => router.push('/aboutUs')}>
+                            <Text className="text-lg" style={{color: colors.primaryText}}>Sobre nosotros</Text>
+                            <Ionicons name="information-circle-outline" size={24} color={colors.primaryText} />
+                        </Pressable>
                         <Pressable
                             className="w-full flex-row justify-between items-center rounded-2xl p-3"
                             style={{backgroundColor: `${colors.accent}33`}}
