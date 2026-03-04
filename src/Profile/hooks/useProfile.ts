@@ -5,6 +5,7 @@ import { useAuth } from 'context/AuthContext';
 import { userService } from '../services/profileService';
 import { createAdaptedResourceStats } from '../adapters/statsAdapter';
 import { ResourceType, useResource } from 'hooks/useResource';
+import { useNotification } from 'context/NotificationContext';
 
 export type CategoryKey = 'libros' | 'películas' | 'series' | 'canciones' | 'videojuegos';
 
@@ -44,6 +45,7 @@ interface User {
 export const useProfile = () => {
   const { user } = useAuth();
   const { fetchResources } = useResource()
+  const { showNotification } = useNotification();
   const [loading, setLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(false);
 
@@ -93,7 +95,12 @@ export const useProfile = () => {
 		updateStats(stats);
 	} catch (error) {
 		console.error('[useProfile] Error al cargar estadísticas:', error);
-		Alert.alert('Error', 'No se pudieron cargar las estadísticas. Intenta de nuevo más tarde.');
+		//Alert.alert('Error', 'No se pudieron cargar las estadísticas. Intenta de nuevo más tarde.');
+    showNotification({
+      title: 'Error',
+      description: 'No se pudieron cargar las estadísticas. Intenta de nuevo más tarde.',
+      isChoice: false
+    });
 	} finally {
 		setStatsLoading(false);
 	}
@@ -118,7 +125,12 @@ export const useProfile = () => {
       setLoading(true);
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        Alert.alert('Permiso denegado', 'Necesitamos acceso a tu galería');
+        //Alert.alert('Permiso denegado', 'Necesitamos acceso a tu galería');
+        showNotification({
+          title: 'Permiso denegado',
+          description: 'Necesitamos acceso a tu galería',
+          isChoice: false
+        });
         return;
       }
 
@@ -136,11 +148,21 @@ export const useProfile = () => {
          ('[pickImage] Subiendo nuevo avatar...');
         const newUrl = await userService.uploadAvatar(user.id, result.assets[0].uri);
         setUserData({ ...userData, avatar_url: newUrl } as User);
-        Alert.alert('¡Éxito!', 'Foto de perfil actualizada');
+        //Alert.alert('¡Éxito!', 'Foto de perfil actualizada');
+        showNotification({
+          title: '¡Éxito!',
+          description: 'Foto de perfil actualizada',
+          isChoice: false
+        });
       }
     } catch (error) {
       console.error('[pickImage] Error:', error);
-      Alert.alert('Error', 'No se pudo actualizar la foto');
+      //Alert.alert('Error', 'No se pudo actualizar la foto');
+      showNotification({
+        title: 'Error',
+        description: 'No se pudo actualizar la foto',
+        isChoice: false
+      });
     } finally {
        ('[pickImage] Finalizando');
       setLoading(false);

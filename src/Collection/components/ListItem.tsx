@@ -4,6 +4,7 @@ import { useTheme } from 'context/ThemeContext';
 import { ListInfo } from '../services/listServices';
 import { router } from 'expo-router';
 import { useState } from 'react';
+import { useNotification } from 'context/NotificationContext';
 
 	interface ListItemProps {
 		list: ListInfo;
@@ -12,18 +13,35 @@ import { useState } from 'react';
 
 export const ListItem = ({ list, onDelete }: ListItemProps) => {
 
-
+	const {showNotification, hideNotification} = useNotification();
   const { colors } = useTheme();
   const [menuListasAbierto, setMenuListasAbierto] = useState(false);
 	const handleDelete = () => {
 		if (list) {
-			Alert.alert('Lista eliminada', 'Estás seguro de que quieres eliminar esta lista de tu colección?', [
+			showNotification({
+				title: 'Eliminar lista',
+				description: '¿Estás seguro de que quieres eliminar esta lista de tu colección?',
+				leftButtonText: 'Cancelar',
+				rightButtonText: 'Confirmar',
+				isChoice: true,
+				onLeftPress: () => hideNotification(),
+				onRightPress: async () => {
+					await onDelete(list.id);
+					setMenuListasAbierto(false);
+					showNotification({
+						title: 'Lista eliminada',
+						description: `La lista "${list.nombre}" ha sido eliminada exitosamente.`,
+						isChoice: false
+					});
+				}
+			})
+			/*Alert.alert('Lista eliminada', 'Estás seguro de que quieres eliminar esta lista de tu colección?', [
 				{ text: 'Cancelar', style: 'cancel'},
 				{ text: 'Confirmar', onPress: async () => {
 					await onDelete(list.id);
 					setMenuListasAbierto(false);
 				} }
-			]);
+			]);*/
 		}
 	};
 

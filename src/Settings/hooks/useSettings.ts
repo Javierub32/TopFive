@@ -3,10 +3,12 @@ import { useLocalSearchParams } from "expo-router";
 import { supabase } from "lib/supabase";
 import { useState } from "react";
 import { Alert } from "react-native";
+import { useNotification } from "context/NotificationContext";
 
 export const useSettings = () => {
 	const { username, description } = useLocalSearchParams<{ username: string; description: string }>();
 	const { user } = useAuth();
+	const {showNotification} = useNotification();
 	const [loading, setLoading] = useState(false);
 	const [ uname, setUsername] = useState(username || '');
 	const [ udesc, setDescription] = useState(description || '');
@@ -20,12 +22,27 @@ export const useSettings = () => {
 			.eq('id', user.id)
 
 			if (error?.code == '23505') {
-				Alert.alert('Error', 'El nombre de usuario ya está en uso. Por favor, elige otro.');
+				//Alert.alert('Error', 'El nombre de usuario ya está en uso. Por favor, elige otro.');
+				showNotification({
+					title: 'Error',
+					description: 'El nombre de usuario ya está en uso. Por favor, elige otro.',
+					isChoice: false
+				});
 			}
 			else if (error) {
-				Alert.alert('Error', 'Hubo un error al actualizar tu perfil. Por favor, intenta de nuevo.');
+				//Alert.alert('Error', 'Hubo un error al actualizar tu perfil. Por favor, intenta de nuevo.');
+				showNotification({
+					title: 'Error',
+					description: 'Hubo un error al actualizar tu perfil. Por favor, intenta de nuevo.',
+					isChoice: false
+				});
 			} else {
-				Alert.alert('Éxito', 'Tu perfil ha sido actualizado correctamente.');
+				//Alert.alert('Éxito', 'Tu perfil ha sido actualizado correctamente.');
+				showNotification({
+					title: '¡Éxito!',
+					description: 'Tu perfil ha sido actualizado correctamente.',
+					isChoice: false
+				});
 			}
 		} catch (error) {
 			console.error('Error al actualizar el perfil:', error);

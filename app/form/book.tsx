@@ -16,6 +16,8 @@ import { StateSetter } from "@/Form/components/StateSetter";
 import { RatingSetter } from "@/Form/components/RatingSetter";
 import { ProgressSetter } from "@/Form/components/ProgressSetter";
 import { DateSetter } from "@/Form/components/DateSetter";
+import { NotificationModal } from 'components/NotificationModal';
+import { useNotification } from 'context/NotificationContext';
 
 interface Book {
   id: number | null;
@@ -37,7 +39,8 @@ export default function BookForm() {
   const { user } = useAuth();
   const { refreshData } = useCollection();
   const { colors } = useTheme();
-  
+  const { showNotification} = useNotification();
+
   // Si es item, se edita, si no, es nuevo
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
@@ -57,7 +60,11 @@ export default function BookForm() {
   const handleSubmit = async () => {
     const numPaginas = parseInt(paginasLeidas) || 0;
     if (numPaginas > 2000) {
-      Alert.alert('Error', 'El número de páginas no puede ser mayor a 2000');
+      showNotification({
+        title: 'Número de páginas no válido',
+        description: 'El número de páginas no puede ser mayor a 2000. Por favor, ingresa un número válido.',
+        isChoice: false
+      });
       return;
     }
 
@@ -92,7 +99,11 @@ export default function BookForm() {
           .single();
 
         if (updateError) {
-          Alert.alert('Error', 'Hubo un problema al actualizar el libro. Inténtalo de nuevo.');
+          showNotification({
+            title: 'Error al actualizar',
+            description: 'Hubo un problema al actualizar el libro. Inténtalo de nuevo.',
+            isChoice: false
+          });
           console.error('Error al actualizar:', updateError);
         } else {
 		  // Adaptamos la respuesta para mantener compatibilidad
@@ -103,15 +114,22 @@ export default function BookForm() {
 			...rawData,
 			contenido: contentData,
 		  };
-
-          Alert.alert('¡Éxito!', `Has actualizado ${book.titulo || book.title} en tu colección.`);
-		  refreshData();
+		  //refreshData();
           router.replace({
             pathname: '/details/book/bookResource',
             params: { 
               item: JSON.stringify(bookResource)
             }
           });
+          // Mostrar modal después de navegar
+          setTimeout(() => {
+            showNotification({
+              title: '¡Éxito!',
+              description: `Has actualizado ${book.titulo || book.title} en tu colección.`,
+              isChoice: false
+            });
+          }, 100);
+          
         }
       } else {
         // Si es un nuevo contenido,insertar nuevo recurso
@@ -166,8 +184,16 @@ export default function BookForm() {
         }
 
         if (resource) {
-          Alert.alert('Aviso', 'Ya tienes este libro en tu colección.');
+          refreshData();
           router.back();
+          // Mostrar modal después de navegar
+          setTimeout(() => {
+            showNotification({
+              title: 'Aviso',
+              description: 'Ya tienes este libro en tu colección.',
+              isChoice: false
+            });
+          }, 100);
           setLoading(false);
           return;
         }
@@ -190,12 +216,23 @@ export default function BookForm() {
           });
 
         if (inventoryError) {
-          Alert.alert('Error', 'Hubo un problema al guardar el libro. Inténtalo de nuevo.');
+          showNotification({
+            title: 'Error al guardar',
+            description: 'Hubo un problema al guardar el libro. Inténtalo de nuevo.',
+            isChoice: false
+          });
           console.error('Error al insertar:', inventoryError);
         } else {
-          Alert.alert('¡Éxito!', `Has añadido ${book.title} a tu colección.`);
-		  refreshData();
+          refreshData();
           router.back();
+          // Mostrar modal después de navegar
+          setTimeout(() => {
+            showNotification({
+              title: '¡Éxito!',
+              description: `Has añadido ${book.title} a tu colección.`,
+              isChoice: false
+            });
+          }, 100);
         }
       }
     } catch (error) {

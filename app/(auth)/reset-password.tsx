@@ -5,6 +5,7 @@ import { router, useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'context/ThemeContext';
+import { useNotification } from 'context/NotificationContext';
 
 // Frases aleatorias con iconos - fuera del componente para mejor rendimiento
 const frasesConIconos = [
@@ -21,6 +22,7 @@ export default function ResetPasswordScreen() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const {showNotification} = useNotification();
   
   const { colors } = useTheme();
 
@@ -33,14 +35,24 @@ export default function ResetPasswordScreen() {
 	setLoading(true);
 	try {
 	  if (password !== confirmPassword) {
-		Alert.alert('Error', 'Las contraseñas no coinciden. \n Por favor, inténtalo de nuevo.');
+		//Alert.alert('Error', 'Las contraseñas no coinciden. \n Por favor, inténtalo de nuevo.');
+		showNotification({
+		  title: 'Error',
+		  description: 'Las contraseñas no coinciden. Por favor, inténtalo de nuevo.',
+		  isChoice: false
+		});
 		setLoading(false);
 		return;
 	  }
 	  await changePassword(password);
 	  router.replace('/(auth)/login');
 	} catch (error) {
-	  Alert.alert('Error', 'Error al cambiar la contraseña. \n Por favor, inténtalo de nuevo.');
+	  //Alert.alert('Error', 'Error al cambiar la contraseña. \n Por favor, inténtalo de nuevo.');
+	  showNotification({
+		title: 'Error',
+		description: 'Error al cambiar la contraseña. Por favor, inténtalo de nuevo.',
+		isChoice: false
+	  });
 	} finally {
 	  setLoading(false);
 	}

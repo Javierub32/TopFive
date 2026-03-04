@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'context/ThemeContext';
+import { useNotification } from 'context/NotificationContext';
 
 // Frases aleatorias con iconos - fuera del componente para mejor rendimiento
 const frasesConIconos = [
@@ -22,6 +23,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const {showNotification} = useNotification();
   
   const { colors } = useTheme();
 
@@ -36,7 +38,12 @@ export default function Login() {
       await signIn(email, password);
       // No necesitamos navegar manualmente, el _layout.js lo hará al detectar la sesión
     } catch (error) {
-      Alert.alert('Error', 'Credenciales inválidas. \n Por favor, inténtalo de nuevo.');
+      //Alert.alert('Error', 'Credenciales inválidas. \n Por favor, inténtalo de nuevo.');
+      showNotification({
+        title: 'Error',
+        description: 'Credenciales inválidas. Por favor, inténtalo de nuevo.',
+        isChoice: false
+      });
     } finally {
       setLoading(false);
     }

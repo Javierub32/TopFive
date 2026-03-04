@@ -10,6 +10,7 @@ import { ReturnButton } from 'components/ReturnButton';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ResourceType } from 'hooks/useResource';
 import { supabase } from 'lib/supabase';
+import { useNotification } from 'context/NotificationContext';
 
 export default function ListForm() {
   const { colors } = useTheme();
@@ -57,9 +58,16 @@ export default function ListForm() {
     category: '',
   });
 
+  const { showNotification } = useNotification();
+
 const handleSubmit = async () => {
 	if(!formData.name.trim()) {
-		Alert.alert('Error', 'El nombre de la lista no puede estar vacío.');
+		//Alert.alert('Error', 'El nombre de la lista no puede estar vacío.');
+		showNotification({
+			title: 'Error',
+			description: 'El nombre de la lista no puede estar vacío.',
+			isChoice: false
+		});
 		return;
 	}
 
@@ -73,10 +81,17 @@ const handleSubmit = async () => {
 					formData.icon,
 					formData.color
 				);
-					Alert.alert('Lista actualizada', `La lista "${formData.name}" ha sido actualizada exitosamente.`);
+					//Alert.alert('Lista actualizada', `La lista "${formData.name}" ha sido actualizada exitosamente.`);
 					router.replace({ pathname: '/(tabs)/Lists', 
 						params: { 
 							item: JSON.stringify(formData) } });
+          setTimeout(() => {
+            showNotification({
+              title: '¡Éxito!',
+              description: `La lista "${formData.name}" ha sido actualizada exitosamente.`,
+              isChoice: false
+            });
+          }, 100);    
 			}	else {
 				await createList(
 					formData.name,
@@ -88,8 +103,13 @@ const handleSubmit = async () => {
 			}
 		}catch (error) {
 				console.error('Error fetching list details:', error);
-				Alert.alert('Error', 'No se pudieron cargar los detalles de la lista. Por favor, inténtalo de nuevo.');
-		} finally {
+				//Alert.alert('Error', 'No se pudieron cargar los detalles de la lista. Por favor, inténtalo de nuevo.');
+        showNotification({
+              title: 'Error',
+              description: `No se pudieron cargar los detalles de la lista. Por favor, inténtalo de nuevo.`,
+              isChoice: false
+            });
+      } finally {
 			setLoading(false);
 		}
 }

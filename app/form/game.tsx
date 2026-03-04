@@ -19,6 +19,7 @@ import { RatingSetter } from "@/Form/components/RatingSetter";
 import { ProgressSetter } from "@/Form/components/ProgressSetter";
 import { DateSetter } from "@/Form/components/DateSetter";
 import { DifficultySetter } from "@/Form/components/DifficultySetter";
+import {useNotification} from "context/NotificationContext";
 
 interface Game {
   id: number;
@@ -39,7 +40,7 @@ export default function GameForm() {
   const router = useRouter();
   const { user } = useAuth();
   const { refreshData } = useCollection();
-  
+  const { showNotification } = useNotification();
   const { colors } = useTheme();
   
   const editando = !!item;
@@ -92,7 +93,12 @@ export default function GameForm() {
           .single();
 
         if (updateError) {
-          Alert.alert('Error', 'Hubo un problema al actualizar el videojuego. Inténtalo de nuevo.');
+          //Alert.alert('Error', 'Hubo un problema al actualizar el videojuego. Inténtalo de nuevo.');
+          showNotification({
+            title: 'Error al actualizar',
+            description: 'Hubo un problema al actualizar el juego. Inténtalo de nuevo.',
+            isChoice: false
+          })
           console.error('Error al actualizar:', updateError);
         } else {
 		  // Adaptamos la respuesta para mantener compatibilidad
@@ -104,7 +110,7 @@ export default function GameForm() {
 			contenido: contentData,
 		  };
 
-          Alert.alert('¡Éxito!', `Has actualizado ${game.titulo || game.title} en tu colección.`);
+          //Alert.alert('¡Éxito!', `Has actualizado ${game.titulo || game.title} en tu colección.`);
 		  refreshData();
           router.replace({
             pathname: '/details/game/gameResource',
@@ -112,6 +118,13 @@ export default function GameForm() {
               item: JSON.stringify(gameResource)
             }
           });
+          setTimeout(() => {
+            showNotification({
+              title: '¡Éxito!',
+              description: `Has actualizado ${game.titulo || game.title} en tu colección.`,
+              isChoice: false
+            });
+          }, 100);
         }
       } else {
         // Insertar nuevo recurso
@@ -163,8 +176,16 @@ export default function GameForm() {
       if (checkError) throw checkError;
 
       if (existingResource) {
-        Alert.alert('Aviso', 'Ya tienes este videojuego en tu colección.');
+        //Alert.alert('Aviso', 'Ya tienes este videojuego en tu colección.');
+        refreshData();
         router.back();
+        setTimeout(() =>{
+          showNotification({
+            title: 'Aviso',
+              description: 'Ya tienes este juego en tu colección.',
+              isChoice: false
+          });
+        }, 100);
         setLoading(false);
         return;
       }
@@ -184,17 +205,28 @@ export default function GameForm() {
       });
 
       if (inventoryError) {
-        Alert.alert('Error', 'Hubo un problema al guardar el videojuego. Inténtalo de nuevo.');
+        //Alert.alert('Error', 'Hubo un problema al guardar el videojuego. Inténtalo de nuevo.');
+        showNotification({
+          title: 'Error al guardar',
+          description: 'Hubo un problema al guardar el juego. Inténtalo de nuevo.',
+          isChoice: false
+        })
         console.error('Error al insertar:', inventoryError);
       } else {
-        Alert.alert('¡Éxito!', `Has añadido ${game.title} a tu colección.`);
+        //Alert.alert('¡Éxito!', `Has añadido ${game.title} a tu colección.`);
 		refreshData();
         router.back();
+        setTimeout(() => {
+          showNotification({
+            title: '¡Éxito!',
+              description: `Has añadido ${game.title} a tu colección.`,
+              isChoice: false
+          });
+        }, 100);
       }
       }
     } catch (error) {
       console.error('Error saving game data:', error);
-      Alert.alert('Error', 'Ocurrió un error inesperado.');
     } finally {
       setLoading(false);
     }

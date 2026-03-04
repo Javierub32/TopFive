@@ -19,7 +19,7 @@ import { RatingSetter } from "@/Form/components/RatingSetter";
 import { ViewsSetter } from "@/Form/components/ViewsSetter";
 import { DateSetter } from "@/Form/components/DateSetter";
 import { ProgressSetter } from "@/Form/components/ProgressSetter";
-
+import { useNotification } from 'context/NotificationContext';
 interface Series {
   id: number;
   title: string;
@@ -62,6 +62,7 @@ export default function SeriesForm() {
 
   const [loading, setLoading] = useState(false);
 
+  const { showNotification } = useNotification();
   const handleSubmit = async () => {
     // Validaciones básicas de números
     const tempNum = parseInt(temporadaActual) || 1;
@@ -97,7 +98,12 @@ export default function SeriesForm() {
           .single();
 
         if (updateError) {
-          Alert.alert('Error', 'Hubo un problema al actualizar la serie. Inténtalo de nuevo.');
+          //Alert.alert('Error', 'Hubo un problema al actualizar la serie. Inténtalo de nuevo.');
+          showNotification({
+            title: 'Error al actualizar',
+            description: 'Hubo un problema al actualizar la serie. Inténtalo de nuevo.',
+            isChoice: false
+          });
           console.error('Error al actualizar:', updateError);
         } else {
 		  // Adaptamos la respuesta para mantener compatibilidad
@@ -109,7 +115,7 @@ export default function SeriesForm() {
 			contenido: contentData,
 		  };
 
-          Alert.alert('¡Éxito!', `Has actualizado ${series.titulo || series.title} en tu colección.`);
+          //Alert.alert('¡Éxito!', `Has actualizado ${series.titulo || series.title} en tu colección.`);
 		  refreshData();
           router.replace({
             pathname: '/details/series/seriesResource',
@@ -117,6 +123,13 @@ export default function SeriesForm() {
               item: JSON.stringify(seriesResource)
             }
           });
+          setTimeout(() => {
+            showNotification({
+              title: '¡Éxito!',
+              description: `Has actualizado ${series.titulo || series.title} en tu colección.`,
+              isChoice: false
+            });
+          }, 100);
         }
       } else {
         // Modo creación: insertar nuevo recurso
@@ -166,8 +179,16 @@ export default function SeriesForm() {
       if (checkError) throw checkError;
 
       if (resource) {
-        Alert.alert('Aviso', 'Ya tienes esta serie en tu colección.');
+        //Alert.alert('Aviso', 'Ya tienes esta serie en tu colección.');
+        refreshData();
         router.back();
+        setTimeout(() =>{
+          showNotification({
+            title: 'Aviso',
+              description: 'Ya tienes esta serie en tu colección.',
+              isChoice: false
+          });
+        }, 100);
         setLoading(false);
         return;
       }
@@ -188,12 +209,24 @@ export default function SeriesForm() {
       });
 
       if (inventoryError) {
-        Alert.alert('Error', 'Hubo un problema al guardar la serie. Inténtalo de nuevo.');
+        //Alert.alert('Error', 'Hubo un problema al guardar la serie. Inténtalo de nuevo.');
+        showNotification({
+          title: 'Error al guardar',
+          description: 'Hubo un problema al guardar la serie. Inténtalo de nuevo.',
+          isChoice: false
+        });
         console.error('Error al insertar:', inventoryError);
       } else {
-        Alert.alert('¡Éxito!', `Has añadido ${series.title} a tu colección.`);
+        //Alert.alert('¡Éxito!', `Has añadido ${series.title} a tu colección.`);
 		refreshData();
         router.back();
+        setTimeout(() => {
+          showNotification({
+            title: '¡Éxito!',
+              description: `Has añadido ${series.title} a tu colección.`,
+              isChoice: false
+          });
+        }, 100);
       }
       }
     } catch (error) {

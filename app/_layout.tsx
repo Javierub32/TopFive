@@ -7,6 +7,7 @@ import * as Font from 'expo-font';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeProvider } from 'context/ThemeContext';
 import { CollectionProvider } from 'context/CollectionContext';
+import { NotificationProvider } from 'context/NotificationContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -84,7 +85,9 @@ export default function RootLayout() {
     <AuthProvider>
       <ThemeProvider>
 		<CollectionProvider>
-          <InitialLayout />
+		  <NotificationProvider>
+            <InitialLayout />
+		  </NotificationProvider>
 		</CollectionProvider>
       </ThemeProvider>
     </AuthProvider>

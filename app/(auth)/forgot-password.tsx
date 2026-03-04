@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'context/ThemeContext';
+import { useNotification } from 'context/NotificationContext';
 
 // Frases aleatorias con iconos - fuera del componente para mejor rendimiento
 const frasesConIconos = [
@@ -19,8 +20,8 @@ export default function ForgotPasswordScreen() {
   const { requestReset } = useAuth();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  
   const { colors } = useTheme();
+  const { showNotification } = useNotification();
 
   // Seleccionar una frase aleatoria - se ejecuta cada vez que se renderiza el componente
   const fraseAleatoria = useState(() => 
@@ -31,9 +32,17 @@ export default function ForgotPasswordScreen() {
 	setLoading(true);
 	try {
 	  await requestReset(email);
-	  Alert.alert('Éxito', 'Recibirás un email con instrucciones para restablecer tu contraseña.');
+	  showNotification({
+		title: '¡Éxito!',
+		description: 'Recibirás un email con instrucciones para restablecer tu contraseña.',
+		isChoice: false
+	  });
 	} catch (error) {
-	  Alert.alert('Error', 'No se pudo enviar el correo de restablecimiento. \n Por favor, inténtalo de nuevo.');
+	  showNotification({
+		title: 'Error',
+		description: 'No se pudo enviar el correo de restablecimiento. Por favor, inténtalo de nuevo.',
+		isChoice: false
+	  });
 	} finally {
 	  setLoading(false);
 	}

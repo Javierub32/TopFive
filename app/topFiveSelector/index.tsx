@@ -9,6 +9,8 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { ResourceMap, ResourceType } from 'hooks/useResource';
 import { useEffect } from 'react';
 import { Alert, View } from 'react-native';
+import {useNotification} from "context/NotificationContext";
+import { hide } from 'expo-router/build/utils/splash';
 
 export default function TopFiveSelectorScreen() {
   const { data, loading, fetchTopFiveSelector, insertToTopFive } = useTopFiveSelector();
@@ -16,6 +18,7 @@ export default function TopFiveSelectorScreen() {
     resourceType: ResourceType;
     position: string;
   }>();
+    const { showNotification, hideNotification } = useNotification();
 
   const handleLoadMore = () => {
     if (resourceType) {
@@ -25,7 +28,26 @@ export default function TopFiveSelectorScreen() {
 
   const handleItemPress = async (item: ResourceMap[typeof resourceType]) => {
     if (resourceType && position) {
-      Alert.alert(
+      showNotification({
+        title: 'Confirmar selección',
+        description: `¿Deseas agregar ${item.contenido.titulo} a tu Top 5?`,
+        leftButtonText: 'Cancelar',
+        rightButtonText: 'Confirmar',
+        isChoice: true,
+        onLeftPress: () => hideNotification(),
+        onRightPress: async () => {
+          const posicion = parseInt(position);
+          await insertToTopFive(posicion, resourceType, item.id);
+          hideNotification();
+          router.replace('/Profile'); 
+          showNotification({
+            title: '¡Éxito!',
+            description: `${item.contenido.titulo} ha sido agregado a tu Top 5`,
+            isChoice: false
+          });
+        }
+      })
+      /*Alert.alert(
         'Confirmar selección',
         `¿Deseas agregar este item a tu Top 5?`,
         [
@@ -43,7 +65,7 @@ export default function TopFiveSelectorScreen() {
           },
         ],
         { cancelable: true }
-      );
+      );*/
     }
   };
 

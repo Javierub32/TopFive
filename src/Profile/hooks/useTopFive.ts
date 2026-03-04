@@ -5,10 +5,12 @@ import { ResourceType } from 'hooks/useResource';
 import { router } from 'expo-router';
 import { useCollection } from 'context/CollectionContext';
 import { Alert } from 'react-native';
+import { useNotification } from 'context/NotificationContext';
 
 export const useTopFive = (userId: string) => {
   const { user } = useAuth();
   const { handleItemPress } = useCollection();
+  const {showNotification, hideNotification} = useNotification();
   const [topFiveItems, setTopFiveItems] = useState<TopFiveItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -45,7 +47,29 @@ export const useTopFive = (userId: string) => {
 
   const handleLongPress = (position: number, item: TopFiveItem | undefined) => {
 	if (item) {
-		Alert.alert(
+    showNotification({
+      title: 'Eliminar de Top 5',
+      description: '¿Deseas eliminar este item de tu Top 5?',
+      leftButtonText: 'Cancelar',
+      rightButtonText: 'Eliminar',
+      isChoice: true,
+      onLeftPress: () => hideNotification(),
+      onRightPress: async () => {
+        try {          
+          await topFiveService.removeFromTopFive(userId, position);
+          fetchTopFive();
+          hideNotification();
+          showNotification({
+            title: '¡Éxito!',
+            description: `El item ha sido eliminado de tu Top 5`,
+            isChoice: false
+          });
+        } catch (error) {
+          console.error('Error al eliminar item del Top 5:', error);
+        }
+	    }
+    });
+		/*Alert.alert(
 			'Eliminar de Top 5',
 			'¿Deseas eliminar este item de tu Top 5?',
 			[
@@ -64,7 +88,7 @@ export const useTopFive = (userId: string) => {
 				},
 			],
 			{ cancelable: true }
-		);
+		);*/
 	}
   }
 

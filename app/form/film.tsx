@@ -18,6 +18,8 @@ import { StateSetter } from "@/Form/components/StateSetter";
 import { RatingSetter } from "@/Form/components/RatingSetter";
 import { DateSetter } from "@/Form/components/DateSetter";
 import { ViewsSetter } from "@/Form/components/ViewsSetter";
+import { NotificationModal } from 'components/NotificationModal';
+import { useNotification } from 'context/NotificationContext';
 
 interface Film {
   id: number;
@@ -50,6 +52,8 @@ export default function FilmForm() {
 
   const [loading, setLoading] = useState(false);
 
+  const { showNotification} = useNotification();
+
   const handleSubmit = async () => {
     setLoading(true);
     try {
@@ -77,7 +81,12 @@ export default function FilmForm() {
           .single();
 
         if (updateError) {
-          Alert.alert('Error', 'Hubo un problema al actualizar la película. Inténtalo de nuevo.');
+          showNotification({
+            title: 'Error al actualizar',
+            description: 'Hubo un problema al actualizar la película. Inténtalo de nuevo.',
+            isChoice: false
+          });
+          //Alert.alert('Error', 'Hubo un problema al actualizar la película. Inténtalo de nuevo.');
           console.error('Error al actualizar:', updateError);
         } else {
 		  // Adaptamos la respuesta para mantener compatibilidad
@@ -89,7 +98,7 @@ export default function FilmForm() {
             contenido: contentData,
           };
 
-          Alert.alert('¡Éxito!', `Has actualizado ${film.titulo || film.title} en tu colección.`);
+          //Alert.alert('¡Éxito!', `Has actualizado ${film.titulo || film.title} en tu colección.`);
 		  refreshData();
           router.replace({
             pathname: '/details/film/filmResource',
@@ -97,6 +106,13 @@ export default function FilmForm() {
               item: JSON.stringify(filmResource)
             }
           });
+          setTimeout(() => {
+            showNotification({
+              title: '¡Éxito!',
+              description: `Has actualizado ${film.titulo || film.title} en tu colección.`,
+              isChoice: false
+            });
+          }, 100);
         }
       } else {
       // Insertar nuevo recurso
@@ -145,8 +161,16 @@ export default function FilmForm() {
       }
 
       if (existingResource) {
-        Alert.alert("Aviso", "Ya tienes esta película en tu colección.");
-		router.back();
+        //Alert.alert("Aviso", "Ya tienes esta película en tu colección.");
+        refreshData();
+        router.back();
+        setTimeout(() =>{
+          showNotification({
+            title: 'Aviso',
+              description: 'Ya tienes esta película en tu colección.',
+              isChoice: false
+          });
+        }, 100);
         setLoading(false);
         return;
       }
@@ -166,12 +190,24 @@ export default function FilmForm() {
         });
 
       if (inventoryError) {
-        Alert.alert("Error", "Hubo un problema al guardar la película. Inténtalo de nuevo.");
+        //Alert.alert("Error", "Hubo un problema al guardar la película. Inténtalo de nuevo.");
+        showNotification({
+          title: 'Error al guardar',
+            description: 'Hubo un problema al guardar la película. Inténtalo de nuevo.',
+            isChoice: false
+        });
         console.error('Error al insertar:', inventoryError);
       } else {
-        Alert.alert("¡Éxito!", `Has añadido a ${film.title} a tu colección.`);
+        //Alert.alert("¡Éxito!", `Has añadido a ${film.title} a tu colección.`);
     	refreshData();
         router.back();
+        setTimeout(() => {
+          showNotification({
+            title: '¡Éxito!',
+              description: `Has añadido ${film.title} a tu colección.`,
+              isChoice: false
+          });
+        }, 100);
       }
       }
     } catch (error) {
@@ -179,10 +215,6 @@ export default function FilmForm() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleBack = () => {
-    router.back();
   };
 
   if (!film) {
@@ -244,6 +276,7 @@ export default function FilmForm() {
               {loading ? 'Guardando...' : 'Guardar'}
             </Text>
           </TouchableOpacity>
+        
       </ScrollView>
     </Screen>
   );

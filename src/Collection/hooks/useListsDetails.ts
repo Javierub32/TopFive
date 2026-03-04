@@ -93,24 +93,10 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
 		}
 	}
 
-	const handleDeleteItem = async (itemId: string, type: CollectionType) => {
-		Alert.alert('Eliminar de la lista', '¿Estás seguro de que quieres eliminar este ítem de la lista?', [
-			{ text: 'Cancelar', style: 'cancel' },
-			{ 
-				text: 'Confirmar', 
-				onPress: async () => {
-					await deleteItemFromList(itemId, type);
-					await resetListDetails();
-				}
-			}
-		]);
-	}
-
 	return {
 		loading,
 		data,
 		handleLoadMore,
         hasMore,
-		handleDeleteItem,
 	};
 };

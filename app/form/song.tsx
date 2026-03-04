@@ -17,6 +17,7 @@ import { ReviewSetter } from "@/Form/components/ReviewSetter";
 import { StateSetter } from "@/Form/components/StateSetter";
 import { RatingSetter } from "@/Form/components/RatingSetter";
 import { DateSetter } from "@/Form/components/DateSetter";
+import { useNotification } from 'context/NotificationContext';
 
 interface Song {
   id: number | null;
@@ -52,6 +53,8 @@ export default function SongForm() {
 
   const [loading, setLoading] = useState(false);
 
+  const { showNotification } = useNotification();
+
   const handleSubmit = async () => {
     setLoading(true);
     try {
@@ -78,7 +81,12 @@ export default function SongForm() {
           .single();
 
         if (updateError) {
-          Alert.alert('Error', 'Hubo un problema al actualizar la canción. Inténtalo de nuevo.');
+          //Alert.alert('Error', 'Hubo un problema al actualizar la canción. Inténtalo de nuevo.');
+          showNotification({
+            title: 'Error al actualizar',
+            description: 'Hubo un problema al actualizar la canción. Inténtalo de nuevo.',
+            isChoice: false
+          })
           console.error('Error al actualizar:', updateError);
         } else {
 		  // Adaptamos la respuesta para mantener compatibilidad
@@ -90,7 +98,7 @@ export default function SongForm() {
 			contenido: contentData,
 		  };
 
-          Alert.alert('¡Éxito!', `Has actualizado ${song.titulo || song.title} en tu colección.`);
+          //Alert.alert('¡Éxito!', `Has actualizado ${song.titulo || song.title} en tu colección.`);
 		  refreshData();
           router.replace({
             pathname: '/details/song/songResource',
@@ -98,6 +106,13 @@ export default function SongForm() {
               item: JSON.stringify(songResource)
             }
           });
+          setTimeout(() => {
+            showNotification({
+              title: '¡Éxito!',
+              description: `Has actualizado ${song.titulo || song.title} en tu colección.`,
+              isChoice: false
+            });
+          }, 100);
         }
       } else {
         // Modo creación: insertar nuevo recurso
@@ -153,8 +168,16 @@ export default function SongForm() {
       }
 
       if (resource) {
-        Alert.alert('Aviso', 'Ya tienes esta canción en tu colección.');
+        //Alert.alert('Aviso', 'Ya tienes esta canción en tu colección.');
+        refreshData();
         router.back();
+         setTimeout(() =>{
+          showNotification({
+            title: 'Aviso',
+              description: 'Ya tienes esta canción en tu colección.',
+              isChoice: false
+          });
+        }, 100);
         setLoading(false);
         return;
       }
@@ -172,12 +195,24 @@ export default function SongForm() {
       });
 
       if (inventoryError) {
-        Alert.alert('Error', 'Hubo un problema al guardar la canción. Inténtalo de nuevo.');
+        //Alert.alert('Error', 'Hubo un problema al guardar la canción. Inténtalo de nuevo.');
+        showNotification({
+          title: 'Error al guardar',
+          description: 'Hubo un problema al guardar la canción. Inténtalo de nuevo.',
+          isChoice: false
+        });
         console.error('Error al insertar:', inventoryError);
       } else {
-        Alert.alert('¡Éxito!', `Has añadido ${song.title} a tu colección.`);
-		refreshData();
+        //Alert.alert('¡Éxito!', `Has añadido ${song.title} a tu colección.`);
+        refreshData();
         router.back();
+        setTimeout(() => {
+          showNotification({
+            title: '¡Éxito!',
+              description: `Has añadido ${song.title} a tu colección.`,
+              isChoice: false
+          });
+        }, 100);
       }
       }
     } catch (error) {

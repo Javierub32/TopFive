@@ -7,9 +7,8 @@ import { FontAwesome5 } from '@expo/vector-icons/';
 import { useProfile } from 'src/Profile/hooks/useProfile';
 import { useTheme } from "context/ThemeContext";
 import { router, useLocalSearchParams } from "expo-router";
-import { FeedbackFormButton } from "@/Settings/components/FeedbackFormButton";
 import { useAuth } from "context/AuthContext";
-
+import {useNotification} from "context/NotificationContext";
 export default function SettingsScreen() {
     const {
     signOut,
@@ -18,42 +17,72 @@ export default function SettingsScreen() {
 
   const { colors, toggleTheme} = useTheme();
   const { username , description } = useLocalSearchParams();
-
+  const { showNotification, hideNotification } = useNotification();
+const handleCloseSession = async () => {
+    showNotification({
+            title: 'Confirmar cierre de sesión',
+            description: '¿Estás seguro de que deseas cerrar sesión?',
+            leftButtonText: 'Cancelar',
+            rightButtonText: 'Cerrar sesión',
+            isChoice: true,
+            onLeftPress: () => hideNotification(),
+            onRightPress: async () => {
+                try {
+                    await signOut();
+                    showNotification({
+                        title: 'Sesión cerrada',
+                        description: 'Has cerrado sesión exitosamente.',
+                        isChoice: false
+                    });
+                } catch (error) {
+                    console.error('Error al cerrar sesión:', error);
+                    showNotification({
+                        title: 'Error',
+                        description: 'Hubo un problema al cerrar sesión. Intenta de nuevo más tarde.',
+                        isChoice: false
+                    });
+                }
+            }
+        });
+}
 const handleDeleteAccount = async () => {
-	const confirmed = await new Promise((resolve) => {
-		Alert.alert(
-			'Confirmar eliminación',
-			'¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.',
-			[
-				{ text: 'Cancelar', style: 'cancel', onPress: () => resolve(false) },
-				{ text: 'Eliminar', style: 'destructive', onPress: () => resolve(true) },
-			],
-			{ cancelable: true }
-		);
-	});
-
-	const doubleConfirmed = await new Promise((resolve) => {
-		if (!confirmed) return resolve(false);
-		Alert.alert(
-			'Última confirmación',
-			'Esta es tu última oportunidad para cancelar. ¿Realmente deseas eliminar tu cuenta?',
-			[
-				{ text: 'Eliminar', style: 'destructive', onPress: () => resolve(true) },
-				{ text: 'Cancelar', style: 'cancel', onPress: () => resolve(false) },
-			],
-			{ cancelable: true }
-		);
-	});
-
-	if (doubleConfirmed) {
-		try {
-			await deleteAccount();
-			Alert.alert('Cuenta eliminada', 'Tu cuenta ha sido eliminada exitosamente.');
-		} catch (error) {
-			console.error('Error al eliminar cuenta:', error);
-			Alert.alert('Error', 'Hubo un problema al eliminar tu cuenta. Intenta de nuevo más tarde.');
-		}
-	} 
+    showNotification({
+            title: 'Confirmar eliminación',
+            description: '¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.',
+            leftButtonText: 'Cancelar',
+            rightButtonText: 'Eliminar',
+            highlightRight: true,
+            isChoice: true,
+            onLeftPress: () => hideNotification(),
+            onRightPress: async () => {
+                showNotification({
+                    title: 'Última confirmación',
+                    description: 'Esta es tu última oportunidad para cancelar. ¿Realmente deseas eliminar tu cuenta?',
+                    leftButtonText: 'Eliminar',
+                    rightButtonText: 'Cancelar',
+                    highlightRight: false,
+                    isChoice: true,
+                    onLeftPress: async () => {
+                        try {                            
+                            await deleteAccount();
+                            showNotification({
+                                title: 'Cuenta eliminada',
+                                description: 'Tu cuenta ha sido eliminada exitosamente.',
+                                isChoice: false
+                            });
+                        } catch (error) {
+                            console.error('Error al eliminar cuenta:', error);
+                            showNotification({
+                                title: 'Error',
+                                description: 'Hubo un problema al eliminar tu cuenta. Intenta de nuevo más tarde.',
+                                isChoice: false
+                            });
+                        }            
+                    },
+                    onRightPress: () => hideNotification()
+                });
+            }
+        });
 }
 
     return (
@@ -102,7 +131,7 @@ const handleDeleteAccount = async () => {
                                 <TouchableOpacity
                                     className="w-full flex-row gap-4 justify-between items-center p-2 pb-4"
                                     activeOpacity={0.4}
-                                    onPress={signOut}>
+                                    onPress={handleCloseSession}>
                                     <View className="flex-row items-center justify-start gap-2">
                                         <Ionicons name="log-out-outline" size={24} color={colors.primaryText} />
                                         <Text className="text-lg" style={{color: colors.primaryText}}>Cerrar sesión</Text>

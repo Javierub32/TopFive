@@ -5,10 +5,12 @@ import { useRouter, Link } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'context/ThemeContext';
+import { useNotification } from 'context/NotificationContext';
 
 export default function Register() {
   const { signUp } = useAuth();
   const router = useRouter();
+  const {showNotification} = useNotification();
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -23,14 +25,30 @@ export default function Register() {
     setLoading(true);
     try {
       if (password !== confirmPassword) {
-        Alert.alert('Error', 'Las contraseñas no coinciden. \n Por favor, inténtalo de nuevo.');
+        //Alert.alert('Error', 'Las contraseñas no coinciden. \n Por favor, inténtalo de nuevo.');
+        showNotification({
+          title: 'Error',
+          description: 'Las contraseñas no coinciden. Por favor, inténtalo de nuevo.',
+          isChoice: false
+        });
         setLoading(false);
         return;
       }
       await signUp(email, password, username);
-	  Alert.alert('Éxito', 'Tu cuenta ha sido creada. \nRevisa la bandeja de spam y confirma tu correo para iniciar sesión.');
-    } catch (error: any) {
-	  Alert.alert('Error', error.message || 'Hubo un error al crear tu cuenta.');
+	  //Alert.alert('Éxito', 'Tu cuenta ha sido creada. \nRevisa la bandeja de spam y confirma tu correo para iniciar sesión.');
+      showNotification({
+        title: 'Éxito',
+        description: 'Tu cuenta ha sido creada. \nRevisa la bandeja de spam y confirma tu correo para iniciar sesión.',
+        isChoice: false
+      });
+    
+  } catch (error: any) {
+	  //Alert.alert('Error', error.message || 'Hubo un error al crear tu cuenta.');
+      showNotification({
+        title: 'Error',
+        description: error.message || 'Hubo un error al crear tu cuenta.',
+        isChoice: false
+      });
     } finally {
       setLoading(false);
     }
