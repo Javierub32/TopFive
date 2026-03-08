@@ -5,7 +5,7 @@ import { useTheme } from 'context/ThemeContext';;
 import { useActivity } from '@/Home/hooks/useActivity';
 import ActivityItem from '@/Home/components/RenderResource';
 import { LoadingIndicator } from 'components/LoadingIndicator';
-import { SearchIcon, SearchIcon2, SocialBubblesIcon } from 'components/Icons';
+import { SearchIcon2, SocialBubblesIcon } from 'components/Icons';
 import { NotificationButton } from '@/Notifications/components/NotificationButton';
 
 

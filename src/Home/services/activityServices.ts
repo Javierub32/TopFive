@@ -32,10 +32,10 @@ export const activityService = {
 		estado,
 		titulo,
 		imagen_url,
-		autor_principal,
     	username,
     	avatar_url,
-		usuarioId  
+		usuarioId,
+		idapi
 		`
       )
       .in('usuarioId', friendIds) // Solo actividades de amigos

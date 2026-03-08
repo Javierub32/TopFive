@@ -1,11 +1,12 @@
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from 'context/ThemeContext';
 import React from 'react';
-import { View, Text, Image, Pressable, ImageBackground } from 'react-native';
+import { View, Text, Image, Pressable, ImageBackground, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Activity } from '../hooks/useActivity';
 import { BookIcon, FilmIcon, GameIcon, MusicIcon, RatingStarIcon, ShowIcon, UserIcon } from 'components/Icons';
 import { router } from 'expo-router';
+import { ResourceType } from 'hooks/useResource';
 
 
 
@@ -27,15 +28,27 @@ export default function ActivityItem({ item }: { item: Activity }) {
     return then.toLocaleDateString(); // Si es más de una semana, mostrar fecha completa
   };
 
-  const categoryMap: Record<string, {color: any, icon: any}> = {
-    LIBRO: {color: colors.ground1, icon: BookIcon},
-    PELICULA: {color: colors.ground2, icon: FilmIcon},
-    SERIE: {color: colors.ground3, icon: ShowIcon},
-    VIDEOJUEGO: {color: colors.ground4, icon: GameIcon},
-    CANCION: {color: colors.ground5, icon: MusicIcon}
+  const categoryMap: Record<string, {color: any, icon: any, resourceType: ResourceType}> = {
+    LIBRO: {color: colors.ground1, icon: BookIcon, resourceType: 'libro'},
+    PELICULA: {color: colors.ground2, icon: FilmIcon, resourceType: 'pelicula'},
+    SERIE: {color: colors.ground3, icon: ShowIcon, resourceType: 'serie'},
+    VIDEOJUEGO: {color: colors.ground4, icon: GameIcon, resourceType: 'videojuego'},
+    CANCION: {color: colors.ground5, icon: MusicIcon, resourceType: 'cancion'}
   };
 
   const rating = item.calificacion || 0;
+
+  const typeMap: Record<ResourceType, string> = { 
+    libro: 'book', 
+    pelicula: 'film', 
+    serie: 'series', 
+    videojuego: 'game', 
+    cancion: 'song' 
+  };
+
+  const type = typeMap[categoryMap[item.tipo_contenido].resourceType];
+    
+
 
   return (
     <View className=" rounded-2xl shadow-xl mb-4 overflow-hidden" style={{ borderWidth: 0, borderColor: colors.borderButton }}>
@@ -65,13 +78,18 @@ export default function ActivityItem({ item }: { item: Activity }) {
             {/* Contenido del recurso */}
             <View className="flex-row gap-4">
               {/* Poster con Badge de Año */}
-              <View className="relative items-center justify-center">
+              <TouchableOpacity className="relative items-center justify-center" onPress={() => {
+				router.push({
+				pathname: `/details/${type}/${type}Content`,
+				params: { from: 'home', id: item.idapi },
+				});
+              }}>
                 <Image
                   source={{ uri: item.imagen_url || 'https://via.placeholder.com/150' }}
                   className="w-24 h-36 rounded-xl"
                   style={{ borderWidth: 0, borderColor: colors.borderButton }}
                 />
-              </View>
+              </TouchableOpacity>
 
               {/* Detalles del Recurso */}
               <View className="flex-col flex-1">

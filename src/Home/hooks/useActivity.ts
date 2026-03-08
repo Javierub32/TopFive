@@ -12,10 +12,10 @@ export interface Activity {
 	estado: string;
 	titulo: string;
 	imagen_url: string | null;
-	autor_principal: string | null;
 	usuarioId: string;
 	username: string;
 	avatar_url: string | null;
+	idapi?: string | number;
 
 }
 
