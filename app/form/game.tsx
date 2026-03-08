@@ -82,15 +82,6 @@ export default function GameForm() {
             fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
           })
           .eq('id', resource.id)
-          .select(`
-            *,
-            contenidovideojuego:idContenido (
-              titulo,
-              imagenUrl,
-              fechaLanzamiento              
-            )
-          `)
-          .single();
 
         if (updateError) {
           //Alert.alert('Error', 'Hubo un problema al actualizar el videojuego. Inténtalo de nuevo.');
@@ -151,12 +142,6 @@ export default function GameForm() {
             idApi: game.id,
             imagenUrl: game.imageFull || game.image,
             fechaLanzamiento: game.releaseDate,
-            descripcion: game.description,
-            calificacion: game.rating,
-            autor: game.autor,
-            genero: game.genre,
-            plataformas: game.platforms,
-            modosJuego: game.gamemodes,
           })
           .select('id')
           .single();

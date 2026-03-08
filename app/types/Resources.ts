@@ -13,11 +13,10 @@ export interface FilmResource {
   numVisionados: number;
   fechacreacion: string;
   contenido: {
+	apiId: number;
     titulo: string;
     imagenUrl: string;
     fechaLanzamiento: string;
-    descripcion?: string;
-    calificacion?: number;
   };
 }
 
@@ -35,13 +34,10 @@ export interface BookResource {
   fechaFin: string | null;
   fechacreacion: string;
   contenido: {
+	apiId: string;
     titulo: string;
     imagenUrl: string;
     fechaLanzamiento: string;
-    descripcion?: string;
-    calificacion?: number;
-    autor?: string;
-    genero?: string[];
   };
 }
 
@@ -60,15 +56,10 @@ export interface GameResource {
   fechaFin: string | null;
   fechacreacion: string;
   contenido: {
+	apiId: string;
     titulo: string;
     imagenUrl: string;
     fechaLanzamiento: string;
-    descripcion?: string;
-    calificacion?: number;
-    autor?: string;
-    genero?: string[];
-    plataformas?: string[];
-    modosJuego?: string[];
   };
 }
 
@@ -85,13 +76,10 @@ export interface SongResource {
   albumId: number | null;
   fechacreacion: string;
   contenido: {
+	apiId: number;
     titulo: string;
     imagenUrl: string;
     fechaLanzamiento: string;
-    autor?: string;
-    genero?: string[];
-    albumTitulo?: string;
-    referencia?: string;
   };
 }
 
@@ -111,12 +99,9 @@ export interface SeriesResource {
   fechaFin: string | null;
   fechacreacion: string;
   contenido: {
+	apiId: string;
     titulo: string;
     imagenUrl: string;
     fechaLanzamiento: string;
-    fechaFin?: string;
-    descripcion?: string;
-    calificacion?: number;
-    genero?: string[];
   };
 }

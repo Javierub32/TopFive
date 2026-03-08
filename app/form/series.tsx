@@ -86,16 +86,6 @@ export default function SeriesForm() {
             fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
           })
           .eq('id', resource.id)
-          .select(`
-            *,
-            contenidoserie:idContenido (
-              titulo,
-              imagenUrl,
-              fechaLanzamiento,
-              fechaFin            
-            )
-          `)
-          .single();
 
         if (updateError) {
           //Alert.alert('Error', 'Hubo un problema al actualizar la serie. Inténtalo de nuevo.');
@@ -156,10 +146,6 @@ export default function SeriesForm() {
             idApi: series.id,
             imagenUrl: series.imageFull || series.image,
             fechaLanzamiento: series.releaseDate,
-            fechaFin: series.ended,
-            descripcion: series.description,
-            calificacion: series.rating,
-            genero: series.genre,
           })
           .select('id')
           .single();

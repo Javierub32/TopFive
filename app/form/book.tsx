@@ -44,7 +44,8 @@ export default function BookForm() {
   // Si es item, se edita, si no, es nuevo
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
-  const book: any = editando ? resource.contenido : JSON.parse(bookData as string);
+  const book: Book = editando ? resource.contenido : JSON.parse(bookData as string);
+  console.log('Recurso a editar:', book);
 
 
   const [reseña, setReseña] = useState(resource?.reseña || '');
@@ -84,19 +85,6 @@ export default function BookForm() {
             fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
           })
           .eq('id', resource.id)
-          .select(`
-            *,
-            contenidolibro:idContenido (
-              titulo,
-              imagenUrl,
-              fechaLanzamiento,
-              descripcion,
-              calificacion,
-              autor,
-              genero
-            )
-          `)
-          .single();
 
         if (updateError) {
           showNotification({
@@ -113,8 +101,8 @@ export default function BookForm() {
 		  const bookResource: BookResource = {
 			...rawData,
 			contenido: contentData,
-		  };
-		  //refreshData();
+		};
+		  refreshData();
           router.replace({
             pathname: '/details/book/bookResource',
             params: { 
@@ -125,7 +113,7 @@ export default function BookForm() {
           setTimeout(() => {
             showNotification({
               title: '¡Éxito!',
-              description: `Has actualizado ${book.titulo || book.title} en tu colección.`,
+              description: `Has actualizado ${book.title || "este libro"} en tu colección.`,
               isChoice: false
             });
           }, 100);
@@ -155,14 +143,8 @@ export default function BookForm() {
             .insert({
               titulo: book.title,
               idApi: book.id,
-              imagenUrl: book.imageFull,
+              imagenUrl: book.imageFull || book.image,
               fechaLanzamiento: book.releaseDate,
-              descripcion: book.description,
-              calificacion: book.rating,
-              autor: book.autor,
-              genero: book.genre || null,
-              idAutor: book.autorId,
-              referencia: book.reference,
             })
             .select('id')
             .single();
@@ -263,13 +245,13 @@ export default function BookForm() {
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
           <View className="flex-1 flex-row items-center">
-            <ReturnButton route="back" title={book.titulo || book.title} style={' '}/>
+            <ReturnButton route="back" title={book.title || "Detalle del libro"} style={' '}/>
           </View>
           <FavoriteSetter favorite={favorito} setFavorite={setFavorito}/>
         </View>
 
         <View className="flex-row justify-between gap-2 px-4 mb-4 items-stretch">
-          <Image source={{uri: book.imagenUrl || book.imageFull || 'https://via.placeholder.com/100x150'}}
+          <Image source={{uri: book.imageFull || book.image || 'https://via.placeholder.com/100x150'}}
           className="aspect-[2/3] h-32 rounded-lg" style={{backgroundColor: colors.surfaceButton}} resizeMode="cover"/>
           <ReviewSetter review={reseña} setReview={setReseña}/>
         </View>

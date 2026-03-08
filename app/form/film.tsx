@@ -70,15 +70,6 @@ export default function FilmForm() {
             numVisionados: numVisionados,
           })
           .eq('id', resource.id)
-          .select(`
-            *,
-            contenidopelicula:idContenido (
-              titulo,
-              imagenUrl,
-              fechaLanzamiento
-            )
-          `)
-          .single();
 
         if (updateError) {
           showNotification({
@@ -86,7 +77,6 @@ export default function FilmForm() {
             description: 'Hubo un problema al actualizar la película. Inténtalo de nuevo.',
             isChoice: false
           });
-          //Alert.alert('Error', 'Hubo un problema al actualizar la película. Inténtalo de nuevo.');
           console.error('Error al actualizar:', updateError);
         } else {
 		  // Adaptamos la respuesta para mantener compatibilidad
@@ -98,7 +88,6 @@ export default function FilmForm() {
             contenido: contentData,
           };
 
-          //Alert.alert('¡Éxito!', `Has actualizado ${film.titulo || film.title} en tu colección.`);
 		  refreshData();
           router.replace({
             pathname: '/details/film/filmResource',
@@ -140,8 +129,6 @@ export default function FilmForm() {
 			idApi: film.id,
 			imagenUrl: film.image,
 			fechaLanzamiento: film.releaseDate,
-			descripcion: film.description,
-			calificacion: film.rating,
 		  }).select('id').single();
 
 		if (insertError)	throw insertError;

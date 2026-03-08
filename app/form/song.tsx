@@ -70,15 +70,6 @@ export default function SongForm() {
             fechaEscucha: fechaEscuchado ? fechaEscuchado.toISOString().split('T')[0] : null,
           })
           .eq('id', resource.id)
-          .select(`
-            *,
-            contenidocancion:idContenido (
-              titulo,
-              imagenUrl,
-              fechaLanzamiento
-            )
-          `)
-          .single();
 
         if (updateError) {
           //Alert.alert('Error', 'Hubo un problema al actualizar la canción. Inténtalo de nuevo.');
@@ -138,14 +129,8 @@ export default function SongForm() {
           .insert({
             titulo: song.title,
             idApi: song.id,
-            imagenUrl: song.imageFull,
+            imagenUrl: song.imageFull || song.image,
             fechaLanzamiento: song.releaseDate,
-            autor: song.autor,
-            genero: song.genre,
-            albumTitulo: song.album,
-            albumId: song.albumId,
-            autorId: song.autorId,
-            referencia: song.reference,
             
           })
           .select('id')
