@@ -12,30 +12,29 @@ import { DescriptionCard } from "@/Details/components/DescriptionCard";
 import { ContentTags } from "@/Details/components/ContentTags";
 import { ContentDateCard } from "@/Details/components/ContentDateCard";
 import { AddToCollectionButton } from "@/Details/components/AddToCollectionButton";
+import { useContent } from '@/Details/hooks/useContent';
+import { LoadingIndicator } from 'components/LoadingIndicator';
 
 export default function FilmDetail() {
-  const { filmData } = useLocalSearchParams();
-  const router = useRouter();
-  const film: Film = JSON.parse(filmData as string);
+  const { id } = useLocalSearchParams();
+  const { content, loading } = useContent(id as string | number, 'pelicula');
+  const film: Film = content as Film;
   const { colors } = useTheme();
   
 
-  const openForm = (film: Film) => {
-    router.push({
-      pathname: '/form/film',
-      params: { filmData: JSON.stringify(film) },
-    });
-  };
-
-  const ratingValue = (rating: Float) => {
-    if (!rating) return null;
-    return (rating/2).toFixed(1);
+  if (loading) {
+	return (
+	  <Screen>
+		<LoadingIndicator />
+	  </Screen>
+	);
   }
 
-  if (!film) {
+  if (!film && !loading) {
     return (
       <Screen>
         <ThemedStatusBar/>
+		<ReturnButton route="/Add?initialCategory=pelicula" title="Detalle de la película" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <Text className="text-xl font-bold mt-4" style={{color: colors.primaryText}}>Error al cargar</Text>
@@ -44,8 +43,6 @@ export default function FilmDetail() {
       </Screen>
     );
   }
-
-  const releaseYear = film.releaseDate ? new Date(film.releaseDate).getFullYear() : 'N/A';
 
   return (
     <Screen>

@@ -13,24 +13,29 @@ import { AuthorCard } from "@/Details/components/AuthorCard";
 import { ContentDateCard } from "@/Details/components/ContentDateCard";
 import { AddToCollectionButton } from "@/Details/components/AddToCollectionButton";
 import { ExtraCard } from "@/Details/components/ExtraCard";
+import { LoadingIndicator } from 'components/LoadingIndicator';
+import { useContent } from '@/Details/hooks/useContent';
 
 export default function SongDetail() {
-  const { songData } = useLocalSearchParams();
-  const router = useRouter();
-  const song: Song = JSON.parse(songData as string);
+  const { id } = useLocalSearchParams();
+  const { content, loading } = useContent(id as string | number, 'cancion');
+  const song: Song = content as Song;
   const { colors } = useTheme();
+  
 
-  const openForm = (song: Song) => {
-	router.push({
-	  pathname: '/form/song',
-	  params: { songData: JSON.stringify(song) }
-	});
+  if (loading) {
+	return (
+	  <Screen>
+		<LoadingIndicator />
+	  </Screen>
+	);
   }
 
-  if (!song) {
+  if (!song && !loading) {
     return (
       <Screen>
         <StatusBar style="light" />
+		<ReturnButton route="/Add?initialCategory=cancion" title="Detalle de la canción" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
           <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>
@@ -40,7 +45,6 @@ export default function SongDetail() {
     );
   }
 
-  const releaseYear = song.releaseDate ? new Date(song.releaseDate).getFullYear() : 'N/A';
 
   return (
     <Screen>
@@ -48,9 +52,8 @@ export default function SongDetail() {
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View>
-          <ReturnButton route="/Add?initialCategory=cancion" title="Detalle de la canción" style={' '} />
+          <ReturnButton route="/Add?initialCategory=cancion" title="Detalle de la canción" />
         </View>
-		    
 
         <View className="px-4 mb-4">
           <Image 

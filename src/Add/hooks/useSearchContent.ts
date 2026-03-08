@@ -10,7 +10,6 @@ export const useSearchContent = () => {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [loading, setLoading] = useState(false);
   const [resultados, setResultados] = useState<SearchResult[]>([]);
-  const [datosOriginales, setDatosOriginales] = useState<any[]>([]);
 
   const params = useLocalSearchParams<{ initialCategory?: string }>();
 
@@ -29,8 +28,7 @@ export const useSearchContent = () => {
     setMenuAbierto(false);
 
     try {
-      const data = await searchContentService.fetchResources(busqueda, recursoBusqueda);
-      setDatosOriginales(data);
+      const data = await searchContentService.fetchContent(busqueda, recursoBusqueda);
 
       if (Array.isArray(data)) {
         const mapped = data.map(item => searchAdapter[recursoBusqueda](item));
@@ -51,20 +49,12 @@ export const useSearchContent = () => {
       videojuego: 'game', 
       cancion: 'song' 
     };
-    const paramMap: Record<ResourceType, string> = { 
-      libro: 'bookData', 
-      pelicula: 'filmData', 
-      serie: 'seriesData', 
-      videojuego: 'gameData', 
-      cancion: 'songData' 
-    };
 
     const type = typeMap[recursoBusqueda];
-    const itemOriginal = datosOriginales[index];
     
     router.push({
       pathname: `/details/${type}/${type}Content`,
-      params: { [paramMap[recursoBusqueda]]: JSON.stringify(itemOriginal) },
+      params: { id: resultados[index].id},
     });
   };
 

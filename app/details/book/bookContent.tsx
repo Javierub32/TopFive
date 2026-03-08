@@ -11,13 +11,24 @@ import { AuthorCard } from "@/Details/components/AuthorCard";
 import { ContentDateCard } from "@/Details/components/ContentDateCard";
 import { DescriptionCard } from "@/Details/components/DescriptionCard";
 import { AddToCollectionButton } from "@/Details/components/AddToCollectionButton";
+import { useContent } from '@/Details/hooks/useContent';
+import { LoadingIndicator } from 'components/LoadingIndicator';
 
 export default function BookDetail() {
-  const { bookData } = useLocalSearchParams();
-  const book: Book = JSON.parse(bookData as string);
+  const { id } = useLocalSearchParams();
+  const { content, loading } = useContent(id as string | number, 'libro');
+  const book: Book = content as Book;
   const { colors } = useTheme();
 
-  if (!book) {
+  if (loading) {
+	return (
+	  <Screen>
+		<LoadingIndicator />
+	  </Screen>
+	);
+  }
+
+  if (!content && !loading) {
     return (
       <Screen>
         <ThemedStatusBar/>

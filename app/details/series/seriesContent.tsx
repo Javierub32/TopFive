@@ -12,16 +12,29 @@ import { DescriptionCard } from "@/Details/components/DescriptionCard";
 import { AddToCollectionButton } from "@/Details/components/AddToCollectionButton";
 import { ContentDateCard } from "@/Details/components/ContentDateCard";
 import { ThemedStatusBar } from "components/ThemedStatusBar";
+import { useContent } from '@/Details/hooks/useContent';
+import { LoadingIndicator } from 'components/LoadingIndicator';
 
 export default function SeriesDetail() {
-  const { seriesData } = useLocalSearchParams();
-  const series: Series = JSON.parse(seriesData as string);
+  const { id } = useLocalSearchParams();
+  const { content, loading } = useContent(id as string | number, 'serie');
+  const series: Series = content as Series;
   const { colors } = useTheme();
+  
 
-  if (!series) {
+  if (loading) {
+	return (
+	  <Screen>
+		<LoadingIndicator />
+	  </Screen>
+	);
+  }
+
+  if (!series && !loading) {
     return (
       <Screen>
         <StatusBar style="light" />
+		<ReturnButton route="/Add?initialCategory=serie" title="Detalle de la serie" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
           <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>

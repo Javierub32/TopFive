@@ -15,17 +15,29 @@ import { ContentDateCard } from "@/Details/components/ContentDateCard";
 import { DescriptionCard } from "@/Details/components/DescriptionCard";
 import { AddToCollectionButton } from "@/Details/components/AddToCollectionButton";
 import { ExtraCard } from "@/Details/components/ExtraCard";
+import { LoadingIndicator } from 'components/LoadingIndicator';
+import { useContent } from '@/Details/hooks/useContent';
 
 export default function GameDetail() {
-  const { gameData } = useLocalSearchParams();
-  const game: Game = JSON.parse(gameData as string);
+  const { id } = useLocalSearchParams();
+  const { content, loading } = useContent(id as string | number, 'videojuego');
+  const game: Game = content as Game;
   const { colors } = useTheme();
 
+  if (loading) {
+	return (
+	  <Screen>
+		<LoadingIndicator />
+	  </Screen>
+	);
+  }
 
-  if (!game) {
+
+  if (!game && !loading) {
     return (
       <Screen>
         <ThemedStatusBar/>
+		<ReturnButton route="/Add?initialCategory=videojuego" title="Detalle del videojuego" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error}/>
           <Text className="text-xl font-bold mt-4" style={{color: colors.primaryText}}>Error al cargar</Text>
