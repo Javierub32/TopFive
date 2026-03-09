@@ -15,10 +15,12 @@ import { useContent } from '@/Details/hooks/useContent';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 
 export default function BookDetail() {
-  const { id } = useLocalSearchParams();
+  const { id, from } = useLocalSearchParams();
   const { content, loading } = useContent(id as string | number, 'libro');
   const book: Book = content as Book;
   const { colors } = useTheme();
+
+  const path = from === 'search' ? '/Add?initialCategory=libro' : '/(tabs)/Home';
 
   if (loading) {
 	return (
@@ -32,6 +34,7 @@ export default function BookDetail() {
     return (
       <Screen>
         <ThemedStatusBar/>
+		<ReturnButton route={path} title="Detalle del libro" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <Text className="text-xl font-bold mt-4" style={{ color: colors.primaryText }}>Error al cargar</Text>
@@ -46,7 +49,7 @@ export default function BookDetail() {
       <ThemedStatusBar/>
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="px-4 pt-2 pb-4">
-          <ReturnButton route="/Add?initialCategory=libro" title="Detalle del libro" style={' '}/>
+          <ReturnButton route={path} title="Detalle del libro" style={' '}/>
         </View>
 
         <View className="px-4 mb-4">

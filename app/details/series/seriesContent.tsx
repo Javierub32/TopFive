@@ -16,10 +16,12 @@ import { useContent } from '@/Details/hooks/useContent';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 
 export default function SeriesDetail() {
-  const { id } = useLocalSearchParams();
+  const { id, from } = useLocalSearchParams();
   const { content, loading } = useContent(id as string | number, 'serie');
   const series: Series = content as Series;
   const { colors } = useTheme();
+  const path = from === 'search' ? '/Add?initialCategory=serie' : '/(tabs)/Home';
+
   
 
   if (loading) {
@@ -34,7 +36,7 @@ export default function SeriesDetail() {
     return (
       <Screen>
         <StatusBar style="light" />
-		<ReturnButton route="/Add?initialCategory=serie" title="Detalle de la serie" />
+		<ReturnButton route={path} title="Detalle de la serie" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
           <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>
@@ -50,7 +52,7 @@ export default function SeriesDetail() {
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="px-4 pt-2 pb-4">
-          <ReturnButton route="/Add?initialCategory=serie" title="Detalle de la serie" style={' '}/>
+          <ReturnButton route={path} title="Detalle de la serie" style={' '}/>
         </View>
         
 

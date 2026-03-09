@@ -34,7 +34,7 @@ interface Book {
 }
 
 export default function BookForm() {
-  const { bookData, item } = useLocalSearchParams();
+  const { bookData, item, from } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
   const { refreshData } = useCollection();
@@ -106,7 +106,8 @@ export default function BookForm() {
           router.replace({
             pathname: '/details/book/bookResource',
             params: { 
-              item: JSON.stringify(bookResource)
+              item: JSON.stringify(bookResource),
+              from: from
             }
           });
           // Mostrar modal después de navegar

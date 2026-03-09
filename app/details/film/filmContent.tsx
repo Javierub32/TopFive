@@ -16,10 +16,12 @@ import { useContent } from '@/Details/hooks/useContent';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 
 export default function FilmDetail() {
-  const { id } = useLocalSearchParams();
+  const { id, from } = useLocalSearchParams();
   const { content, loading } = useContent(id as string | number, 'pelicula');
   const film: Film = content as Film;
   const { colors } = useTheme();
+  const path = from === 'search' ? '/Add?initialCategory=pelicula' : '/(tabs)/Home';
+
   
 
   if (loading) {
@@ -34,7 +36,7 @@ export default function FilmDetail() {
     return (
       <Screen>
         <ThemedStatusBar/>
-		<ReturnButton route="/Add?initialCategory=pelicula" title="Detalle de la película" />
+		<ReturnButton route={path} title="Detalle de la película" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <Text className="text-xl font-bold mt-4" style={{color: colors.primaryText}}>Error al cargar</Text>
@@ -49,7 +51,7 @@ export default function FilmDetail() {
       <ThemedStatusBar/>
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="px-4 pt-2 pb-4">
-          <ReturnButton route="/Add?initialCategory=pelicula" title="Detalle de la película" style={' '}/>
+          <ReturnButton route={path} title="Detalle de la película" style={' '}/>
         </View>
 
         <View className="px-4 mb-4">

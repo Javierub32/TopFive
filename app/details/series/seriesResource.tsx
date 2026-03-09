@@ -20,11 +20,16 @@ import { ReviewCard } from '@/Details/components/ReviewCard';
 import { useAuth } from "context/AuthContext";
 
 export default function SeriesDetail() {
-  const { item } = useLocalSearchParams();
-  const { borrarRecurso } = useResource();
-  const { refreshData } = useCollection();
+  const { item, from } = useLocalSearchParams();
   const { colors } = useTheme();
   const { user } = useAuth();
+
+  const getPath = () => {
+    if (from === 'profile') return '/(tabs)/Profile';
+    if (from === 'user' || from === 'list' || from === 'group') return 'back';
+    return '/(tabs)/Collection';
+  };
+  const path = getPath();
 
   let seriesResource: SeriesResource | null = null;
 
@@ -39,42 +44,13 @@ export default function SeriesDetail() {
   const isPending = seriesResource?.estado === "PENDIENTE"
   const isCompleted = seriesResource?.estado === "COMPLETADO"
 
-  const handleDelete = () => {
-    if (seriesResource) {
-      Alert.alert(
-        'Recurso eliminado',
-        'Estás seguro de que quieres eliminar esta serie de tu colección?',
-        [
-          {
-            text: 'Confirmar',
-            onPress: async () => {
-              await borrarRecurso(seriesResource.id, 'serie');
-              refreshData();
-              router.replace({
-                pathname: '/Collection',
-                params: { initialResource: 'serie' as ResourceType },
-              });
-            },
-          },
-          { text: 'Cancelar', style: 'cancel' },
-        ]
-      );
-    }
-  };
 
-  const handleEdit = () => {
-    if (seriesResource) {
-      router.push({
-        pathname: '/form/series',
-        params: { item: JSON.stringify(seriesResource) },
-      });
-    }
-  };
 
   if (!seriesResource) {
     return (
       <Screen>
         <StatusBar style="light" />
+		<ReturnButton route={path} title="Detalle de la serie" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
           <Text className="mt-4 text-xl font-bold text-primaryText">Error al cargar</Text>
@@ -99,7 +75,7 @@ export default function SeriesDetail() {
         <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
           <View className="flex-1 flex-row items-center">
             <ReturnButton
-              route="/Collection"
+              route={path}
               title={'Detalle de la serie'}
               style={' '}
               params={{ initialResource: 'serie' as ResourceType }}
@@ -107,7 +83,7 @@ export default function SeriesDetail() {
           </View>
           {isOwner && (
             <>
-            <EditResourceButton resource={seriesResource} type="serie" />
+            <EditResourceButton resource={seriesResource} type="serie" from={from} />
             <DeleteResourceButton resource={seriesResource} type="serie" />
             </>
           )}

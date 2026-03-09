@@ -17,11 +17,12 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useContent } from '@/Details/hooks/useContent';
 
 export default function SongDetail() {
-  const { id } = useLocalSearchParams();
+  const { id, from } = useLocalSearchParams();
   const { content, loading } = useContent(id as string | number, 'cancion');
   const song: Song = content as Song;
   const { colors } = useTheme();
-  
+  const path = from === 'search' ? '/Add?initialCategory=cancion' : '/(tabs)/Home';
+
 
   if (loading) {
 	return (
@@ -35,7 +36,7 @@ export default function SongDetail() {
     return (
       <Screen>
         <StatusBar style="light" />
-		<ReturnButton route="/Add?initialCategory=cancion" title="Detalle de la canción" />
+		<ReturnButton route={path} title="Detalle de la canción" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
           <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>
@@ -52,7 +53,7 @@ export default function SongDetail() {
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View>
-          <ReturnButton route="/Add?initialCategory=cancion" title="Detalle de la canción" />
+          <ReturnButton route={path} title="Detalle de la canción" />
         </View>
 
         <View className="px-4 mb-4">

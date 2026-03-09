@@ -17,9 +17,16 @@ import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton'
 import { useAuth } from "context/AuthContext";
 
 export default function GameDetail() {
-  const { item } = useLocalSearchParams();
+  const { item, from } = useLocalSearchParams();
   const { colors } = useTheme();
   const { user } = useAuth();
+
+  const getPath = () => {
+    if (from === 'profile') return '/(tabs)/Profile';
+    if (from === 'user' || from === 'list' || from === 'group') return 'back';
+    return '/(tabs)/Collection';
+  };
+  const path = getPath();
 
   let gameResource: GameResource | null = null;
 
@@ -37,6 +44,7 @@ export default function GameDetail() {
     return (
       <Screen>
         <ThemedStatusBar />
+		<ReturnButton route={path} title="Detalle del videojuego" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <Text className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
@@ -61,7 +69,7 @@ export default function GameDetail() {
         <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
           <View className="flex-1 flex-row items-center">
             <ReturnButton
-              route="/Collection"
+              route={path}
               title={'Detalle del videojuego'}
               style={' '}
               params={{ initialResource: 'videojuego' as ResourceType }}
@@ -69,7 +77,7 @@ export default function GameDetail() {
           </View>
           {isOwner && (
             <>
-            <EditResourceButton resource={gameResource} type="videojuego" />
+            <EditResourceButton resource={gameResource} type="videojuego" from={from} />
             <DeleteResourceButton resource={gameResource} type="videojuego" />
             </>
 

@@ -32,7 +32,7 @@ interface Film {
 }
 
 export default function FilmForm() {
-  const { filmData, item } = useLocalSearchParams();
+  const { filmData, item, from } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
   const { refreshData } = useCollection();
@@ -92,7 +92,8 @@ export default function FilmForm() {
           router.replace({
             pathname: '/details/film/filmResource',
             params: {
-              item: JSON.stringify(filmResource)
+              item: JSON.stringify(filmResource),
+              from: from
             }
           });
           setTimeout(() => {

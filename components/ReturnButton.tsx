@@ -17,7 +17,7 @@ export const ReturnButton = ({ route, title, style, params }: ReturnButtonProps)
   return (
     <View className={`flex-row items-center ${style}`}>
       <TouchableOpacity
-        onPress={() => route == 'back' ? router.back() : router.push({ pathname: route, params })}
+        onPress={() => route == 'back' ? router.back() : router.navigate({ pathname: route, params })}
         className="mr-3 h-10 w-10 items-center justify-center rounded-full"
         style={{ backgroundColor: colors.accent}}
         activeOpacity={0.7}>

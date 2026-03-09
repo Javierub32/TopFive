@@ -89,7 +89,7 @@ export default function ListDetails() {
 		<CollectionStructure
 		  data={data}
 		  categoriaActual={categoriaActual}
-		  handleItemPress={handleItemPress}
+		   handleItemPress={(item: any) => handleItemPress(item, categoriaActual, 'list')}
 		  handleLongPress={handleDeleteItem}
 		  handleSearchPagination={handleLoadMore} 
 		  showStatus={true}

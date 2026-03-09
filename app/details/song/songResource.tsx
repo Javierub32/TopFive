@@ -1,16 +1,12 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { router, useLocalSearchParams, useRouter } from 'expo-router';
+import { View, Text, Image, ScrollView } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SongResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
-import { useTheme } from 'context/ThemeContext';
-import { useCollection } from 'context/CollectionContext';
-import { AddToListButton } from 'components/AddToListButton';
-import { ResourceType, useResource } from 'hooks/useResource';
+import { ResourceType } from 'hooks/useResource';
 import { EditResourceButton } from '@/Details/components/EditResourceButton';
-import { DeleteIcon } from 'components/Icons';
 import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { ResourceAttributes } from '@/Details/components/ResourceAttributes';
@@ -20,8 +16,15 @@ import { ReviewCard } from '@/Details/components/ReviewCard';
 import { useAuth } from "context/AuthContext";
 
 export default function SongDetail() {
-  const { item } = useLocalSearchParams();
+  const { item, from } = useLocalSearchParams();
   const { user } = useAuth();
+
+  const getPath = () => {
+	if (from === 'profile') return '/(tabs)/Profile';
+	if (from === 'user' || from === 'list' || from === 'group') return 'back';
+	return '/(tabs)/Collection';
+  };
+  const path = getPath();
 
   let songResource: SongResource | null = null;
 
@@ -39,6 +42,7 @@ export default function SongDetail() {
     return (
       <Screen>
         <StatusBar style="light" />
+		<ReturnButton route={path} title="Detalle de la canción" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
           <Text className="mt-4 text-xl font-bold text-primaryText">Error al cargar</Text>
@@ -59,7 +63,7 @@ export default function SongDetail() {
         <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
           <View className="flex-1 flex-row items-center">
             <ReturnButton
-              route="/Collection"
+              route={path}
               title={'Detalle de la canción'}
               style={' '}
               params={{ initialResource: 'cancion' as ResourceType }}
@@ -67,7 +71,7 @@ export default function SongDetail() {
           </View>
           {isOwner && (
             <>
-            <EditResourceButton resource={songResource} type="cancion" />
+            <EditResourceButton resource={songResource} type="cancion" from={from}/>
             <DeleteResourceButton resource={songResource} type="cancion" />
             </>
 

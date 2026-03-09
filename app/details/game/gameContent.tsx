@@ -19,10 +19,12 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useContent } from '@/Details/hooks/useContent';
 
 export default function GameDetail() {
-  const { id } = useLocalSearchParams();
+  const { id, from } = useLocalSearchParams();
   const { content, loading } = useContent(id as string | number, 'videojuego');
   const game: Game = content as Game;
   const { colors } = useTheme();
+  const path = from === 'search' ? '/Add?initialCategory=videojuego' : '/(tabs)/Home';
+
 
   if (loading) {
 	return (
@@ -37,7 +39,7 @@ export default function GameDetail() {
     return (
       <Screen>
         <ThemedStatusBar/>
-		<ReturnButton route="/Add?initialCategory=videojuego" title="Detalle del videojuego" />
+		<ReturnButton route={path} title="Detalle del videojuego" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error}/>
           <Text className="text-xl font-bold mt-4" style={{color: colors.primaryText}}>Error al cargar</Text>
@@ -54,7 +56,7 @@ export default function GameDetail() {
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="px-4 pt-2 pb-4">
-          <ReturnButton route="/Add?initialCategory=videojuego" title="Detalle del videojuego" style={' '} /> 
+          <ReturnButton route={path} title="Detalle del videojuego" style={' '} /> 
         </View>
         
 

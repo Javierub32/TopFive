@@ -38,7 +38,7 @@ export default function GroupScreen() {
           <CollectionStructure
             data={data}
             categoriaActual={category}
-            handleItemPress={handleItemPress}
+            handleItemPress={(item: any) => handleItemPress(item, category as ResourceType, 'group')}
 			showStatus={false}
 			handleSearchPagination={handleLoadMore}
 			loading={loading}

@@ -36,7 +36,7 @@ interface Game {
 }
 
 export default function GameForm() {
-  const { gameData, item } = useLocalSearchParams();
+  const { gameData, item, from } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
   const { refreshData } = useCollection();
@@ -106,7 +106,8 @@ export default function GameForm() {
           router.replace({
             pathname: '/details/game/gameResource',
             params: { 
-              item: JSON.stringify(gameResource)
+              item: JSON.stringify(gameResource),
+              from: from
             }
           });
           setTimeout(() => {

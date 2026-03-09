@@ -33,7 +33,7 @@ interface Series {
 }
 
 export default function SeriesForm() {
-  const { seriesData, item } = useLocalSearchParams();
+  const { seriesData, item, from } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
   const { refreshData } = useCollection();
@@ -110,7 +110,8 @@ export default function SeriesForm() {
           router.replace({
             pathname: '/details/series/seriesResource',
             params: { 
-              item: JSON.stringify(seriesResource)
+              item: JSON.stringify(seriesResource),
+              from: from
             }
           });
           setTimeout(() => {

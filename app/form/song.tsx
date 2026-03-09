@@ -33,7 +33,7 @@ interface Song {
 }
 
 export default function SongForm() {
-  const { songData, item } = useLocalSearchParams();
+  const { songData, item, from } = useLocalSearchParams();
   const router = useRouter();
   const { user } = useAuth();
   const { refreshData } = useCollection();
@@ -94,7 +94,8 @@ export default function SongForm() {
           router.replace({
             pathname: '/details/song/songResource',
             params: { 
-              item: JSON.stringify(songResource)
+              item: JSON.stringify(songResource),
+              from: from
             }
           });
           setTimeout(() => {

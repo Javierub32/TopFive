@@ -9,10 +9,11 @@ import { ResourceType } from "hooks/useResource";
 interface Props {
     resource : BookResource | FilmResource | SeriesResource | SongResource | GameResource | null
     type : ResourceType
+	from: string | string[]
 }
 
 
-export const EditResourceButton = ({resource, type}: Props) => {
+export const EditResourceButton = ({resource, type, from}: Props) => {
 
     const ResourceMap : Record<ResourceType, string> = {
         pelicula: 'film',
@@ -26,7 +27,7 @@ export const EditResourceButton = ({resource, type}: Props) => {
         if (resource) {
             router.push({
             pathname: '/form/' + ResourceMap[type],
-            params: { item: JSON.stringify(resource) }
+            params: { item: JSON.stringify(resource), from: from }
             });
         }
     }

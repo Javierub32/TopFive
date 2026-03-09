@@ -38,7 +38,8 @@ export const useTopFive = (userId: string) => {
 
   const handlePress = (position: number, item: TopFiveItem | undefined) => {
     if (item) {
-      handleItemPress(item.resourceData, item.type);
+      const isOwnProfile = user?.id === userId;
+      handleItemPress(item.resourceData, item.type, isOwnProfile ? 'profile' : 'user');
     } else {
       setSelectedPosition(position);
       setModalVisible(true);

@@ -18,9 +18,16 @@ import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton'
 import { useAuth } from "context/AuthContext";
 
 export default function BookDetail() {
-  const { item } = useLocalSearchParams();
+  const { item, from } = useLocalSearchParams();
   const { colors } = useTheme();
   const { user } = useAuth();
+
+  const getPath = () => {
+    if (from === 'profile') return '/(tabs)/Profile';
+    if (from === 'user' || from === 'list' || from === 'group') return 'back';
+    return '/(tabs)/Collection';
+  };
+  const path = getPath();
 
   let bookResource: BookResource | null = null;
 
@@ -39,6 +46,7 @@ export default function BookDetail() {
     return (
       <Screen>
         <ThemedStatusBar />
+		<ReturnButton route={path} title="Detalle del libro" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <Text className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
@@ -61,7 +69,7 @@ export default function BookDetail() {
         <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
           <View className="flex-1 flex-row items-center">
             <ReturnButton
-              route="/Collection"
+              route={path}
               title={'Detalle del libro'}
               style={' '}
               params={{ initialResource: 'libro' as ResourceType }}
@@ -69,7 +77,7 @@ export default function BookDetail() {
           </View>
           {isOwner && (
             <>
-            <EditResourceButton resource={bookResource} type={'libro'} />
+            <EditResourceButton resource={bookResource} type={'libro'} from={from} />
             <DeleteResourceButton resource={bookResource} type={'libro'} />
             </>
           )}
