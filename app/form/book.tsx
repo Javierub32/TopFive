@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -16,7 +16,6 @@ import { StateSetter } from "@/Form/components/StateSetter";
 import { RatingSetter } from "@/Form/components/RatingSetter";
 import { ProgressSetter } from "@/Form/components/ProgressSetter";
 import { DateSetter } from "@/Form/components/DateSetter";
-import { NotificationModal } from 'components/NotificationModal';
 import { useNotification } from 'context/NotificationContext';
 
 interface Book {
@@ -261,7 +260,10 @@ export default function BookForm() {
           <StateSetter state={estado} setState={setEstado} inProgressLabel="Leyendo"/>
           <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
 
-          <ProgressSetter progress={paginasLeidas} setProgress={setPaginasLeidas} type='libro'/>
+          {estado !== 'COMPLETADO' && (
+            <ProgressSetter progress={paginasLeidas} setProgress={setPaginasLeidas} type='libro'/>
+          )}
+          
 
           <DateSetter startDate={fechaInicio} setStartDate={setFechaInicio} endDate={fechaFin} setEndDate={setFechaFin} isRange={true}/>
         </View>

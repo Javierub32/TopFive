@@ -1,8 +1,6 @@
 import { FontAwesome5 } from "@expo/vector-icons";
-import { RatingStarIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext";
-import { useState } from "react";
-import { Touchable, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 interface Props {
     rating: any;
@@ -42,7 +40,7 @@ export const RatingSetter = ({rating, setRating}: Props) => {
                 }
 
                 return(
-                    <TouchableOpacity key={star} onPress={() => handlePress(star)} activeOpacity={0.7}>
+                    <TouchableOpacity className="w-10 items-center" key={star} onPress={() => handlePress(star)} activeOpacity={0.7}>
                         <FontAwesome5 name={iconName} size={32} color={iconColor} solid={isSolid}/>
                     </TouchableOpacity>
                 );

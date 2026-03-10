@@ -28,6 +28,7 @@ export const DescriptionCard = ({ description }: Props) => {
       .replace(/&quot;/g, '"')         // Comillas dobles
       .replace(/&lt;/g, '<')           // Menor que
       .replace(/&gt;/g, '>')           // Mayor que
+      .replace(/&#39;/g, "'")          // Apóstrofe
       
       // 4. Limpiar espacios extra resultantes
       .trim();

@@ -1,10 +1,8 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from 'react';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { GameResource } from 'app/types/Resources';
@@ -256,7 +254,10 @@ export default function GameForm() {
           <StateSetter state={estado} setState={setEstado} inProgressLabel='Jugando'/>
           <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
           <DifficultySetter difficulty={dificultad} setDifficulty={setDificultad}/>
-          <ProgressSetter progress={horasJugadas} setProgress={setHorasJugadas} type='videojuego'/>
+          {estado !== 'COMPLETADO' && (
+            <ProgressSetter progress={horasJugadas} setProgress={setHorasJugadas} type='videojuego'/>
+          )}
+          
           <DateSetter startDate={fechaInicio} setStartDate={setFechaInicio} endDate={fechaFin} setEndDate={setFechaFin} isRange={true}/>
 
           <TouchableOpacity

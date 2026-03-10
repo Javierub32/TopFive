@@ -18,7 +18,7 @@ export const CategoryTabBar = (props: TabBarProps<any>) => {
   });
 
   const renderIcon = (key: string, isActive: boolean) => {
-    const iconProps = { size: 24, color: isActive ? 'white' : '#94a3b8' };
+    const iconProps = { size: 24, color: isActive ? colors.primaryText : colors.secondaryText };
     switch (key) {
       case 'libro': return <BookIcon {...iconProps} />;
       case 'pelicula': return <FilmIcon {...iconProps} />;
@@ -32,8 +32,9 @@ export const CategoryTabBar = (props: TabBarProps<any>) => {
   return (
     <View className="py-2 bg-transparent">
       <View 
-        className="rounded-lg border border-borderButton bg-surfaceButton p-1 shadow-lg"
+        className="rounded-lg border p-1 shadow-lg"
         onLayout={(e: LayoutChangeEvent) => setTabBarWidth(e.nativeEvent.layout.width)}
+        style={{borderColor: colors.accent, backgroundColor: colors.surfaceButton}}
       >
         <View className="flex-row relative h-10">
           {tabBarWidth > 0 && (
@@ -42,7 +43,7 @@ export const CategoryTabBar = (props: TabBarProps<any>) => {
                 position: 'absolute',
                 top: 0, bottom: 0, left: 0,
                 width: tabWidth, 
-                backgroundColor: colors.secondary,
+                backgroundColor: colors.accent,
                 borderRadius: 6,
                 transform: [{ translateX }] 
               }} 
