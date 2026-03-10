@@ -16,7 +16,6 @@ export default function AddScreen() {
     menuAbierto, setMenuAbierto,
     loading, resultados,
     handleSearch, navigateToDetails,
-    setResultados
   } = useSearchContent();
 
   const { colors } = useTheme();
@@ -34,7 +33,6 @@ export default function AddScreen() {
           selectedCategory={recursoBusqueda}
           onCategoryChange={(cat) => {
             setRecursoBusqueda(cat);
-            setResultados([]);
           }}
           menuAbierto={menuAbierto}
           setMenuAbierto={setMenuAbierto}

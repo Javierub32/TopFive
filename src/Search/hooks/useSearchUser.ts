@@ -2,13 +2,20 @@ import { useState } from 'react';
 import { userSearchService } from '../services/userSearchServices';
 import { useAuth } from 'context/AuthContext';
 import { Keyboard } from 'react-native';
+import { useSearch } from 'context/SearchContext';
 
 export const useSearchUser = () => {
   const { user } = useAuth();
+  
+  const {
+	setUserQuery: setBusqueda,
+	userQuery: busqueda,
+	userResults: resultados,
+	setUserResults: setResultados,
+	activeUserSearch: activeSearch,
+	setActiveUserSearch: setActiveSearch,
+  } = useSearch();
 
-  const [busqueda, setBusqueda] = useState(''); // Texto del input
-  const [activeSearch, setActiveSearch] = useState(''); // Texto confirmado para buscar
-  const [resultados, setResultados] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
@@ -28,7 +35,7 @@ export const useSearchUser = () => {
       if (pageNum === 0) {
         setResultados(users);
       } else {
-        setResultados((prev) => [...prev, ...users]);
+        setResultados([...resultados, ...users]);
       }
 
       // Si recibimos menos usuarios que el tamaño de página, no hay más datos

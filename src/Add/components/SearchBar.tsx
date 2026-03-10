@@ -51,7 +51,7 @@ export const SearchBar = ({
           placeholderTextColor={colors.placeholderText}
           value={value}
           onChangeText={onChangeText}
-          onSubmitEditing={onSearch}
+          onSubmitEditing={() => onSearch()}
           returnKeyType="search"
         />
 

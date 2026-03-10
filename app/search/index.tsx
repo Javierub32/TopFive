@@ -1,5 +1,4 @@
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+import { View, FlatList, Pressable } from 'react-native';
 import { Screen } from 'components/Screen';
 import { UserSearchBar } from '@/Search/components/UserSearchBar';
 import { useSearchUser } from '@/Search/hooks/useSearchUser';
@@ -7,13 +6,15 @@ import { UserSearchPlaceholder } from '@/Search/components/UserSearchPlaceholder
 import { UserResultItem } from '@/Search/components/UserResultItem';
 import { router } from 'expo-router';
 import { LoadingIndicator } from 'components/LoadingIndicator';
-import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { ReturnButton } from 'components/ReturnButton';
+import { useSearch } from 'context/SearchContext';
 
 export default function SearchhScreen() {
   const { busqueda, setBusqueda, resultados, loading, handleSearch, handleLoadMore } = useSearchUser();
-  const { colors } = useTheme();
+
+  const { clearUserSearch} = useSearch();
+  
 
   // Loading inicial (pantalla completa solo si es la primera búsqueda)
   if (loading && resultados.length === 0) {
@@ -35,7 +36,9 @@ export default function SearchhScreen() {
 	<Screen>
 	  <ThemedStatusBar/>
 	  <View className="flex-1 px-4 pt-6">
-		<ReturnButton route='/(tabs)/Home' title='Volver a Inicio' style='mb-6'/>
+			<ReturnButton route='back' title='Usuarios' style='mb-6' deleteSearchResults={true}/>
+
+		
 		
 		<UserSearchBar 
 			value={busqueda} 

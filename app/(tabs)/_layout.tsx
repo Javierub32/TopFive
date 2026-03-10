@@ -5,11 +5,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeIcon, CardsIcon, UserIcon, SearchIcon, AddIcon, ListIcon } from 'components/Icons';
 import { CategorySelectorModal } from 'components/CategorySelectorModal';
 import { useTheme } from 'context/ThemeContext';
+import { useSearch } from 'context/SearchContext';
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [showAddModal, setShowAddModal] = useState(false);
+  const { clearContentSearch } = useSearch();
 
   const { colors } = useTheme();
 
@@ -52,6 +54,7 @@ export default function TabLayout() {
           title: 'Home',
           tabBarIcon: ({ color, size }) => <HomeIcon color={color} size={28} />,
         }}
+		listeners={{ tabPress: () => clearContentSearch() }}
       />
       <Tabs.Screen
         name="Lists/index"
@@ -59,6 +62,7 @@ export default function TabLayout() {
           title: 'List',
           tabBarIcon: ({ color, size }) => <ListIcon color={color} size={30} />,
         }}
+		listeners={{ tabPress: () => clearContentSearch() }}
       />
       <Tabs.Screen
         name="Add/index"
@@ -69,7 +73,8 @@ export default function TabLayout() {
         listeners={{
           tabPress: (e) => {
             e.preventDefault();
-            setShowAddModal(true);
+            clearContentSearch();
+			setShowAddModal(true);
           },
         }}
       />
@@ -79,6 +84,7 @@ export default function TabLayout() {
           title: 'Collection',
           tabBarIcon: ({ color, size }) => <CardsIcon color={color} size={26} />,
         }}
+		listeners={{ tabPress: () => clearContentSearch() }}
       />
       <Tabs.Screen
         name="Profile/index"
@@ -86,6 +92,7 @@ export default function TabLayout() {
           title: 'Profile',
           tabBarIcon: ({ color, size }) => <UserIcon color={color} size={26} />,
         }}
+		listeners={{ tabPress: () => clearContentSearch() }}
       />
     </Tabs>
     </>
