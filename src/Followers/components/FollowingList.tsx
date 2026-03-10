@@ -35,6 +35,7 @@ export default function FollowingList() {
 			</View>
 			}
 			contentContainerStyle={{ paddingBottom: 20 }}
+			showsVerticalScrollIndicator={false}
 		/>
 	);
 } 
