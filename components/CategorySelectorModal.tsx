@@ -88,15 +88,6 @@ export const CategorySelectorModal = ({
               );
             })}
           </View>
-
-          <TouchableOpacity
-            className="mt-6 items-center rounded-xl p-3"
-            onPress={onClose}
-            style={{ backgroundColor: colors.background }}>
-            <Text className="text-base font-bold" style={{ color: colors.error }}>
-              Cancelar
-            </Text>
-          </TouchableOpacity>
         </TouchableOpacity>
       </TouchableOpacity>
     </Modal>

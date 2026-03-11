@@ -73,14 +73,25 @@ export default function AboutUsScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* --- Apple (Música y Libros) --- */}
+        {/* --- Wikidata (Música) --- */}
         <View className="mb-6 p-4 rounded-xl" style={{backgroundColor: colors.surfaceButton, }}>
-          <Text className="text-xl font-bold mb-2" style={{color: colors.primaryText}}>Música y libros</Text>
+          <Text className="text-xl font-bold mb-2" style={{color: colors.primaryText}}>Música</Text>
           <Text className="text-sm mb-3" style={{color: colors.secondaryText}}>
-            Datos proporcionados por Apple. Copyright © 2024 Apple Inc.
+            Datos proporcionados por Wikidata. 
           </Text>
-          <TouchableOpacity onPress={() => openLink("https://www.apple.com/itunes/")}>
-            <Text className="underline" style={{color: colors.accent}}>Visitar iTunes</Text>
+          <TouchableOpacity onPress={() => openLink("https://www.wikidata.org/wiki/Wikidata:Main_Page")}>
+            <Text className="underline" style={{color: colors.accent}}>Visitar Wikidata</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* --- OpenLibrary (Libros) --- */}
+        <View className="mb-6 p-4 rounded-xl" style={{backgroundColor: colors.surfaceButton, }}>
+          <Text className="text-xl font-bold mb-2" style={{color: colors.primaryText}}>Libros</Text>
+          <Text className="text-sm mb-3" style={{color: colors.secondaryText}}>
+            Datos proporcionados por OpenLibrary. 
+          </Text>
+          <TouchableOpacity onPress={() => openLink("https://openlibrary.org/")}>
+            <Text className="underline" style={{color: colors.accent}}>Visitar Openlibrary</Text>
           </TouchableOpacity>
         </View>
         
