@@ -46,7 +46,7 @@ export default function AddScreen() {
             renderItem={({ item, index }) => (
               <SearchResultItem 
                 item={item} 
-                onPress={() => navigateToDetails(index)} 
+                onPress={() => navigateToDetails(index)}
               />
             )}
             contentContainerStyle={{ paddingBottom: 40, paddingTop: 10 }}

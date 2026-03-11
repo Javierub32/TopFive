@@ -9,7 +9,7 @@ const categories: { type: ResourceType; label: string; icon: any }[] = [
   { type: 'pelicula', label: 'Película', icon: FilmIcon },
   { type: 'serie', label: 'Serie', icon: ShowIcon },
   { type: 'videojuego', label: 'Videojuego', icon: GameIcon },
-  { type: 'cancion', label: 'Canción', icon: MusicIcon },
+  { type: 'cancion', label: 'Álbum', icon: MusicIcon },
 ];
 
 interface CategorySelectorModalProps {

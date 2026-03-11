@@ -15,6 +15,7 @@ import { AddToCollectionButton } from "@/Details/components/AddToCollectionButto
 import { ExtraCard } from "@/Details/components/ExtraCard";
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useContent } from '@/Details/hooks/useContent';
+import { ModernContentHeader } from "@/Details/components/ContentHeader";
 
 export default function SongDetail() {
   const { id, from } = useLocalSearchParams();
@@ -52,26 +53,14 @@ export default function SongDetail() {
       <ThemedStatusBar/>
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View>
-          <ReturnButton route={path} title="Detalle de la canción" />
-        </View>
-
-        <View className="px-4 mb-4">
-          <Image 
-            source={{ uri: song.imageFull || song.image || 'https://via.placeholder.com/500x750' }}
-            className="aspect-[2/3] rounded-2xl bg-background"
-            resizeMode="cover"
-          />
-        </View>
-
-        <View className="px-4 mb-14 pb-6 gap-3">
-          <ContentTags content={song} type='cancion'/>
-          <View className="flex-row gap-2">
-            <AuthorCard autor={song.autor}/>
-            <ContentDateCard releaseDate={song.releaseDate}/>
-          </View>
-
-          <ExtraCard extra={song.album} type='cancion'/>
+        <ModernContentHeader
+          imageUrl={song.imageFull || song.image}
+          returnRoute={path}
+          content={song}
+          type='cancion'
+          autor={song.autor}
+        />
+        <View className="px-4 mb-14 pb-6 gap-3 mt-1">
           <AddToCollectionButton content={song} type='cancion'/>
         </View>
       </ScrollView>

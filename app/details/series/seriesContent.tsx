@@ -14,6 +14,7 @@ import { ContentDateCard } from "@/Details/components/ContentDateCard";
 import { ThemedStatusBar } from "components/ThemedStatusBar";
 import { useContent } from '@/Details/hooks/useContent';
 import { LoadingIndicator } from 'components/LoadingIndicator';
+import { ModernContentHeader } from "@/Details/components/ContentHeader";
 
 export default function SeriesDetail() {
   const { id, from } = useLocalSearchParams();
@@ -51,24 +52,16 @@ export default function SeriesDetail() {
       <ThemedStatusBar/>
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="px-4 pt-2 pb-4">
-          <ReturnButton route={path} title="Detalle de la serie" style={' '}/>
-        </View>
-        
+        <ModernContentHeader
+          imageUrl={series.imageFull || series.image}
+          returnRoute={path}
+          content={series}
+          type='serie'
+          autor={null}
+        />
 
-        <View className="px-4 mb-4">
-          <Image 
-            source={{ uri: series.imageFull || series.image || 'https://via.placeholder.com/500x750' }}
-            className="aspect-[2/3] rounded-2xl"
-            style={{backgroundColor: colors.surfaceButton}}
-            resizeMode="cover"
-          />
-        </View>
-
-        <View className="px-4 mb-14 pb-6">
-          <ContentTags content={series} type='serie'/>
-          <View className="flex justify-between gap-3">
-            <ContentDateCard releaseDate={series.releaseDate}/>
+        <View className="mb-14 px-4 pb-6">        
+          <View className="flex-col justify-between gap-3 mt-1">
             <DescriptionCard description={series.description}/>   
           </View>
           <AddToCollectionButton content={series} type='serie'/>

@@ -7,9 +7,10 @@ import { ResourceType } from "hooks/useResource";
 interface Props {
   content: Book | Film | Series | Song | Game;
   type: ResourceType;
+  autor?: string | null;
 }
 
-export const ContentTags = ({ content, type }: Props) => {
+export const ContentTags = ({ content, type, autor }: Props) => {
   const { colors } = useTheme();
 
   const releaseYear = content.releaseDate ? new Date(content.releaseDate).getFullYear() : 'N/A';
@@ -37,10 +38,10 @@ export const ContentTags = ({ content, type }: Props) => {
     if ('rating' in content) {
       if (!content.rating) return null;
       if (typeContent == 'film' || typeContent == 'series') {
-        return (content.rating).toFixed(1);
+        return (content.rating/2).toFixed(1);
       }
       if(typeContent == 'games'){
-        return (content.rating).toFixed(1);
+        return (content.rating/2).toFixed(1);
       }
       return content.rating;
     }
@@ -82,12 +83,19 @@ export const ContentTags = ({ content, type }: Props) => {
 
 
   return (
-    <View className="mb-4">
-      <View className="">
+    <View className="mb-4 gap-1">
+      <View>
         <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
           {content.title || 'Sin título'}
         </Text>
+        {autor && (
+          <Text className="text-base" style={{color: colors.secondaryText}}>
+            {autor}
+          </Text>
+        )}
       </View>
+      
+    
 
       <View className="flex-row flex-wrap items-center gap-2 pt-1">
         {!!releaseYear && (
@@ -99,8 +107,8 @@ export const ContentTags = ({ content, type }: Props) => {
             </Text>
           </View>
         )}
-        
-        {!!formatedRating && (
+
+        {!!formatedRating && type!="libro" && (
           <View
             className="flex-row items-center rounded-lg px-3 py-1.5"
             style={{ backgroundColor: `${colors.rating}1A` }}>

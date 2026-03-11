@@ -13,6 +13,8 @@ import { DescriptionCard } from "@/Details/components/DescriptionCard";
 import { AddToCollectionButton } from "@/Details/components/AddToCollectionButton";
 import { useContent } from '@/Details/hooks/useContent';
 import { LoadingIndicator } from 'components/LoadingIndicator';
+import { ModernContentHeader } from "@/Details/components/ContentHeader";
+import { ContentRating } from "@/Details/components/ContentRating";
 
 export default function BookDetail() {
   const { id, from } = useLocalSearchParams();
@@ -48,26 +50,16 @@ export default function BookDetail() {
     <Screen>
       <ThemedStatusBar/>
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="px-4 pt-2 pb-4">
-          <ReturnButton route={path} title="Detalle del libro" style={' '}/>
-        </View>
-
-        <View className="px-4 mb-4">
-          <Image 
-            source={{ uri: book.imageFull || book.image || 'https://via.placeholder.com/500x750' }}
-            className="aspect-[2/3] rounded-2xl"
-            style={{ backgroundColor: colors.surfaceButton }}
-            resizeMode="cover"
-          />
-        </View>
+        <ModernContentHeader 
+          imageUrl={book.imageFull || book.image} 
+          returnRoute={path}
+          content={book}
+          type='libro'
+          autor={book.autor}
+        />
 
         <View className="mb-14 px-4 pb-6">        
-          <ContentTags content={book} type='libro'/>
-          <View className="flex-col justify-between gap-3">
-            <View className="flex-row gap-2">
-              <AuthorCard autor={book.autor}/>
-              <ContentDateCard releaseDate={book.releaseDate}/>
-            </View>
+          <View className="flex-col justify-between gap-3 mt-1">
             <DescriptionCard description={book.description}/>
           </View>
           	<AddToCollectionButton content={book} type='libro'/>

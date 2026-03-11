@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SearchResult } from '../../Add/adapters/searchResultsAdapter';
 import { useTheme } from 'context/ThemeContext';
+import { ResourceType } from "hooks/useResource";
 
 interface SearchResultItemProps {
   item: SearchResult;

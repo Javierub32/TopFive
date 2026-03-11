@@ -20,7 +20,7 @@ const CATEGORY_LABELS: Record<ResourceType, string> = {
   pelicula: 'Películas',
   serie: 'Series',
   videojuego: 'Videojuegos',
-  cancion: 'Canciones',
+  cancion: 'Álbumes',
 };
 
 export const SearchBar = ({
@@ -37,7 +37,7 @@ export const SearchBar = ({
   
   return (
     <View className="relative z-50">
-      <View className="h-12 flex-row items-center rounded-lg border shadow-lg" style={{borderColor: colors.borderButton, backgroundColor: colors.surfaceButton}}>
+      <View className="h-14 flex-row items-center rounded-lg border shadow-lg" style={{borderColor: colors.accent, backgroundColor: colors.surfaceButton}}>
         {/* Icono Lupa */}
         <View className="justify-center pl-3">
           <MaterialCommunityIcons name="magnify" size={20} color={colors.secondaryText} />
@@ -56,7 +56,7 @@ export const SearchBar = ({
         />
 
         {/* Separador vertical */}
-        <View className="h-6 w-[1px]" style={{backgroundColor: colors.borderButton}} />
+        <View className="h-6 w-[1px]" style={{backgroundColor: colors.accent}} />
 
         {/* Botón Selector de Categoría */}
         <TouchableOpacity

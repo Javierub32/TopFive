@@ -21,7 +21,7 @@ const INITIAL_CATEGORY_DATA = {
     libro: { title: 'Libros Leídos', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
     pelicula: { title: 'Películas Vistas', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
     serie: { title: 'Series Vistas', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
-    cancion: { title: 'Canciones Escuchadas', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
+    cancion: { title: 'Álbumes Escuchadas', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
     videojuego: { title: 'Videojuegos Jugados', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
 };
 

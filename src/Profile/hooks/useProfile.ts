@@ -20,7 +20,7 @@ const INITIAL_CATEGORY_DATA = {
   },
   serie: { title: 'Series Vistas', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
   cancion: {
-    title: 'Canciones Escuchadas',
+    title: 'Álbumes Escuchados',
     total: 0,
     average: 0.0,
     chartData: new Array(12).fill(0),

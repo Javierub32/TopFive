@@ -14,6 +14,7 @@ import { ContentDateCard } from "@/Details/components/ContentDateCard";
 import { AddToCollectionButton } from "@/Details/components/AddToCollectionButton";
 import { useContent } from '@/Details/hooks/useContent';
 import { LoadingIndicator } from 'components/LoadingIndicator';
+import { ModernContentHeader } from "@/Details/components/ContentHeader";
 
 export default function FilmDetail() {
   const { id, from } = useLocalSearchParams();
@@ -50,23 +51,16 @@ export default function FilmDetail() {
     <Screen>
       <ThemedStatusBar/>
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="px-4 pt-2 pb-4">
-          <ReturnButton route={path} title="Detalle de la película" style={' '}/>
-        </View>
+        <ModernContentHeader
+          imageUrl={film.image}
+          returnRoute={path}
+          content={film}
+          type='pelicula'
+          autor={null}
+        />
 
-        <View className="px-4 mb-4">
-          <Image 
-            source={{ uri: film.image || 'https://via.placeholder.com/500x750' }}
-            className="aspect-[2/3] rounded-2xl"
-            style={{ backgroundColor: colors.surfaceButton }}
-            resizeMode="cover"
-          />
-        </View>
-        
-        <View className="mb-14 px-4 pb-6">
-          <ContentTags content={film} type='pelicula'/>
-          <View className='flex-col justify-between gap-3'>
-            <ContentDateCard releaseDate={film.releaseDate}/>
+        <View className="mb-14 px-4 pb-6">        
+          <View className="flex-col justify-between gap-3 mt-1">
             <DescriptionCard description={film.description}/>
           </View>
           <AddToCollectionButton content={film} type='pelicula'/>

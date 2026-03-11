@@ -17,6 +17,7 @@ import { AddToCollectionButton } from "@/Details/components/AddToCollectionButto
 import { ExtraCard } from "@/Details/components/ExtraCard";
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useContent } from '@/Details/hooks/useContent';
+import { ModernContentHeader } from "@/Details/components/ContentHeader";
 
 export default function GameDetail() {
   const { id, from } = useLocalSearchParams();
@@ -55,28 +56,19 @@ export default function GameDetail() {
       <ThemedStatusBar/>
       
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="px-4 pt-2 pb-4">
-          <ReturnButton route={path} title="Detalle del videojuego" style={' '} /> 
-        </View>
-        
+        <ModernContentHeader
+          imageUrl={game.image}
+          returnRoute={path}
+          content={game}
+          type='videojuego'
+          autor={game.autor}
+        />
 
-        <View className="px-4 mb-4">
-          <Image 
-            source={{ uri: game.image || 'https://via.placeholder.com/500x750' }}
-            className="aspect-[2/3] rounded-2xl"
-            style={{backgroundColor: colors.surfaceButton}}
-            resizeMode="cover"
-          />
-        </View>
-
-        <View className="px-4 pb-6 gap-3">
-          <ContentTags content={game} type='videojuego'/>
-          <View className="flex-row gap-2">
-            <AuthorCard autor={game.autor}/>
-            <ContentDateCard releaseDate={game.releaseDate}/>
+        <View className="mb-14 px-4 pb-6">        
+          <View className="flex-col justify-between gap-3 mt-1">
+            <ExtraCard extra={game.gamemodes} type='videojuego'/>
+            <DescriptionCard description={game.description}/>
           </View>
-          <ExtraCard extra={game.gamemodes} type='videojuego'/>
-          <DescriptionCard description={game.description}/>
           <AddToCollectionButton content={game} type='videojuego'/>
         </View>
       </ScrollView>
