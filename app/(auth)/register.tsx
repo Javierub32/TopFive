@@ -121,8 +121,8 @@ export default function Register() {
                   className="ml-3 flex-1 text-base"
                   placeholderTextColor={colors.placeholderText}
                   secureTextEntry={!showPassword}
-                  style={{color: colors.primaryText}}
-                />
+				  style={{flex: 1, marginLeft: 12, marginRight: 8, color: colors.primaryText, minWidth: 0}}
+				/>
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="ml-2">
                   <MaterialCommunityIcons
                     name={!showPassword ? 'eye-off' : 'eye'}
@@ -142,7 +142,7 @@ export default function Register() {
                   className="ml-3 flex-1 text-base"
                   placeholderTextColor={colors.placeholderText}
                   secureTextEntry={!showPassword}
-                  style={{color: colors.primaryText}}
+				  style={{flex: 1, marginLeft: 12, marginRight: 8, color: colors.primaryText, minWidth: 0}}
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="ml-2">
                   <MaterialCommunityIcons

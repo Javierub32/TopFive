@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, Alert, TouchableOpacity, Platform } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, Alert, TouchableOpacity, Platform, ScrollView } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -51,7 +51,7 @@ export default function Login() {
 
 
   return (
-    <View className='flex-1'>
+    <ScrollView className='flex-1' showsVerticalScrollIndicator={false}>
       <LinearGradient
         colors={[colors.background, colors.secondary, colors.secondary]}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}
@@ -90,20 +90,20 @@ export default function Login() {
                   />
                 </View>
                 <Text className="font-semibold mb-1 ml-1" style= {{color: colors.primaryText}}>Contraseña</Text>
-                <View className="flex-row items-center rounded-xl px-4 py-3" style= {{backgroundColor: colors.surfaceButton}}>
+                <View className="flex-row items-center rounded-xl px-3 py-3" style= {{backgroundColor: colors.surfaceButton}}>
                   <MaterialCommunityIcons name="lock-outline" size={24} color={colors.secondaryText} />
                   <TextInput 
                     placeholder="••••••••" 
                     value={password} 
                     onChangeText={setPassword} 
-                    className="flex-1 ml-3 text-base"
+                    className="text-base"
                     placeholderTextColor={colors.placeholderText}
                     secureTextEntry={!showPassword}
-                    style={{color: colors.primaryText}}
+                    style={{flex: 1, marginLeft: 12, marginRight: 8, color: colors.primaryText, minWidth: 0}}
                   />
                   <TouchableOpacity 
                     onPress={() => setShowPassword(!showPassword)}
-                    className="ml-2"
+                    activeOpacity={0.7}
                   >
                     <MaterialCommunityIcons 
                       name={showPassword ? "eye-off" : "eye"} 
@@ -153,7 +153,7 @@ export default function Login() {
           </View>
         </View>
       </LinearGradient>
-    </View>
+    </ScrollView>
   );
 }
 

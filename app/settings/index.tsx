@@ -1,5 +1,5 @@
 import { ReturnButton } from "components/ReturnButton";
-import { TouchableOpacity, View, Text, TextComponent, Alert, Linking} from "react-native";
+import { TouchableOpacity, View, Text, TextComponent, Alert, Linking, Platform} from "react-native";
 import { Screen } from 'components/Screen';
 import { AntDesign, FontAwesome, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from '@expo/vector-icons/';
@@ -28,12 +28,20 @@ const handleCloseSession = async () => {
             onLeftPress: () => hideNotification(),
             onRightPress: async () => {
                 try {
+                    hideNotification(); // Ocultar antes de cerrar sesión
                     await signOut();
-                    showNotification({
-                        title: 'Sesión cerrada',
-                        description: 'Has cerrado sesión exitosamente.',
-                        isChoice: false
-                    });
+                    
+                    // En web, forzar redirección explícita
+                    if (Platform.OS === 'web') {
+                        router.replace('/(auth)/login');
+                    } else {
+                        // En móvil, mostrar notificación de éxito
+                        showNotification({
+                            title: 'Sesión cerrada',
+                            description: 'Has cerrado sesión exitosamente.',
+                            isChoice: false
+                        });
+                    }
                 } catch (error) {
                     console.error('Error al cerrar sesión:', error);
                     showNotification({
