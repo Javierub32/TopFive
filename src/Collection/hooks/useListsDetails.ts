@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { CollectionType, listServices } from "../services/listServices";
 import { ResourceType } from "hooks/useResource";
 import { Alert } from "react-native";
+import { useNotification } from "context/NotificationContext";
 
 const categoryMap: Record<ResourceType, CollectionType> = {
 	'pelicula': 'PELICULA',
@@ -19,6 +20,7 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
 	const [data, setData] = useState<any[]>([]);
 	const [page, setPage] = useState(0);
 	const [hasMore, setHasMore] = useState(true);
+	const { showNotification, hideNotification } = useNotification();
 
 	const fetchListDetails = async (currentPage: number) => {
 		// Evitar fetch si ya está cargando (a menos que sea la primera carga)
@@ -94,7 +96,25 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
 	}
 
 	const handleDeleteItem = async (itemId: string, type: CollectionType) => {
-		Alert.alert('Eliminar de la lista', '¿Estás seguro de que quieres eliminar este ítem de la lista?', [
+		showNotification({
+			title: 'Eliminar de la lista',
+			description: '¿Estás seguro de que quieres eliminar este ítem de la lista?',
+			leftButtonText: 'Cancelar',
+			rightButtonText: 'Confirmar',
+			isChoice: true,
+			onLeftPress: () => hideNotification(),
+			onRightPress: async () => {
+				await deleteItemFromList(itemId, type);
+				await resetListDetails();
+				hideNotification();
+				showNotification({
+					title: '¡Éxito!',
+					description: `El ítem ha sido eliminado de la lista`,
+					isChoice: false
+				});
+			}
+		})
+		/*Alert.alert('Eliminar de la lista', '¿Estás seguro de que quieres eliminar este ítem de la lista?', [
 			{ text: 'Cancelar', style: 'cancel' },
 			{ 
 				text: 'Confirmar', 
@@ -103,7 +123,7 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
 					await resetListDetails();
 				}
 			}
-		]);
+		]);*/
 	}
 
 	return {
