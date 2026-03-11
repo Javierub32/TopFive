@@ -51,7 +51,11 @@ export default function Login() {
 
 
   return (
-    <ScrollView className='flex-1' showsVerticalScrollIndicator={false}>
+    <ScrollView 
+      className='flex-1' 
+      contentContainerStyle={{ flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}
+    >
       <LinearGradient
         colors={[colors.background, colors.secondary, colors.secondary]}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}

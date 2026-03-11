@@ -55,10 +55,14 @@ export default function Register() {
   };
 
   return (
-    <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+	<ScrollView 
+	  className='flex-1' 
+	  contentContainerStyle={{ flexGrow: 1 }}
+	  showsVerticalScrollIndicator={false}
+	>
       <LinearGradient
         colors={[colors.background, colors.secondary, colors.secondary]}
-        style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <View style={{ width: '100%', maxWidth: 550 }}>
           <View className="flex-row items-center justify-center mb-4">
 					  <View className="rounded-full p-3 mr-3" style= {{backgroundColor: `${colors.primaryText}20`}}>
