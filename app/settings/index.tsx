@@ -31,11 +31,9 @@ const handleCloseSession = async () => {
                     hideNotification(); // Ocultar antes de cerrar sesión
                     await signOut();
                     
-                    // En web, forzar redirección explícita
-                    if (Platform.OS === 'web') {
-                        router.replace('/(auth)/login');
-                    } else {
-                        // En móvil, mostrar notificación de éxito
+                    // En móvil nativo, mostrar notificación de éxito
+                    // En web (PC y móvil), el _layout manejará la redirección automáticamente
+                    if (Platform.OS !== 'web') {
                         showNotification({
                             title: 'Sesión cerrada',
                             description: 'Has cerrado sesión exitosamente.',
