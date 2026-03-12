@@ -84,7 +84,8 @@ export default function FilmForm() {
           showNotification({
             title: 'Error al actualizar',
             description: 'Hubo un problema al actualizar la película. Inténtalo de nuevo.',
-            isChoice: false
+            isChoice: false,
+            delete: false 
           });
           console.error('Error al actualizar:', updateError);
         } else {
@@ -109,7 +110,8 @@ export default function FilmForm() {
             showNotification({
               title: '¡Éxito!',
               description: `Has actualizado ${film.titulo || film.title} en tu colección.`,
-              isChoice: false
+              isChoice: false,
+              delete: false
             });
           }, 100);
         }
@@ -165,7 +167,8 @@ export default function FilmForm() {
           showNotification({
             title: 'Aviso',
               description: 'Ya tienes esta película en tu colección.',
-              isChoice: false
+              isChoice: false,
+              delete: false
           });
         }, 100);
         setLoading(false);
@@ -191,7 +194,8 @@ export default function FilmForm() {
         showNotification({
           title: 'Error al guardar',
             description: 'Hubo un problema al guardar la película. Inténtalo de nuevo.',
-            isChoice: false
+            isChoice: false,
+            delete: false
         });
         console.error('Error al insertar:', inventoryError);
       } else {
@@ -202,7 +206,8 @@ export default function FilmForm() {
           showNotification({
             title: '¡Éxito!',
               description: `Has añadido ${film.title} a tu colección.`,
-              isChoice: false
+              isChoice: false,
+              delete: false
           });
         }, 100);
       }

@@ -39,7 +39,8 @@ export default function ResetPasswordScreen() {
 		showNotification({
 		  title: 'Error',
 		  description: 'Las contraseñas no coinciden. Por favor, inténtalo de nuevo.',
-		  isChoice: false
+		  isChoice: false,
+		  delete: false
 		});
 		setLoading(false);
 		return;
@@ -51,7 +52,8 @@ export default function ResetPasswordScreen() {
 	  showNotification({
 		title: 'Error',
 		description: 'Error al cambiar la contraseña. Por favor, inténtalo de nuevo.',
-		isChoice: false
+		isChoice: false,
+		delete: false
 	  });
 	} finally {
 	  setLoading(false);

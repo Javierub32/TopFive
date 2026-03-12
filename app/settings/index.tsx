@@ -25,6 +25,7 @@ const handleCloseSession = async () => {
             leftButtonText: 'Cancelar',
             rightButtonText: 'Cerrar sesión',
             isChoice: true,
+            delete: true,
             onLeftPress: () => hideNotification(),
             onRightPress: async () => {
                 try {
@@ -37,7 +38,8 @@ const handleCloseSession = async () => {
                         showNotification({
                             title: 'Sesión cerrada',
                             description: 'Has cerrado sesión exitosamente.',
-                            isChoice: false
+                            isChoice: false,
+                            delete: false
                         });
                     }
                 } catch (error) {
@@ -45,7 +47,8 @@ const handleCloseSession = async () => {
                     showNotification({
                         title: 'Error',
                         description: 'Hubo un problema al cerrar sesión. Intenta de nuevo más tarde.',
-                        isChoice: false
+                        isChoice: false,
+                        delete: false
                     });
                 }
             }
@@ -59,6 +62,7 @@ const handleDeleteAccount = async () => {
             rightButtonText: 'Eliminar',
             highlightRight: true,
             isChoice: true,
+            delete: true,
             onLeftPress: () => hideNotification(),
             onRightPress: async () => {
                 showNotification({
@@ -68,20 +72,23 @@ const handleDeleteAccount = async () => {
                     rightButtonText: 'Cancelar',
                     highlightRight: false,
                     isChoice: true,
+                    delete: true,
                     onLeftPress: async () => {
                         try {                            
                             await deleteAccount();
                             showNotification({
                                 title: 'Cuenta eliminada',
                                 description: 'Tu cuenta ha sido eliminada exitosamente.',
-                                isChoice: false
+                                isChoice: false,
+                                delete: false
                             });
                         } catch (error) {
                             console.error('Error al eliminar cuenta:', error);
                             showNotification({
                                 title: 'Error',
                                 description: 'Hubo un problema al eliminar tu cuenta. Intenta de nuevo más tarde.',
-                                isChoice: false
+                                isChoice: false,
+                                delete: false
                             });
                         }            
                     },

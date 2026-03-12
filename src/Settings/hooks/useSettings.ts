@@ -26,7 +26,8 @@ export const useSettings = () => {
 				showNotification({
 					title: 'Error',
 					description: 'El nombre de usuario ya está en uso. Por favor, elige otro.',
-					isChoice: false
+					isChoice: false,
+					delete: false
 				});
 			}
 			else if (error) {
@@ -34,14 +35,16 @@ export const useSettings = () => {
 				showNotification({
 					title: 'Error',
 					description: 'Hubo un error al actualizar tu perfil. Por favor, intenta de nuevo.',
-					isChoice: false
+					isChoice: false,
+					delete: false
 				});
 			} else {
 				//Alert.alert('Éxito', 'Tu perfil ha sido actualizado correctamente.');
 				showNotification({
 					title: '¡Éxito!',
 					description: 'Tu perfil ha sido actualizado correctamente.',
-					isChoice: false
+					isChoice: false,
+					delete: false
 				});
 			}
 		} catch (error) {

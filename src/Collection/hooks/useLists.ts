@@ -35,7 +35,8 @@ export const useLists = (categoriaActual: ResourceType) => {
 				showNotification({
 					title: 'Lista creada',
 					description: `La lista "${nombre}" ha sido creada exitosamente.`,
-					isChoice: false
+					isChoice: false,
+					delete: false
 				});
 			}, 100);
 			/*Alert.alert("Lista creada", `La lista "${nombre}" ha sido creada exitosamente.`,
@@ -49,7 +50,8 @@ export const useLists = (categoriaActual: ResourceType) => {
 			showNotification({
 				title: 'Error',
 				description: 'No se pudo crear la lista. Por favor, inténtalo de nuevo.',
-				isChoice: false
+				isChoice: false,
+				delete: false
 			});
 			//Alert.alert("Error", "No se pudo crear la lista. Por favor, inténtalo de nuevo.");
 		}

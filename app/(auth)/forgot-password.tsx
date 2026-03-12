@@ -35,13 +35,15 @@ export default function ForgotPasswordScreen() {
 	  showNotification({
 		title: '¡Éxito!',
 		description: 'Recibirás un email con instrucciones para restablecer tu contraseña.',
-		isChoice: false
+		isChoice: false,
+		delete: false
 	  });
 	} catch (error) {
 	  showNotification({
 		title: 'Error',
 		description: 'No se pudo enviar el correo de restablecimiento. Por favor, inténtalo de nuevo.',
-		isChoice: false
+		isChoice: false,
+		delete: false
 	  });
 	} finally {
 	  setLoading(false);

@@ -42,7 +42,8 @@ export default function Login() {
       showNotification({
         title: 'Error',
         description: 'Credenciales inválidas. Por favor, inténtalo de nuevo.',
-        isChoice: false
+        isChoice: false,
+        delete: false
       });
     } finally {
       setLoading(false);
