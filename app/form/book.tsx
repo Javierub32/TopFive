@@ -62,7 +62,8 @@ export default function BookForm() {
       showNotification({
         title: 'Número de páginas no válido',
         description: 'El número de páginas no puede ser mayor a 2000. Por favor, ingresa un número válido.',
-        isChoice: false
+        isChoice: false,
+        delete: false
       });
       return;
     }
@@ -97,7 +98,8 @@ export default function BookForm() {
           showNotification({
             title: 'Error al actualizar',
             description: 'Hubo un problema al actualizar el libro. Inténtalo de nuevo.',
-            isChoice: false
+            isChoice: false,
+            delete: false
           });
           console.error('Error al actualizar:', updateError);
         } else {
@@ -122,7 +124,8 @@ export default function BookForm() {
             showNotification({
               title: '¡Éxito!',
               description: `Has actualizado ${book.title || "este libro"} en tu colección.`,
-              isChoice: false
+              isChoice: false,
+              delete: false
             });
           }, 100);
           
@@ -181,7 +184,8 @@ export default function BookForm() {
             showNotification({
               title: 'Aviso',
               description: 'Ya tienes este libro en tu colección.',
-              isChoice: false
+              isChoice: false,
+              delete: false
             });
           }, 100);
           setLoading(false);
@@ -209,7 +213,8 @@ export default function BookForm() {
           showNotification({
             title: 'Error al guardar',
             description: 'Hubo un problema al guardar el libro. Inténtalo de nuevo.',
-            isChoice: false
+            isChoice: false,
+            delete: false
           });
           console.error('Error al insertar:', inventoryError);
         } else {
@@ -220,7 +225,8 @@ export default function BookForm() {
             showNotification({
               title: '¡Éxito!',
               description: `Has añadido ${book.title} a tu colección.`,
-              isChoice: false
+              isChoice: false,
+              delete: false
             });
           }, 100);
         }

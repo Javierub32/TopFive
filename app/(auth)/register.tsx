@@ -29,7 +29,8 @@ export default function Register() {
         showNotification({
           title: 'Error',
           description: 'Las contraseñas no coinciden. Por favor, inténtalo de nuevo.',
-          isChoice: false
+          isChoice: false,
+          delete: false
         });
         setLoading(false);
         return;
@@ -39,7 +40,8 @@ export default function Register() {
       showNotification({
         title: 'Éxito',
         description: 'Tu cuenta ha sido creada. \nRevisa la bandeja de spam y confirma tu correo para iniciar sesión.',
-        isChoice: false
+        isChoice: false,
+        delete: false
       });
     
   } catch (error: any) {
@@ -47,7 +49,8 @@ export default function Register() {
       showNotification({
         title: 'Error',
         description: error.message || 'Hubo un error al crear tu cuenta.',
-        isChoice: false
+        isChoice: false,
+        delete: false
       });
     } finally {
       setLoading(false);

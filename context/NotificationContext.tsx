@@ -8,6 +8,7 @@ interface NotificationConfig {
   rightButtonText?: string;
   highlightRight?: boolean;
   isChoice: boolean;
+  delete: boolean;
   onLeftPress?: () => void;
   onRightPress?: () => void;
 }
@@ -25,6 +26,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     title: '',
     description: '',
     isChoice: false,
+    delete: false,
   });
 
   const showNotification = (newConfig: NotificationConfig) => {
@@ -47,6 +49,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         rightButtonText={config.rightButtonText}
         highlightRight={config.highlightRight}
         isChoice={config.isChoice}
+        delete={config.delete}
         onLeftPress={config.onLeftPress}
         onRightPress={config.onRightPress}
         onClose={hideNotification}

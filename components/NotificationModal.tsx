@@ -11,6 +11,7 @@ interface NotificationModalProps {
   rightButtonText?: string;
   highlightRight?: boolean;
   isChoice: boolean; // true = modal grande en medio, false = modal pequeño abajo
+  delete?: boolean; // Si es una notificación de eliminación, el botón derecho se resalta en rojo
   onLeftPress?: () => void;
   onRightPress?: () => void;
   onClose?: () => void;
@@ -24,11 +25,15 @@ export const NotificationModal = ({
   rightButtonText,
   highlightRight = true,
   isChoice,
+  delete: isDelete = false,
   onLeftPress,
   onRightPress,
   onClose,
 }: NotificationModalProps) => {
   const { colors } = useTheme();
+  
+  // Determinar el color del botón resaltado basado en si es una eliminación
+  const highlightColor = isDelete ? colors.error : colors.primary;
 
   // Auto-cerrar el modal pequeño después de 3 segundos
   useEffect(() => {
@@ -82,7 +87,7 @@ export const NotificationModal = ({
                 <TouchableOpacity
                   className="flex-1 py-3 rounded-xl"
                   style={{ 
-                    backgroundColor: !highlightRight ? colors.error : colors.background,
+                    backgroundColor: !highlightRight ? highlightColor : colors.background,
                   }}
                   onPress={onLeftPress}
                   activeOpacity={0.7}
@@ -101,7 +106,7 @@ export const NotificationModal = ({
                 <TouchableOpacity
                   className="flex-1 py-3 rounded-xl"
                   style={{ 
-                    backgroundColor: highlightRight ? colors.error : colors.background,
+                    backgroundColor: highlightRight ? highlightColor : colors.background,
                   }}
                   onPress={onRightPress}
                   activeOpacity={0.7}
@@ -161,7 +166,7 @@ export const NotificationModal = ({
                       <TouchableOpacity
                         className="flex-1 py-2 rounded-lg"
                         style={{ 
-                          backgroundColor: !highlightRight ? colors.primary : 'transparent',
+                          backgroundColor: !highlightRight ? highlightColor : 'transparent',
                           borderWidth: !highlightRight ? 0 : 1.5,
                           borderColor: !highlightRight ? 'transparent' : colors.borderButton,
                         }}
@@ -181,7 +186,7 @@ export const NotificationModal = ({
                       <TouchableOpacity
                         className="flex-1 py-2 rounded-lg"
                         style={{ 
-                          backgroundColor: highlightRight ? colors.primary : 'transparent',
+                          backgroundColor: highlightRight ? highlightColor : 'transparent',
                           borderWidth: highlightRight ? 0 : 1.5,
                           borderColor: highlightRight ? 'transparent' : colors.borderButton,
                         }}

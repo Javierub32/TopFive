@@ -58,7 +58,7 @@ export const CategorySelectorModal = ({
         activeOpacity={1}
         onPress={onClose}>
         <TouchableOpacity
-          className="w-[100%] rounded-xl p-4 shadow-xl"
+          className="w-[100%] rounded-xl p-4 shadow-xl "
           style={{ backgroundColor: colors.surfaceButton, borderColor: colors.borderButton }}
           activeOpacity={1}
           onPress={(e) => e.stopPropagation()}>
@@ -81,7 +81,7 @@ export const CategorySelectorModal = ({
                     style={{ backgroundColor: `${colors[`ground${categories.indexOf(cat) + 1}`]}26`, borderWidth: 0 }}>
                     <Icon size={24} color={`${colors[`ground${categories.indexOf(cat) + 1}`]}FF`} />
                   </View>
-                  <Text className="text-xs text-center" style={{ color: colors.primaryText }}>
+                  <Text className="text-xs text-center mb-10" style={{ color: colors.primaryText }}>
                     {cat.label}
                   </Text>
                 </TouchableOpacity>

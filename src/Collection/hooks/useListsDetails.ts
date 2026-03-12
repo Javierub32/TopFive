@@ -102,6 +102,7 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
 			leftButtonText: 'Cancelar',
 			rightButtonText: 'Confirmar',
 			isChoice: true,
+			delete: true,
 			onLeftPress: () => hideNotification(),
 			onRightPress: async () => {
 				await deleteItemFromList(itemId, type);
@@ -110,7 +111,8 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
 				showNotification({
 					title: '¡Éxito!',
 					description: `El ítem ha sido eliminado de la lista`,
-					isChoice: false
+					isChoice: false,
+					delete: false
 				});
 			}
 		})

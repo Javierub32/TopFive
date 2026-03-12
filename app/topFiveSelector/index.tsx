@@ -34,6 +34,7 @@ export default function TopFiveSelectorScreen() {
         leftButtonText: 'Cancelar',
         rightButtonText: 'Confirmar',
         isChoice: true,
+        delete: false,
         onLeftPress: () => hideNotification(),
         onRightPress: async () => {
           const posicion = parseInt(position);
@@ -43,7 +44,8 @@ export default function TopFiveSelectorScreen() {
           showNotification({
             title: '¡Éxito!',
             description: `${item.contenido.titulo} ha sido agregado a tu Top 5`,
-            isChoice: false
+            isChoice: false,
+            delete: false
           });
         }
       })

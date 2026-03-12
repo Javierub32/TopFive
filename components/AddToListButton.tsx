@@ -22,7 +22,8 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
       showNotification({
         title: header,
         description: message,
-        isChoice: false
+        isChoice: false,
+        delete: false
       });
     } catch (error: any) {
       console.error(error);
@@ -30,7 +31,8 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
       showNotification({
         title: 'Error',
         description: error.message || 'No se pudo añadir a la lista.',
-        isChoice: false
+        isChoice: false,
+        delete: false
       });
     } finally {
       setLoading(false);

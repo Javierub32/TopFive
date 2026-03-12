@@ -40,14 +40,16 @@ export const useFollowers = (username: string) => {
 	  showNotification({
       title: '¡Éxito!',
       description: `${usernameToRemove} ha sido eliminado de tus seguidores`,
-      isChoice: false
+      isChoice: false,
+      delete: false
     });
   } catch (error) {
 		console.error('Error removing follower:', error);
     showNotification({
       title: 'Error',
       description: `No se pudo eliminar a ${usernameToRemove} de tus seguidores. Por favor, intenta de nuevo.`,
-      isChoice: false
+      isChoice: false,
+      delete: false
     });
 	} finally {
 		setLoading(false);
@@ -65,6 +67,7 @@ export const useFollowers = (username: string) => {
       leftButtonText: 'Cancelar',
       rightButtonText: 'Eliminar',
       isChoice: true,
+      delete: true,
       onLeftPress: () => hideNotification(),
       onRightPress: () => handleRemoveFollower(username, deleteId)
     });
