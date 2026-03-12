@@ -95,7 +95,8 @@ export default function GameForm() {
           showNotification({
             title: 'Error al actualizar',
             description: 'Hubo un problema al actualizar el juego. Inténtalo de nuevo.',
-            isChoice: false
+            isChoice: false,
+			delete: false
           })
           console.error('Error al actualizar:', updateError);
         } else {
@@ -121,7 +122,8 @@ export default function GameForm() {
             showNotification({
               title: '¡Éxito!',
               description: `Has actualizado ${game.titulo || game.title} en tu colección.`,
-              isChoice: false
+              isChoice: false,
+			  delete: false
             });
           }, 100);
         }
@@ -176,7 +178,8 @@ export default function GameForm() {
           showNotification({
             title: 'Aviso',
               description: 'Ya tienes este juego en tu colección.',
-              isChoice: false
+              isChoice: false,
+			  delete: false
           });
         }, 100);
         setLoading(false);
@@ -202,7 +205,8 @@ export default function GameForm() {
         showNotification({
           title: 'Error al guardar',
           description: 'Hubo un problema al guardar el juego. Inténtalo de nuevo.',
-          isChoice: false
+          isChoice: false,
+          delete: false
         })
         console.error('Error al insertar:', inventoryError);
       } else {
@@ -213,7 +217,8 @@ export default function GameForm() {
           showNotification({
             title: '¡Éxito!',
               description: `Has añadido ${game.title} a tu colección.`,
-              isChoice: false
+              isChoice: false,
+			  delete: false
           });
         }, 100);
       }
