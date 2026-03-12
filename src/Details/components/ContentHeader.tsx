@@ -3,13 +3,12 @@ import { ReturnButton } from "components/ReturnButton";
 import { useTheme } from "context/ThemeContext";
 import { LinearGradient } from "expo-linear-gradient";
 import { ResourceType } from "hooks/useResource";
-import { StyleSheet, Dimensions, View, Image, Pressable } from "react-native";
+import { StyleSheet, Dimensions, View, Image, Pressable, Platform, useWindowDimensions } from "react-native";
 import { ContentTags } from "./ContentTags";
 import { useState } from "react";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
-const { width : SCREEN_WIDTH } = Dimensions.get('window');
-const HEADER_HEIGHT = Dimensions.get('window').height * 0.6;
+
 
 interface Props {
     imageUrl : string | null;
@@ -24,9 +23,12 @@ export const ModernContentHeader = ({imageUrl, returnRoute, content, type, autor
 
     const [showUI, setShowUI] = useState(true);
 
+    const { height: SCREEN_HEIGHT } = useWindowDimensions();
+    const HEADER_HEIGHT = SCREEN_HEIGHT *0.6;
+
     const styles = StyleSheet.create({
         container: {
-            width: SCREEN_WIDTH,
+            width: '100%',
             height: HEADER_HEIGHT,
             position: 'relative',
         },

@@ -18,6 +18,7 @@ import { ExtraCard } from "@/Details/components/ExtraCard";
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useContent } from '@/Details/hooks/useContent';
 import { ModernContentHeader } from "@/Details/components/ContentHeader";
+import { ContentRating } from "@/Details/components/ContentRating";
 
 export default function GameDetail() {
   const { id, from } = useLocalSearchParams();
@@ -66,6 +67,7 @@ export default function GameDetail() {
 
         <View className="mb-14 px-4 pb-6">        
           <View className="flex-col justify-between gap-3 mt-1">
+            <ContentRating content={game} type='libro'/>
             <ExtraCard extra={game.gamemodes} type='videojuego'/>
             <DescriptionCard description={game.description}/>
           </View>

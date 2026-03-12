@@ -15,6 +15,7 @@ import { AddToCollectionButton } from "@/Details/components/AddToCollectionButto
 import { useContent } from '@/Details/hooks/useContent';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { ModernContentHeader } from "@/Details/components/ContentHeader";
+import { ContentRating } from "@/Details/components/ContentRating";
 
 export default function FilmDetail() {
   const { id, from } = useLocalSearchParams();
@@ -61,6 +62,7 @@ export default function FilmDetail() {
 
         <View className="mb-14 px-4 pb-6">        
           <View className="flex-col justify-between gap-3 mt-1">
+            <ContentRating content={film} type='pelicula' />
             <DescriptionCard description={film.description}/>
           </View>
           <AddToCollectionButton content={film} type='pelicula'/>

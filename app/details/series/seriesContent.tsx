@@ -15,6 +15,7 @@ import { ThemedStatusBar } from "components/ThemedStatusBar";
 import { useContent } from '@/Details/hooks/useContent';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { ModernContentHeader } from "@/Details/components/ContentHeader";
+import { ContentRating } from "@/Details/components/ContentRating";
 
 export default function SeriesDetail() {
   const { id, from } = useLocalSearchParams();
@@ -62,6 +63,7 @@ export default function SeriesDetail() {
 
         <View className="mb-14 px-4 pb-6">        
           <View className="flex-col justify-between gap-3 mt-1">
+            <ContentRating content={series} type='serie'/>
             <DescriptionCard description={series.description}/>   
           </View>
           <AddToCollectionButton content={series} type='serie'/>

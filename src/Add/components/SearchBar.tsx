@@ -79,15 +79,15 @@ export const SearchBar = ({
 
       {/* Menú Desplegable */}
       {menuAbierto && (
-        <View className="absolute right-0 top-14 z-50 w-48 overflow-hidden rounded-lg border shadow-xl" style={{borderColor: colors.borderButton, backgroundColor: colors.surfaceButton}}>
+        <View className="absolute right-0 top-14 z-50 w-48 overflow-hidden rounded-lg border shadow-xl" style={{borderColor: colors.accent, backgroundColor: colors.surfaceButton}}>
           {OPCIONES.map((opcion, index) => (
             <TouchableOpacity
               key={opcion}
               className="flex-row items-center justify-between p-3"
               style={{
                 borderBottomWidth: index !== OPCIONES.length - 1 ? 1 : 0,
-                borderBottomColor: colors.borderButton,
-                backgroundColor: selectedCategory === opcion ? colors.borderButton : 'transparent'
+                borderBottomColor: colors.accent,
+                backgroundColor: selectedCategory === opcion ? colors.accent : 'transparent'
               }}
               onPress={() => onCategoryChange(opcion)}
             >

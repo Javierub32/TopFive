@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import { Book, Film, Game, Series, Song } from 'app/types/Content';
 import { useTheme } from 'context/ThemeContext';
-import { RatingIcon, RatingStarIcon } from 'components/Icons';
+import { RatingStarIcon } from 'components/Icons';
 import { ResourceType } from "hooks/useResource";
 
 interface Props {
@@ -33,18 +33,6 @@ export const ContentTags = ({ content, type, autor }: Props) => {
   }; 
 
   const typeContent = ResourceMap[type];
-
-  const newRating = () => {
-    if ('rating' in content) {
-      if (!content.rating) return null;
-
-      return content.rating;
-    }
-
-    return null;
-  };
-
-  const formatedRating = newRating();
 
   const getGenre = () => {
     if ('genre' in content) {
@@ -103,20 +91,9 @@ export const ContentTags = ({ content, type, autor }: Props) => {
           </View>
         )}
 
-        {!!formatedRating && type!="libro" && (
-          <View
-            className="flex-row items-center rounded-lg px-3 py-1.5"
-            style={{ backgroundColor: `${colors.rating}1A` }}>
-            <RatingStarIcon />
-            <Text className="ml-1 text-sm font-bold" style={{ color: colors.markerText }}>
-              {formatedRating}
-            </Text>
-          </View>
-        )}
-
         {!!formatedGenres && formatedGenres.length > 0 && (
           <View
-            className="rounded-lg px-3 py-1.5"
+            className="rounded-lg px-3 py-1.5 flex-shrink"
             style={{ backgroundColor: colors.surfaceButton}}>
             <Text className="text-sm" numberOfLines={1} style={{ color: colors.markerText }}>
               {formatedGenres}
