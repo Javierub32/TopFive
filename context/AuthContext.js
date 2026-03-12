@@ -1,5 +1,9 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
 import { supabase } from '../lib/supabase';
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
+import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 
 const AuthContext = createContext();
 
@@ -7,6 +11,47 @@ export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [session, setSession] = useState(null);
 	const [loading, setLoading] = useState(true);
+
+	Notifications.setNotificationHandler({
+	handleNotification: async () => ({
+		shouldShowAlert: true,
+		shouldPlaySound: true,
+		shouldSetBadge: true,
+	}),
+	});
+
+	async function registerForPushNotificationsAsync() {
+		let token;
+
+		if (Platform.OS === 'android') {
+			await Notifications.setNotificationChannelAsync('default', {
+			name: 'default',
+			importance: Notifications.AndroidImportance.MAX,
+			vibrationPattern:[0, 250, 250, 250],
+			lightColor: '#FF231F7C',
+			});
+		}
+
+		if (Device.isDevice) {
+			const { status: existingStatus } = await Notifications.getPermissionsAsync();
+			let finalStatus = existingStatus;
+			if (existingStatus !== 'granted') {
+			const { status } = await Notifications.requestPermissionsAsync();
+			finalStatus = status;
+			}
+			if (finalStatus !== 'granted') {
+			console.log('Permiso denegado para notificaciones push');
+			return null;
+			}
+			// Obtener el token de Expo usando el Project ID
+			token = (await Notifications.getExpoPushTokenAsync({
+			projectId: Constants.expoConfig.extra.eas.projectId,
+			})).data;
+		} else {
+		}
+
+		return token;
+	}
 
 	useEffect(() => {
 		let mounted = true;
@@ -41,6 +86,15 @@ export const AuthProvider = ({ children }) => {
 							setSession(session);
 							setUser(session.user);
 						}
+					}
+
+					// Registrar token de notificaciones push
+					const token = await registerForPushNotificationsAsync();
+					if (token) {
+						await supabase
+							.from('usuario')
+							.update({ push_token: token })
+							.eq('id', session.user.id);
 					}
 				}
 			} catch (error) {
