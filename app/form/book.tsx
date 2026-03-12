@@ -44,7 +44,6 @@ export default function BookForm() {
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
   const book: Book = editando ? resource.contenido : JSON.parse(bookData as string);
-  console.log('Recurso a editar:', book);
 
 
   const [reseña, setReseña] = useState(resource?.reseña || '');
@@ -84,6 +83,15 @@ export default function BookForm() {
             fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
           })
           .eq('id', resource.id)
+          .select(`
+            *,
+            contenidolibro:idContenido (
+              titulo,
+              imagenUrl,
+              fechaLanzamiento
+            )
+          `)
+          .single();
 
         if (updateError) {
           showNotification({

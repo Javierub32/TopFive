@@ -37,12 +37,7 @@ export const ContentTags = ({ content, type, autor }: Props) => {
   const newRating = () => {
     if ('rating' in content) {
       if (!content.rating) return null;
-      if (typeContent == 'film' || typeContent == 'series') {
-        return (content.rating/2).toFixed(1);
-      }
-      if(typeContent == 'games'){
-        return (content.rating/2).toFixed(1);
-      }
+
       return content.rating;
     }
 

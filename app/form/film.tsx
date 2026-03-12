@@ -70,6 +70,15 @@ export default function FilmForm() {
             numVisionados: numVisionados,
           })
           .eq('id', resource.id)
+          .select(`
+            *,
+            contenidopelicula:idContenido (
+              titulo,
+              imagenUrl,
+              fechaLanzamiento
+            )
+          `)
+          .single();
 
         if (updateError) {
           showNotification({

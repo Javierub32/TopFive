@@ -86,6 +86,15 @@ export default function SeriesForm() {
             fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
           })
           .eq('id', resource.id)
+          .select(`
+            *,
+            contenidoserie:idContenido (
+              titulo,
+              imagenUrl,
+              fechaLanzamiento
+            )
+          `)
+          .single();
 
         if (updateError) {
           //Alert.alert('Error', 'Hubo un problema al actualizar la serie. Inténtalo de nuevo.');

@@ -76,7 +76,7 @@ export const ProgressSetter = ({progress, setProgress, progressExtra, setProgres
                                 value={(progressExtra || 1).toString()} onChangeText={(text) => {
                                     const numericText = text.replace(/[^0-9]/g, '');
                                     const num = parseInt(numericText) || 0;
-                                    if (num <= 50 || numericText === '') {
+                                    if (num <= 2000 || numericText === '') {
                                         setProgressExtra(numericText)
                                     }}}
                                 keyboardType="numeric"

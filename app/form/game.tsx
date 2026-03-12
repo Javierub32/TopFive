@@ -80,6 +80,15 @@ export default function GameForm() {
             fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
           })
           .eq('id', resource.id)
+          .select(`
+            *,
+            contenidovideojuego:idContenido (
+              titulo,
+              imagenUrl,
+              fechaLanzamiento              
+            )
+          `)
+          .single();
 
         if (updateError) {
           //Alert.alert('Error', 'Hubo un problema al actualizar el videojuego. Inténtalo de nuevo.');

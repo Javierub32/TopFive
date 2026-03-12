@@ -70,6 +70,15 @@ export default function SongForm() {
             fechaEscucha: fechaEscuchado ? fechaEscuchado.toISOString().split('T')[0] : null,
           })
           .eq('id', resource.id)
+          .select(`
+            *,
+            contenidocancion:idContenido (
+              titulo,
+              imagenUrl,
+              fechaLanzamiento
+            )
+          `)
+          .single();
 
         if (updateError) {
           //Alert.alert('Error', 'Hubo un problema al actualizar la canción. Inténtalo de nuevo.');
