@@ -73,14 +73,14 @@ export default function AboutUsScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* --- Wikidata (Música) --- */}
+        {/* --- Discogs (Música) --- */}
         <View className="mb-6 p-4 rounded-xl" style={{backgroundColor: colors.surfaceButton, }}>
           <Text className="text-xl font-bold mb-2" style={{color: colors.primaryText}}>Música</Text>
           <Text className="text-sm mb-3" style={{color: colors.secondaryText}}>
-            Datos proporcionados por Wikidata. 
+            Datos proporcionados por Discogs. Este producto utiliza la API de Discogs pero no está certificado por Discogs. 
           </Text>
-          <TouchableOpacity onPress={() => openLink("https://www.wikidata.org/wiki/Wikidata:Main_Page")}>
-            <Text className="underline" style={{color: colors.accent}}>Visitar Wikidata</Text>
+          <TouchableOpacity onPress={() => openLink("https://www.discogs.com/es/?srsltid=AfmBOooV22Qg4h2z4-2zH1I8OTeYsmyeMaNwryyQYaBrslWh8dDZK5fa")}>
+            <Text className="underline" style={{color: colors.accent}}>Visitar Discogs</Text>
           </TouchableOpacity>
         </View>
 
