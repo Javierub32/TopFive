@@ -62,7 +62,7 @@ export default function Register() {
 	>
       <LinearGradient
         colors={[colors.background, colors.secondary, colors.secondary]}
-        style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
         <View style={{ width: '100%', maxWidth: 550 }}>
           <View className="flex-row items-center justify-center mb-4">
 					  <View className="rounded-full p-3 mr-3" style= {{backgroundColor: `${colors.primaryText}20`}}>

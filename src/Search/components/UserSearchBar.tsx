@@ -19,7 +19,7 @@ export function UserSearchBar({
 
   return (
     <View className="relative z-50">
-      <View className="h-12 flex-row items-center rounded-lg border shadow-lg" style={{ borderColor: colors.borderButton, backgroundColor: colors.surfaceButton }} >
+      <View className="h-12 flex-row items-center rounded-lg border shadow-lg" style={{ borderColor: colors.accent, backgroundColor: colors.surfaceButton }} >
         {/* Icono Lupa */}
         <View className="justify-center pl-3">
           <MaterialCommunityIcons name="magnify" size={20} color={colors.secondaryText} />

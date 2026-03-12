@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { SearchResult } from '../../Add/adapters/searchResultsAdapter';
 import { useTheme } from 'context/ThemeContext';
 import { ResourceType } from "hooks/useResource";
+import { RatingStarIcon } from 'components/Icons';
 
 interface SearchResultItemProps {
   item: SearchResult;
@@ -39,14 +40,20 @@ export const SearchResultItem = ({ item, onPress }: SearchResultItemProps) => {
         </Text>
 
         {/* Fecha/Rating */}
-        {!item.date || !item.rating ? (
+        {item.date && item.rating && (
           <Text className="mb-2 text-sm" style={{color: colors.secondaryText}} numberOfLines={1}>
-            {item.date}  {item.rating}
+            {item.date} | <FontAwesome5 name="star" size={16} color={colors.rating} solid={true} /> {item.rating}
           </Text>
-        ):(
+        )}
+        {item.date && !item.rating && (
           <Text className="mb-2 text-sm" style={{color: colors.secondaryText}} numberOfLines={1}>
-          {item.date} | {item.rating}
-        </Text>
+            {item.date}
+          </Text>
+        )}
+        {!item.date && item.rating && (
+          <Text className="mb-2 text-sm" style={{color: colors.secondaryText}} numberOfLines={1}>
+            <FontAwesome5 name="star" size={16} color={colors.rating} solid={true} /> {item.rating}
+          </Text>
         )}
         
         {/* Badge de Género */}

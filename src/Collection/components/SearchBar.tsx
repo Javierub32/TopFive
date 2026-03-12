@@ -30,7 +30,8 @@ export const SearchBar = () => {
   const { colors } = useTheme();
   return (
     <View className="relative z-50 mb-3">
-      <View className="h-12 flex-row items-center rounded-lg border border-borderButton bg-surfaceButton shadow-lg">
+      <View className="h-12 flex-row items-center rounded-lg border shadow-lg"
+	  		style={{ borderColor: colors.accent, backgroundColor: colors.surfaceButton, shadowColor: colors.shadow }}>
         {/* Icono Lupa */}
         <View className="justify-center pl-3">
           <MaterialCommunityIcons name="magnify" size={20} color={colors.secondaryText} />

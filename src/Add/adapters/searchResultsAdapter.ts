@@ -18,7 +18,7 @@ export const searchAdapter: Record<ResourceType, (data: any) => SearchResult> = 
     cover: book.image || '',
     genre: book.genre?.[0] || '',
     date: book.releaseDate?.split('-')[0] || '',
-    rating: book.rating ? `⭐ ${book.rating}` : '',
+    rating: book.rating || '',
   }),
 
   pelicula: (film: any): SearchResult => ({
@@ -28,7 +28,7 @@ export const searchAdapter: Record<ResourceType, (data: any) => SearchResult> = 
     cover: film.image || '',
     genre: film.genre?.[0] || '',
     date: film.releaseDate?.split('-')[0] || '',
-    rating: film.rating ? `⭐ ${(film.rating).toFixed(1)}` : '',
+    rating: film.rating || '',
   }),
 
   serie: (series: any): SearchResult => ({
@@ -38,7 +38,7 @@ export const searchAdapter: Record<ResourceType, (data: any) => SearchResult> = 
     cover: series.image || '',
     genre: series.genre?.[0] || '',
     date: series.releaseDate?.split('-')[0]  || '',
-    rating: series.rating ? `⭐ ${(series.rating).toFixed(1)}` : '',
+    rating: series.rating || '',
   }),
 
   videojuego: (game: any): SearchResult => ({
@@ -48,7 +48,7 @@ export const searchAdapter: Record<ResourceType, (data: any) => SearchResult> = 
     cover: game.image || '',
     genre: game.genre?.[0] || '',
     date: game.releaseDate?.split('-')[0] || '',
-    rating: game.rating ? `⭐ ${(game.rating).toFixed(1)}` : '',
+    rating: game.rating || '',
   }),
 
   cancion: (song: any): SearchResult => ({
@@ -58,6 +58,6 @@ export const searchAdapter: Record<ResourceType, (data: any) => SearchResult> = 
     cover: song.image || '',
     genre: song.genre || '',
     date: song.releaseDate?.split('-')[0] || '',
-    rating: song.rating ? `⭐ ${song.rating.toFixed(1)}` : '',
+    rating: song.rating || '',
   }),
 };

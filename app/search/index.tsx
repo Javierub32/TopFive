@@ -36,10 +36,7 @@ export default function SearchhScreen() {
 	<Screen>
 	  <ThemedStatusBar/>
 	  <View className="flex-1 px-4 pt-6">
-			<ReturnButton route='back' title='Usuarios' style='mb-6' deleteSearchResults={true}/>
-
-		
-		
+		<ReturnButton route='back' title='Usuarios' style='mb-6' deleteSearchResults={true}/>
 		<UserSearchBar 
 			value={busqueda} 
 			onChangeText={setBusqueda} 
