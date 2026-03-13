@@ -88,14 +88,7 @@ export const AuthProvider = ({ children }) => {
 						}
 					}
 
-					// Registrar token de notificaciones push
-					const token = await registerForPushNotificationsAsync();
-					if (token) {
-						await supabase
-							.from('usuario')
-							.update({ push_token: token })
-							.eq('id', session.user.id);
-					}
+
 				}
 			} catch (error) {
 				console.error("Error en la autenticación inicial:", error);
