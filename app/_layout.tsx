@@ -2,7 +2,7 @@ import '../global.css';
 import { Slot, SplashScreen, useRouter, useSegments } from 'expo-router';
 import { useEffect, useCallback, useState } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
-import { View, ActivityIndicator, Linking } from 'react-native';
+import { View, ActivityIndicator, Linking, Platform } from 'react-native';
 import * as Font from 'expo-font';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeProvider } from 'context/ThemeContext';
@@ -63,7 +63,7 @@ function InitialLayout() {
           return 0;
         };
 
-        if (cmp(remoteVersion, localVersion) > 0) {
+        if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'android') {
           showNotification({
             title: 'Actualización disponible',
             description: 'Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades.',
