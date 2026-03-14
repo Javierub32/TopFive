@@ -24,7 +24,7 @@ const CATEGORY_LABELS: Record<ResourceType, string> = {
   pelicula: 'Películas',
   serie: 'Series',
   videojuego: 'Videojuegos',
-  cancion: 'Canciones',
+  cancion: 'Álbumes',
 };
 
 export const SearchPlaceholder = ({ category, loading }: SearchPlaceholderProps) => {

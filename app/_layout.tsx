@@ -2,13 +2,15 @@ import '../global.css';
 import { Slot, SplashScreen, useRouter, useSegments } from 'expo-router';
 import { useEffect, useCallback, useState } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, Linking } from 'react-native';
 import * as Font from 'expo-font';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeProvider } from 'context/ThemeContext';
 import { CollectionProvider } from 'context/CollectionContext';
-import { NotificationProvider } from 'context/NotificationContext';
+import { NotificationProvider, useNotification } from 'context/NotificationContext';
 import { SearchProvider } from 'context/SearchContext';
+import Constants from 'expo-constants';
+import { supabase } from 'lib/supabase';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -17,6 +19,7 @@ function InitialLayout() {
   const segments = useSegments();
   const router = useRouter();
   const [appIsReady, setAppIsReady] = useState(false);
+  const { showNotification, hideNotification } = useNotification();
 
   useEffect(() => {
     async function prepare() {
@@ -33,6 +36,56 @@ function InitialLayout() {
     }
     prepare();
   }, []);
+
+  useEffect(() => {
+    const checkAppVersion = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('version')
+          .select('version')
+          .single();
+
+        if (error || !data) return;
+
+        const remoteVersion = data.version;
+        const localVersion = Constants.expoConfig?.version || '1.0.0';
+
+        // Función auxiliar para comparar versiones semánticas (X.Y.Z)
+        const cmp = (v1: string, v2: string) => {
+          const p1 = v1.split('.').map(Number);
+          const p2 = v2.split('.').map(Number);
+          for (let i = 0; i < Math.max(p1.length, p2.length); i++) {
+            const n1 = p1[i] || 0;
+            const n2 = p2[i] || 0;
+            if (n1 > n2) return 1;
+            if (n1 < n2) return -1;
+          }
+          return 0;
+        };
+
+        if (cmp(remoteVersion, localVersion) > 0) {
+          showNotification({
+            title: 'Actualización disponible',
+            description: 'Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades.',
+            isChoice: true,
+            rightButtonText: 'Actualizar', 
+            onRightPress: () => {
+              hideNotification();
+              Linking.openURL('https://play.google.com/store/apps/details?id=com.leftjoiners.topfive');
+            },
+            delete: false
+          });
+        }
+      } catch (e) {
+        console.error('Error verificando versión de la app:', e);
+      }
+    };
+
+    // Lanzamos el verificador solo cuando la app ya esté lista (fuentes cargadas, etc)
+    if (appIsReady) {
+      checkAppVersion();
+    }
+  }, [appIsReady]);
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {

@@ -43,7 +43,7 @@ export default function EditProfileScreen() {
 			<TouchableOpacity
 				className="mt-4 w-full items-center rounded-xl py-3"
 				style={{ backgroundColor: colors.secondary }}
-				onPress={() => handleSubmit(uname, udesc)}>
+				onPress={() => handleSubmit(uname.trim(), udesc.trim())}>
 				<Text className="text-lg font-semibold text-white">Guardar cambios</Text>
 			</TouchableOpacity>
 		 </View>

@@ -10,7 +10,7 @@ import { useNotification } from 'context/NotificationContext';
 export default function Register() {
   const { signUp } = useAuth();
   const router = useRouter();
-  const {showNotification} = useNotification();
+  const {showNotification, hideNotification} = useNotification();
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -35,12 +35,16 @@ export default function Register() {
         setLoading(false);
         return;
       }
-      await signUp(email, password, username);
-	  //Alert.alert('Éxito', 'Tu cuenta ha sido creada. \nRevisa la bandeja de spam y confirma tu correo para iniciar sesión.');
+      await signUp(email, password, username.trim());
       showNotification({
-        title: 'Éxito',
-        description: 'Tu cuenta ha sido creada. \nRevisa la bandeja de spam y confirma tu correo para iniciar sesión.',
-        isChoice: false,
+        title: 'Cuenta creada',
+        description: 'Tu cuenta ha sido creada exitosamente. \nRevisa la bandeja de SPAM y confirma tu correo para iniciar sesión.',
+        isChoice: true, 
+        rightButtonText: 'Aceptar',
+        onRightPress: () => {
+          hideNotification();
+          router.push('/(auth)/login'); 
+        },
         delete: false
       });
     

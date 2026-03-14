@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { Modal, View, Text, TouchableOpacity, Pressable } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 
 interface NotificationModalProps {
   visible: boolean;
@@ -31,6 +33,7 @@ export const NotificationModal = ({
   onClose,
 }: NotificationModalProps) => {
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets(); 
   
   // Determinar el color del botón resaltado basado en si es una eliminación
   const highlightColor = isDelete ? colors.error : colors.primary;
@@ -137,8 +140,8 @@ export const NotificationModal = ({
           className="flex-1 justify-end"
         >
           <Pressable
-            className="mx-4 mb-4 rounded-2xl p-4 shadow-lg"
-            style={{ backgroundColor: colors.surfaceButton }}
+            className="mx-4 rounded-2xl p-4 shadow-lg"
+            style={{ backgroundColor: colors.surfaceButton, marginBottom: Math.max(insets.bottom + 16, 24) }}
             onPress={(e) => e.stopPropagation()}
           >
             <View className="flex-row items-start justify-between">
