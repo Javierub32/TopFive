@@ -136,8 +136,9 @@ export const NotificationModal = ({
         animationType="slide"
         onRequestClose={onClose}
       >
-        <View 
+        <Pressable 
           className="flex-1 justify-end"
+          onPress={onClose}
         >
           <Pressable
             className="mx-4 rounded-2xl p-4 shadow-lg"
@@ -222,8 +223,10 @@ export const NotificationModal = ({
               </TouchableOpacity>
             </View>
           </Pressable>
-        </View>
+        </Pressable>
       </Modal>
     );
   }
 };
+
+
