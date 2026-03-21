@@ -7,6 +7,7 @@ import { Activity } from '../hooks/useActivity';
 import { BookIcon, FilmIcon, GameIcon, MusicIcon, RatingStarIcon, ShowIcon, UserIcon } from 'components/Icons';
 import { router } from 'expo-router';
 import { ResourceType } from 'hooks/useResource';
+import { useState } from 'react';
 
 
 
@@ -48,7 +49,15 @@ export default function ActivityItem({ item }: { item: Activity }) {
 
   const type = typeMap[categoryMap[item.tipo_contenido].resourceType];
     
-
+  const [ isExpanded, setIsExpanded ] = useState(false);
+    const MAX_LENGTH = 120;
+    const shouldTruncate = item.comentario && item.comentario.length > MAX_LENGTH;
+    const descriptionText = item.comentario || ''
+  
+  
+  const displayedDescription = shouldTruncate && !isExpanded
+    ? descriptionText.slice(0, MAX_LENGTH) + '...'
+    : descriptionText;
 
   return (
     <View className=" rounded-2xl shadow-xl mb-4 overflow-hidden" style={{ borderWidth: 0, borderColor: colors.borderButton }}>
@@ -130,8 +139,16 @@ export default function ActivityItem({ item }: { item: Activity }) {
                   </View>
                 </View>
                 {/* Reseña */}
-                <Text className="mt-3 text-sm leading-relaxed italic" numberOfLines={4} style={{ color: colors.secondaryText }}>
-                  {item.comentario || ''}
+                <Text style={{ color: colors.secondaryText, textAlign: 'justify' }}>
+                  <Text className="italic leading-relaxed" style={{ textAlign: 'justify' }}>{displayedDescription}</Text>
+                  {shouldTruncate && (
+                    <Text
+                      className="font-bold"
+                      style={{ color: colors.primary, textAlign: 'justify' }}
+                      onPress={() => setIsExpanded(!isExpanded)}>
+                      {isExpanded ? ' Leer menos' : 'Leer más'}
+                    </Text>
+                  )}
                 </Text>
               </View>
             </View>
