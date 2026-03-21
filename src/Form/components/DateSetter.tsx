@@ -71,6 +71,7 @@ const PlatformDatePicker = ({show, setShow, date, setDate}: {show: boolean, setS
                                     setDate(selectedDate);
                                 }
                             }}
+                            textColor={colors.primaryText}
                         />
                     </View>
                     
