@@ -2,7 +2,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { CalendarEndIcon, CalendarIcon, CalendarStartIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext"
 import { useState } from "react";
-import { Platform, Text, TouchableOpacity, View } from "react-native";
+import { Modal, Platform, Text, TouchableOpacity, View } from "react-native";
 
 interface Props {
     startDate: Date | null;
@@ -13,12 +13,78 @@ interface Props {
 	style?: string;
 }
 
+const PlatformDatePicker = ({show, setShow, date, setDate}: {show: boolean, setShow: any, date: Date | null, setDate: any}) => {
+    const { colors } = useTheme();
+    if(!show) return null
+
+    if(Platform.OS === 'android') {
+        return(
+            <DateTimePicker 
+                value={date || new Date()}
+                mode="date"
+                display="spinner"
+                maximumDate={new Date()}
+                onChange={(event: any, selectedDate?: Date) => {
+                    setShow(false);
+                    if(event.type === 'set' && selectedDate) {
+                        setDate(selectedDate)
+                    }
+                }
+                }
+            />
+        )
+    }
+
+    return (
+        <Modal visible={show} transparent={true} animationType="fade">
+            <TouchableOpacity 
+                className="flex-1 justify-end" 
+                style={{backgroundColor: `${colors.background}80`}}
+                activeOpacity={1} 
+                onPress={() => setShow(false)}
+            >
+                <TouchableOpacity
+                    activeOpacity={1}
+                    className="pb-8 pt-4 rounded-t-3xl shadow-lg flex-col" 
+                    style={{backgroundColor: colors.background}}
+                >
+                    <View className="flex-row justify-end px-6 mb-2">
+                        <TouchableOpacity onPress={() => {
+                            if(!date) {
+                                setDate(new Date());
+                            }
+                            setShow(false)}
+                        }>
+                            <Text className="font-bold text-lg" style={{color: colors.primary}}>
+                                Listo
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View className="items-center">
+                        <DateTimePicker
+                            value={date || new Date()}
+                            mode="date"
+                            display="spinner"
+                            maximumDate={new Date()}
+                            onChange={(_event: any, selectedDate?: Date) => {
+                                if (selectedDate) {
+                                    setDate(selectedDate);
+                                }
+                            }}
+                        />
+                    </View>
+                    
+                </TouchableOpacity>
+            </TouchableOpacity>
+        </Modal>
+    )
+}
+
 export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRange, style}: Props) => {
     const { colors } = useTheme();
 
     const [showDatePickerInicio, setShowDatePickerInicio] = useState(false);
     const [showDatePickerFin, setShowDatePickerFin] = useState(false);
-      
 
     if (!isRange) {
         return (
@@ -49,20 +115,12 @@ export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRang
                     </TouchableOpacity>
                 )}                
 
-                {showDatePickerInicio && (
-                    <DateTimePicker
-                        value={startDate || new Date()}
-                        mode="date"
-                        display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                        onChange={(_event: any, selectedDate?: Date) => {
-                        setShowDatePickerInicio(Platform.OS === 'ios');
-                        if (selectedDate) {
-                            setStartDate(selectedDate);
-                        }
-                        }}
-                        maximumDate={new Date()}
-                    />
-                )}
+                <PlatformDatePicker 
+                    show={showDatePickerInicio} 
+                    setShow={setShowDatePickerInicio} 
+                    date={startDate} 
+                    setDate={setStartDate}
+                />
             </View>
         )
     }
@@ -122,39 +180,19 @@ export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRang
             
             </View>
 
-            {showDatePickerInicio && (
-                <DateTimePicker
-                    value={startDate || new Date()}
-                    mode="date"
-                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                    onChange={(_event: any, selectedDate?: Date) => {
-                    setShowDatePickerInicio(Platform.OS === 'ios');
-                    if (selectedDate) {
-                        setStartDate(selectedDate);
-                    }
-                    }}
-                    maximumDate={new Date()}
-                />
-            )}
+            <PlatformDatePicker 
+                show={showDatePickerInicio} 
+                setShow={setShowDatePickerInicio} 
+                date={startDate} 
+                setDate={setStartDate}
+            />
 
-            {showDatePickerFin && (
-                <DateTimePicker
-                    value={endDate || new Date()}
-                    mode="date"
-                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                    onChange={(_event: any, selectedDate?: Date) => {
-                    setShowDatePickerFin(Platform.OS === 'ios');
-                    if (selectedDate) {
-                        setEndDate(selectedDate);
-                    }
-                    }}
-                    maximumDate={new Date()}
-                />
-            )}
-
-
-
-
+            <PlatformDatePicker 
+                show={showDatePickerFin} 
+                setShow={setShowDatePickerFin} 
+                date={endDate || null} 
+                setDate={setEndDate}
+            />
         </View>
         
     )
