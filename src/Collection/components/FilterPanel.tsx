@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { SortType, StatusType } from '../hooks/useCollection';
+
+type SortType = 'FECHA_DESC' | 'FECHA_ASC';
+type StatusType = 'TODOS' | 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';
 
 interface Props {
   orden: SortType;

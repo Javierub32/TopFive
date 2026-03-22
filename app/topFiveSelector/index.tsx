@@ -37,9 +37,9 @@ export default function TopFiveSelectorScreen() {
         delete: false,
         onLeftPress: () => hideNotification(),
         onRightPress: async () => {
+          hideNotification();
           const posicion = parseInt(position);
           await insertToTopFive(posicion, resourceType, item.id);
-          hideNotification();
           router.replace('/Profile'); 
           showNotification({
             title: '¡Éxito!',

@@ -57,10 +57,10 @@ export const useTopFive = (userId: string) => {
       delete: true,
       onLeftPress: () => hideNotification(),
       onRightPress: async () => {
-        try {          
+        try {  
+          hideNotification();        
           await topFiveService.removeFromTopFive(userId, position);
           fetchTopFive();
-          hideNotification();
           showNotification({
             title: '¡Éxito!',
             description: `El item ha sido eliminado de tu Top 5`,

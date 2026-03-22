@@ -105,9 +105,9 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
 			delete: true,
 			onLeftPress: () => hideNotification(),
 			onRightPress: async () => {
+				hideNotification();
 				await deleteItemFromList(itemId, type);
 				await resetListDetails();
-				hideNotification();
 				showNotification({
 					title: '¡Éxito!',
 					description: `El ítem ha sido eliminado de la lista`,

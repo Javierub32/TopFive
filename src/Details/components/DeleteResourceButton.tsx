@@ -18,7 +18,7 @@ export const DeleteResourceButton = ({resource, type}: Props) => {
     const { colors } = useTheme();
     const { borrarRecurso } = useResource();
     const { refreshData } = useCollection();
-    const { showNotification } = useNotification();
+    const { showNotification, hideNotification } = useNotification();
 
     const handleDelete = () => {
         if (resource) {
@@ -30,8 +30,9 @@ export const DeleteResourceButton = ({resource, type}: Props) => {
                 leftButtonText: 'Cancelar',
                 rightButtonText: 'Eliminar',
                 highlightRight: true,
-                onLeftPress: () => {},
+                onLeftPress: () => hideNotification(),
                 onRightPress: async () => {
+                    hideNotification();
                     await borrarRecurso(resource.id, type);
                     router.replace({ pathname: '/Collection', params: { initialResource: type as ResourceType } });
                     refreshData();

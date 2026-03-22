@@ -69,7 +69,10 @@ export const useFollowers = (username: string) => {
       isChoice: true,
       delete: true,
       onLeftPress: () => hideNotification(),
-      onRightPress: () => handleRemoveFollower(username, deleteId)
+      onRightPress: () => {
+        hideNotification();
+        handleRemoveFollower(username, deleteId)
+      }
     });
   };
 

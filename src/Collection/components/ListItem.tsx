@@ -24,14 +24,17 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
 				leftButtonText: 'Cancelar',
 				rightButtonText: 'Confirmar',
 				isChoice: true,
+				delete: true,
 				onLeftPress: () => hideNotification(),
 				onRightPress: async () => {
+					hideNotification();
 					await onDelete(list.id);
 					setMenuListasAbierto(false);
 					showNotification({
 						title: 'Lista eliminada',
 						description: `La lista "${list.nombre}" ha sido eliminada exitosamente.`,
-						isChoice: false
+						isChoice: false,
+						delete: false
 					});
 				}
 			})

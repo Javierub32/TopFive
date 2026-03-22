@@ -65,6 +65,7 @@ const handleDeleteAccount = async () => {
             delete: true,
             onLeftPress: () => hideNotification(),
             onRightPress: async () => {
+                hideNotification();
                 showNotification({
                     title: 'Última confirmación',
                     description: 'Esta es tu última oportunidad para cancelar. ¿Realmente deseas eliminar tu cuenta?',
@@ -74,7 +75,8 @@ const handleDeleteAccount = async () => {
                     isChoice: true,
                     delete: true,
                     onLeftPress: async () => {
-                        try {                            
+                        try { 
+                            hideNotification();                           
                             await deleteAccount();
                             showNotification({
                                 title: 'Cuenta eliminada',
