@@ -16,6 +16,8 @@ interface NotificationConfig {
 interface NotificationContextType {
   showNotification: (config: NotificationConfig) => void;
   hideNotification: () => void;
+  visible: boolean;
+  config: NotificationConfig;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -39,21 +41,8 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <NotificationContext.Provider value={{ showNotification, hideNotification }}>
+    <NotificationContext.Provider value={{ showNotification, hideNotification, visible, config }}>
       {children}
-      <NotificationModal
-        visible={visible}
-        title={config.title}
-        description={config.description}
-        leftButtonText={config.leftButtonText}
-        rightButtonText={config.rightButtonText}
-        highlightRight={config.highlightRight}
-        isChoice={config.isChoice}
-        delete={config.delete}
-        onLeftPress={config.onLeftPress}
-        onRightPress={config.onRightPress}
-        onClose={hideNotification}
-      />
     </NotificationContext.Provider>
   );
 };

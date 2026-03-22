@@ -11,6 +11,7 @@ import { NotificationProvider, useNotification } from 'context/NotificationConte
 import { SearchProvider } from 'context/SearchContext';
 import Constants from 'expo-constants';
 import { supabase } from 'lib/supabase';
+import { NotificationModal } from 'components/NotificationModal';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -19,7 +20,7 @@ function InitialLayout() {
   const segments = useSegments();
   const router = useRouter();
   const [appIsReady, setAppIsReady] = useState(false);
-  const { showNotification, hideNotification } = useNotification();
+  const { showNotification, hideNotification, visible, config } = useNotification();
 
   useEffect(() => {
     async function prepare() {
@@ -130,6 +131,19 @@ function InitialLayout() {
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <Slot />
+      <NotificationModal
+        visible={visible}
+        title={config.title}
+        description={config.description}
+        leftButtonText={config.leftButtonText}
+        rightButtonText={config.rightButtonText}
+        highlightRight={config.highlightRight}
+        isChoice={config.isChoice}
+        delete={config.delete}
+        onLeftPress={config.onLeftPress}
+        onRightPress={config.onRightPress}
+        onClose={hideNotification}
+      />
     </View>
   );
 }

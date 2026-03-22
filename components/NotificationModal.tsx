@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { Modal, View, Text, TouchableOpacity, Pressable } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from 'react-native-reanimated';
 
 
 interface NotificationModalProps {
@@ -48,24 +49,25 @@ export const NotificationModal = ({
     }
   }, [visible, isChoice, onClose]);
 
+  if(!visible) return null;
+
   if (isChoice) {
     // Modal grande en el centro para elecciones
     return (
-      <Modal
-        visible={visible}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={onClose}
+      <Animated.View
+        entering={FadeIn.duration(200)}
+        exiting={FadeOut.duration(200)}
+        style={[StyleSheet.absoluteFill,
+          { backgroundColor: `${colors.background}50`, zIndex: 1000, elevation: 1000, justifyContent: 'center', alignItems: 'center' }
+        ]}
       >
-        <Pressable 
-          className="flex-1 justify-center items-center"
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+        <TouchableOpacity
+          style={StyleSheet.absoluteFill}
+          activeOpacity={1}
           onPress={onClose}
-        >
-          <Pressable 
-            className="w-11/12 max-w-md rounded-2xl p-6"
-            style={{ backgroundColor: colors.surfaceButton }}
-            onPress={(e) => e.stopPropagation()}
+        />
+          <View className="w-11/12 max-w-md rounded-2xl p-6"
+            style={{ backgroundColor: colors.surfaceButton, zIndex: 1001}}
           >
             {/* Título */}
             <Text 
@@ -123,108 +125,104 @@ export const NotificationModal = ({
                 </TouchableOpacity>
               )}
             </View>
-          </Pressable>
-        </Pressable>
-      </Modal>
+          </View>
+      </Animated.View>
+
+
     );
   } else {
     // Modal pequeño abajo para notificaciones
     return (
-      <Modal
-        visible={visible}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={onClose}
+      <Animated.View
+        entering={SlideInDown.duration(300).springify()}
+        exiting={SlideOutDown.duration(300)}
+        style={[StyleSheet.absoluteFill, { zIndex: 1000, elevation: 1000, justifyContent: 'flex-end' }]}
+        pointerEvents='box-none'
       >
-        <Pressable 
-          className="flex-1 justify-end"
-          onPress={onClose}
+        <View 
+          className="mx-4 rounded-2xl p-4 shadow-lg"
+          style={{ backgroundColor: colors.surfaceButton, marginBottom: Math.max(insets.bottom + 16, 24) }}
+          pointerEvents='auto'
         >
-          <Pressable
-            className="mx-4 rounded-2xl p-4 shadow-lg"
-            style={{ backgroundColor: colors.surfaceButton, marginBottom: Math.max(insets.bottom + 16, 24) }}
-            onPress={(e) => e.stopPropagation()}
-          >
-            <View className="flex-row items-start justify-between">
-              <View className="flex-1 pr-2">
-                {/* Título */}
-                <Text 
-                  className="text-lg font-bold mb-2"
-                  style={{ color: colors.primaryText }}
-                >
-                  {title}
-                </Text>
+          <View className="flex-row items-start justify-between">
+            <View className="flex-1 pr-2">
+              {/* Título */}
+              <Text 
+                className="text-lg font-bold mb-2"
+                style={{ color: colors.primaryText }}
+              >
+                {title}
+              </Text>
 
-                {/* Descripción */}
-                <Text 
-                  className="text-sm leading-5"
-                  style={{ color: colors.secondaryText }}
-                >
-                  {description}
-                </Text>
-
-                {/* Botones opcionales para notificación */}
-                {(leftButtonText || rightButtonText) && (
-                  <View className="flex-row gap-2 mt-4">
-                    {leftButtonText && (
-                      <TouchableOpacity
-                        className="flex-1 py-2 rounded-lg"
-                        style={{ 
-                          backgroundColor: !highlightRight ? highlightColor : 'transparent',
-                          borderWidth: !highlightRight ? 0 : 1.5,
-                          borderColor: !highlightRight ? 'transparent' : colors.borderButton,
-                        }}
-                        onPress={onLeftPress}
-                        activeOpacity={0.7}
-                      >
-                        <Text 
-                          className="text-center font-semibold text-sm"
-                          style={{ color: !highlightRight ? colors.background : colors.primaryText }}
-                        >
-                          {leftButtonText}
-                        </Text>
-                      </TouchableOpacity>
-                    )}
-
-                    {rightButtonText && (
-                      <TouchableOpacity
-                        className="flex-1 py-2 rounded-lg"
-                        style={{ 
-                          backgroundColor: highlightRight ? highlightColor : 'transparent',
-                          borderWidth: highlightRight ? 0 : 1.5,
-                          borderColor: highlightRight ? 'transparent' : colors.borderButton,
-                        }}
-                        onPress={onRightPress}
-                        activeOpacity={0.7}
-                      >
-                        <Text 
-                          className="text-center font-semibold text-sm"
-                          style={{ color: highlightRight ? colors.background : colors.primaryText }}
-                        >
-                          {rightButtonText}
-                        </Text>
-                      </TouchableOpacity>
-                    )}
-                  </View>
-                )}
-              </View>
+              {/* Descripción */}
+              <Text 
+                className="text-sm leading-5"
+                style={{ color: colors.secondaryText }}
+              >
+                {description}
+              </Text>
+            
 
               {/* Botón de cerrar */}
-              <TouchableOpacity
-                onPress={onClose}
-                className="p-1"
-                activeOpacity={0.7}
-              >
-                <MaterialCommunityIcons 
-                  name="close" 
-                  size={24} 
-                  color={colors.secondaryText} 
-                />
-              </TouchableOpacity>
+              {(leftButtonText || rightButtonText) && (
+                <View className="flex-row gap-2 mt-4">
+                  {leftButtonText && (
+                    <TouchableOpacity
+                      className="flex-1 py-2 rounded-lg"
+                      style={{ 
+                        backgroundColor: !highlightRight ? highlightColor : 'transparent',
+                        borderWidth: !highlightRight ? 0 : 1.5,
+                        borderColor: !highlightRight ? 'transparent' : colors.borderButton,
+                      }}
+                      onPress={onLeftPress}
+                      activeOpacity={0.7}
+                    >
+                      <Text 
+                        className="text-center font-semibold text-sm"
+                        style={{ color: !highlightRight ? colors.background : colors.primaryText }}
+                      >
+                        {leftButtonText}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+
+                  {rightButtonText && (
+                    <TouchableOpacity
+                      className="flex-1 py-2 rounded-lg"
+                      style={{ 
+                        backgroundColor: highlightRight ? highlightColor : 'transparent',
+                        borderWidth: highlightRight ? 0 : 1.5,
+                        borderColor: highlightRight ? 'transparent' : colors.borderButton,
+                      }}
+                      onPress={onRightPress}
+                      activeOpacity={0.7}
+                    >
+                      <Text 
+                        className="text-center font-semibold text-sm"
+                        style={{ color: highlightRight ? colors.background : colors.primaryText }}
+                      >
+                        {rightButtonText}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              )}
             </View>
-          </Pressable>
-        </Pressable>
-      </Modal>
+
+            <TouchableOpacity
+              onPress={onClose}
+              className='p-1'
+              activeOpacity={0.7}
+            >
+              <MaterialCommunityIcons 
+                name="close" 
+                size={24} 
+                color={colors.secondaryText} 
+                />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Animated.View>
     );
   }
 };
