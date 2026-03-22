@@ -20,6 +20,7 @@ import { ViewsSetter } from "@/Form/components/ViewsSetter";
 import { DateSetter } from "@/Form/components/DateSetter";
 import { ProgressSetter } from "@/Form/components/ProgressSetter";
 import { useNotification } from 'context/NotificationContext';
+import { AdBanner } from 'components/AdBanner';
 interface Series {
   id: number;
   title: string;
@@ -296,6 +297,7 @@ export default function SeriesForm() {
               {loading ? 'Guardando...' : 'Guardar'}
             </Text>
           </TouchableOpacity>      
+		  <AdBanner/>
       </ScrollView>
     </Screen>
   );

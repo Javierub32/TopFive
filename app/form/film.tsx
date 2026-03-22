@@ -20,6 +20,7 @@ import { DateSetter } from "@/Form/components/DateSetter";
 import { ViewsSetter } from "@/Form/components/ViewsSetter";
 import { NotificationModal } from 'components/NotificationModal';
 import { useNotification } from 'context/NotificationContext';
+import { AdBanner } from 'components/AdBanner';
 
 interface Film {
   id: number;
@@ -278,7 +279,7 @@ export default function FilmForm() {
               {loading ? 'Guardando...' : 'Guardar'}
             </Text>
           </TouchableOpacity>
-        
+        <AdBanner/>
       </ScrollView>
     </Screen>
   );

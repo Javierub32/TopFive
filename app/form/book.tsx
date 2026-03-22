@@ -17,6 +17,7 @@ import { RatingSetter } from "@/Form/components/RatingSetter";
 import { ProgressSetter } from "@/Form/components/ProgressSetter";
 import { DateSetter } from "@/Form/components/DateSetter";
 import { useNotification } from 'context/NotificationContext';
+import { AdBanner } from 'components/AdBanner';
 
 interface Book {
   id: number | null;
@@ -292,6 +293,7 @@ export default function BookForm() {
               {loading ? 'Guardando...' : 'Guardar'}
             </Text>
           </TouchableOpacity>
+		  <AdBanner/>
       </ScrollView>
     </Screen>
   );

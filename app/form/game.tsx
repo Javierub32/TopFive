@@ -18,6 +18,7 @@ import { ProgressSetter } from "@/Form/components/ProgressSetter";
 import { DateSetter } from "@/Form/components/DateSetter";
 import { DifficultySetter } from "@/Form/components/DifficultySetter";
 import {useNotification} from "context/NotificationContext";
+import { AdBanner } from 'components/AdBanner';
 
 interface Game {
   id: number;
@@ -285,6 +286,7 @@ export default function GameForm() {
             </Text>
           </TouchableOpacity>
         </View>
+		<AdBanner/>
       </ScrollView>
     </Screen>
   );

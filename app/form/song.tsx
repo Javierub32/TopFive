@@ -18,6 +18,7 @@ import { StateSetter } from "@/Form/components/StateSetter";
 import { RatingSetter } from "@/Form/components/RatingSetter";
 import { DateSetter } from "@/Form/components/DateSetter";
 import { useNotification } from 'context/NotificationContext';
+import { AdBanner } from 'components/AdBanner';
 
 interface Song {
   id: number | null;
@@ -274,6 +275,7 @@ export default function SongForm() {
               {loading ? 'Guardando...' : 'Guardar'}
             </Text>
           </TouchableOpacity>
+		  <AdBanner/>
       </ScrollView>
     </Screen>
   );

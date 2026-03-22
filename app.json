@@ -7,7 +7,7 @@
     "web": {
       "favicon": "./assets/icon.png",
       "bundler": "metro",
-	  "output": "single",
+      "output": "single",
       "build": {
         "babel": {
           "include": [
@@ -21,7 +21,14 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-2120812527357725~2420909779",
+          "iosAppId": "ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"
+        }
+      ]
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
