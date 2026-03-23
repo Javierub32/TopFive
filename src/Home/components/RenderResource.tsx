@@ -139,12 +139,12 @@ export default function ActivityItem({ item }: { item: Activity }) {
                   </View>
                 </View>
                 {/* Reseña */}
-                <Text style={{ color: colors.secondaryText, textAlign: 'justify' }}>
-                  <Text className="italic leading-relaxed" style={{ textAlign: 'justify' }}>{displayedDescription}</Text>
+                <Text style={{ color: colors.secondaryText}}>
+                  <Text className="italic leading-relaxed">{displayedDescription}</Text>
                   {shouldTruncate && (
                     <Text
                       className="font-bold"
-                      style={{ color: colors.primary, textAlign: 'justify' }}
+                      style={{ color: colors.primary }}
                       onPress={() => setIsExpanded(!isExpanded)}>
                       {isExpanded ? ' Leer menos' : 'Leer más'}
                     </Text>
