@@ -12,6 +12,8 @@ import { SearchProvider } from 'context/SearchContext';
 import Constants from 'expo-constants';
 import { supabase } from 'lib/supabase';
 import { NotificationModal } from 'components/NotificationModal';
+import { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,6 +39,31 @@ function InitialLayout() {
     }
     prepare();
   }, []);
+
+    useEffect(() => {
+    const initAdsConsent = async () => {
+      // Evitamos ejecutar esto en la web para que no de error
+      if (Platform.OS === 'web') return;
+
+      try {
+        const consentInfo = await AdsConsent.requestInfoUpdate();
+        
+        // Si el formulario está disponible y el estado es REQUIRED (requerido)
+        if (
+          consentInfo.isConsentFormAvailable &&
+          consentInfo.status === AdsConsentStatus.REQUIRED
+        ) {
+          await AdsConsent.showForm();
+        }
+      } catch (error) {
+        console.error('Error con el consentimiento de anuncios:', error);
+      }
+    };
+
+    if (appIsReady) {
+      initAdsConsent();
+    }
+  }, [appIsReady]);
 
   useEffect(() => {
     const checkAppVersion = async () => {
