@@ -4,6 +4,7 @@ import { supabase } from "lib/supabase";
 export const followersServices = {
 	async fetchFollowers(username: string) {
 		const userId = await userService.getUserIdByUsername(username);
+		if (!userId) return [];
 		const { data, error } = await supabase
 		.from('relationships')
 		.select(`
@@ -27,6 +28,7 @@ export const followersServices = {
 
 	async fetchFollowing(username: string) {
 		const userId = await userService.getUserIdByUsername(username);
+		if (!userId) return [];
 		const { data, error } = await supabase
 		.from('relationships')
 		.select(`

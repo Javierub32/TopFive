@@ -17,11 +17,11 @@ import {
   MaterialIcons,
 } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons/';
-import { AdsConsent } from 'react-native-google-mobile-ads';
 import { useTheme } from 'context/ThemeContext';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useAuth } from 'context/AuthContext';
 import { useNotification } from 'context/NotificationContext';
+import { AdsConsent } from 'lib/adsConsent.web';
 export default function SettingsScreen() {
   const { signOut, deleteAccount } = useAuth();
 

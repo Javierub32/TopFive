@@ -1,0 +1,1 @@
+export { AdsConsent, AdsConsentStatus } from 'react-native-google-mobile-ads';

@@ -6,7 +6,7 @@ export const userService = {
 			.from('usuario')
 			.select('id')
 			.eq('username', username)
-			.single();
+			.maybeSingle();
 		
 		if (error) return null;
 		return data?.id || null;
