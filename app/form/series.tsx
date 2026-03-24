@@ -1,4 +1,13 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+  Platform,
+  Alert,
+} from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
@@ -10,15 +19,15 @@ import { useAuth } from 'context/AuthContext';
 import { SeriesResource } from 'app/types/Resources';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
-import { ThemedStatusBar } from "components/ThemedStatusBar";
-import { ReturnButton } from "components/ReturnButton";
-import { FavoriteSetter } from "@/Form/components/FavoriteSetter";
-import { ReviewSetter } from "@/Form/components/ReviewSetter";
-import { StateSetter } from "@/Form/components/StateSetter";
-import { RatingSetter } from "@/Form/components/RatingSetter";
-import { ViewsSetter } from "@/Form/components/ViewsSetter";
-import { DateSetter } from "@/Form/components/DateSetter";
-import { ProgressSetter } from "@/Form/components/ProgressSetter";
+import { ThemedStatusBar } from 'components/ThemedStatusBar';
+import { ReturnButton } from 'components/ReturnButton';
+import { FavoriteSetter } from '@/Form/components/FavoriteSetter';
+import { ReviewSetter } from '@/Form/components/ReviewSetter';
+import { StateSetter } from '@/Form/components/StateSetter';
+import { RatingSetter } from '@/Form/components/RatingSetter';
+import { ViewsSetter } from '@/Form/components/ViewsSetter';
+import { DateSetter } from '@/Form/components/DateSetter';
+import { ProgressSetter } from '@/Form/components/ProgressSetter';
 import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
 interface Series {
@@ -38,7 +47,7 @@ export default function SeriesForm() {
   const router = useRouter();
   const { user } = useAuth();
   const { refreshData } = useCollection();
-  
+
   const { colors } = useTheme();
 
   const isEditing = !!item;
@@ -48,22 +57,38 @@ export default function SeriesForm() {
   const [reseña, setReseña] = useState(resource?.reseña || '');
   const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
   const [favorita, setFavorita] = useState(resource?.favorito || false);
-  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(resource?.estado || 'PENDIENTE');
-  
+  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(
+    resource?.estado || 'PENDIENTE'
+  );
+
   // Campos específicos de series
-  const [temporadaActual, setTemporadaActual] = useState(resource?.temporadaActual?.toString() || '1');
+  const [temporadaActual, setTemporadaActual] = useState(
+    resource?.temporadaActual?.toString() || '1'
+  );
   const [episodioActual, setEpisodioActual] = useState(resource?.episodioActual?.toString() || '1');
   const [numVisualizaciones, setNumVisualizaciones] = useState(resource?.numVisualizaciones || 0);
-  
+
   // Fechas
-  const [fechaInicio, setFechaInicio] = useState<Date | null>(resource?.fechaInicio ? new Date(resource.fechaInicio) : null);
-  const [fechaFin, setFechaFin] = useState<Date | null>(resource?.fechaFin ? new Date(resource.fechaFin) : null);
+  const [fechaInicio, setFechaInicio] = useState<Date | null>(
+    resource?.fechaInicio ? new Date(resource.fechaInicio) : null
+  );
+  const [fechaFin, setFechaFin] = useState<Date | null>(
+    resource?.fechaFin ? new Date(resource.fechaFin) : null
+  );
   const [showDatePickerInicio, setShowDatePickerInicio] = useState(false);
   const [showDatePickerFin, setShowDatePickerFin] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
   const { showNotification } = useNotification();
+
+  const handleStatusChange = (nuevoEstado: any) => {
+    setEstado(nuevoEstado);
+    if (nuevoEstado === 'COMPLETADO' && !fechaFin) {
+      setFechaFin(new Date());
+    }
+  };
+
   const handleSubmit = async () => {
     // Validaciones básicas de números
     const tempNum = parseInt(temporadaActual) || 1;
@@ -87,14 +112,16 @@ export default function SeriesForm() {
             fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
           })
           .eq('id', resource.id)
-          .select(`
+          .select(
+            `
             *,
             contenidoserie:idContenido (
               titulo,
               imagenUrl,
               fechaLanzamiento
             )
-          `)
+          `
+          )
           .single();
 
         if (updateError) {
@@ -103,133 +130,133 @@ export default function SeriesForm() {
             title: 'Error al actualizar',
             description: 'Hubo un problema al actualizar la serie. Inténtalo de nuevo.',
             isChoice: false,
-            delete: false
+            delete: false,
           });
           console.error('Error al actualizar:', updateError);
         } else {
-		  // Adaptamos la respuesta para mantener compatibilidad
-		  const rawData = updatedData as any;
-		  const contentData = rawData.contenidoserie;
-		  delete rawData.contenidoserie;
-		  const seriesResource: SeriesResource = {
-			...rawData,
-			contenido: contentData,
-		  };
+          // Adaptamos la respuesta para mantener compatibilidad
+          const rawData = updatedData as any;
+          const contentData = rawData.contenidoserie;
+          delete rawData.contenidoserie;
+          const seriesResource: SeriesResource = {
+            ...rawData,
+            contenido: contentData,
+          };
 
           //Alert.alert('¡Éxito!', `Has actualizado ${series.titulo || series.title} en tu colección.`);
-		  refreshData();
+          refreshData();
           router.replace({
             pathname: '/details/series/seriesResource',
-            params: { 
+            params: {
               item: JSON.stringify(seriesResource),
-              from: from
-            }
+              from: from,
+            },
           });
           setTimeout(() => {
             showNotification({
               title: '¡Éxito!',
               description: `Has actualizado ${series.titulo || series.title} en tu colección.`,
               isChoice: false,
-              delete: false
+              delete: false,
             });
           }, 100);
         }
       } else {
         // Modo creación: insertar nuevo recurso
         // 1. Verificar si el contenido existe en 'contenidoserie'
-      const { data: existingContent, error: searchError } = await supabase
-        .from('contenidoserie')
-        .select('id')
-        .eq('idApi', series.id)
-        .eq('titulo', series.title)
-        .maybeSingle();
-
-      if (searchError) throw searchError;
-
-      let contentId;
-
-      if (existingContent) {
-        contentId = existingContent.id;
-      } else {
-        // 2. Si no existe, crearlo
-        const { data: newContent, error: insertError } = await supabase
+        const { data: existingContent, error: searchError } = await supabase
           .from('contenidoserie')
-          .insert({
-            titulo: series.title,
-            idApi: series.id,
-            imagenUrl: series.imageFull || series.image,
-            fechaLanzamiento: series.releaseDate,
-          })
           .select('id')
-          .single();
+          .eq('idApi', series.id)
+          .eq('titulo', series.title)
+          .maybeSingle();
 
-        if (insertError) throw insertError;
-        contentId = newContent.id;
-      }
+        if (searchError) throw searchError;
 
-      // 3. Verificar si el usuario ya tiene este recurso
-      const { data: resource, error: checkError } = await supabase
-        .from('recursoserie')
-        .select('id')
-        .eq('idContenido', contentId)
-        .eq('usuarioId', user.id)
-        .maybeSingle();
+        let contentId;
 
-      if (checkError) throw checkError;
+        if (existingContent) {
+          contentId = existingContent.id;
+        } else {
+          // 2. Si no existe, crearlo
+          const { data: newContent, error: insertError } = await supabase
+            .from('contenidoserie')
+            .insert({
+              titulo: series.title,
+              idApi: series.id,
+              imagenUrl: series.imageFull || series.image,
+              fechaLanzamiento: series.releaseDate,
+            })
+            .select('id')
+            .single();
 
-      if (resource) {
-        //Alert.alert('Aviso', 'Ya tienes esta serie en tu colección.');
-        refreshData();
-        router.back();
-        setTimeout(() =>{
-          showNotification({
-            title: 'Aviso',
+          if (insertError) throw insertError;
+          contentId = newContent.id;
+        }
+
+        // 3. Verificar si el usuario ya tiene este recurso
+        const { data: resource, error: checkError } = await supabase
+          .from('recursoserie')
+          .select('id')
+          .eq('idContenido', contentId)
+          .eq('usuarioId', user.id)
+          .maybeSingle();
+
+        if (checkError) throw checkError;
+
+        if (resource) {
+          //Alert.alert('Aviso', 'Ya tienes esta serie en tu colección.');
+          refreshData();
+          router.back();
+          setTimeout(() => {
+            showNotification({
+              title: 'Aviso',
               description: 'Ya tienes esta serie en tu colección.',
               isChoice: false,
-              delete: false
-          });
-        }, 100);
-        setLoading(false);
-        return;
-      }
+              delete: false,
+            });
+          }, 100);
+          setLoading(false);
+          return;
+        }
 
-      // 4. Insertar el recurso del usuario en 'recursoserie'
-      const { error: inventoryError } = await supabase.from('recursoserie').insert({
-        usuarioId: user.id,
-        idContenido: contentId,
-        estado: estado,
-        reseña: reseña,
-        calificacion: calificacionPersonal,
-        favorito: favorita,
-        temporadaActual: tempNum,
-        episodioActual: epNum,
-        numVisualizaciones: numVisualizaciones,
-        fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
-        fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
-      });
-
-      if (inventoryError) {
-        //Alert.alert('Error', 'Hubo un problema al guardar la serie. Inténtalo de nuevo.');
-        showNotification({
-          title: 'Error al guardar',
-          description: 'Hubo un problema al guardar la serie. Inténtalo de nuevo.',
-          isChoice: false,
-          delete: false
+        // 4. Insertar el recurso del usuario en 'recursoserie'
+        const { error: inventoryError } = await supabase.from('recursoserie').insert({
+          usuarioId: user.id,
+          idContenido: contentId,
+          estado: estado,
+          reseña: reseña,
+          calificacion: calificacionPersonal,
+          favorito: favorita,
+          temporadaActual: tempNum,
+          episodioActual: epNum,
+          numVisualizaciones: numVisualizaciones,
+          fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
+          fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
         });
-        console.error('Error al insertar:', inventoryError);
-      } else {
-        //Alert.alert('¡Éxito!', `Has añadido ${series.title} a tu colección.`);
-		refreshData();
-        router.back();
-        setTimeout(() => {
+
+        if (inventoryError) {
+          //Alert.alert('Error', 'Hubo un problema al guardar la serie. Inténtalo de nuevo.');
           showNotification({
-            title: '¡Éxito!',
+            title: 'Error al guardar',
+            description: 'Hubo un problema al guardar la serie. Inténtalo de nuevo.',
+            isChoice: false,
+            delete: false,
+          });
+          console.error('Error al insertar:', inventoryError);
+        } else {
+          //Alert.alert('¡Éxito!', `Has añadido ${series.title} a tu colección.`);
+          refreshData();
+          router.back();
+          setTimeout(() => {
+            showNotification({
+              title: '¡Éxito!',
               description: `Has añadido ${series.title} a tu colección.`,
               isChoice: false,
-              delete: false
-          });
-        }, 100);
-      }
+              delete: false,
+            });
+          }, 100);
+        }
       }
     } catch (error) {
       console.error('Error saving series data:', error);
@@ -246,11 +273,13 @@ export default function SeriesForm() {
   if (!series) {
     return (
       <Screen>
-        <ThemedStatusBar/>
+        <ThemedStatusBar />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
-          <Text className="mt-4 text-xl font-bold" style={{color:colors.primaryText}}>Error al cargar</Text>
-          <Text className="mt-2 text-center" style={{color: colors.secondaryText}}>
+          <Text className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
+            Error al cargar
+          </Text>
+          <Text className="mt-2 text-center" style={{ color: colors.secondaryText }}>
             No se pudo cargar la información de la serie
           </Text>
         </View>
@@ -260,45 +289,60 @@ export default function SeriesForm() {
 
   return (
     <Screen>
-      <ThemedStatusBar/>
+      <ThemedStatusBar />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
           <View className="flex-1 flex-row items-center">
-            <ReturnButton route="back" title={series.titulo || series.title} style={' '}/>
+            <ReturnButton route="back" title={series.titulo || series.title} style={' '} />
           </View>
-          <FavoriteSetter favorite={favorita} setFavorite={setFavorita}/>
+          <FavoriteSetter favorite={favorita} setFavorite={setFavorita} />
         </View>
 
-        <View className="flex-row justify-between gap-2 px-4 mb-4 items-stretch">
-          <Image source={{uri: series.imagenUrl || series.image || 'https://via.placeholder.com/100x150'}}
-          className="aspect-[2/3] h-32 rounded-lg" style={{backgroundColor: colors.surfaceButton}}
-          resizeMode="cover"/>
-          <ReviewSetter review={reseña} setReview={setReseña}/>
-        </View>        
+        <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
+          <Image
+            source={{
+              uri: series.imagenUrl || series.image || 'https://via.placeholder.com/100x150',
+            }}
+            className="aspect-[2/3] h-32 rounded-lg"
+            style={{ backgroundColor: colors.surfaceButton }}
+            resizeMode="cover"
+          />
+          <ReviewSetter review={reseña} setReview={setReseña} />
+        </View>
 
         <View className="gap-6">
-          <StateSetter state={estado} setState={setEstado} inProgressLabel='Viendo'/>
-          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
+          <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Viendo" />
+          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
           {estado !== 'COMPLETADO' && (
-            <ProgressSetter progress={temporadaActual} setProgress={setTemporadaActual} progressExtra={episodioActual} setProgressExtra={setEpisodioActual} type='serie'/>
+            <ProgressSetter
+              progress={temporadaActual}
+              setProgress={setTemporadaActual}
+              progressExtra={episodioActual}
+              setProgressExtra={setEpisodioActual}
+              type="serie"
+            />
           )}
-          <ViewsSetter views={numVisualizaciones} setViews={setNumVisualizaciones}/> 
-          <DateSetter startDate={fechaInicio} setStartDate={setFechaInicio} endDate={fechaFin} setEndDate={setFechaFin} isRange={true}/>
-                     
-
-        </View>  
+          <ViewsSetter views={numVisualizaciones} setViews={setNumVisualizaciones} />
+          <DateSetter
+            startDate={fechaInicio}
+            setStartDate={setFechaInicio}
+            endDate={fechaFin}
+            setEndDate={setFechaFin}
+            isRange={true}
+          />
+        </View>
         <TouchableOpacity
-            onPress={handleSubmit}
-            disabled={loading}
-            className="mb-14 rounded-lg py-3 mx-4 mt-4"
-            style={{backgroundColor: colors.primary}}
-            activeOpacity={0.8}>
-            <Text className="text-center text-lg font-bold" style={{color:colors.background}}>
-              {loading ? 'Guardando...' : 'Guardar'}
-            </Text>
-          </TouchableOpacity>      
+          onPress={handleSubmit}
+          disabled={loading}
+          className="mx-4 mb-14 mt-4 rounded-lg py-3"
+          style={{ backgroundColor: colors.primary }}
+          activeOpacity={0.8}>
+          <Text className="text-center text-lg font-bold" style={{ color: colors.background }}>
+            {loading ? 'Guardando...' : 'Guardar'}
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
-	  <AdBanner/>
+      <AdBanner />
     </Screen>
   );
 }

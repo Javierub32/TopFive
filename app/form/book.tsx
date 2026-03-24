@@ -8,14 +8,14 @@ import { useAuth } from 'context/AuthContext';
 import { BookResource } from 'app/types/Resources';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
-import { ThemedStatusBar } from "components/ThemedStatusBar";
-import { ReturnButton } from "components/ReturnButton";
-import { FavoriteSetter } from "@/Form/components/FavoriteSetter";
-import { ReviewSetter } from "@/Form/components/ReviewSetter";
-import { StateSetter } from "@/Form/components/StateSetter";
-import { RatingSetter } from "@/Form/components/RatingSetter";
-import { ProgressSetter } from "@/Form/components/ProgressSetter";
-import { DateSetter } from "@/Form/components/DateSetter";
+import { ThemedStatusBar } from 'components/ThemedStatusBar';
+import { ReturnButton } from 'components/ReturnButton';
+import { FavoriteSetter } from '@/Form/components/FavoriteSetter';
+import { ReviewSetter } from '@/Form/components/ReviewSetter';
+import { StateSetter } from '@/Form/components/StateSetter';
+import { RatingSetter } from '@/Form/components/RatingSetter';
+import { ProgressSetter } from '@/Form/components/ProgressSetter';
+import { DateSetter } from '@/Form/components/DateSetter';
 import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
 
@@ -39,32 +39,45 @@ export default function BookForm() {
   const { user } = useAuth();
   const { refreshData } = useCollection();
   const { colors } = useTheme();
-  const { showNotification} = useNotification();
+  const { showNotification } = useNotification();
 
   // Si es item, se edita, si no, es nuevo
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
   const book: Book = editando ? resource.contenido : JSON.parse(bookData as string);
 
-
   const [reseña, setReseña] = useState(resource?.reseña || '');
   const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
   const [favorito, setFavorito] = useState(resource?.favorito || false);
-  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(resource?.estado || 'PENDIENTE');
+  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(
+    resource?.estado || 'PENDIENTE'
+  );
   const [paginasLeidas, setPaginasLeidas] = useState(resource?.paginasLeidas?.toString() || '');
-  const [fechaInicio, setFechaInicio] = useState<Date | null>(resource?.fechaInicio ? new Date(resource.fechaInicio) : null);
-  const [fechaFin, setFechaFin] = useState<Date | null>(resource?.fechaFin ? new Date(resource.fechaFin) : null);
+  const [fechaInicio, setFechaInicio] = useState<Date | null>(
+    resource?.fechaInicio ? new Date(resource.fechaInicio) : null
+  );
+  const [fechaFin, setFechaFin] = useState<Date | null>(
+    resource?.fechaFin ? new Date(resource.fechaFin) : null
+  );
 
   const [loading, setLoading] = useState(false);
+
+  const handleStatusChange = (nuevoEstado: any) => {
+    setEstado(nuevoEstado);
+    if (nuevoEstado === 'COMPLETADO' && !fechaFin) {
+      setFechaFin(new Date());
+    }
+  };
 
   const handleSubmit = async () => {
     const numPaginas = parseInt(paginasLeidas) || 0;
     if (numPaginas > 2000) {
       showNotification({
         title: 'Número de páginas no válido',
-        description: 'El número de páginas no puede ser mayor a 2000. Por favor, ingresa un número válido.',
+        description:
+          'El número de páginas no puede ser mayor a 2000. Por favor, ingresa un número válido.',
         isChoice: false,
-        delete: false
+        delete: false,
       });
       return;
     }
@@ -85,14 +98,16 @@ export default function BookForm() {
             fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
           })
           .eq('id', resource.id)
-          .select(`
+          .select(
+            `
             *,
             contenidolibro:idContenido (
               titulo,
               imagenUrl,
               fechaLanzamiento
             )
-          `)
+          `
+          )
           .single();
 
         if (updateError) {
@@ -100,36 +115,35 @@ export default function BookForm() {
             title: 'Error al actualizar',
             description: 'Hubo un problema al actualizar el libro. Inténtalo de nuevo.',
             isChoice: false,
-            delete: false
+            delete: false,
           });
           console.error('Error al actualizar:', updateError);
         } else {
-		  // Adaptamos la respuesta para mantener compatibilidad
-		  const rawData = updatedData as any;
-		  const contentData = rawData.contenidolibro;
-		  delete rawData.contenidolibro;
-		  const bookResource: BookResource = {
-			...rawData,
-			contenido: contentData,
-		};
-		  refreshData();
+          // Adaptamos la respuesta para mantener compatibilidad
+          const rawData = updatedData as any;
+          const contentData = rawData.contenidolibro;
+          delete rawData.contenidolibro;
+          const bookResource: BookResource = {
+            ...rawData,
+            contenido: contentData,
+          };
+          refreshData();
           router.replace({
             pathname: '/details/book/bookResource',
-            params: { 
+            params: {
               item: JSON.stringify(bookResource),
-              from: from
-            }
+              from: from,
+            },
           });
           // Mostrar modal después de navegar
           setTimeout(() => {
             showNotification({
               title: '¡Éxito!',
-              description: `Has actualizado ${book.title || "este libro"} en tu colección.`,
+              description: `Has actualizado ${book.title || 'este libro'} en tu colección.`,
               isChoice: false,
-              delete: false
+              delete: false,
             });
           }, 100);
-          
         }
       } else {
         // Si es un nuevo contenido,insertar nuevo recurso
@@ -150,8 +164,8 @@ export default function BookForm() {
           contentId = existingContent.id;
         } else {
           // Si no existe, lo creamos
-          const { data: newContent, error: insertError } = await supabase 
-		  .from('contenidolibro')
+          const { data: newContent, error: insertError } = await supabase
+            .from('contenidolibro')
             .insert({
               titulo: book.title,
               idApi: book.id,
@@ -186,7 +200,7 @@ export default function BookForm() {
               title: 'Aviso',
               description: 'Ya tienes este libro en tu colección.',
               isChoice: false,
-              delete: false
+              delete: false,
             });
           }, 100);
           setLoading(false);
@@ -195,27 +209,25 @@ export default function BookForm() {
 
         // Ahora insertamos el recurso del usuario
         const numPaginas = parseInt(paginasLeidas) || 0;
-        const { error: inventoryError } = await supabase
-          .from('recursolibro')
-          .insert({
-            usuarioId: user.id,
-            idContenido: contentId,
-            estado: estado,
-            reseña: reseña,
-            calificacion: calificacionPersonal,
-            favorito: favorito,
-            tiporecurso: 'LIBRO',
-            paginasLeidas: numPaginas,
-            fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
-            fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
-          });
+        const { error: inventoryError } = await supabase.from('recursolibro').insert({
+          usuarioId: user.id,
+          idContenido: contentId,
+          estado: estado,
+          reseña: reseña,
+          calificacion: calificacionPersonal,
+          favorito: favorito,
+          tiporecurso: 'LIBRO',
+          paginasLeidas: numPaginas,
+          fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
+          fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
+        });
 
         if (inventoryError) {
           showNotification({
             title: 'Error al guardar',
             description: 'Hubo un problema al guardar el libro. Inténtalo de nuevo.',
             isChoice: false,
-            delete: false
+            delete: false,
           });
           console.error('Error al insertar:', inventoryError);
         } else {
@@ -227,7 +239,7 @@ export default function BookForm() {
               title: '¡Éxito!',
               description: `Has añadido ${book.title} a tu colección.`,
               isChoice: false,
-              delete: false
+              delete: false,
             });
           }, 100);
         }
@@ -242,11 +254,13 @@ export default function BookForm() {
   if (!book) {
     return (
       <Screen>
-        <ThemedStatusBar/>
+        <ThemedStatusBar />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
-          <Text className="mt-4 text-xl font-bold" style={{color: colors.primaryText}}>Error al cargar</Text>
-          <Text className="mt-2 text-center" style={{color: colors.secondaryText}}>
+          <Text className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
+            Error al cargar
+          </Text>
+          <Text className="mt-2 text-center" style={{ color: colors.secondaryText }}>
             No se pudo cargar la información del libro
           </Text>
         </View>
@@ -256,46 +270,54 @@ export default function BookForm() {
 
   return (
     <Screen>
-      <ThemedStatusBar/>
+      <ThemedStatusBar />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
           <View className="flex-1 flex-row items-center">
-            <ReturnButton route="back" title={book.title || "Detalle del libro"} style={' '}/>
+            <ReturnButton route="back" title={book.title || 'Detalle del libro'} style={' '} />
           </View>
-          <FavoriteSetter favorite={favorito} setFavorite={setFavorito}/>
+          <FavoriteSetter favorite={favorito} setFavorite={setFavorito} />
         </View>
 
-        <View className="flex-row justify-between gap-2 px-4 mb-4 items-stretch">
-          <Image source={{uri: book.imageFull || book.image || 'https://via.placeholder.com/100x150'}}
-          className="aspect-[2/3] h-32 rounded-lg" style={{backgroundColor: colors.surfaceButton}} resizeMode="cover"/>
-          <ReviewSetter review={reseña} setReview={setReseña}/>
+        <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
+          <Image
+            source={{ uri: book.imageFull || book.image || 'https://via.placeholder.com/100x150' }}
+            className="aspect-[2/3] h-32 rounded-lg"
+            style={{ backgroundColor: colors.surfaceButton }}
+            resizeMode="cover"
+          />
+          <ReviewSetter review={reseña} setReview={setReseña} />
         </View>
 
         <View className="gap-6">
-          <StateSetter state={estado} setState={setEstado} inProgressLabel="Leyendo"/>
-          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
+          <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Leyendo" />
+          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
 
           {estado !== 'COMPLETADO' && (
-            <ProgressSetter progress={paginasLeidas} setProgress={setPaginasLeidas} type='libro'/>
+            <ProgressSetter progress={paginasLeidas} setProgress={setPaginasLeidas} type="libro" />
           )}
-          
 
-          <DateSetter startDate={fechaInicio} setStartDate={setFechaInicio} endDate={fechaFin} setEndDate={setFechaFin} isRange={true}/>
+          <DateSetter
+            startDate={fechaInicio}
+            setStartDate={setFechaInicio}
+            endDate={fechaFin}
+            setEndDate={setFechaFin}
+            isRange={true}
+          />
         </View>
-        
+
         <TouchableOpacity
           onPress={handleSubmit}
           disabled={loading}
-          className="mb-14 rounded-lg py-3 mx-4 mt-4"
-          style= {{ backgroundColor: colors.primary}}
+          className="mx-4 mb-14 mt-4 rounded-lg py-3"
+          style={{ backgroundColor: colors.primary }}
           activeOpacity={0.8}>
-            <Text className="text-center text-lg font-bold" style={{color: colors.background}}>
-              {loading ? 'Guardando...' : 'Guardar'}
-            </Text>
-          </TouchableOpacity>
-		  
+          <Text className="text-center text-lg font-bold" style={{ color: colors.background }}>
+            {loading ? 'Guardando...' : 'Guardar'}
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
-	  <AdBanner/>
+      <AdBanner />
     </Screen>
   );
 }

@@ -1,4 +1,13 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, TextInput, Platform, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+  Platform,
+  Alert,
+} from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
@@ -10,14 +19,14 @@ import { useAuth } from 'context/AuthContext';
 import { FilmResource } from 'app/types/Resources';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
-import { ThemedStatusBar } from "components/ThemedStatusBar";
-import { ReturnButton } from "components/ReturnButton";
-import { FavoriteSetter } from "@/Form/components/FavoriteSetter";
-import { ReviewSetter } from "@/Form/components/ReviewSetter";
-import { StateSetter } from "@/Form/components/StateSetter";
-import { RatingSetter } from "@/Form/components/RatingSetter";
-import { DateSetter } from "@/Form/components/DateSetter";
-import { ViewsSetter } from "@/Form/components/ViewsSetter";
+import { ThemedStatusBar } from 'components/ThemedStatusBar';
+import { ReturnButton } from 'components/ReturnButton';
+import { FavoriteSetter } from '@/Form/components/FavoriteSetter';
+import { ReviewSetter } from '@/Form/components/ReviewSetter';
+import { StateSetter } from '@/Form/components/StateSetter';
+import { RatingSetter } from '@/Form/components/RatingSetter';
+import { DateSetter } from '@/Form/components/DateSetter';
+import { ViewsSetter } from '@/Form/components/ViewsSetter';
 import { NotificationModal } from 'components/NotificationModal';
 import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
@@ -37,9 +46,9 @@ export default function FilmForm() {
   const router = useRouter();
   const { user } = useAuth();
   const { refreshData } = useCollection();
-  
+
   const { colors } = useTheme();
-  
+
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
   const film: any = editando ? resource.contenido : JSON.parse(filmData as string);
@@ -47,13 +56,24 @@ export default function FilmForm() {
   const [reseña, setReseña] = useState(resource?.reseña || '');
   const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
   const [favorita, setFavorita] = useState(resource?.favorito || false);
-  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(resource?.estado || 'PENDIENTE');
-  const [fechaVisionado, setFechaVisionado] = useState<Date | null>(resource?.fechaVisionado ? new Date(resource.fechaVisionado) : null);
+  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO'>(
+    resource?.estado || 'PENDIENTE'
+  );
+  const [fechaVisionado, setFechaVisionado] = useState<Date | null>(
+    resource?.fechaVisionado ? new Date(resource.fechaVisionado) : null
+  );
   const [numVisionados, setNumVisionados] = useState(resource?.numVisionados || 0);
 
   const [loading, setLoading] = useState(false);
 
-  const { showNotification} = useNotification();
+  const { showNotification } = useNotification();
+
+  const handleStatusChange = (nuevoEstado: any) => {
+    setEstado(nuevoEstado);
+    if (nuevoEstado === 'COMPLETADO' && !fechaVisionado) {
+      setFechaVisionado(new Date());
+    }
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -71,14 +91,16 @@ export default function FilmForm() {
             numVisionados: numVisionados,
           })
           .eq('id', resource.id)
-          .select(`
+          .select(
+            `
             *,
             contenidopelicula:idContenido (
               titulo,
               imagenUrl,
               fechaLanzamiento
             )
-          `)
+          `
+          )
           .single();
 
         if (updateError) {
@@ -86,11 +108,11 @@ export default function FilmForm() {
             title: 'Error al actualizar',
             description: 'Hubo un problema al actualizar la película. Inténtalo de nuevo.',
             isChoice: false,
-            delete: false 
+            delete: false,
           });
           console.error('Error al actualizar:', updateError);
         } else {
-		  // Adaptamos la respuesta para mantener compatibilidad
+          // Adaptamos la respuesta para mantener compatibilidad
           const rawData = updatedData as any;
           const contentData = rawData.contenidopelicula;
           delete rawData.contenidopelicula;
@@ -99,119 +121,119 @@ export default function FilmForm() {
             contenido: contentData,
           };
 
-		  refreshData();
+          refreshData();
           router.replace({
             pathname: '/details/film/filmResource',
             params: {
               item: JSON.stringify(filmResource),
-              from: from
-            }
+              from: from,
+            },
           });
           setTimeout(() => {
             showNotification({
               title: '¡Éxito!',
               description: `Has actualizado ${film.titulo || film.title} en tu colección.`,
               isChoice: false,
-              delete: false
+              delete: false,
             });
           }, 100);
         }
       } else {
-      // Insertar nuevo recurso
-	    // Miramos si el contenido ya existe en la tabla contenidopelicula
-      const { data: existingContent, error: searchError } = await supabase
-        .from('contenidopelicula')
-        .select('id')
-        .eq('idApi', film.id)
-        .eq('titulo', film.title)
-        .maybeSingle();
-
-      if (searchError) {
-        throw searchError;
-      }
-      let contentId;
-
-      if (existingContent) {
-        contentId = existingContent.id;
-      } else {
-		// Si no existe, lo creamos
-        const { data: newContent, error: insertError } = await supabase
+        // Insertar nuevo recurso
+        // Miramos si el contenido ya existe en la tabla contenidopelicula
+        const { data: existingContent, error: searchError } = await supabase
           .from('contenidopelicula')
-          .insert({
-            titulo: film.title,
-			idApi: film.id,
-			imagenUrl: film.image,
-			fechaLanzamiento: film.releaseDate,
-		  }).select('id').single();
+          .select('id')
+          .eq('idApi', film.id)
+          .eq('titulo', film.title)
+          .maybeSingle();
 
-		if (insertError)	throw insertError;
-		contentId = newContent.id;
-      }
+        if (searchError) {
+          throw searchError;
+        }
+        let contentId;
 
-	  // Verificar si el usuario ya tiene este recurso
-      const { data: existingResource, error: checkError } = await supabase
-        .from('recursopelicula')
-        .select('id')
-        .eq('idContenido', contentId)
-        .eq('usuarioId', user.id)
-        .maybeSingle();
+        if (existingContent) {
+          contentId = existingContent.id;
+        } else {
+          // Si no existe, lo creamos
+          const { data: newContent, error: insertError } = await supabase
+            .from('contenidopelicula')
+            .insert({
+              titulo: film.title,
+              idApi: film.id,
+              imagenUrl: film.image,
+              fechaLanzamiento: film.releaseDate,
+            })
+            .select('id')
+            .single();
 
-      if (checkError) {
-        throw checkError;
-      }
+          if (insertError) throw insertError;
+          contentId = newContent.id;
+        }
 
-      if (existingResource) {
-        //Alert.alert("Aviso", "Ya tienes esta película en tu colección.");
-        refreshData();
-        router.back();
-        setTimeout(() =>{
-          showNotification({
-            title: 'Aviso',
+        // Verificar si el usuario ya tiene este recurso
+        const { data: existingResource, error: checkError } = await supabase
+          .from('recursopelicula')
+          .select('id')
+          .eq('idContenido', contentId)
+          .eq('usuarioId', user.id)
+          .maybeSingle();
+
+        if (checkError) {
+          throw checkError;
+        }
+
+        if (existingResource) {
+          //Alert.alert("Aviso", "Ya tienes esta película en tu colección.");
+          refreshData();
+          router.back();
+          setTimeout(() => {
+            showNotification({
+              title: 'Aviso',
               description: 'Ya tienes esta película en tu colección.',
               isChoice: false,
-              delete: false
-          });
-        }, 100);
-        setLoading(false);
-        return;
-      }
+              delete: false,
+            });
+          }, 100);
+          setLoading(false);
+          return;
+        }
 
-	  // Ahora insertamos el recurso del usuario
-      const { error: inventoryError } = await supabase
-        .from('recursopelicula')
-        .insert({
-			usuarioId: user.id,
-			idContenido: contentId,
-			estado: estado,
-			reseña: reseña,
-			calificacion: calificacionPersonal,
-			favorito: favorita,
-			fechaVisionado: fechaVisionado ? fechaVisionado.toISOString().split('T')[0] : null,
-			numVisionados: numVisionados,
+        // Ahora insertamos el recurso del usuario
+        const { error: inventoryError } = await supabase.from('recursopelicula').insert({
+          usuarioId: user.id,
+          idContenido: contentId,
+          estado: estado,
+          reseña: reseña,
+          calificacion: calificacionPersonal,
+          favorito: favorita,
+          fechaVisionado: fechaVisionado ? fechaVisionado.toISOString().split('T')[0] : null,
+          numVisionados: numVisionados,
         });
 
-      if (inventoryError) {
-        //Alert.alert("Error", "Hubo un problema al guardar la película. Inténtalo de nuevo.");
-        showNotification({
-          title: 'Error al guardar',
+        if (inventoryError) {
+          //Alert.alert("Error", "Hubo un problema al guardar la película. Inténtalo de nuevo.");
+          showNotification({
+            title: 'Error al guardar',
             description: 'Hubo un problema al guardar la película. Inténtalo de nuevo.',
             isChoice: false,
-            delete: false
-        });
-        console.error('Error al insertar:', inventoryError);
-      } else {
-        //Alert.alert("¡Éxito!", `Has añadido a ${film.title} a tu colección.`);
-    	refreshData();
-        router.back();
-        setTimeout(() => {
-          showNotification({
-            title: '¡Éxito!',
+            delete: false,
+          });
+          console.error('Error al insertar:', inventoryError);
+        } else {
+          //Alert.alert("¡Éxito!", `Has añadido a ${film.title} a tu colección.`);
+          refreshData();
+          router.back();
+          setTimeout(() => {
+            showNotification({
+              title: '¡Éxito!',
               description: `Has añadido ${film.title} a tu colección.`,
               isChoice: false,
-              delete: false
-          });
-        }, 100);
-      }
+              delete: false,
+            });
+          }, 100);
+        }
       }
     } catch (error) {
       console.error('Error saving film data:', error);
@@ -223,11 +245,13 @@ export default function FilmForm() {
   if (!film) {
     return (
       <Screen>
-        <ThemedStatusBar/>
+        <ThemedStatusBar />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
-          <Text className="mt-4 text-xl font-bold" style={{color: colors.primaryText}}>Error al cargar</Text>
-          <Text className="mt-2 text-center" style={{color: colors.secondaryText}}>
+          <Text className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
+            Error al cargar
+          </Text>
+          <Text className="mt-2 text-center" style={{ color: colors.secondaryText }}>
             No se pudo cargar la información de la película
           </Text>
         </View>
@@ -235,52 +259,57 @@ export default function FilmForm() {
     );
   }
 
-
   return (
     <Screen>
-      <ThemedStatusBar/>
+      <ThemedStatusBar />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
           <View className="flex-1 flex-row items-center">
-            <ReturnButton route="back" title={film.titulo || film.title} style={' '}/>
+            <ReturnButton route="back" title={film.titulo || film.title} style={' '} />
           </View>
-          <FavoriteSetter favorite={favorita} setFavorite={setFavorita}/>
+          <FavoriteSetter favorite={favorita} setFavorite={setFavorita} />
         </View>
 
-
-        <View className="flex-row justify-between gap-2 px-4 mb-4 items-stretch">
-          <Image source={{uri: film.imagenUrl || film.image || 'https://via.placeholder.com/100x150'}}
-          className="aspect-[2/3] h-32 rounded-lg" style={{backgroundColor: colors.surfaceButton}}
-          resizeMode="cover"/>
-          <ReviewSetter review={reseña} setReview={setReseña}/>
+        <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
+          <Image
+            source={{ uri: film.imagenUrl || film.image || 'https://via.placeholder.com/100x150' }}
+            className="aspect-[2/3] h-32 rounded-lg"
+            style={{ backgroundColor: colors.surfaceButton }}
+            resizeMode="cover"
+          />
+          <ReviewSetter review={reseña} setReview={setReseña} />
         </View>
 
         <View className="gap-6">
-          <StateSetter state={estado} setState={setEstado}/>
-          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
+          <StateSetter state={estado} setState={handleStatusChange} />
+          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
 
-          <View className="flex-row items-start mr-4">
+          <View className="mr-4 flex-row items-start">
             <View className="flex-1">
-               <ViewsSetter views={numVisionados} setViews={setNumVisionados}/>
+              <ViewsSetter views={numVisionados} setViews={setNumVisionados} />
             </View>
             <View className="flex-1">
-               <DateSetter startDate={fechaVisionado} setStartDate={setFechaVisionado} isRange={false}/>
+              <DateSetter
+                startDate={fechaVisionado}
+                setStartDate={setFechaVisionado}
+                isRange={false}
+              />
             </View>
           </View>
         </View>
 
         <TouchableOpacity
-            onPress={handleSubmit}
-            disabled={loading}
-            className="mb-14 rounded-lg py-3 mx-4 mt-4"
-            style={{backgroundColor: colors.primary}}
-            activeOpacity={0.8}>
-            <Text className="text-center text-lg font-bold" style={{color:colors.background}}>
-              {loading ? 'Guardando...' : 'Guardar'}
-            </Text>
-          </TouchableOpacity>
+          onPress={handleSubmit}
+          disabled={loading}
+          className="mx-4 mb-14 mt-4 rounded-lg py-3"
+          style={{ backgroundColor: colors.primary }}
+          activeOpacity={0.8}>
+          <Text className="text-center text-lg font-bold" style={{ color: colors.background }}>
+            {loading ? 'Guardando...' : 'Guardar'}
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
-	  <AdBanner/>
+      <AdBanner />
     </Screen>
   );
 }

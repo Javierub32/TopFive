@@ -8,22 +8,22 @@ import { useAuth } from 'context/AuthContext';
 import { GameResource } from 'app/types/Resources';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
-import { ThemedStatusBar } from "components/ThemedStatusBar";
-import { ReturnButton } from "components/ReturnButton";
-import { FavoriteSetter } from "@/Form/components/FavoriteSetter";
-import { ReviewSetter } from "@/Form/components/ReviewSetter";
-import { StateSetter } from "@/Form/components/StateSetter";
-import { RatingSetter } from "@/Form/components/RatingSetter";
-import { ProgressSetter } from "@/Form/components/ProgressSetter";
-import { DateSetter } from "@/Form/components/DateSetter";
-import { DifficultySetter } from "@/Form/components/DifficultySetter";
-import {useNotification} from "context/NotificationContext";
+import { ThemedStatusBar } from 'components/ThemedStatusBar';
+import { ReturnButton } from 'components/ReturnButton';
+import { FavoriteSetter } from '@/Form/components/FavoriteSetter';
+import { ReviewSetter } from '@/Form/components/ReviewSetter';
+import { StateSetter } from '@/Form/components/StateSetter';
+import { RatingSetter } from '@/Form/components/RatingSetter';
+import { ProgressSetter } from '@/Form/components/ProgressSetter';
+import { DateSetter } from '@/Form/components/DateSetter';
+import { DifficultySetter } from '@/Form/components/DifficultySetter';
+import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
 
 interface Game {
   id: number;
   title: string;
-  autor: string | null; 
+  autor: string | null;
   image: string | null;
   releaseDate: string | null;
   genre: string[] | null;
@@ -41,7 +41,7 @@ export default function GameForm() {
   const { refreshData } = useCollection();
   const { showNotification } = useNotification();
   const { colors } = useTheme();
-  
+
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
   const game: any = editando ? resource.contenido : JSON.parse(gameData as string);
@@ -49,17 +49,30 @@ export default function GameForm() {
   const [reseña, setReseña] = useState(resource?.reseña || '');
   const [calificacionPersonal, setCalificacionPersonal] = useState(resource?.calificacion || 0);
   const [favorito, setFavorito] = useState(resource?.favorito || false);
-  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO' | 'ABANDONADO'>(resource?.estado || 'PENDIENTE');
-  
+  const [estado, setEstado] = useState<'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO' | 'ABANDONADO'>(
+    resource?.estado || 'PENDIENTE'
+  );
+
   // Campos específicos de videojuegos
   const [horasJugadas, setHorasJugadas] = useState(resource?.horasJugadas?.toString() || '');
   const [dificultad, setDificultad] = useState<string>(resource?.dificultad || 'Normal');
 
   // Fechas
-  const [fechaInicio, setFechaInicio] = useState<Date | null>(resource?.fechaInicio ? new Date(resource.fechaInicio) : null);
-  const [fechaFin, setFechaFin] = useState<Date | null>(resource?.fechaFin ? new Date(resource.fechaFin) : null);
+  const [fechaInicio, setFechaInicio] = useState<Date | null>(
+    resource?.fechaInicio ? new Date(resource.fechaInicio) : null
+  );
+  const [fechaFin, setFechaFin] = useState<Date | null>(
+    resource?.fechaFin ? new Date(resource.fechaFin) : null
+  );
 
   const [loading, setLoading] = useState(false);
+
+  const handleStatusChange = (nuevoEstado: any) => {
+    setEstado(nuevoEstado);
+    if (nuevoEstado === 'COMPLETADO' && !fechaFin) {
+      setFechaFin(new Date());
+    }
+  };
 
   const handleSubmit = async () => {
     const horasNum = parseFloat(horasJugadas) || 0;
@@ -81,14 +94,16 @@ export default function GameForm() {
             fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
           })
           .eq('id', resource.id)
-          .select(`
+          .select(
+            `
             *,
             contenidovideojuego:idContenido (
               titulo,
               imagenUrl,
               fechaLanzamiento              
             )
-          `)
+          `
+          )
           .single();
 
         if (updateError) {
@@ -97,132 +112,132 @@ export default function GameForm() {
             title: 'Error al actualizar',
             description: 'Hubo un problema al actualizar el juego. Inténtalo de nuevo.',
             isChoice: false,
-			delete: false
-          })
+            delete: false,
+          });
           console.error('Error al actualizar:', updateError);
         } else {
-		  // Adaptamos la respuesta para mantener compatibilidad
-		  const rawData = updatedData as any;
-		  const contentData = rawData.contenidovideojuego;
-		  delete rawData.contenidovideojuego;
-		  const gameResource: GameResource = {
-			...rawData,
-			contenido: contentData,
-		  };
+          // Adaptamos la respuesta para mantener compatibilidad
+          const rawData = updatedData as any;
+          const contentData = rawData.contenidovideojuego;
+          delete rawData.contenidovideojuego;
+          const gameResource: GameResource = {
+            ...rawData,
+            contenido: contentData,
+          };
 
           //Alert.alert('¡Éxito!', `Has actualizado ${game.titulo || game.title} en tu colección.`);
-		  refreshData();
+          refreshData();
           router.replace({
             pathname: '/details/game/gameResource',
-            params: { 
+            params: {
               item: JSON.stringify(gameResource),
-              from: from
-            }
+              from: from,
+            },
           });
           setTimeout(() => {
             showNotification({
               title: '¡Éxito!',
               description: `Has actualizado ${game.titulo || game.title} en tu colección.`,
               isChoice: false,
-			  delete: false
+              delete: false,
             });
           }, 100);
         }
       } else {
         // Insertar nuevo recurso
         // 1. Verificar si el contenido existe en 'contenidovideojuego'
-      const { data: existingContent, error: searchError } = await supabase
-        .from('contenidovideojuego')
-        .select('id')
-        .eq('idApi', game.id)
-        .eq('titulo', game.title)
-        .maybeSingle();
-
-      if (searchError) throw searchError;
-
-      let contentId;
-
-      if (existingContent) {
-        contentId = existingContent.id;
-      } else {
-        // 2. Si no existe, crearlo
-        const { data: newContent, error: insertError } = await supabase
+        const { data: existingContent, error: searchError } = await supabase
           .from('contenidovideojuego')
-          .insert({
-            titulo: game.title,
-            idApi: game.id,
-            imagenUrl: game.imageFull || game.image,
-            fechaLanzamiento: game.releaseDate,
-          })
           .select('id')
-          .single();
+          .eq('idApi', game.id)
+          .eq('titulo', game.title)
+          .maybeSingle();
 
-        if (insertError) throw insertError;
-        contentId = newContent.id;
-      }
+        if (searchError) throw searchError;
 
-      // 3. Verificar si el usuario ya tiene este recurso
-      const { data: existingResource, error: checkError } = await supabase
-        .from('recursovideojuego')
-        .select('id')
-        .eq('idContenido', contentId)
-        .eq('usuarioId', user.id)
-        .maybeSingle();
+        let contentId;
 
-      if (checkError) throw checkError;
+        if (existingContent) {
+          contentId = existingContent.id;
+        } else {
+          // 2. Si no existe, crearlo
+          const { data: newContent, error: insertError } = await supabase
+            .from('contenidovideojuego')
+            .insert({
+              titulo: game.title,
+              idApi: game.id,
+              imagenUrl: game.imageFull || game.image,
+              fechaLanzamiento: game.releaseDate,
+            })
+            .select('id')
+            .single();
 
-      if (existingResource) {
-        //Alert.alert('Aviso', 'Ya tienes este videojuego en tu colección.');
-        refreshData();
-        router.back();
-        setTimeout(() =>{
-          showNotification({
-            title: 'Aviso',
+          if (insertError) throw insertError;
+          contentId = newContent.id;
+        }
+
+        // 3. Verificar si el usuario ya tiene este recurso
+        const { data: existingResource, error: checkError } = await supabase
+          .from('recursovideojuego')
+          .select('id')
+          .eq('idContenido', contentId)
+          .eq('usuarioId', user.id)
+          .maybeSingle();
+
+        if (checkError) throw checkError;
+
+        if (existingResource) {
+          //Alert.alert('Aviso', 'Ya tienes este videojuego en tu colección.');
+          refreshData();
+          router.back();
+          setTimeout(() => {
+            showNotification({
+              title: 'Aviso',
               description: 'Ya tienes este juego en tu colección.',
               isChoice: false,
-			  delete: false
-          });
-        }, 100);
-        setLoading(false);
-        return;
-      }
+              delete: false,
+            });
+          }, 100);
+          setLoading(false);
+          return;
+        }
 
-      // 4. Insertar el recurso del usuario en 'recursovideojuego'
-      const { error: inventoryError } = await supabase.from('recursovideojuego').insert({
-        usuarioId: user.id,
-        idContenido: contentId,
-        estado: estado,
-        reseña: reseña,
-        calificacion: calificacionPersonal,
-        favorito: favorito,
-        horasJugadas: horasNum,
-        dificultad: dificultad,
-        fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
-        fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
-      });
+        // 4. Insertar el recurso del usuario en 'recursovideojuego'
+        const { error: inventoryError } = await supabase.from('recursovideojuego').insert({
+          usuarioId: user.id,
+          idContenido: contentId,
+          estado: estado,
+          reseña: reseña,
+          calificacion: calificacionPersonal,
+          favorito: favorito,
+          horasJugadas: horasNum,
+          dificultad: dificultad,
+          fechaInicio: fechaInicio ? fechaInicio.toISOString().split('T')[0] : null,
+          fechaFin: fechaFin ? fechaFin.toISOString().split('T')[0] : null,
+        });
 
-      if (inventoryError) {
-        //Alert.alert('Error', 'Hubo un problema al guardar el videojuego. Inténtalo de nuevo.');
-        showNotification({
-          title: 'Error al guardar',
-          description: 'Hubo un problema al guardar el juego. Inténtalo de nuevo.',
-          isChoice: false,
-          delete: false
-        })
-        console.error('Error al insertar:', inventoryError);
-      } else {
-        //Alert.alert('¡Éxito!', `Has añadido ${game.title} a tu colección.`);
-		refreshData();
-        router.back();
-        setTimeout(() => {
+        if (inventoryError) {
+          //Alert.alert('Error', 'Hubo un problema al guardar el videojuego. Inténtalo de nuevo.');
           showNotification({
-            title: '¡Éxito!',
+            title: 'Error al guardar',
+            description: 'Hubo un problema al guardar el juego. Inténtalo de nuevo.',
+            isChoice: false,
+            delete: false,
+          });
+          console.error('Error al insertar:', inventoryError);
+        } else {
+          //Alert.alert('¡Éxito!', `Has añadido ${game.title} a tu colección.`);
+          refreshData();
+          router.back();
+          setTimeout(() => {
+            showNotification({
+              title: '¡Éxito!',
               description: `Has añadido ${game.title} a tu colección.`,
               isChoice: false,
-			  delete: false
-          });
-        }, 100);
-      }
+              delete: false,
+            });
+          }, 100);
+        }
       }
     } catch (error) {
       console.error('Error saving game data:', error);
@@ -231,15 +246,16 @@ export default function GameForm() {
     }
   };
 
-
   if (!game) {
     return (
       <Screen>
-        <ThemedStatusBar/>
+        <ThemedStatusBar />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
-          <Text className="mt-4 text-xl font-bold" style={{color: colors.primaryText}}>Error al cargar</Text>
-          <Text className="mt-2 text-center" style={{color: colors.secondaryText}}>
+          <Text className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
+            Error al cargar
+          </Text>
+          <Text className="mt-2 text-center" style={{ color: colors.secondaryText }}>
             No se pudo cargar la información del videojuego
           </Text>
         </View>
@@ -249,45 +265,58 @@ export default function GameForm() {
 
   return (
     <Screen>
-      <ThemedStatusBar/>
+      <ThemedStatusBar />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
           <View className="flex-1 flex-row items-center">
-            <ReturnButton route="back" title={game.titulo || game.title} style={' '}/>
+            <ReturnButton route="back" title={game.titulo || game.title} style={' '} />
           </View>
-          <FavoriteSetter favorite={favorito} setFavorite={setFavorito}/>
+          <FavoriteSetter favorite={favorito} setFavorite={setFavorito} />
         </View>
 
-        <View className="flex-row justify-between gap-2 px-4 mb-4 items-stretch">
-          <Image source={{uri:game.imagenUrl || game.image || 'https://via.placeholder.com/100x150'}} 
-          className="aspect-[2/3] h-32 rounded-lg" style={{backgroundColor: colors.surfaceButton}}
-          resizeMode="cover"/>
-          <ReviewSetter review={reseña} setReview={setReseña}/>
+        <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
+          <Image
+            source={{ uri: game.imagenUrl || game.image || 'https://via.placeholder.com/100x150' }}
+            className="aspect-[2/3] h-32 rounded-lg"
+            style={{ backgroundColor: colors.surfaceButton }}
+            resizeMode="cover"
+          />
+          <ReviewSetter review={reseña} setReview={setReseña} />
         </View>
 
         <View className="gap-6">
-          <StateSetter state={estado} setState={setEstado} inProgressLabel='Jugando'/>
-          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
-          <DifficultySetter difficulty={dificultad} setDifficulty={setDificultad}/>
+          <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Jugando" />
+          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
+          <DifficultySetter difficulty={dificultad} setDifficulty={setDificultad} />
           {estado !== 'COMPLETADO' && (
-            <ProgressSetter progress={horasJugadas} setProgress={setHorasJugadas} type='videojuego'/>
+            <ProgressSetter
+              progress={horasJugadas}
+              setProgress={setHorasJugadas}
+              type="videojuego"
+            />
           )}
-          
-          <DateSetter startDate={fechaInicio} setStartDate={setFechaInicio} endDate={fechaFin} setEndDate={setFechaFin} isRange={true}/>
+
+          <DateSetter
+            startDate={fechaInicio}
+            setStartDate={setFechaInicio}
+            endDate={fechaFin}
+            setEndDate={setFechaFin}
+            isRange={true}
+          />
 
           <TouchableOpacity
             onPress={handleSubmit}
             disabled={loading}
-            className="mb-14 rounded-lg py-3 mx-4"
-            style={{backgroundColor: colors.primary}}
+            className="mx-4 mb-14 rounded-lg py-3"
+            style={{ backgroundColor: colors.primary }}
             activeOpacity={0.8}>
-            <Text className="text-center text-lg font-bold" style={{color:colors.background}}>
+            <Text className="text-center text-lg font-bold" style={{ color: colors.background }}>
               {loading ? 'Guardando...' : 'Guardar'}
             </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
-	  <AdBanner/>
+      <AdBanner />
     </Screen>
   );
 }

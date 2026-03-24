@@ -56,6 +56,13 @@ export default function SongForm() {
 
   const { showNotification } = useNotification();
 
+  const handleStatusChange = (nuevoEstado: any) => {
+  setEstado(nuevoEstado);
+  if (nuevoEstado === 'COMPLETADO' && !fechaEscuchado) {
+    setFechaEscuchado(new Date());
+  }
+};
+
   const handleSubmit = async () => {
     setLoading(true);
     try {
@@ -260,7 +267,7 @@ export default function SongForm() {
         </View>
 
         <View className="gap-6">
-          <StateSetter state={estado} setState={setEstado}/>
+          <StateSetter state={estado} setState={handleStatusChange}/>
           <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal}/>
           <DateSetter startDate={fechaEscuchado} setStartDate={setFechaEscuchado} isRange={false} style='mx-10'/>
         </View>
