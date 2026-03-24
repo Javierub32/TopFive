@@ -50,6 +50,9 @@
         "backgroundColor": "#5781b3"
       },
       "package": "com.leftjoiners.topfive",
+      "permissions": [
+        "com.google.android.gms.permission.AD_ID"
+      ],
       "enableProguardInReleaseBuilds": true,
       "enableShrinkResourcesInReleaseBuilds": true,
       "versionCode": 1
