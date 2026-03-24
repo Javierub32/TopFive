@@ -119,8 +119,8 @@ export default function SeriesDetail() {
           )}
           
         </View>
-		<AdBanner/>
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }

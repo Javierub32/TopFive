@@ -7,6 +7,7 @@ import ActivityItem from '@/Home/components/RenderResource';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { SearchIcon2, SocialBubblesIcon } from 'components/Icons';
 import { NotificationButton } from '@/Notifications/components/NotificationButton';
+import { NativeAdCard } from 'components/NativeAdCard';
 
 
 
@@ -40,7 +41,13 @@ export default function HomeScreen() {
 			<FlatList
 				data={activities}
 				keyExtractor={(item, index) => `${item.recurso_id}-${index}`}
-				renderItem={({ item }) => <ActivityItem item={item} />}
+				renderItem={({ item, index }) => (
+					<>
+						<ActivityItem item={item} />
+						{(index + 1 ) % 4 === 0 && <NativeAdCard />}
+					</>
+
+				)}
 				contentContainerStyle={activities.length === 0 ? { flex: 1, paddingHorizontal: 16, paddingVertical: 150 } : { paddingHorizontal: 16, paddingBottom: 16 }}
 				onEndReached={fetchActivities}
 				onEndReachedThreshold={0.5}

@@ -293,8 +293,9 @@ export default function BookForm() {
               {loading ? 'Guardando...' : 'Guardar'}
             </Text>
           </TouchableOpacity>
-		  <AdBanner/>
+		  
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }

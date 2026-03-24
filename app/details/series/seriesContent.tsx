@@ -69,8 +69,8 @@ export default function SeriesDetail() {
           </View>
           <AddToCollectionButton content={series} type='serie'/>
         </View>
-		<AdBanner/>
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }

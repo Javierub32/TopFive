@@ -74,8 +74,8 @@ export default function GameDetail() {
           </View>
           <AddToCollectionButton content={game} type='videojuego'/>
         </View>
-		<AdBanner/>
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }

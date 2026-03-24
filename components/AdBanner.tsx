@@ -7,7 +7,7 @@ const adUnitId = __DEV__
 
 export const AdBanner = () => {
   return (
-    <View style={{ alignItems: 'center', marginVertical: 10 }}>
+    <View style={{ marginTop: 10, marginBottom: 45 }}>
       <BannerAd
         unitId={adUnitId}
         size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}

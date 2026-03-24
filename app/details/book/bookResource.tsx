@@ -116,8 +116,8 @@ export default function BookDetail() {
           
           <TimeCard resource={bookResource} />
         </View>
-		<AdBanner/>
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }

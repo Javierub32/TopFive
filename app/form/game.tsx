@@ -286,8 +286,8 @@ export default function GameForm() {
             </Text>
           </TouchableOpacity>
         </View>
-		<AdBanner/>
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }

@@ -116,8 +116,8 @@ export default function GameDetail() {
           </View>
           )}          
         </View>
-		<AdBanner/>
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }

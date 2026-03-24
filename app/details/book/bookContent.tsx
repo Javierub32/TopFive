@@ -65,8 +65,8 @@ export default function BookDetail() {
           </View>
           	<AddToCollectionButton content={book} type='libro'/>
         </View>
-		<AdBanner/>
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }

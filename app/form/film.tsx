@@ -279,8 +279,8 @@ export default function FilmForm() {
               {loading ? 'Guardando...' : 'Guardar'}
             </Text>
           </TouchableOpacity>
-        <AdBanner/>
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }

@@ -297,8 +297,8 @@ export default function SeriesForm() {
               {loading ? 'Guardando...' : 'Guardar'}
             </Text>
           </TouchableOpacity>      
-		  <AdBanner/>
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }

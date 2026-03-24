@@ -100,8 +100,8 @@ export default function SongDetail() {
             </View>
           )}          
         </View>
-		<AdBanner/>
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }

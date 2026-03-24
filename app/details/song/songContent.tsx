@@ -64,8 +64,8 @@ export default function SongDetail() {
         <View className="px-4 mb-14 pb-6 gap-3 mt-1">
           <AddToCollectionButton content={song} type='cancion'/>
         </View>
-		<AdBanner/>
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }

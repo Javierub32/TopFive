@@ -103,8 +103,8 @@ export default function FilmDetail() {
           )}
           
         </View>
-		<AdBanner/>
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }

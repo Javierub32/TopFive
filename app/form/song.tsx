@@ -275,8 +275,8 @@ export default function SongForm() {
               {loading ? 'Guardando...' : 'Guardar'}
             </Text>
           </TouchableOpacity>
-		  <AdBanner/>
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }

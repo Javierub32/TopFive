@@ -68,8 +68,8 @@ export default function FilmDetail() {
           </View>
           <AddToCollectionButton content={film} type='pelicula'/>
         </View>
-		<AdBanner/>
       </ScrollView>
+	  <AdBanner/>
     </Screen>
   );
 }
