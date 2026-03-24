@@ -16,6 +16,7 @@ import { TimeCard } from '@/Details/components/TimeCard';
 import { EditResourceButton } from '@/Details/components/EditResourceButton';
 import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
 import { useAuth } from "context/AuthContext";
+import { AdBanner } from 'components/AdBanner';
 
 export default function BookDetail() {
   const { item, from } = useLocalSearchParams();
@@ -115,6 +116,7 @@ export default function BookDetail() {
           
           <TimeCard resource={bookResource} />
         </View>
+		<AdBanner/>
       </ScrollView>
     </Screen>
   );

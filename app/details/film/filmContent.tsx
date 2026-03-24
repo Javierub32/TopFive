@@ -16,6 +16,7 @@ import { useContent } from '@/Details/hooks/useContent';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { ModernContentHeader } from "@/Details/components/ContentHeader";
 import { ContentRating } from "@/Details/components/ContentRating";
+import { AdBanner } from 'components/AdBanner';
 
 export default function FilmDetail() {
   const { id, from } = useLocalSearchParams();
@@ -67,6 +68,7 @@ export default function FilmDetail() {
           </View>
           <AddToCollectionButton content={film} type='pelicula'/>
         </View>
+		<AdBanner/>
       </ScrollView>
     </Screen>
   );

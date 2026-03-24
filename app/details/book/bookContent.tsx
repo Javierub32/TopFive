@@ -15,6 +15,7 @@ import { useContent } from '@/Details/hooks/useContent';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { ModernContentHeader } from "@/Details/components/ContentHeader";
 import { ContentRating } from "@/Details/components/ContentRating";
+import { AdBanner } from 'components/AdBanner';
 
 export default function BookDetail() {
   const { id, from } = useLocalSearchParams();
@@ -64,6 +65,7 @@ export default function BookDetail() {
           </View>
           	<AddToCollectionButton content={book} type='libro'/>
         </View>
+		<AdBanner/>
       </ScrollView>
     </Screen>
   );

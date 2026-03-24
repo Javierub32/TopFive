@@ -14,6 +14,7 @@ import { ReviewCard } from '@/Details/components/ReviewCard';
 import { EditResourceButton } from '@/Details/components/EditResourceButton';
 import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
 import { useAuth } from "context/AuthContext";
+import { AdBanner } from 'components/AdBanner';
 
 export default function FilmDetail() {
   const { item, from } = useLocalSearchParams();
@@ -102,6 +103,7 @@ export default function FilmDetail() {
           )}
           
         </View>
+		<AdBanner/>
       </ScrollView>
     </Screen>
   );

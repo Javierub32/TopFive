@@ -19,6 +19,7 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useContent } from '@/Details/hooks/useContent';
 import { ModernContentHeader } from "@/Details/components/ContentHeader";
 import { ContentRating } from "@/Details/components/ContentRating";
+import { AdBanner } from 'components/AdBanner';
 
 export default function GameDetail() {
   const { id, from } = useLocalSearchParams();
@@ -73,6 +74,7 @@ export default function GameDetail() {
           </View>
           <AddToCollectionButton content={game} type='videojuego'/>
         </View>
+		<AdBanner/>
       </ScrollView>
     </Screen>
   );

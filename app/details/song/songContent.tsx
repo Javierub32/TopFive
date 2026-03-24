@@ -16,6 +16,7 @@ import { ExtraCard } from "@/Details/components/ExtraCard";
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useContent } from '@/Details/hooks/useContent';
 import { ModernContentHeader } from "@/Details/components/ContentHeader";
+import { AdBanner } from 'components/AdBanner';
 
 export default function SongDetail() {
   const { id, from } = useLocalSearchParams();
@@ -63,6 +64,7 @@ export default function SongDetail() {
         <View className="px-4 mb-14 pb-6 gap-3 mt-1">
           <AddToCollectionButton content={song} type='cancion'/>
         </View>
+		<AdBanner/>
       </ScrollView>
     </Screen>
   );

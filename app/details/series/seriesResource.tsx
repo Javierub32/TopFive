@@ -18,6 +18,7 @@ import { ProgressCard } from '@/Details/components/ProgressCard';
 import { DateCard } from '@/Details/components/DateCard';
 import { ReviewCard } from '@/Details/components/ReviewCard';
 import { useAuth } from "context/AuthContext";
+import { AdBanner } from 'components/AdBanner';
 
 export default function SeriesDetail() {
   const { item, from } = useLocalSearchParams();
@@ -118,6 +119,7 @@ export default function SeriesDetail() {
           )}
           
         </View>
+		<AdBanner/>
       </ScrollView>
     </Screen>
   );

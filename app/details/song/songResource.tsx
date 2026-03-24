@@ -14,6 +14,7 @@ import { RatingCard } from '@/Details/components/RatingCard';
 import { DateCard } from '@/Details/components/DateCard';
 import { ReviewCard } from '@/Details/components/ReviewCard';
 import { useAuth } from "context/AuthContext";
+import { AdBanner } from 'components/AdBanner';
 
 export default function SongDetail() {
   const { item, from } = useLocalSearchParams();
@@ -99,6 +100,7 @@ export default function SongDetail() {
             </View>
           )}          
         </View>
+		<AdBanner/>
       </ScrollView>
     </Screen>
   );

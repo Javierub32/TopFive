@@ -15,6 +15,7 @@ import { DateCard } from '@/Details/components/DateCard';
 import { EditResourceButton } from '@/Details/components/EditResourceButton';
 import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
 import { useAuth } from "context/AuthContext";
+import { AdBanner } from 'components/AdBanner';
 
 export default function GameDetail() {
   const { item, from } = useLocalSearchParams();
@@ -115,6 +116,7 @@ export default function GameDetail() {
           </View>
           )}          
         </View>
+		<AdBanner/>
       </ScrollView>
     </Screen>
   );

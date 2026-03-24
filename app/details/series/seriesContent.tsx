@@ -16,6 +16,7 @@ import { useContent } from '@/Details/hooks/useContent';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { ModernContentHeader } from "@/Details/components/ContentHeader";
 import { ContentRating } from "@/Details/components/ContentRating";
+import { AdBanner } from 'components/AdBanner';
 
 export default function SeriesDetail() {
   const { id, from } = useLocalSearchParams();
@@ -68,6 +69,7 @@ export default function SeriesDetail() {
           </View>
           <AddToCollectionButton content={series} type='serie'/>
         </View>
+		<AdBanner/>
       </ScrollView>
     </Screen>
   );
