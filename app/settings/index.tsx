@@ -21,7 +21,7 @@ import { useTheme } from 'context/ThemeContext';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useAuth } from 'context/AuthContext';
 import { useNotification } from 'context/NotificationContext';
-import { AdsConsent } from 'lib/adsConsent.web';
+import { AdsConsent } from 'lib/adsConsent';
 export default function SettingsScreen() {
   const { signOut, deleteAccount } = useAuth();
 

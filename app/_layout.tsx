@@ -12,7 +12,7 @@ import { SearchProvider } from 'context/SearchContext';
 import Constants from 'expo-constants';
 import { supabase } from 'lib/supabase';
 import { NotificationModal } from 'components/NotificationModal';
-import { AdsConsent, AdsConsentStatus } from 'lib/adsConsent.web';
+import { AdsConsent, AdsConsentStatus } from 'lib/adsConsent';
 
 
 SplashScreen.preventAutoHideAsync();
