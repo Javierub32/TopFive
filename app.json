@@ -2,7 +2,7 @@
   "expo": {
     "name": "TopFive",
     "slug": "topfive",
-    "version": "1.2.2",
+    "version": "1.2.4",
     "scheme": "topfive",
     "web": {
       "favicon": "./assets/icon.png",

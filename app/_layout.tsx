@@ -49,8 +49,8 @@ function InitialLayout() {
         if (error || !data) return;
 
         const remoteVersion = data.version;
-        const localVersion = Constants.expoConfig?.version || '1.0.0';
-
+        const localVersion = Constants.expoConfig?.version || Constants.nativeAppVersion || '1.0.0';
+        
         // Función auxiliar para comparar versiones semánticas (X.Y.Z)
         const cmp = (v1: string, v2: string) => {
           const p1 = v1.split('.').map(Number);
@@ -73,6 +73,20 @@ function InitialLayout() {
             onRightPress: () => {
               hideNotification();
               Linking.openURL('https://play.google.com/store/apps/details?id=com.leftjoiners.topfive');
+            },
+            delete: false
+          });
+        }
+
+        if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'ios') {
+          showNotification({
+            title: 'Actualización disponible',
+            description: 'Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades.',
+            isChoice: true,
+            rightButtonText: 'Actualizar', 
+            onRightPress: () => {
+              hideNotification();
+              Linking.openURL('https://apps.apple.com/es/app/topfive/id6761102319');
             },
             delete: false
           });
