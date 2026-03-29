@@ -2,6 +2,7 @@ import { View, TextInput, TouchableOpacity, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ResourceType } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
+import { SearchIcon } from 'components/Icons';
 
 interface SearchBarProps {
   value: string;
@@ -39,9 +40,14 @@ export const SearchBar = ({
     <View className="relative z-50">
       <View className="h-14 flex-row items-center rounded-lg border shadow-lg" style={{borderColor: colors.accent, backgroundColor: colors.surfaceButton}}>
         {/* Icono Lupa */}
-        <View className="justify-center pl-3">
-          <MaterialCommunityIcons name="magnify" size={20} color={colors.secondaryText} />
-        </View>
+        <TouchableOpacity 
+          className="justify-center pl-3 py-2"
+          onPress={onSearch}
+          activeOpacity={0.7}
+          hitSlop={{top: 6, bottom: 6, left: 6, right: 6}}
+        >
+          <SearchIcon color={colors.secondaryText}/>
+        </TouchableOpacity>
 
         {/* Input de texto */}
         <TextInput
@@ -51,7 +57,7 @@ export const SearchBar = ({
           placeholderTextColor={colors.placeholderText}
           value={value}
           onChangeText={onChangeText}
-          onSubmitEditing={() => onSearch()}
+          onSubmitEditing={onSearch}
           returnKeyType="search"
         />
 

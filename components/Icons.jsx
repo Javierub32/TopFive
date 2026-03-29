@@ -18,7 +18,7 @@ export const SocialBubblesIcon = (props) => (
 );
 
 export const SearchIcon = (props) => (
-  <FontAwesome name="search" size={24} color="black" {...props} />
+  <MaterialCommunityIcons name="magnify" size={20} color="white" {...props} />
 );
 
 export const UserIcon = (props) => (
