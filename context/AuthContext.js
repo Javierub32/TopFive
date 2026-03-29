@@ -84,20 +84,26 @@ export const AuthProvider = ({ children }) => {
 	}, []);
 
 	const signIn = async (email, password) => {
-		const { error } = await supabase.auth.signInWithPassword({ email, password });
+		const normalizedEmail = typeof email === 'string' ? email.trim() : '';
+		const { error } = await supabase.auth.signInWithPassword({ email: normalizedEmail, password });
 		if (error) throw error;
 	};
 
 const signUp = async (email, password, username) => {
+	const normalizedEmail = typeof email === 'string' ? email.trim() : '';
     
     // A. Campos vacíos
-    if (!email || !password || !username) {
+	if (!normalizedEmail || !password || !username) {
         throw new Error("Por favor completa todos los campos.");
     }
 
+	if (/\s/.test(password)) {
+		throw new Error("La contraseña no puede contener espacios.");
+	}
+
     // B. Validación básica de Email
     const emailRegex = /\S+@\S+\.\S+/;
-    if (!emailRegex.test(email)) {
+	if (!emailRegex.test(normalizedEmail)) {
         throw new Error("El correo electrónico no es válido.");
     }
 
@@ -119,7 +125,7 @@ const signUp = async (email, password, username) => {
 
     // --- 2. CREAR USUARIO EN SUPABASE ---
     const {data, error: authError } = await supabase.auth.signUp({
-        email,
+		email: normalizedEmail,
         password,
         options: {
             data: { username: username }
@@ -153,6 +159,10 @@ const signUp = async (email, password, username) => {
 	}
 
 	const changePassword = async (newPassword) => {
+		if (/\s/.test(newPassword)) {
+			throw new Error("La contraseña no puede contener espacios.");
+		}
+
 		const { error } = await supabase.auth.updateUser({
 			password: newPassword
 		})
