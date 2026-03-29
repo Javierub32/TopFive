@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, Alert, TouchableOpacity, Platform } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
-import { useRouter } from 'expo-router';
+import { router, useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'context/ThemeContext';
@@ -33,6 +33,7 @@ export default function ForgotPasswordScreen() {
 	setLoading(true);
 	try {
 	  await requestReset(email);
+	  router.replace('/(auth)/login');
 	  showNotification({
 		title: '¡Éxito!',
 		description: 'Recibirás un email con instrucciones para restablecer tu contraseña.',

@@ -36,6 +36,7 @@ export default function Register() {
         return;
       }
       await signUp(email, password, username.trim());
+      router.replace('/(auth)/login');
       showNotification({
         title: 'Cuenta creada',
         description: 'Tu cuenta ha sido creada exitosamente. \nRevisa la bandeja de SPAM y confirma tu correo para iniciar sesión.',
