@@ -39,7 +39,12 @@ export default function Register() {
       router.replace('/(auth)/login');
       showNotification({
         title: 'Cuenta creada',
-        description: 'Tu cuenta ha sido creada exitosamente. \nRevisa la bandeja de SPAM y confirma tu correo para iniciar sesión.',
+        description: (
+          <Text>
+            Tu cuenta ha sido creada exitosamente. {"\n"}
+            Revisa la bandeja de <Text style={{ fontWeight: 'bold' }}>SPAM</Text> y confirma tu correo.
+          </Text>
+        ),
         isChoice: true, 
         rightButtonText: 'Aceptar',
         onRightPress: () => {

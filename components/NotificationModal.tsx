@@ -9,7 +9,7 @@ import Animated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from 'react-nati
 interface NotificationModalProps {
   visible: boolean;
   title: string;
-  description: string;
+  description: string | React.ReactNode;
   leftButtonText?: string;
   rightButtonText?: string;
   highlightRight?: boolean;

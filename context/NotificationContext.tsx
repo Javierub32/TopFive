@@ -3,7 +3,7 @@ import { NotificationModal } from 'components/NotificationModal';
 
 interface NotificationConfig {
   title: string;
-  description: string;
+  description: string | React.ReactNode;
   leftButtonText?: string;
   rightButtonText?: string;
   highlightRight?: boolean;
