@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'context/ThemeContext';
 import { useNotification } from 'context/NotificationContext';
+import { ReturnButton } from 'components/ReturnButton';
 
 // Frases aleatorias con iconos - fuera del componente para mejor rendimiento
 const frasesConIconos = [
@@ -53,6 +54,7 @@ export default function ForgotPasswordScreen() {
 
   return (
 	<View className='flex-1'>
+	<ReturnButton route="back" title="" />
 	  <LinearGradient
 		colors={[colors.background, colors.secondary, colors.secondary]}
 		style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}
