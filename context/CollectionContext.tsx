@@ -108,9 +108,9 @@ export const CollectionProvider = ({ children }: any) => {
         totalEnCurso, 
         totalCompletados
       ] = await Promise.all([
-		fetchResources(categoriaActual, null, null, 'PENDIENTE', 5),
-        fetchResources(categoriaActual, null, null, 'EN_CURSO', 5),
-        fetchResources(categoriaActual, null, null, 'COMPLETADO', 5),
+		fetchResources(categoriaActual, null, null, 'PENDIENTE', 5, true),
+        fetchResources(categoriaActual, null, null, 'EN_CURSO', 5, true),
+		fetchResources(categoriaActual, null, null, 'COMPLETADO', 5, null, null, null, null, null, true),
         calcularTotal(categoriaActual, 'PENDIENTE'),
         calcularTotal(categoriaActual, 'EN_CURSO'),
         calcularTotal(categoriaActual, 'COMPLETADO')

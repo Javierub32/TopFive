@@ -20,8 +20,21 @@ export const useGroupData = (category: ResourceType, state: StateType) => {
 		try {
 			const from = currentPage * PAGE_SIZE;
 			const to = from + PAGE_SIZE - 1;
+			const ordenarPorUltimaActividad = state === 'COMPLETADO';
 
-			const newItems = await fetchResources(category, null, null, state, PAGE_SIZE, null, null, from, to);
+			const newItems = await fetchResources(
+				category,
+				null,
+				null,
+				state,
+				PAGE_SIZE,
+				true,
+				null,
+				from,
+				to,
+				null,
+				ordenarPorUltimaActividad
+			);
 
 			if (currentPage === 0) {
 				setData(newItems || []);

@@ -47,7 +47,8 @@ export const useResource = () => {
     profile?: boolean | null,
     from?: number | null,
     to?: number | null,
-    targetUserId?: string | null
+    targetUserId?: string | null,
+    ordenarPorUltimaActividad?: boolean | null
 
   ): Promise<ResourceMap[K][] | null> => {
     try {
@@ -101,7 +102,9 @@ export const useResource = () => {
         query = query.ilike(`${config.contentJoin}.titulo`, `%${term}%`);
       }
 
-      if (ordenarPorFecha === true) {
+      if (ordenarPorUltimaActividad === true) {
+        query = query.order(DATE_FIELDS[type], { ascending: false, nullsFirst: false });
+      } else if (ordenarPorFecha === true) {
         query = query.order('fechacreacion', { ascending: false });
       } else if (ordenarPorFecha === false) {
         query = query.order('fechacreacion', { ascending: true });

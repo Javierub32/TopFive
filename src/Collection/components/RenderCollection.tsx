@@ -23,7 +23,7 @@ export const RenderCollection = ({ title, data, total, category, onPressItem, on
       </TouchableOpacity>
 
       <FlatList
-        data={safeData}
+        data={[...safeData]}
         horizontal={true} 
         keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
         showsHorizontalScrollIndicator={false}
