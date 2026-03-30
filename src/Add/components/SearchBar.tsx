@@ -42,7 +42,7 @@ export const SearchBar = ({
         {/* Icono Lupa */}
         <TouchableOpacity 
           className="justify-center pl-3 py-2"
-          onPress={onSearch}
+          onPress={() => onSearch()}
           activeOpacity={0.7}
           hitSlop={{top: 6, bottom: 6, left: 6, right: 6}}
         >
@@ -57,7 +57,7 @@ export const SearchBar = ({
           placeholderTextColor={colors.placeholderText}
           value={value}
           onChangeText={onChangeText}
-          onSubmitEditing={onSearch}
+          onSubmitEditing={() => onSearch()}
           returnKeyType="search"
         />
 
