@@ -13,7 +13,7 @@ export default function AboutUsScreen() {
 
   return (
     <Screen>
-      <ReturnButton route="back" title="Volver a ajustes" />
+      <ReturnButton route="back" title="Sobre nosotros" />
       
       <ScrollView 
         className="flex-1 px-6 pt-4" 
