@@ -22,12 +22,14 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useAuth } from 'context/AuthContext';
 import { useNotification } from 'context/NotificationContext';
 import { AdsConsent } from 'lib/adsConsent';
+import { useState } from "react";
 export default function SettingsScreen() {
   const { signOut, deleteAccount } = useAuth();
 
-  const { colors, toggleTheme } = useTheme();
+  const { colors, changeTheme, themePreference } = useTheme();
   const { username, description } = useLocalSearchParams();
   const { showNotification, hideNotification } = useNotification();
+  const [ showThemeOptions, setShowThemeOptions ] = useState(false);
 
   const handleRevokeConsent = async () => {
     if (Platform.OS === 'web') return;
@@ -167,18 +169,45 @@ export default function SettingsScreen() {
                   </View>
                 </TouchableOpacity>
               </View>
-
-              <TouchableOpacity
+                
+              <View>
+                <TouchableOpacity
                 className="w-full flex-row items-center justify-between gap-4 p-2"
                 activeOpacity={0.4}
-                onPress={toggleTheme}>
-                <View className="flex-row items-center justify-start gap-2">
-                  <FontAwesome5 name="palette" size={24} color={colors.primaryText} />
-                  <Text className="text-lg" style={{ color: colors.primaryText }}>
-                    Cambiar tema
-                  </Text>
-                </View>
-              </TouchableOpacity>
+                onPress={() => setShowThemeOptions(!showThemeOptions)}>
+                  <View className="flex-row items-center justify-start gap-2">
+                    <FontAwesome5 name="palette" size={24} color={colors.primaryText} />
+                    <Text className="text-lg" style={{ color: colors.primaryText }}>
+                      Cambiar tema
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                {showThemeOptions && (
+                  <View className="flex-row justify-between gap-2 mt-2">
+                    <TouchableOpacity 
+                    className="flex-1 p-4 rounded-xl items-center justify-center" 
+                    style={{backgroundColor: colors.background, borderWidth: 2, borderColor: themePreference === 'dark' ? colors.accent : 'transparent'}}
+                    onPress={() => changeTheme('dark')}>
+                      <MaterialIcons name="dark-mode" size={24} color={colors.primaryText} />
+                      <Text className="text-sm font-semibold text-center" style={{color: colors.primaryText}}>Oscuro</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                    className="flex-1 p-4 rounded-xl items-center justify-center" 
+                    style={{backgroundColor: colors.background, borderWidth: 2, borderColor: themePreference === 'light' ? colors.accent : 'transparent'}}
+                    onPress={() => changeTheme('light')}>
+                      <MaterialIcons name="light-mode" size={24} color={colors.primaryText} />
+                      <Text className="text-sm font-semibold text-center" style={{color: colors.primaryText}}>Claro</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                    className="flex-1 p-4 rounded-xl items-center justify-center" 
+                    style={{backgroundColor: colors.background, borderWidth: 2, borderColor: themePreference === 'system' ? colors.accent : 'transparent' }}
+                    onPress={() => changeTheme('system')}>
+                      <MaterialCommunityIcons name="cellphone-cog" size={24} color={colors.primaryText} />
+                      <Text className="text-sm font-semibold text-center" style={{color: colors.primaryText}}>Sistema</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
             </View>
           </View>
 

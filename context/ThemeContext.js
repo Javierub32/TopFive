@@ -12,9 +12,15 @@ export const ThemeContext = createContext();
 export const ThemeProvider = ({ children }) => {
     const systemScheme = useColorScheme(); //Utiliza el tema por defecto del dispositivo.
     const [loading, setLoading] = useState(true);
-    const [isDark, setIsDark] = useState(systemScheme === 'dark');
+    const [themePreference, setThemePreference] = useState('system') // 'light', 'dark' o 'system'
 
-    //Decidimos qué objeto de colores usar según el estado
+    let isDark;
+    if (themePreference === 'system'){
+        isDark = (systemScheme === 'dark')
+    } else {
+        isDark = (themePreference === 'dark')
+    }
+
     const colors = isDark ? DARK_MODE_COLORS : LIGHT_MODE_COLORS;
 
     //Carga la preferencia guardada al iniciar la app
@@ -24,8 +30,8 @@ export const ThemeProvider = ({ children }) => {
                 setLoading(true);
                 const savedTheme = await AsyncStorage.getItem('user_theme_preference');
                 if (savedTheme !== null) {
-                    //Si no había nada guardado, lo establecemos a modo oscuro
-                    setIsDark(savedTheme === 'dark');
+                    //Aplicamos la preferencia guardad
+                    setThemePreference(savedTheme)
                 }
             } catch (error) {
                 console.error('Error loading settings: ', error);
@@ -56,19 +62,17 @@ export const ThemeProvider = ({ children }) => {
         "--rating": colors.rating,
     })
 
-    //Funcion para alternar el tema que usaremos en los ajustes.
-    const toggleTheme = async () => {
+    const changeTheme = async (preferences) => {
         try {
-            const newMode = !isDark;
-            setIsDark(newMode);
-            await AsyncStorage.setItem('user_theme_preference', newMode ? 'dark' : 'light');
+            setThemePreference(preferences)
+            await AsyncStorage.setItem('user_theme_preference', preferences)
         } catch (error) {
-            console.error('Error saving theme preferences: ', error);
+            console.error('Error saving theme preferences: ', error)
         }
     }
 
     return (
-        <ThemeContext.Provider value={{ colors, isDark, toggleTheme, loading}}>
+        <ThemeContext.Provider value={{ colors, isDark, changeTheme, themePreference, loading}}>
             <View style={[themeVars, { flex: 1, backgroundColor: colors.background }]}>
                 {children}
             </View>
