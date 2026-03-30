@@ -5,20 +5,21 @@ import { ReturnButton } from 'components/ReturnButton';
 import { useNotification } from '@/Notifications/hooks/useNotification';
 import { NotificationItem } from '@/Notifications/components/NotificationItems';
 import { LoadingIndicator } from 'components/LoadingIndicator';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useTheme } from "context/ThemeContext";
 import { MaterialIcons } from "@expo/vector-icons";
 
 export default function NotificationsScreen() {
   const { loading, notifications, handleAcceptNotification, handleDeclineNotification } =
     useNotification();
+  const { from } = useLocalSearchParams();
   
   const {colors} = useTheme();
 
   if (loading) {
     return (
       <Screen>
-        <ReturnButton route="/(tabs)/Profile" title="Notificaciones del Usuario" />
+        <ReturnButton route={`/(tabs)/${from}`} title="Notificaciones del Usuario" />
         <LoadingIndicator />
       </Screen>
     );
@@ -26,7 +27,7 @@ export default function NotificationsScreen() {
 
   return (
     <Screen>
-      <ReturnButton route="/(tabs)/Profile" title="Notificaciones del Usuario" />
+      <ReturnButton route={`/(tabs)/${from}`} title="Notificaciones del Usuario" />
       <FlatList
         data={notifications}
         className="px-3"
@@ -43,7 +44,7 @@ export default function NotificationsScreen() {
             onUserPress={() =>
               router.push({
                 pathname: 'details/user/',
-                params: { id: item.user.id },
+                params: { username: item.user.username },
               })
             }
           />

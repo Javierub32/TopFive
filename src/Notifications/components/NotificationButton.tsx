@@ -6,7 +6,11 @@ import { Pressable, Text, View } from 'react-native';
 import { notificationServices } from '../services/notificationServices';
 import { useAuth } from 'context/AuthContext';
 
-export const NotificationButton = () => {
+interface NotificationProps {
+  from: string;
+}
+
+export const NotificationButton = (props: NotificationProps ) => {
   const { colors } = useTheme();
   const { user } = useAuth();
   const [notificationCount, setNotificationCount] = useState(0);
@@ -29,7 +33,7 @@ export const NotificationButton = () => {
   return (
   <Pressable
     className="rounded-full p-3"
-    onPress={() => router.push('/notifications')}>
+    onPress={() => router.push({ pathname: '/notifications', params: { from: props.from } })}>
     <MaterialIcons name="notifications-none" size={24} color={colors.primaryText} />
 	<View className="absolute top-[0.67rem] left-[1.6rem] px-1 rounded-full flex-1  " style={{backgroundColor: colors.error, display: visibility ? 'flex' : 'none'}}>
 		<Text className="text-[0.6rem] mb-[0.05rem]" style={{color: colors.primaryText}}>{displayCount}</Text>

@@ -24,7 +24,7 @@ export default function HomeScreen() {
 					</Text>
 					
 					<View className="flex-row gap-x-2">
-						<NotificationButton />
+						<NotificationButton from="Home" />
 						<TouchableOpacity
 							onPress={() => router.push('/search')}
 							className="rounded-full p-3"

@@ -52,7 +52,7 @@ export default function ProfileScreen() {
 
         {/* Botones de configuración y notificaciones */}
         <View className="absolute right-4 top-5 z-10 flex-row gap-x-2">
-          <NotificationButton />
+          <NotificationButton from='Profile'/>
           <Pressable
             className="rounded-full p-3"
             onPress={() => router.push({ pathname: '/settings' , params: { username: userData?.username, description: userData?.description } })}>
