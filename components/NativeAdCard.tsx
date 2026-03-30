@@ -14,7 +14,9 @@ import {
 // Usamos el Test ID de Google para desarrollo y tu ID real para producción
 const adUnitId = __DEV__ 
   ? 'ca-app-pub-3940256099942544/2247696110' // Test ID oficial de Anuncios Nativos
-  : 'ca-app-pub-2120812527357725/2640738331';
+  : Platform.OS === 'android'
+  ? 'ca-app-pub-2120812527357725/2640738331'
+  : 'ca-app-pub-2120812527357725/2737766633';
 
 export const NativeAdCard = () => {
   const { colors } = useTheme();

@@ -1,9 +1,11 @@
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
 const adUnitId = __DEV__ 
   ? TestIds.BANNER 
-  : 'ca-app-pub-2120812527357725/6270590649';
+  : Platform.OS === 'android'
+  ? 'ca-app-pub-2120812527357725/6270590649'
+  : 'ca-app-pub-2120812527357725/5266156811';
 
 export const AdBanner = () => {
   return (
