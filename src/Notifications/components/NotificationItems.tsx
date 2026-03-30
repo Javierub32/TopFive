@@ -2,6 +2,7 @@ import { User } from '@/User/hooks/useUser';
 import { AcceptIcon, CancelIcon } from 'components/Icons';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { UserResultItem } from '@/Search/components/UserResultItem';
+import { useTheme } from "context/ThemeContext";
 
 interface NotificationButtonProps {
   user: User;
@@ -11,6 +12,7 @@ interface NotificationButtonProps {
 }
 
 export function NotificationItem({ user, handleAccept, handleDecline, onUserPress }: NotificationButtonProps) {
+  const { colors } = useTheme();
   return (
     <View className="flex-row items-center">
       {/* Avatar e información del usuario (clickeable) */}
@@ -21,14 +23,16 @@ export function NotificationItem({ user, handleAccept, handleDecline, onUserPres
 	  {/* Botón de cancelar */}
 		<TouchableOpacity
 			  onPress={handleDecline}
-			  className="mr-3 h-10 w-10 items-center justify-center rounded-full border border-borderButton bg-surfaceButton"
+			  className="mr-3 h-10 w-10 items-center justify-center rounded-full" 
+			  style={{backgroundColor: colors.surfaceButton}}
 			  activeOpacity={0.7}>
 			<CancelIcon />
 		</TouchableOpacity>
 
 				<TouchableOpacity
 			  onPress={handleAccept}
-			  className="mr-1 h-10 w-10 items-center justify-center rounded-full border border-borderButton bg-surfaceButton"
+			  className="mr-1 h-10 w-10 items-center justify-center rounded-full"
+			  style={{backgroundColor: `${colors.success}99`}}
 			  activeOpacity={0.7}>
 			<AcceptIcon />
 		</TouchableOpacity>

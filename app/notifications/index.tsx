@@ -29,6 +29,7 @@ export default function NotificationsScreen() {
       <ReturnButton route="/(tabs)/Profile" title="Notificaciones del Usuario" />
       <FlatList
         data={notifications}
+        className="px-3"
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <NotificationItem
