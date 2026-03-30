@@ -11,9 +11,18 @@ import { useEffect } from 'react';
 import { Alert, View } from 'react-native';
 import {useNotification} from "context/NotificationContext";
 import { hide } from 'expo-router/build/utils/splash';
+import { TopFivePlaceholder } from "@/TopFiveSelector/components/TopFivePlaceholder";
+import { LoadingIndicator } from "components/LoadingIndicator";
 
 export default function TopFiveSelectorScreen() {
   const { data, loading, fetchTopFiveSelector, insertToTopFive } = useTopFiveSelector();
+  const ContentTitle : Record<ResourceType, string> = {
+    'serie': 'Series',
+    'cancion': 'Canciones',
+    'libro' : 'Libros',
+    'videojuego' : 'Videojuegos',
+    'pelicula' : 'Películas'
+  }
   const { resourceType, position } = useLocalSearchParams<{
     resourceType: ResourceType;
     position: string;
@@ -49,32 +58,13 @@ export default function TopFiveSelectorScreen() {
           });
         }
       })
-      /*Alert.alert(
-        'Confirmar selección',
-        `¿Deseas agregar este item a tu Top 5?`,
-        [
-          {
-            text: 'Cancelar',
-            style: 'cancel',
-          },
-          {
-            text: 'Confirmar',
-            onPress: async () => {
-              const posicion = parseInt(position);
-              await insertToTopFive(posicion, resourceType, item.id);
-			  router.replace('/Profile'); 
-            },
-          },
-        ],
-        { cancelable: true }
-      );*/
     }
   };
 
   return (
     <Screen>
-      <ReturnButton route="/Profile" title="Volver a perfil" />
-      <View className=" flex-1 px-4">
+      <ReturnButton route="/Profile" title={`${ContentTitle[resourceType]} de tu colección`} />
+      <View className="flex-1 px-4">
         <CollectionStructure
           data={data}
           categoriaActual={resourceType}
@@ -83,6 +73,9 @@ export default function TopFiveSelectorScreen() {
           showStatus={false}
           loading={loading}
         />
+        {data.length == 0 && (
+          <TopFivePlaceholder category={resourceType} loading={loading}/>
+        )}
       </View>
     </Screen>
   );
