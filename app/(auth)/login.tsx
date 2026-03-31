@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, Alert, TouchableOpacity, Platform, ScrollView } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'expo-router';
@@ -6,6 +6,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'context/ThemeContext';
 import { useNotification } from 'context/NotificationContext';
+import { AntDesign } from '@expo/vector-icons';
+import { supabase } from 'lib/supabase';
+import * as Linking from 'expo-linking';
 
 // Frases aleatorias con iconos - fuera del componente para mejor rendimiento
 const frasesConIconos = [
@@ -49,7 +52,16 @@ export default function Login() {
       setLoading(false);
     }
   };
+  const handleGoogleLogin = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: Linking.createURL('/home'), // O la ruta a la que quieras volver
+      }
+    });
 
+    if (error) console.error('Error con Google:', error.message);
+  };
 
   return (
     <ScrollView 
@@ -129,7 +141,7 @@ export default function Login() {
                     </Text>
                   </TouchableOpacity>
                 </View>
-                <View className="" style={{}}>
+                <View className="py-2" style={{}}>
                   <TouchableOpacity
                     onPress={handleLogin}
                     disabled={loading}
@@ -141,7 +153,21 @@ export default function Login() {
                     </Text>
                   </TouchableOpacity>
                 </View>
-				
+				        <View className="" style={{}}>
+                  <TouchableOpacity
+                    onPress={handleGoogleLogin}
+                    disabled={loading}
+                    className="overflow-hidden rounded-xl shadow-lg py-4 items-center"
+                    style={{backgroundColor: colors.accent}}
+                  >
+                    <View className="flex-row items-center justify-center">
+                      <AntDesign name="google" size={24} color="white" className="mr-2" />
+                      <Text className="font-bold text-lg" style={{color: colors.primaryText}}>
+                        {loading ? 'Cargando...' : 'Continuar con Google'}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
 
               </View>
           </View>
