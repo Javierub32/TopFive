@@ -103,6 +103,19 @@ function InitialLayout() {
             delete: false
           });
         }
+		if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'ios') {
+          showNotification({
+            title: 'Actualización disponible',
+            description: 'Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades.',
+            isChoice: true,
+            rightButtonText: 'Actualizar', 
+            onRightPress: () => {
+              hideNotification();
+              Linking.openURL('https://apps.apple.com/es/app/topfive/id6761102319');
+            },
+            delete: false
+          });
+        }
       } catch (e) {
         console.error('Error verificando versión de la app:', e);
       }
