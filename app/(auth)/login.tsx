@@ -84,11 +84,19 @@ export default function Login() {
           });
 
           if (error) {
-            Alert.alert('Error de Supabase', error.message);
+            showNotification({
+              title: 'Error de Supabase',
+              description: error.message,
+              isChoice: false,
+              delete: false
+            });
           } else {
-            Alert.alert('¡Éxito!', 'Sesión iniciada correctamente');
-            console.log('Datos del usuario:', data.user);
-          
+            showNotification({
+              title: '¡Éxito!',
+              description: 'Sesión iniciada correctamente',
+              isChoice: false,
+              delete: false
+            });          
           }
         }
       } else {
@@ -199,7 +207,7 @@ export default function Login() {
                     style={{backgroundColor: colors.accent}}
                   >
                     <View className="flex-row items-center justify-center">
-                      <AntDesign name="google" size={24} color="white" className="mr-2" />
+                      <AntDesign name="google" size={24} color={colors.primaryText} className="mr-2" />
                       <Text className="font-bold text-lg" style={{color: colors.primaryText}}>
                         {loading ? 'Cargando...' : 'Continuar con Google'}
                       </Text>
