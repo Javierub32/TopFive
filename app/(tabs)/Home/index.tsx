@@ -1,5 +1,5 @@
-import { View, Text, FlatList, RefreshControl, TouchableOpacity} from 'react-native';
-import { router } from 'expo-router';
+import { View, Text, FlatList, RefreshControl, TouchableOpacity, BackHandler} from 'react-native';
+import { router, useFocusEffect, useNavigation } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { useTheme } from 'context/ThemeContext';;
 import { useActivity } from '@/Home/hooks/useActivity';
@@ -8,12 +8,46 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { SearchIcon2, SocialBubblesIcon } from 'components/Icons';
 import { NotificationButton } from '@/Notifications/components/NotificationButton';
 import { NativeAdCard } from 'components/NativeAdCard';
+import { useCallback, useRef } from "react";
+import { useNotification } from "context/NotificationContext";
 
 
 
 export default function HomeScreen() {
 	const { colors } = useTheme();
 	const { activities, loading, refreshing, fetchActivities, refreshActivities } = useActivity();
+	const navigation  = useNavigation();
+	const lastBackPress = useRef(0);
+	const { showNotification } = useNotification();
+
+	useFocusEffect(
+		useCallback(() => {
+			const action = BackHandler.addEventListener('hardwareBackPress', () => {
+				if(Date.now() - lastBackPress.current <= 2000) {
+					BackHandler.exitApp()
+				} else {
+					lastBackPress.current = Date.now();
+					showNotification({
+						title: 'Atención',
+						description: 'Vuelve a tocar para salir.',
+						isChoice: false,
+						delete: false
+					})
+				}
+				return true
+			});
+			const unsuscribe = navigation.addListener('beforeRemove', (e) => {
+				if(e.data.action.type === 'GO_BACK') {
+					e.preventDefault();
+				}
+			})
+
+			return () => {
+			action.remove();
+			unsuscribe()
+			} 
+		}, [navigation, showNotification])
+	);
 
 	return (
 		<Screen>
