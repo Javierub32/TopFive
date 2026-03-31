@@ -75,7 +75,7 @@ function InitialLayout() {
         if (error || !data) return;
 
         const remoteVersion = data.version;
-        const localVersion = Constants.expoConfig?.version || '1.0.0';
+        const localVersion = Constants.expoConfig?.version || Constants.nativeAppVersion || '1.0.0';
 
         // Función auxiliar para comparar versiones semánticas (X.Y.Z)
         const cmp = (v1: string, v2: string) => {

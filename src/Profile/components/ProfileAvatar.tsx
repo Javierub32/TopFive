@@ -30,7 +30,7 @@ export const ProfileAvatar = ({ avatarUrl, isPressed, onPickImage, setIsPressed 
           )}
 
           <Image
-          source={require('../../../assets/gorro-navideño.png')}
+          source={require('../../../assets/hearts.png')}
           style={{
             position: 'absolute',
             top: isPressed ? -18 : -15,
