@@ -131,6 +131,7 @@ export default function SeriesForm() {
             description: 'Hubo un problema al actualizar la serie. Inténtalo de nuevo.',
             isChoice: false,
             delete: false,
+            success: false,
           });
           console.error('Error al actualizar:', updateError);
         } else {
@@ -158,6 +159,7 @@ export default function SeriesForm() {
               description: `Has actualizado ${series.titulo || series.title} en tu colección.`,
               isChoice: false,
               delete: false,
+              success: true,
             });
           }, 100);
         }
@@ -214,6 +216,7 @@ export default function SeriesForm() {
               description: 'Ya tienes esta serie en tu colección.',
               isChoice: false,
               delete: false,
+              success: false,
             });
           }, 100);
           setLoading(false);
@@ -242,6 +245,7 @@ export default function SeriesForm() {
             description: 'Hubo un problema al guardar la serie. Inténtalo de nuevo.',
             isChoice: false,
             delete: false,
+            success: false,
           });
           console.error('Error al insertar:', inventoryError);
         } else {
@@ -254,6 +258,7 @@ export default function SeriesForm() {
               description: `Has añadido ${series.title} a tu colección.`,
               isChoice: false,
               delete: false,
+              success: true,
             });
           }, 100);
         }

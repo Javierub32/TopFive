@@ -27,6 +27,7 @@ export const DeleteResourceButton = ({resource, type}: Props) => {
                 description: `¿Estás seguro de que quieres eliminar ${resource.contenido.titulo || 'este recurso'} de tu colección?`,
                 isChoice: true,
                 delete: true,
+                success: false,
                 leftButtonText: 'Cancelar',
                 rightButtonText: 'Eliminar',
                 highlightRight: true,
@@ -41,7 +42,8 @@ export const DeleteResourceButton = ({resource, type}: Props) => {
                             title: 'Recurso eliminado',
                             description: `Has eliminado ${resource.contenido.titulo || 'el recurso'} de tu colección.`,
                             isChoice: false,
-                            delete: false
+                            delete: false,
+                            success: true,
                         });
                     }, 100);
                 }
@@ -51,7 +53,8 @@ export const DeleteResourceButton = ({resource, type}: Props) => {
                 title: 'Error',
                 description: 'No se pudo eliminar el recurso. Inténtalo de nuevo más tarde.',
                 isChoice: false,
-                delete: false
+                delete: false,
+                success: false,
             });
         }
     };

@@ -55,6 +55,7 @@ export const useTopFive = (userId: string) => {
       rightButtonText: 'Eliminar',
       isChoice: true,
       delete: true,
+	  success: false,
       onLeftPress: () => hideNotification(),
       onRightPress: async () => {
         try {  
@@ -65,7 +66,8 @@ export const useTopFive = (userId: string) => {
             title: '¡Éxito!',
             description: `El item ha sido eliminado de tu Top 5`,
             isChoice: false,
-            delete: false
+			delete: false,
+			success: true,
           });
         } catch (error) {
           console.error('Error al eliminar item del Top 5:', error);

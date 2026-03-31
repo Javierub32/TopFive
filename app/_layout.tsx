@@ -100,7 +100,8 @@ function InitialLayout() {
               hideNotification();
               Linking.openURL('https://play.google.com/store/apps/details?id=com.leftjoiners.topfive');
             },
-            delete: false
+            delete: false,
+            success: false,
           });
         }
 		if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'ios') {
@@ -113,7 +114,8 @@ function InitialLayout() {
               hideNotification();
               Linking.openURL('https://apps.apple.com/es/app/topfive/id6761102319');
             },
-            delete: false
+            delete: false,
+            success: false,
           });
         }
       } catch (e) {
@@ -179,6 +181,7 @@ function InitialLayout() {
         highlightRight={config.highlightRight}
         isChoice={config.isChoice}
         delete={config.delete}
+        success={config.success}
         onLeftPress={config.onLeftPress}
         onRightPress={config.onRightPress}
         onClose={hideNotification}

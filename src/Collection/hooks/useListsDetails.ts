@@ -103,6 +103,7 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
 			rightButtonText: 'Confirmar',
 			isChoice: true,
 			delete: true,
+			success: false,
 			onLeftPress: () => hideNotification(),
 			onRightPress: async () => {
 				hideNotification();
@@ -112,7 +113,8 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
 					title: '¡Éxito!',
 					description: `El ítem ha sido eliminado de la lista`,
 					isChoice: false,
-					delete: false
+					delete: false,
+					success: true,
 				});
 			}
 		})

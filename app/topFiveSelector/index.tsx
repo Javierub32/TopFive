@@ -44,6 +44,7 @@ export default function TopFiveSelectorScreen() {
         rightButtonText: 'Confirmar',
         isChoice: true,
         delete: false,
+        success: true,
         onLeftPress: () => hideNotification(),
         onRightPress: async () => {
           hideNotification();
@@ -54,7 +55,8 @@ export default function TopFiveSelectorScreen() {
             title: '¡Éxito!',
             description: `${item.contenido.titulo} ha sido agregado a tu Top 5`,
             isChoice: false,
-            delete: false
+            delete: false,
+            success: true,
           });
         }
       })

@@ -31,7 +31,8 @@ export default function HomeScreen() {
 						title: 'Atención',
 						description: 'Vuelve a tocar para salir.',
 						isChoice: false,
-						delete: false
+						delete: false,
+						success: false,
 					})
 				}
 				return true

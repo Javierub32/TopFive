@@ -30,7 +30,8 @@ export default function Register() {
           title: 'Error',
           description: 'Las contraseñas no coinciden. Por favor, inténtalo de nuevo.',
           isChoice: false,
-          delete: false
+          delete: false,
+          success: false,
         });
         setLoading(false);
         return;
@@ -51,7 +52,8 @@ export default function Register() {
           hideNotification();
           router.push('/(auth)/login'); 
         },
-        delete: false
+        delete: false,
+        success: true,
       });
     
   } catch (error: any) {
@@ -60,7 +62,8 @@ export default function Register() {
         title: 'Error',
         description: error.message || 'Hubo un error al crear tu cuenta.',
         isChoice: false,
-        delete: false
+        delete: false,
+        success: false,
       });
     } finally {
       setLoading(false);

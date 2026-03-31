@@ -44,6 +44,7 @@ export default function SettingsScreen() {
           description: 'El formulario de privacidad no está disponible en tu región.',
           isChoice: false,
           delete: false,
+          success: false,
         });
       }
     } catch (error) {
@@ -59,6 +60,7 @@ export default function SettingsScreen() {
       rightButtonText: 'Cerrar sesión',
       isChoice: true,
       delete: true,
+      success: false,
       onLeftPress: () => hideNotification(),
       onRightPress: async () => {
         try {
@@ -73,6 +75,7 @@ export default function SettingsScreen() {
               description: 'Has cerrado sesión exitosamente.',
               isChoice: false,
               delete: false,
+              success: true,
             });
           }
         } catch (error) {
@@ -82,6 +85,7 @@ export default function SettingsScreen() {
             description: 'Hubo un problema al cerrar sesión. Intenta de nuevo más tarde.',
             isChoice: false,
             delete: false,
+            success: false,
           });
         }
       },
@@ -97,6 +101,7 @@ export default function SettingsScreen() {
       highlightRight: true,
       isChoice: true,
       delete: true,
+      success: false,
       onLeftPress: () => hideNotification(),
       onRightPress: async () => {
         hideNotification();
@@ -109,6 +114,7 @@ export default function SettingsScreen() {
           highlightRight: false,
           isChoice: true,
           delete: true,
+          success: false,
           onLeftPress: async () => {
             try {
               hideNotification();
@@ -118,6 +124,7 @@ export default function SettingsScreen() {
                 description: 'Tu cuenta ha sido eliminada exitosamente.',
                 isChoice: false,
                 delete: false,
+                success: true,
               });
             } catch (error) {
               console.error('Error al eliminar cuenta:', error);
@@ -126,6 +133,7 @@ export default function SettingsScreen() {
                 description: 'Hubo un problema al eliminar tu cuenta. Intenta de nuevo más tarde.',
                 isChoice: false,
                 delete: false,
+                success: false,
               });
             }
           },

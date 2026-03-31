@@ -78,6 +78,7 @@ export default function BookForm() {
           'El número de páginas no puede ser mayor a 2000. Por favor, ingresa un número válido.',
         isChoice: false,
         delete: false,
+        success: false,
       });
       return;
     }
@@ -116,6 +117,7 @@ export default function BookForm() {
             description: 'Hubo un problema al actualizar el libro. Inténtalo de nuevo.',
             isChoice: false,
             delete: false,
+            success: false,
           });
           console.error('Error al actualizar:', updateError);
         } else {
@@ -142,6 +144,7 @@ export default function BookForm() {
               description: `Has actualizado ${book.title || 'este libro'} en tu colección.`,
               isChoice: false,
               delete: false,
+              success: true,
             });
           }, 100);
         }
@@ -201,6 +204,7 @@ export default function BookForm() {
               description: 'Ya tienes este libro en tu colección.',
               isChoice: false,
               delete: false,
+              success: false,
             });
           }, 100);
           setLoading(false);
@@ -228,6 +232,7 @@ export default function BookForm() {
             description: 'Hubo un problema al guardar el libro. Inténtalo de nuevo.',
             isChoice: false,
             delete: false,
+            success: false,
           });
           console.error('Error al insertar:', inventoryError);
         } else {
@@ -240,6 +245,7 @@ export default function BookForm() {
               description: `Has añadido ${book.title} a tu colección.`,
               isChoice: false,
               delete: false,
+              success: true,
             });
           }, 100);
         }

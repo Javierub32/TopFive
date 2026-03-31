@@ -23,7 +23,8 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
         title: header,
         description: message,
         isChoice: false,
-        delete: false
+        delete: false,
+        success: !message.includes('ya está'),
       });
     } catch (error: any) {
       console.error(error);
@@ -32,7 +33,8 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
         title: 'Error',
         description: error.message || 'No se pudo añadir a la lista.',
         isChoice: false,
-        delete: false
+        delete: false,
+        success: false,
       });
     } finally {
       setLoading(false);

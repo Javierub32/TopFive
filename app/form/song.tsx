@@ -94,7 +94,8 @@ export default function SongForm() {
             title: 'Error al actualizar',
             description: 'Hubo un problema al actualizar la canción. Inténtalo de nuevo.',
             isChoice: false,
-            delete: false
+            delete: false,
+            success: false,
           })
           console.error('Error al actualizar:', updateError);
         } else {
@@ -121,7 +122,8 @@ export default function SongForm() {
               title: '¡Éxito!',
               description: `Has actualizado ${song.titulo || song.title} en tu colección.`,
               isChoice: false,
-              delete: false
+              delete: false,
+              success: true,
             });
           }, 100);
         }
@@ -181,7 +183,8 @@ export default function SongForm() {
             title: 'Aviso',
               description: 'Ya tienes esta canción en tu colección.',
               isChoice: false,
-              delete: false
+              delete: false,
+              success: false,
           });
         }, 100);
         setLoading(false);
@@ -206,7 +209,8 @@ export default function SongForm() {
           title: 'Error al guardar',
           description: 'Hubo un problema al guardar la canción. Inténtalo de nuevo.',
           isChoice: false,
-          delete: false
+          delete: false,
+          success: false,
         });
         console.error('Error al insertar:', inventoryError);
       } else {
@@ -218,7 +222,8 @@ export default function SongForm() {
             title: '¡Éxito!',
               description: `Has añadido ${song.title} a tu colección.`,
               isChoice: false,
-              delete: false
+              delete: false,
+              success: true,
           });
         }, 100);
       }

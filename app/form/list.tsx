@@ -67,7 +67,8 @@ const handleSubmit = async () => {
 			title: 'Error',
 			description: 'El nombre de la lista no puede estar vacío.',
 			isChoice: false,
-      delete: false
+      delete: false,
+      success: false,
 		});
 		return;
 	}
@@ -91,7 +92,8 @@ const handleSubmit = async () => {
               title: '¡Éxito!',
               description: `La lista "${formData.name}" ha sido actualizada exitosamente.`,
               isChoice: false,
-              delete: false
+              delete: false,
+              success: true,
             });
           }, 100);    
 			}	else {
@@ -110,7 +112,8 @@ const handleSubmit = async () => {
               title: 'Error',
               description: `No se pudieron cargar los detalles de la lista. Por favor, inténtalo de nuevo.`,
               isChoice: false,
-              delete: false
+            delete: false,
+            success: false,
             });
       } finally {
 			setLoading(false);

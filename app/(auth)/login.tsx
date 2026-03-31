@@ -51,7 +51,8 @@ export default function Login() {
         title: 'Error',
         description: 'Credenciales inválidas. Por favor, inténtalo de nuevo.',
         isChoice: false,
-        delete: false
+        delete: false,
+        success: false,
       });
     } finally {
       setLoading(false);
@@ -88,14 +89,16 @@ export default function Login() {
               title: 'Error de Supabase',
               description: error.message,
               isChoice: false,
-              delete: false
+              delete: false,
+              success: false,
             });
           } else {
             showNotification({
               title: '¡Éxito!',
               description: 'Sesión iniciada correctamente',
               isChoice: false,
-              delete: false
+              delete: false,
+              success: true,
             });          
           }
         }
@@ -209,7 +212,7 @@ export default function Login() {
                     <View className="flex-row items-center justify-center">
                       <AntDesign name="google" size={24} color={colors.primaryText} className="mr-2" />
                       <Text className="font-bold text-lg" style={{color: colors.primaryText}}>
-                        {loading ? 'Cargando...' : 'Continuar con Google'}
+                        {'Continuar con Google'}
                       </Text>
                     </View>
                   </TouchableOpacity>

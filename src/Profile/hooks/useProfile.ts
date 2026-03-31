@@ -100,7 +100,8 @@ export const useProfile = () => {
       title: 'Error',
       description: 'No se pudieron cargar las estadísticas. Intenta de nuevo más tarde.',
       isChoice: false,
-      delete: false
+	  delete: false,
+	  success: false,
     });
 	} finally {
 		setStatsLoading(false);
@@ -131,7 +132,8 @@ export const useProfile = () => {
           title: 'Permiso denegado',
           description: 'Necesitamos acceso a tu galería',
           isChoice: false,
-          delete: false
+		  delete: false,
+		  success: false,
         });
         return;
       }
@@ -155,7 +157,8 @@ export const useProfile = () => {
           title: '¡Éxito!',
           description: 'Foto de perfil actualizada',
           isChoice: false,
-          delete: false
+		  delete: false,
+		  success: true,
         });
       }
     } catch (error) {
@@ -165,7 +168,8 @@ export const useProfile = () => {
         title: 'Error',
         description: 'No se pudo actualizar la foto',
         isChoice: false,
-        delete: false
+  		delete: false,
+  		success: false,
       });
     } finally {
        ('[pickImage] Finalizando');

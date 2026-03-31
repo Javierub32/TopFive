@@ -25,6 +25,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
 				rightButtonText: 'Confirmar',
 				isChoice: true,
 				delete: true,
+				success: false,
 				onLeftPress: () => hideNotification(),
 				onRightPress: async () => {
 					hideNotification();
@@ -34,7 +35,8 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
 						title: 'Lista eliminada',
 						description: `La lista "${list.nombre}" ha sido eliminada exitosamente.`,
 						isChoice: false,
-						delete: false
+						delete: false,
+						success: true,
 					});
 				}
 			})
