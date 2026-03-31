@@ -8,6 +8,7 @@ import { useTheme } from 'context/ThemeContext';
 import { useNotification } from 'context/NotificationContext';
 import { AntDesign } from '@expo/vector-icons';
 import { supabase } from 'lib/supabase';
+import { GoogleSignin, isSuccessResponse } from '@react-native-google-signin/google-signin';
 import * as Linking from 'expo-linking';
 
 // Frases aleatorias con iconos - fuera del componente para mejor rendimiento
@@ -18,6 +19,10 @@ const frasesConIconos = [
   { texto: '  Tu vida, tu ranking, tu TopFive.', icono: 'podium-gold' },
   { texto: '  Tu mixtape definitiva está aquí.', icono: 'music-box-multiple' }
 ];
+
+GoogleSignin.configure({
+  webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID, 
+});
 
 export default function Login() {
   const { signIn } = useAuth();
@@ -52,15 +57,48 @@ export default function Login() {
       setLoading(false);
     }
   };
-  const handleGoogleLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: Linking.createURL('/home'), // O la ruta a la que quieras volver
-      }
-    });
+  const handleNativeGoogleLogin = async () => {
+    if (Platform.OS === 'web') {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          // Asegúrate de que esta URL está en tu panel de Supabase
+          redirectTo: Linking.createURL('/Home'), 
+        },
+      });
 
-    if (error) console.error('Error con Google:', error.message);
+      if (error) console.error('Error en Web:', error);
+      return; // Terminamos aquí, no ejecutamos lo de abajo
+    }
+    try {
+      await GoogleSignin.hasPlayServices();
+      const response = await GoogleSignin.signIn();
+
+      if (isSuccessResponse(response)) {
+        const token = response.data.idToken;
+
+        if (token) {
+          const { data, error } = await supabase.auth.signInWithIdToken({
+            provider: 'google',
+            token: token,
+          });
+
+          if (error) {
+            Alert.alert('Error de Supabase', error.message);
+          } else {
+            Alert.alert('¡Éxito!', 'Sesión iniciada correctamente');
+            console.log('Datos del usuario:', data.user);
+          
+          }
+        }
+      } else {
+        console.log('El usuario canceló el inicio de sesión');
+      }
+    } catch (error: any) {
+      // Si algo explota a nivel de sistema, el móvil te avisará con una alerta
+      Alert.alert('Error de Google', error.message || 'Error desconocido');
+      console.error(error);
+    }
   };
 
   return (
@@ -155,7 +193,7 @@ export default function Login() {
                 </View>
 				        <View className="" style={{}}>
                   <TouchableOpacity
-                    onPress={handleGoogleLogin}
+                    onPress={handleNativeGoogleLogin}
                     disabled={loading}
                     className="overflow-hidden rounded-xl shadow-lg py-4 items-center"
                     style={{backgroundColor: colors.accent}}

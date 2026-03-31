@@ -22,14 +22,15 @@
     "plugins": [
       "expo-router",
       "expo-font",
-	  "@react-native-community/datetimepicker",
+      "@react-native-community/datetimepicker",
       [
         "react-native-google-mobile-ads",
         {
           "androidAppId": "ca-app-pub-2120812527357725~2420909779",
           "iosAppId": "ca-app-pub-2120812527357725~1614588357"
         }
-      ]
+      ],
+      "@react-native-google-signin/google-signin"
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -42,7 +43,7 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-	"ios": {
+    "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.leftjoiners.topfive",
       "buildNumber": "3",
