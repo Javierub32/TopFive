@@ -55,7 +55,9 @@ export default function ForgotPasswordScreen() {
 
   return (
 	<View className='flex-1'>
-	<ReturnButton route="back" title="" />
+		<View className="absolute top-5 left-0 z-10">
+			<ReturnButton route="back" title="" />
+		</View>
 	  <LinearGradient
 		colors={[colors.background, colors.secondary, colors.secondary]}
 		style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}
