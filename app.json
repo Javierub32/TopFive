@@ -2,7 +2,7 @@
   "expo": {
     "name": "TopFive",
     "slug": "topfive",
-    "version": "1.2.4",
+    "version": "1.3.0",
     "scheme": "topfive",
     "web": {
       "favicon": "./assets/icon.png",
@@ -45,7 +45,7 @@
 	"ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.leftjoiners.topfive",
-      "buildNumber": "3",
+      "buildNumber": "1",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
