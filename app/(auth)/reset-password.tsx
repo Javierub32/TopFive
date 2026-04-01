@@ -47,7 +47,12 @@ export default function ResetPasswordScreen() {
 		return;
 	  }
 	  await changePassword(password);
-	  router.replace('/(auth)/login');
+	  
+	  if (Platform.OS === 'web') {
+		window.location.href = '/password-changed.html';
+	  } else {
+		router.replace('/(auth)/login');
+	  }
 	} catch (error) {
 	  //Alert.alert('Error', 'Error al cambiar la contraseña. \n Por favor, inténtalo de nuevo.');
 	  showNotification({
