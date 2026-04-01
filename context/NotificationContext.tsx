@@ -10,6 +10,7 @@ interface NotificationConfig {
   isChoice: boolean;
   delete: boolean;
   success?: boolean;
+  info?: boolean;
   onLeftPress?: () => void;
   onRightPress?: () => void;
 }
