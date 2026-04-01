@@ -1,10 +1,10 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { router, useFocusEffect, useNavigation } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
 import { BackHandler, Text, TouchableOpacity, View } from 'react-native';
 import { LeftArrowIcon } from './Icons';
 import { useTheme } from 'context/ThemeContext';
 import { useSearch } from 'context/SearchContext';
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 interface ReturnButtonProps {
   route: string;
@@ -34,11 +34,11 @@ export const ReturnButton = ({ route, title, style, params, deleteSearchResults 
     return true
   }, [clearUserSearch, deleteSearchResults, params, route])
 
-  useFocusEffect(
+  useEffect(
     useCallback(() => {
       const action = BackHandler.addEventListener('hardwareBackPress', onBackPress);
       const unsuscribe = navigation.addListener('beforeRemove', (e) => {
-        if(!isNavigating.current) {
+        if(!isNavigating.current && e.data.action.type === 'GO_BACK') {
           e.preventDefault();
           onBackPress();
         }

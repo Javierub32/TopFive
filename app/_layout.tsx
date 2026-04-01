@@ -1,5 +1,5 @@
 import '../global.css';
-import { Slot, SplashScreen, useRouter, useSegments } from 'expo-router';
+import { SplashScreen, Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect, useCallback, useState } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { View, ActivityIndicator, Linking, Platform } from 'react-native';
@@ -129,7 +129,7 @@ function InitialLayout() {
     if (appIsReady) {
       checkAppVersion();
     }
-  }, [appIsReady]);
+  }, [hideNotification, showNotification, appIsReady]);
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -161,7 +161,7 @@ function InitialLayout() {
         router.replace('/(auth)/login');
       }
     }
-  }, [session, loading, segments, appIsReady]);
+  }, [router, session, loading, segments, appIsReady]);
   // Mostrar un indicador de carga mientras se decide la ruta o cargan fuentes
   if (!appIsReady || loading) {
     return (
@@ -173,7 +173,14 @@ function InitialLayout() {
 
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <Slot />
+      <Stack
+        screenOptions={{ 
+          headerShown: false, // Seguimos ocultando la cabecera fea por defecto
+          gestureEnabled: true, // ¡Magia activada para iOS!
+          fullScreenGestureEnabled: true,
+          animation: 'fade_from_bottom' // Transición nativa fluida para Android/iOS
+        }}
+      />
       <NotificationModal
         visible={visible}
         title={config.title}
