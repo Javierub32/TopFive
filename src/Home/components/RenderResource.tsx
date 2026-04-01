@@ -140,7 +140,7 @@ export default function ActivityItem({ item }: { item: Activity }) {
                 </View>
                 {/* Reseña */}
                 <Text style={{ color: colors.secondaryText}} className='mt-2'>
-                  <Text className="italic leading-relaxed text-xs ">{displayedDescription}</Text>
+                  <Text className="leading-relaxed text-xs ">{displayedDescription}</Text>
                   {shouldTruncate && (
                     <Text
                       className="font-bold text-xs"
