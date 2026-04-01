@@ -27,7 +27,8 @@
         "react-native-google-mobile-ads",
         {
           "androidAppId": "ca-app-pub-2120812527357725~2420909779",
-          "iosAppId": "ca-app-pub-2120812527357725~1614588357"
+          "iosAppId": "ca-app-pub-2120812527357725~1614588357",
+          "userTrackingPermission": "Esta aplicación utiliza el identificador de tu dispositivo para mostrarte anuncios relevantes y personalizados."
         }
       ],
       "@react-native-google-signin/google-signin"

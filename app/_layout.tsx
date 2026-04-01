@@ -59,10 +59,10 @@ function InitialLayout() {
       }
     };
 
-    if (appIsReady) {
+    if (appIsReady && session) {
       initAdsConsent();
     }
-  }, [appIsReady]);
+  }, [appIsReady, session]);
 
   useEffect(() => {
     const checkAppVersion = async () => {
