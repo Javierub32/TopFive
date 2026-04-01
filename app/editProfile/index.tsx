@@ -8,7 +8,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 
 
 export default function EditProfileScreen() {
-	const { uname, udesc, setUsername, setDescription, handleSubmit, loading } = useSettings();
+	const { uname, udesc, handleUsernameChange, setDescription, usernameAlreadyExists, handleSubmit, loading } = useSettings();
 	const { colors } = useTheme();
 
 	if (loading) {
@@ -26,11 +26,12 @@ export default function EditProfileScreen() {
 			<View className="flex-col gap-2 py-4 px-6">
 			<FormInput		
 				description={uname}
-				onChange={setUsername}
+				onChange={handleUsernameChange}
 				title="Nombre de usuario"
 				placeholder="Escribe tu nombre de usuario..."
 				maxLength={20}
 				numberOfLines={1}
+				hasError={usernameAlreadyExists}
 			/>
 			<FormInput		
 				description={udesc}
