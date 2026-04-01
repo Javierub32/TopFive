@@ -8,6 +8,7 @@ interface DescriptionInputProps {
   placeholder?: string;
   numberOfLines?: number;
   maxLength?: number;
+  hasError?: boolean;
 }
 
 export const FormInput = ({
@@ -15,10 +16,12 @@ export const FormInput = ({
   onChange,
   title = 'Descripción',
   placeholder = "Escribe tu opinión sobre el libro...",
-  numberOfLines = 4,
-  maxLength = 500,
+  numberOfLines = 1,
+  maxLength = 10,
+  hasError = false,
 }: DescriptionInputProps)  => {
   const { colors } = useTheme();
+
   return (
     <View>
       <Text className="mb-3 text-lg font-semibold text-primaryText">{title}</Text>
@@ -30,10 +33,22 @@ export const FormInput = ({
         multiline
         numberOfLines={numberOfLines}
         maxLength={maxLength}
-        className="min-h-[100px] rounded-lg border border-borderButton bg-surfaceButton p-3 text-base text-primaryText"
+        className=" rounded-lg bg-surfaceButton p-3 text-base text-primaryText"
         textAlignVertical="top"
+        style={{
+          borderColor:  hasError ? colors.error : null,
+          borderWidth: hasError ? 1 : 0,
+        }}
       />
-      <Text className="mt-1 text-right text-xs text-secondaryText">{description.length}/{maxLength}</Text>
+      <View className="flex-row justify-between">
+        <Text className="mt-1 text-left text-sm text-secondaryText"
+            style={{ color: colors.error }}>
+            {hasError ? 'El nombre de usuario ya está en uso.' : null}
+        </Text>
+        <Text className="mt-1 text-right text-xs text-secondaryText">{description.length}/{maxLength}</Text>
+      </View>
+      
+      
     </View>
   );
 };

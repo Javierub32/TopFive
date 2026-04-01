@@ -10,8 +10,18 @@ export const useSettings = () => {
 	const { user } = useAuth();
 	const {showNotification} = useNotification();
 	const [loading, setLoading] = useState(false);
+	const [usernameAlreadyExists, setUsernameAlreadyExists] = useState(false);
 	const [ uname, setUsername] = useState(username || '');
 	const [ udesc, setDescription] = useState(description || '');
+
+	const handleUsernameChange = (newUsername: string) => {
+		setUsername(newUsername);
+		if (usernameAlreadyExists) {
+			setUsernameAlreadyExists(false);
+		}
+	};
+	
+
 
 	const handleSubmit = async (newUsername: string, newDescription: string) => {
 		setLoading(true);
@@ -22,16 +32,12 @@ export const useSettings = () => {
 			.eq('id', user.id)
 
 			if (error?.code == '23505') {
+				setUsernameAlreadyExists(true);
 				//Alert.alert('Error', 'El nombre de usuario ya está en uso. Por favor, elige otro.');
-				showNotification({
-					title: 'Error',
-					description: 'El nombre de usuario ya está en uso. Por favor, elige otro.',
-					isChoice: false,
-					delete: false,
-					success: false,
-				});
+				
 			}
 			else if (error) {
+				setUsernameAlreadyExists(false);
 				//Alert.alert('Error', 'Hubo un error al actualizar tu perfil. Por favor, intenta de nuevo.');
 				showNotification({
 					title: 'Error',
@@ -41,6 +47,7 @@ export const useSettings = () => {
 					success: false,
 				});
 			} else {
+				setUsernameAlreadyExists(false);
 				//Alert.alert('Éxito', 'Tu perfil ha sido actualizado correctamente.');
 				showNotification({
 					title: '¡Éxito!',
@@ -60,9 +67,10 @@ export const useSettings = () => {
 	return {
 		loading,
 		uname,
-		setUsername,
+		handleUsernameChange,
 		udesc,
 		setDescription,
+		usernameAlreadyExists,
 		handleSubmit,
 	};
 

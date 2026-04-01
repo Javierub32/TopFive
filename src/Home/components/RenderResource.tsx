@@ -107,7 +107,7 @@ export default function ActivityItem({ item }: { item: Activity }) {
                     <Text className="font-bold text-base leading-tight mr-2 mb-2" style={{ color: colors.primaryText }}>{item.titulo}</Text>
                     {/* Calificación */}
                     {rating > 0 && (
-                      <View className="flex-row items-center gap-1 mt-1">
+                      <View className="flex-row items-center gap-1 mt-0">
                         {[1, 2, 3, 4, 5].map((star) => {
                           const rating = item.calificacion || 0;
                           let iconName: any = "star";
@@ -139,12 +139,11 @@ export default function ActivityItem({ item }: { item: Activity }) {
                   </View>
                 </View>
                 {/* Reseña */}
-                <Text style={{ color: colors.secondaryText}}
-                  className="mt-2 flex-row items-center">
-                  <Text className="italic leading-relaxed text-md">{displayedDescription}</Text>
+                <Text style={{ color: colors.secondaryText}} className='mt-2'>
+                  <Text className="leading-relaxed text-xs ">{displayedDescription}</Text>
                   {shouldTruncate && (
                     <Text
-                      className="font-bold text-md"
+                      className="font-bold text-xs"
                       style={{ color: colors.primary }}
                       onPress={() => setIsExpanded(!isExpanded)}>
                       {isExpanded ? ' Leer menos' : 'Leer más'}
