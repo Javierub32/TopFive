@@ -156,7 +156,7 @@ export default function Login() {
                   />
                 </View>
                 <Text className="font-semibold mb-1 ml-1" style= {{color: colors.primaryText}}>Contraseña</Text>
-                <View className="flex-row items-center rounded-xl px-3 py-3" style= {{backgroundColor: colors.surfaceButton}}>
+                <View className="flex-row items-center rounded-xl px-4 py-3" style= {{backgroundColor: colors.surfaceButton}}>
                   <MaterialCommunityIcons name="lock-outline" size={24} color={colors.secondaryText} />
                   <TextInput 
                     placeholder="••••••••" 
