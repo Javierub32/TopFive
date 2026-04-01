@@ -61,11 +61,13 @@ export default function SongDetail() {
           type='cancion'
           autor={song.autor}
         />
-        <View className="px-4 mb-14 pb-6 gap-3 mt-1">
+        <View className="flex-1 px-4 pb-6 gap-3 mt-1">
           <AddToCollectionButton content={song} type='cancion'/>
         </View>
       </ScrollView>
-	  <AdBanner/>
+      <View className="absolute bottom-0 left-0 right-0">
+          <AdBanner/>
+        </View>
     </Screen>
   );
 }

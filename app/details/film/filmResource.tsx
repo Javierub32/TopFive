@@ -88,7 +88,7 @@ export default function FilmDetail() {
           />
         </View>
 
-        <View className="mb-14 px-4 pb-6">
+        <View className="flex-1 px-4 pb-6">
           <ResourceAttributes resource={filmResource} isOwner={isOwner} />
           {!isPending && (
             <View className="flex-col justify-between gap-3">
@@ -103,8 +103,11 @@ export default function FilmDetail() {
           )}
           
         </View>
+        <View className="flex-1">
+          <AdBanner/>
+        </View>
       </ScrollView>
-	  <AdBanner/>
+	  
     </Screen>
   );
 }

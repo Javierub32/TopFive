@@ -93,7 +93,7 @@ export default function BookDetail() {
             resizeMode="cover"
           />
         </View>
-        <View className="mb-14 px-4 pb-6">
+        <View className="flex-1 px-4 pb-6">
           <ResourceAttributes resource={bookResource} isOwner={isOwner} />
           {!isPending && (
               <View className="flex-col justify-between gap-3">
@@ -116,8 +116,10 @@ export default function BookDetail() {
           
           <TimeCard resource={bookResource} />
         </View>
+        <View className="flex-1">
+          <AdBanner/>
+        </View>
       </ScrollView>
-	  <AdBanner/>
     </Screen>
   );
 }

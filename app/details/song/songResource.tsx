@@ -86,7 +86,7 @@ export default function SongDetail() {
             resizeMode="cover"
           />
         </View>
-        <View className="mb-14 px-4 pb-6">
+        <View className="flex-1 px-4 pb-6">
           <ResourceAttributes resource={songResource} isOwner={isOwner} />
           {!isPending && (
             <View className="flex-col justify-between gap-3">
@@ -100,8 +100,10 @@ export default function SongDetail() {
             </View>
           )}          
         </View>
+        <View className="flex-1">
+          <AdBanner/>
+        </View>
       </ScrollView>
-	  <AdBanner/>
     </Screen>
   );
 }

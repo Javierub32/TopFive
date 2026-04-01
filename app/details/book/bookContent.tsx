@@ -22,7 +22,6 @@ export default function BookDetail() {
   const { content, loading } = useContent(id as string | number, 'libro');
   const book: Book = content as Book;
   const { colors } = useTheme();
-
   const path = from === 'search' ? '/Add?initialCategory=libro' : '/(tabs)/Home';
 
   if (loading) {
@@ -59,14 +58,16 @@ export default function BookDetail() {
           autor={book.autor}
         />
 
-        <View className="mb-14 px-4 pb-6">        
+        <View className="flex-1 px-4 pb-6">        
           <View className="flex-col justify-between gap-3 mt-1">
             <DescriptionCard description={book.description}/>
           </View>
           	<AddToCollectionButton content={book} type='libro'/>
         </View>
+        <View className="flex-1">
+          <AdBanner/>
+        </View>
       </ScrollView>
-	  <AdBanner/>
     </Screen>
   );
 }

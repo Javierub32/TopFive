@@ -66,7 +66,7 @@ export default function GameDetail() {
           autor={game.autor}
         />
 
-        <View className="mb-14 px-4 pb-6">        
+        <View className="flex-1 px-4 pb-6">        
           <View className="flex-col justify-between gap-3 mt-1">
             <ContentRating content={game} type='libro'/>
             <ExtraCard extra={game.gamemodes} type='videojuego'/>
@@ -74,8 +74,10 @@ export default function GameDetail() {
           </View>
           <AddToCollectionButton content={game} type='videojuego'/>
         </View>
+        <View className="flex-1">          
+          <AdBanner/>
+        </View>
       </ScrollView>
-	  <AdBanner/>
     </Screen>
   );
 }
