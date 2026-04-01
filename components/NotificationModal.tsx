@@ -16,6 +16,7 @@ interface NotificationModalProps {
   isChoice: boolean; // true = modal grande en medio, false = modal pequeño abajo
   delete?: boolean; // Si es una notificación de eliminación, el botón derecho se resalta en rojo
   success?: boolean; 
+  info?: boolean;
   onLeftPress?: () => void;
   onRightPress?: () => void;
   onClose?: () => void;
@@ -31,6 +32,7 @@ export const NotificationModal = ({
   isChoice,
   delete: isDelete = false,
   success = false,
+  info = false,
   onLeftPress,
   onRightPress,
   onClose,
@@ -74,7 +76,7 @@ export const NotificationModal = ({
             {/* Título */}
             <Text 
               className="text-2xl font-bold mb-4 text-center"
-              style={{ color: success ? colors.success : colors.error }}
+              style={{ color: info ? colors.primaryText : success ? colors.success : colors.error }}
             >
               {title}
             </Text>
@@ -151,7 +153,7 @@ export const NotificationModal = ({
               {/* Título */}
               <Text 
                 className="text-lg font-bold mb-2"
-                style={{ color: success ? colors.success : colors.error }}
+                style={{ color: info ? colors.primaryText : success ? colors.success : colors.error }}
               >
                 {title}
               </Text>

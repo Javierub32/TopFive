@@ -128,7 +128,8 @@ const signUp = async (email, password, username) => {
 		email: normalizedEmail,
         password,
         options: {
-            data: { username: username }
+            data: { username: username },
+			emailRedirectTo: 'https://www.topfive5.me/confirm-session.html'
         }
     });
 

@@ -102,6 +102,7 @@ function InitialLayout() {
             },
             delete: false,
             success: false,
+			info: true,
           });
         }
 		if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'ios') {
@@ -116,6 +117,7 @@ function InitialLayout() {
             },
             delete: false,
             success: false,
+			info: true,
           });
         }
       } catch (e) {
@@ -182,6 +184,7 @@ function InitialLayout() {
         isChoice={config.isChoice}
         delete={config.delete}
         success={config.success}
+        info={config.info}
         onLeftPress={config.onLeftPress}
         onRightPress={config.onRightPress}
         onClose={hideNotification}
