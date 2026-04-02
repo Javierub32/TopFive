@@ -48,6 +48,10 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.leftjoiners.topfive",
       "buildNumber": "1",
+      "associatedDomains": [
+        "applinks:www.topfive5.me",
+        "applinks:topfive5.me"
+      ],
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -60,6 +64,20 @@
       "package": "com.leftjoiners.topfive",
       "permissions": [
         "com.google.android.gms.permission.AD_ID"
+      ],
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            { "scheme": "https", "host": "www.topfive5.me" },
+            { "scheme": "https", "host": "topfive5.me" }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
       ],
       "versionCode": 1
     },

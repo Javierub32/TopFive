@@ -7,6 +7,8 @@ import {
   Alert,
   Linking,
   Platform,
+  Share,
+  ScrollView,
 } from 'react-native';
 import { Screen } from 'components/Screen';
 import {
@@ -143,8 +145,22 @@ export default function SettingsScreen() {
     });
   };
 
+  const handleShare = async () => {
+    if (!username) return;
+    try {
+      const url = `https://www.topfive5.me/details/user?username=${username}&from=link`;
+      await Share.share({
+        message: `¡Echa un vistazo a mi perfil en TopFive!\n${url}`,
+      });
+    } catch (error) {
+      console.error('Error al compartir', error);
+    }
+  };
+
   return (
     <Screen>
+	 <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+
       <ReturnButton route="/(tabs)/Profile" title="Configuración" />
       <View className="mb-14 flex-1 p-4">
         <View className="flex-1 gap-4">
@@ -228,7 +244,21 @@ export default function SettingsScreen() {
               style={{ backgroundColor: `${colors.accent}33` }}>
               <View className="border-b" style={{ borderColor: `${colors.secondaryText}4D` }}>
                 <TouchableOpacity
-                  className="w-full flex-row items-center justify-between gap-4 p-2 pb-4"
+                  className="w-full flex-row items-center justify-between p-2 pl-1 pb-4"
+                  activeOpacity={0.4}
+                  onPress={handleShare}>
+                  <View className="flex-row items-center justify-start gap-2">
+                    <Ionicons name="share-outline" size={24} color={colors.primaryText} />
+                    <Text className="text-lg" style={{ color: colors.primaryText }}>
+                      Compartir perfil
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+			  <View className="border-b" style={{ borderColor: `${colors.secondaryText}4D` }}>
+                <TouchableOpacity
+                  className="w-full flex-row items-center justify-between p-2 pb-4"
                   activeOpacity={0.4}
                   onPress={handleCloseSession}>
                   <View className="flex-row items-center justify-start gap-2">
@@ -241,7 +271,7 @@ export default function SettingsScreen() {
               </View>
 
               <TouchableOpacity
-                className="w-full flex-row items-center justify-between gap-4 p-2"
+                className="w-full flex-row items-center justify-between p-2"
                 activeOpacity={0.4}
                 onPress={handleDeleteAccount}>
                 <View className="flex-row items-center justify-start gap-2">
@@ -352,6 +382,8 @@ export default function SettingsScreen() {
           </View>
         </View>
       </View>
+	  		
+	 </ScrollView>
     </Screen>
   );
 }

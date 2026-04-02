@@ -13,7 +13,7 @@ import { StatsGrid } from '@/Profile/components/StatsGrid';
 import { CategorySelector } from '@/Profile/components/CategorySelector';
 
 export default function UserDetailsScreen() {
-  const { username } = useLocalSearchParams();
+  const { username, from } = useLocalSearchParams();
     const {
     loading, 
     userData, 
@@ -28,11 +28,12 @@ export default function UserDetailsScreen() {
   } = useUser(username as string);
 
   const canViewStats = userData?.following_status === 'accepted';
+  const route = from === 'link' ? '/Home' : 'back';
 
   if (loading) {
     return (
       <Screen>
-        <ReturnButton route='back' title='' />
+        <ReturnButton route={route} title='' />
         <LoadingIndicator />
       </Screen>
     );
@@ -40,7 +41,7 @@ export default function UserDetailsScreen() {
 
   return (
     <Screen>
-      <ReturnButton route='back' title={userData?.username || 'Detalles del Usuario'}  />
+      <ReturnButton route={route} title={userData?.username || 'Detalles del Usuario'}  />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <View className="px-4 pb-6"> 
           <ProfileData 
