@@ -132,10 +132,11 @@ function InitialLayout() {
   }, [hideNotification, showNotification, appIsReady]);
 
   const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
+    // Añadimos la condición de !loading aquí
+    if (appIsReady && !loading) {
       await SplashScreen.hideAsync();
     }
-  }, [appIsReady]);
+  }, [appIsReady, loading]);
 
   useEffect(() => {
     if (loading || !appIsReady) return;
@@ -162,14 +163,6 @@ function InitialLayout() {
       }
     }
   }, [router, session, loading, segments, appIsReady]);
-  // Mostrar un indicador de carga mientras se decide la ruta o cargan fuentes
-  if (!appIsReady || loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
 
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
