@@ -121,7 +121,7 @@ export default function Register() {
               <View className="flex-row items-center rounded-xl px-4 py-3 mb-3" style={{backgroundColor: colors.surfaceButton}}>
                 <MaterialCommunityIcons name="email-outline" size={24} color={colors.secondaryText} />
                 <TextInput
-                  placeholder="tu@gmail.com"
+                  placeholder="tu@email.com"
                   value={email}
                   onChangeText={setEmail}
                   autoCapitalize="none"
