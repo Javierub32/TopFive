@@ -131,10 +131,11 @@ function InitialLayout() {
     }
   }, [hideNotification, showNotification, appIsReady]);
 
-  const onLayoutRootView = useCallback(async () => {
-    // Añadimos la condición de !loading aquí
+  useEffect(() => {
+    // Cuando las fuentes carguen (appIsReady) Y la sesión de Supabase esté lista (!loading),
+    // ocultamos el Splash Screen.
     if (appIsReady && !loading) {
-      await SplashScreen.hideAsync();
+      SplashScreen.hideAsync();
     }
   }, [appIsReady, loading]);
 
@@ -165,7 +166,7 @@ function InitialLayout() {
   }, [router, session, loading, segments, appIsReady]);
 
   return (
-    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+    <View style={{ flex: 1 }}>
       <Stack
         screenOptions={{ 
           headerShown: false, // Seguimos ocultando la cabecera fea por defecto
