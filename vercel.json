@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/details/user",
+      "destination": "/api/og-profile"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
