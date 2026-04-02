@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       
       if (data && data.length > 0) {
         const user = data[0];
-        title = `Perfil de ${user.username} en TopFive`;
+        title = `Perfil de ${user.username}`;
         description = user.description || description;
         image = user.avatar_url || image;
       }
