@@ -53,7 +53,14 @@
         "applinks:topfive5.me"
       ],
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.1045116527499-u3kj7uo06ar23im0rqg9ltis3e8rfa37"
+            ]
+          }
+        ]
       }
     },
     "android": {

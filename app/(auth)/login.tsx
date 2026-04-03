@@ -10,6 +10,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { supabase } from 'lib/supabase';
 import { GoogleSignin, isSuccessResponse } from '@react-native-google-signin/google-signin';
 import * as Linking from 'expo-linking';
+import * as AppleAuthentication from 'expo-apple-authentication';
 
 // Frases aleatorias con iconos - fuera del componente para mejor rendimiento
 const frasesConIconos = [
@@ -22,6 +23,7 @@ const frasesConIconos = [
 
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID, 
+  iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
 });
 
 export default function Login() {
@@ -111,6 +113,36 @@ export default function Login() {
       console.error(error);
     }
   };
+  const handleAppleLogin = async () =>{
+    try {
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+      if (credential.identityToken){
+        const { data, error } = await supabase.auth.signInWithIdToken({
+          provider: 'apple',
+          token: credential.identityToken,
+        });
+        if(error) throw error;
+        showNotification({
+          title: '¡Éxito!',
+          description: 'Sesión iniciada correctamente',
+          isChoice: false,
+          delete: false,
+          success: true,
+        })
+      }
+    } catch (e: any) {
+      if (e.code === 'ERR_CANCELED'){
+        console.log('El usuario canceló el inicio de sesión con Apple');
+      }else{
+        Alert.alert('Error de Apple', e.message || 'Error desconocido');
+      }
+  }
+}
 
   return (
     <ScrollView 
@@ -217,6 +249,15 @@ export default function Login() {
                     </View>
                   </TouchableOpacity>
                 </View>
+                {Platform.OS === 'web' && (
+                  <AppleAuthentication.AppleAuthenticationButton
+                    buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+                    buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+                    cornerRadius={5}
+                    style={{ width: '100%', height: 44, marginTop: 10 }}
+                    onPress={handleAppleLogin}
+                  />
+                )}
 
               </View>
           </View>
