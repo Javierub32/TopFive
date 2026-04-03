@@ -25,7 +25,6 @@ export default function Register() {
     setLoading(true);
     try {
       if (password !== confirmPassword) {
-        //Alert.alert('Error', 'Las contraseñas no coinciden. \n Por favor, inténtalo de nuevo.');
         showNotification({
           title: 'Error',
           description: 'Las contraseñas no coinciden. Por favor, inténtalo de nuevo.',
@@ -43,14 +42,13 @@ export default function Register() {
         description: (
           <Text>
             Tu cuenta ha sido creada exitosamente. {"\n"}
-            Revisa la bandeja de <Text style={{ fontWeight: 'bold' }}>SPAM</Text> y confirma tu correo.
+            Revisa tu correo y confirma tu cuenta.
           </Text>
         ),
         isChoice: true, 
         rightButtonText: 'Aceptar',
         onRightPress: () => {
           hideNotification();
-          router.push('/(auth)/login'); 
         },
         delete: false,
         success: true,
