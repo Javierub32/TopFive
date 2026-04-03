@@ -249,7 +249,7 @@ export default function Login() {
                     </View>
                   </TouchableOpacity>
                 </View>
-                {Platform.OS === 'web' && (
+                {Platform.OS === 'ios' && (
                   <AppleAuthentication.AppleAuthenticationButton
                     buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
                     buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
