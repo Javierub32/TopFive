@@ -32,6 +32,14 @@ export default function ProfileScreen() {
 	statsLoading
   } = useProfile();
 
+  const categoryLabels = {
+    libro: 'Libros Completados',
+    pelicula: 'Películas Completadas',
+    serie: 'Series Completadas',
+    videojuego: 'Videojuegos Completados',
+    cancion: 'Albumes Completados',
+  };
+
 
 
   if (loading) {
@@ -86,7 +94,12 @@ export default function ProfileScreen() {
 					title={currentStats.title}
 					total={currentStats.total}
 					average={currentStats.average}
+					onPress={() => router.push({
+						pathname: '/group',
+						params: { title: 'Completados', state: 'completados', category: selectedCategory, from: 'Profile' }
+					})}
 				/>
+
 				<StatsChart
 					data={currentStats.chartData}
 					selectedYear={selectedYear}

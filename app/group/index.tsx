@@ -20,6 +20,7 @@ export default function GroupScreen() {
   const title = params.title as string;
   const state = params.state as string;
   const category = params.category as string;
+  const from = params.from as string;
 
   const { handleItemPress, setIsSearchVisible } = useCollection();
   const { loading, data, handleLoadMore } = useGroupData(category as ResourceType, stateMap[state]);
@@ -27,11 +28,14 @@ export default function GroupScreen() {
   useEffect(() => {
 		setIsSearchVisible(false);
   }, []);
+
+  const returnRoute = from === 'Profile' ? '/Profile' : '/Collection';
+  const returnParams = from === 'Profile' ? {} : { initialResource: category as ResourceType };
   
   return (
     <Screen>
       <View className="flex-1 px-4 pt-4">
-        <ReturnButton route="/Collection" title={title} style={" "} params={{initialResource: category as ResourceType }}/>
+        <ReturnButton route={returnRoute} title={title} style={" "} params={returnParams}/>
         {loading && data.length === 0 ? (
           <LoadingIndicator />
         ) : (

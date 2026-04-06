@@ -1,25 +1,30 @@
 import { useTheme } from 'context/ThemeContext';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface Props {
   title: string;
   total: number;
   average: number;
+  onPress?: () => void;
 }
 
-export const StatsGrid = ({ title, total, average }: Props) => {
+export const StatsGrid = ({ title, total, average, onPress }: Props) => {
   const { colors } = useTheme();
+
+  const TotalContainer = onPress ? TouchableOpacity : View;
 
   return (
     <View className="mb-6 flex-row gap-3 px-1">
       {/* Tarjeta de TOTAL */}
-      <View 
+      <TotalContainer 
         className="flex-1 rounded-2xl p-4 shadow-sm "
         style={{ 
             backgroundColor: colors.surfaceButton, 
             borderColor: colors.borderButton 
         }}
+        onPress={onPress}
+        activeOpacity={onPress ? 0.7 : 1}
       >
         <View className="flex-row items-center justify-between mb-2">
             <View className="p-2 rounded-full" style={{ backgroundColor: `${colors.primary}20` }}>
@@ -36,7 +41,7 @@ export const StatsGrid = ({ title, total, average }: Props) => {
         <Text className="text-xs mt-1" style={{ color: colors.secondaryText }} numberOfLines={1}>
             {title}
         </Text>
-      </View>
+      </TotalContainer>
 
       {/* Tarjeta de PROMEDIO */}
       <View 
