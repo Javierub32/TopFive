@@ -89,6 +89,8 @@ export default function SeriesForm() {
     }
   };
 
+  const estadoAnterior = resource?.estado;
+
   const handleSubmit = async () => {
     // Validaciones básicas de números
     const tempNum = parseInt(temporadaActual) || 1;
@@ -146,6 +148,11 @@ export default function SeriesForm() {
 
           //Alert.alert('¡Éxito!', `Has actualizado ${series.titulo || series.title} en tu colección.`);
           refreshData();
+          if(estadoAnterior != 'COMPLETADO' && estado === 'COMPLETADO'){
+            await supabase.rpc('increment_review_count', {user_id: user.id})
+          } else if (estadoAnterior === 'COMPLETADO' && estado != 'COMPLETADO') {
+            await supabase.rpc('decrement_review_count', {user_id: user.id})
+          }
           router.replace({
             pathname: '/details/series/seriesResource',
             params: {
@@ -251,6 +258,9 @@ export default function SeriesForm() {
         } else {
           //Alert.alert('¡Éxito!', `Has añadido ${series.title} a tu colección.`);
           refreshData();
+          if(estado === 'COMPLETADO'){
+            await supabase.rpc('increment_review_count', {user_id: user.id})
+          }
           router.back();
           setTimeout(() => {
             showNotification({

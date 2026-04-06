@@ -34,7 +34,7 @@ export const DeleteResourceButton = ({resource, type}: Props) => {
                 onLeftPress: () => hideNotification(),
                 onRightPress: async () => {
                     hideNotification();
-                    await borrarRecurso(resource.id, type);
+                    await borrarRecurso(resource.id, type, resource.estado);
                     router.replace({ pathname: '/Collection', params: { initialResource: type as ResourceType } });
                     refreshData();
                     setTimeout(() => {

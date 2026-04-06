@@ -69,6 +69,8 @@ export default function BookForm() {
     }
   };
 
+  const estadoAnterior  = resource?.estado;
+
   const handleSubmit = async () => {
     const numPaginas = parseInt(paginasLeidas) || 0;
     if (numPaginas > 2000) {
@@ -130,6 +132,11 @@ export default function BookForm() {
             contenido: contentData,
           };
           refreshData();
+          if(estadoAnterior != 'COMPLETADO' && estado === 'COMPLETADO'){
+            await supabase.rpc('increment_review_count', {user_id: user.id})
+          } else if (estadoAnterior === 'COMPLETADO' && estado != 'COMPLETADO') {
+            await supabase.rpc('decrement_review_count', {user_id: user.id})
+          }
           router.replace({
             pathname: '/details/book/bookResource',
             params: {
@@ -237,6 +244,9 @@ export default function BookForm() {
           console.error('Error al insertar:', inventoryError);
         } else {
           refreshData();
+          if(estado === 'COMPLETADO'){
+            await supabase.rpc('increment_review_count', {user_id: user.id})
+          }
           router.back();
           // Mostrar modal después de navegar
           setTimeout(() => {

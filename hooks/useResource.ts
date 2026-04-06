@@ -142,7 +142,8 @@ export const useResource = () => {
   // Mantenemos la lógica de borrarRecurso
   const borrarRecurso = async (
     recursoId: any,
-    tipoRecurso: ResourceType
+    tipoRecurso: ResourceType,
+    estado: string
   ) => {
     try {
       if (!user) throw new Error('User not authenticated');
@@ -156,6 +157,9 @@ export const useResource = () => {
         .eq('id', recursoId);
 
       if (error) throw error;
+      if (estado === 'COMPLETADO') {
+        await supabase.rpc('decrement_review_count', {user_id: user.id})
+      }
       return data;
     } catch (error) {
       console.error(`Error al borrar recurso ${tipoRecurso}:`, error);

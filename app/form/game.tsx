@@ -74,6 +74,8 @@ export default function GameForm() {
     }
   };
 
+  const estadoAnterior = resource?.estado;
+
   const handleSubmit = async () => {
     const horasNum = parseFloat(horasJugadas) || 0;
 
@@ -128,6 +130,11 @@ export default function GameForm() {
 
           //Alert.alert('¡Éxito!', `Has actualizado ${game.titulo || game.title} en tu colección.`);
           refreshData();
+          if(estadoAnterior != 'COMPLETADO' && estado === 'COMPLETADO'){
+            await supabase.rpc('increment_review_count', {user_id: user.id})
+          } else if (estadoAnterior === 'COMPLETADO' && estado != 'COMPLETADO') {
+            await supabase.rpc('decrement_review_count', {user_id: user.id})
+          }
           router.replace({
             pathname: '/details/game/gameResource',
             params: {
@@ -232,6 +239,9 @@ export default function GameForm() {
         } else {
           //Alert.alert('¡Éxito!', `Has añadido ${game.title} a tu colección.`);
           refreshData();
+          if(estado === 'COMPLETADO'){
+            await supabase.rpc('increment_review_count', {user_id: user.id})
+          }
           router.back();
           setTimeout(() => {
             showNotification({

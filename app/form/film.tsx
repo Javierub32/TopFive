@@ -75,6 +75,8 @@ export default function FilmForm() {
     }
   };
 
+  const estadoAnterior = resource?.estado;
+
   const handleSubmit = async () => {
     setLoading(true);
     try {
@@ -123,6 +125,11 @@ export default function FilmForm() {
           };
 
           refreshData();
+          if(estadoAnterior != 'COMPLETADO' && estado === 'COMPLETADO'){
+            await supabase.rpc('increment_review_count', {user_id: user.id})
+          } else if (estadoAnterior === 'COMPLETADO' && estado != 'COMPLETADO') {
+            await supabase.rpc('decrement_review_count', {user_id: user.id})
+          }
           router.replace({
             pathname: '/details/film/filmResource',
             params: {
@@ -228,6 +235,9 @@ export default function FilmForm() {
         } else {
           //Alert.alert("¡Éxito!", `Has añadido a ${film.title} a tu colección.`);
           refreshData();
+          if(estado === 'COMPLETADO'){
+            await supabase.rpc('increment_review_count', {user_id: user.id})
+          }
           router.back();
           setTimeout(() => {
             showNotification({
