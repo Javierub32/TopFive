@@ -252,10 +252,11 @@ export default function Login() {
                 {Platform.OS === 'ios' && (
                   <AppleAuthentication.AppleAuthenticationButton
                     buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-                    buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-                    cornerRadius={5}
-                    style={{ width: '100%', height: 44, marginTop: 10 }}
+                    buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
+                    style={{ width: '100%', height: 50, marginTop: 7 }}
+                    cornerRadius={10}
                     onPress={handleAppleLogin}
+                    className='overflow-hidden rounded-xl shadow-lg py-4 items-center'
                   />
                 )}
 
