@@ -1,24 +1,27 @@
-import { Book, Film, Series, Song, Game } from "app/types/Content";
 import { ReturnButton } from "components/ReturnButton";
 import { useTheme } from "context/ThemeContext";
 import { LinearGradient } from "expo-linear-gradient";
 import { ResourceType } from "hooks/useResource";
-import { StyleSheet, Dimensions, View, Image, Pressable, Platform, useWindowDimensions } from "react-native";
-import { ContentTags } from "./ContentTags";
+import { StyleSheet, View, Image, Pressable, Platform, useWindowDimensions } from "react-native";
 import { useState } from "react";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+import { BookResource, FilmResource, GameResource, SeriesResource, SongResource } from "app/types/Resources";
+import { ResourceAttributes } from "./ResourceAttributes";
+import { EditResourceButton } from "./EditResourceButton";
+import { DeleteResourceButton } from "./DeleteResourceButton";
 
 
 
 interface Props {
     imageUrl : string | null;
     returnRoute : string;
-    content: Book | Film | Series | Song | Game;
+    resource: BookResource | FilmResource | SeriesResource | SongResource | GameResource;
     type: ResourceType;
-    autor: string | null;
+    isOwner?: boolean;
+    from: string | string[];
 }
 
-export const ModernContentHeader = ({imageUrl, returnRoute, content, type, autor}: Props) => {
+export const ResourceHeader = ({imageUrl, returnRoute, resource, type, isOwner, from}: Props) => {
     const {colors} = useTheme();
 
     const [showUI, setShowUI] = useState(true);
@@ -80,11 +83,17 @@ export const ModernContentHeader = ({imageUrl, returnRoute, content, type, autor
                 >
                     <LinearGradient colors={['transparent', `${colors.background}99`, colors.background]} locations={[0.0, 0.5, 1.0]} style={styles.gradient} />
                     <View style={styles.tagsContainer}>
-                        <ContentTags content={content} type={type} autor={autor}/>
+                        <ResourceAttributes resource={resource} isOwner={isOwner}/>
                     </View>
                     
-                    <View style={styles.returnButtonContainer} className="px-4 pt-2 pb-4">
+                    <View style={styles.returnButtonContainer} className="flex-row px-4 pt-2 pb-4 justify-between">
                         <ReturnButton route={returnRoute} title="" style={' '} />
+                        {isOwner && (
+                            <View className="flex-row">
+                                <EditResourceButton resource={resource} type={type} from={from} />
+                                <DeleteResourceButton resource={resource} type={type} />
+                            </View>
+                        )}
                     </View>
                 </Animated.View>
                 

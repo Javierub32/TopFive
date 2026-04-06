@@ -15,6 +15,7 @@ import { DateCard } from '@/Details/components/DateCard';
 import { ReviewCard } from '@/Details/components/ReviewCard';
 import { useAuth } from "context/AuthContext";
 import { AdBanner } from 'components/AdBanner';
+import { ResourceHeader } from "@/Details/components/ResourceHeader";
 
 export default function SongDetail() {
   const { item, from } = useLocalSearchParams();
@@ -61,33 +62,8 @@ export default function SongDetail() {
     <Screen>
       <ThemedStatusBar />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
-          <View className="flex-1 flex-row items-center">
-            <ReturnButton
-              route={path}
-              title={'Detalle de la canción'}
-              style={' '}
-              params={{ initialResource: 'cancion' as ResourceType }}
-            />
-          </View>
-          {isOwner && (
-            <>
-            <EditResourceButton resource={songResource} type="cancion" from={from}/>
-            <DeleteResourceButton resource={songResource} type="cancion" />
-            </>
-
-          )}
-
-        </View>
-        <View className="mb-4 px-4">
-          <Image
-            source={{ uri: contenido.imagenUrl || 'https://via.placeholder.com/500x750' }}
-            className="h-[600px] w-full rounded-2xl bg-background"
-            resizeMode="cover"
-          />
-        </View>
+        <ResourceHeader imageUrl={contenido.imagenUrl || 'https://via.placeholder.com/500x750'} resource={songResource} type="cancion" returnRoute={path} from={from} isOwner={isOwner}/>
         <View className="flex-1 px-4 pb-6">
-          <ResourceAttributes resource={songResource} isOwner={isOwner} />
           {!isPending && (
             <View className="flex-col justify-between gap-3">
               <View className="flex-row gap-2">

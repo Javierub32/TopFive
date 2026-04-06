@@ -16,6 +16,7 @@ import { EditResourceButton } from '@/Details/components/EditResourceButton';
 import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
 import { useAuth } from "context/AuthContext";
 import { AdBanner } from 'components/AdBanner';
+import { ResourceHeader } from "@/Details/components/ResourceHeader";
 
 export default function GameDetail() {
   const { item, from } = useLocalSearchParams();
@@ -66,37 +67,9 @@ export default function GameDetail() {
       <ThemedStatusBar />
 
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        {/* Header con botón de volver y botón de eliminar */}
-        <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
-          <View className="flex-1 flex-row items-center">
-            <ReturnButton
-              route={path}
-              title={'Detalle del videojuego'}
-              style={' '}
-              params={{ initialResource: 'videojuego' as ResourceType }}
-            />
-          </View>
-          {isOwner && (
-            <>
-            <EditResourceButton resource={gameResource} type="videojuego" from={from} />
-            <DeleteResourceButton resource={gameResource} type="videojuego" />
-            </>
-
-          )}
-        </View>
-
-        {/* Imagen del videojuego */}
-        <View className="mb-4 px-4">
-          <Image
-            source={{ uri: contenido.imagenUrl || 'https://via.placeholder.com/500x750' }}
-            className="h-[600px] w-full rounded-2xl"
-            style={{ backgroundColor: colors.surfaceButton }}
-            resizeMode="cover"
-          />
-        </View>
+        <ResourceHeader imageUrl={contenido.imagenUrl || 'https://via.placeholder.com/500x750'} type="videojuego" resource={gameResource} returnRoute={path} from={from} isOwner={isOwner}/>
 
         <View className="flex-1 px-4 pb-6">
-          <ResourceAttributes resource={gameResource} isOwner={isOwner} />
           {!isPending && (
             <View className="flex-col justify-between gap-3">
             <View className="flex-row gap-2">

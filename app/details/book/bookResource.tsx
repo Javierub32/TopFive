@@ -17,6 +17,7 @@ import { EditResourceButton } from '@/Details/components/EditResourceButton';
 import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
 import { useAuth } from "context/AuthContext";
 import { AdBanner } from 'components/AdBanner';
+import { ResourceHeader } from "@/Details/components/ResourceHeader";
 
 export default function BookDetail() {
   const { item, from } = useLocalSearchParams();
@@ -67,34 +68,8 @@ export default function BookDetail() {
     <Screen>
       <ThemedStatusBar />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
-          <View className="flex-1 flex-row items-center">
-            <ReturnButton
-              route={path}
-              title={'Detalle del libro'}
-              style={' '}
-              params={{ initialResource: 'libro' as ResourceType }}
-            />
-          </View>
-          {isOwner && (
-            <>
-            <EditResourceButton resource={bookResource} type={'libro'} from={from} />
-            <DeleteResourceButton resource={bookResource} type={'libro'} />
-            </>
-          )}
-          
-        </View>
-        {/* Imagen del libro */}
-        <View className="px-4 mb-4">
-          <Image
-            source={{ uri: contenido.imagenUrl || 'https://via.placeholder.com/500x750' }}
-            className="aspect-[2/3] rounded-2xl"
-            style={{ backgroundColor: colors.surfaceButton }}
-            resizeMode="cover"
-          />
-        </View>
+        <ResourceHeader imageUrl={contenido.imagenUrl || 'https://via.placeholder.com/500x750'} resource={bookResource} type="libro" returnRoute={path} from={from} isOwner={isOwner} />
         <View className="flex-1 px-4 pb-6">
-          <ResourceAttributes resource={bookResource} isOwner={isOwner} />
           {!isPending && (
               <View className="flex-col justify-between gap-3">
               <View className="flex-row gap-2">

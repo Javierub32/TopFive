@@ -15,6 +15,7 @@ import { EditResourceButton } from '@/Details/components/EditResourceButton';
 import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
 import { useAuth } from "context/AuthContext";
 import { AdBanner } from 'components/AdBanner';
+import { ResourceHeader } from "@/Details/components/ResourceHeader";
 
 export default function FilmDetail() {
   const { item, from } = useLocalSearchParams();
@@ -64,32 +65,9 @@ export default function FilmDetail() {
     <Screen>
       <ThemedStatusBar />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
-          <View className="flex-1 flex-row items-center">
-            <ReturnButton
-              route={path}
-              title={'Detalle de la película'}
-              style={' '}
-              params={{ initialResource: 'pelicula' as ResourceType }}
-            />
-          </View>
-          {isOwner && (
-            <>
-            <EditResourceButton resource={filmResource} type={'pelicula'} from={from} />
-            <DeleteResourceButton resource={filmResource} type={'pelicula'} />
-            </>
-          )}
-        </View>
-        <View className="mb-4 px-4">
-          <Image
-            source={{ uri: contenido.imagenUrl || 'https://via.placeholder.com/500x750' }}
-            className="h-[600px] w-full rounded-2xl bg-background"
-            resizeMode="cover"
-          />
-        </View>
+        <ResourceHeader imageUrl={contenido.imagenUrl || 'https://via.placeholder.com/500x750'} resource={filmResource} type="pelicula" returnRoute={path} from={from} isOwner={isOwner}/>
 
         <View className="flex-1 px-4 pb-6">
-          <ResourceAttributes resource={filmResource} isOwner={isOwner} />
           {!isPending && (
             <View className="flex-col justify-between gap-3">
               <View className="flex-row gap-2">
