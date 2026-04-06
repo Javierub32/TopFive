@@ -16,6 +16,7 @@ import {
 } from 'react-native-google-mobile-ads';
 
 import { UserAvatar } from '@/User/components/UserAvatar';
+import { useProfile } from '@/Profile/hooks/useProfile';
 const availableFrames = ['none', 'libro', 'pelicula', 'cancion', 'videojuego', 'love'];
 
 const adUnitId = __DEV__
@@ -34,6 +35,9 @@ export default function FrameSelectorScreen() {
 	const { colors } = useTheme();
 	const { loading, saving, handleSaveFrame, userFrames, unlockFrame } = useFrame();
 	const { showNotification } = useNotification();
+	const { pickImage, userData } = useProfile();
+
+	const currentAvatarUrl = userData?.avatar_url || avatarUrl;
 
 	const [rewardedAd, setRewardedAd] = useState<RewardedAd | null>(null);
 	const [adLoaded, setAdLoaded] = useState(false);
@@ -136,7 +140,9 @@ export default function FrameSelectorScreen() {
 					paddingBottom: 20, 
 				}}>
 				<View className="items-center justify-center py-10">
-					{renderAvatar(avatarUrl, selectedFrame, 1.4)}
+					<TouchableOpacity onPress={pickImage} activeOpacity={0.7}>
+						{renderAvatar(currentAvatarUrl, selectedFrame, 1.4)}
+					</TouchableOpacity>
 				</View>
 
 				<View />
@@ -182,7 +188,7 @@ export default function FrameSelectorScreen() {
 						);
 					})}
 				</View>
-				
+
 				<TouchableOpacity
 					onPress={handleActionButton}
 					disabled={saving || loading || isWatchingAd}
