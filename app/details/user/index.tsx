@@ -50,7 +50,7 @@ export default function UserDetailsScreen() {
             followingCount={userData?.following_count || 0} 
             description={userData?.description || ''}
           >
-            <UserAvatar avatarUrl={userData?.avatar_url || null} />
+            <UserAvatar avatarUrl={userData?.avatar_url || null} frame={userData?.frame || 'none'} />
           </ProfileData>
 
           <FollowButton 

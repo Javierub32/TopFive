@@ -68,9 +68,8 @@ export default function ProfileScreen() {
             followingCount={userData?.following_count || 0}>
             <ProfileAvatar
               avatarUrl={userData?.avatar_url || null}
-              isPressed={isPressed}
               onPickImage={pickImage}
-              setIsPressed={setIsPressed}
+			  frame={userData?.frame || 'none'}
             />
           </ProfileData>
 

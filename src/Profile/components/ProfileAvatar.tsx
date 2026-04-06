@@ -1,24 +1,29 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from 'context/ThemeContext';
+import { AvatarFrame } from '@/Frames/components/AvatarFrame';
+import { router } from 'expo-router';
 
 interface Props {
   avatarUrl: string | null;
-  isPressed: boolean;
   onPickImage: () => void;
-  setIsPressed: (val: boolean) => void;
+  frame: string;
 }
 
-export const ProfileAvatar = ({ avatarUrl, isPressed, onPickImage, setIsPressed }: Props) => {
+export const ProfileAvatar = ({ avatarUrl, onPickImage, frame }: Props) => {
   const { colors } = useTheme();
 
   return (
     <View className="items-center justify-center">
       <View style={{ position: 'relative', paddingTop: 0 }}>
         <TouchableOpacity
-          onPress={onPickImage}
-          onPressIn={() => setIsPressed(true)}
-          onPressOut={() => setIsPressed(false)}
+          onPress={() => {
+            router.push({
+              pathname: '/frameSelector',
+              params: { avatarUrl: avatarUrl || '', currentFrame: frame || 'none' }
+            });
+          }}
+		  onLongPress={onPickImage}
           activeOpacity={0.7}
         >
           {avatarUrl ? (
@@ -29,22 +34,7 @@ export const ProfileAvatar = ({ avatarUrl, isPressed, onPickImage, setIsPressed 
             </View>
           )}
 
-          <Image
-          source={require('../../../assets/hearts.png')}
-          style={{
-            position: 'absolute',
-            top: isPressed ? -18 : -15,
-            right: isPressed ? -13 : -10,
-            width: isPressed ? 55 : 50,
-            height: isPressed ? 65 : 60,
-            transform: [{ rotate: '70deg' }],
-          }}
-          resizeMode="contain"
-          />
-
-          <View style={{ position: 'absolute', bottom: 0, right: 0, backgroundColor: colors.surfaceButton, borderRadius: 15, width: 30, height: 30, justifyContent: 'center', alignItems: 'center', borderWidth: 2, borderColor: colors.background }}>
-            <MaterialCommunityIcons name="camera" size={16} color={colors.primaryText} />
-          </View>
+          <AvatarFrame frame={frame} />
         </TouchableOpacity>      
       </View>
     </View>

@@ -17,7 +17,7 @@ export const userService = {
 		const [userRes, relRes] = await Promise.all([
 			supabase
 			.from('usuario')
-			.select('id, username, description, avatar_url, followers_count, following_count')
+			.select('id, username, description, avatar_url, followers_count, following_count, frame!fk_usuario_frame_id(codigo)')
 			.eq('id', userId)
 			.single(),
 			supabase
@@ -35,6 +35,7 @@ export const userService = {
 
 		return {
 			...user,
+			frame: (user as any).frame?.codigo || 'none',
 			is_requested: !!relationship, // true si existe, false si es null
 			following_status: relationship?.status || null // 'pending', 'accepted' o null
 		};

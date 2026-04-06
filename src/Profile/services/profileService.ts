@@ -5,12 +5,15 @@ export const userService = {
   async fetchUserProfile(userId: string) {
     const { data, error } = await supabase
       .from('usuario')
-      .select('id, username, avatar_url, description, followers_count, following_count')
+      .select('id, username, avatar_url, description, followers_count, following_count, frame!fk_usuario_frame_id(codigo)')
       .eq('id', userId)
       .single();
 
     if (error) throw error;
-    return data;
+    return {
+      ...data,
+      frame: (data as any).frame?.codigo || 'none'
+    };
   },
 
   async deletePreviousAvatar(avatarUrl: string | null) {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from 'context/AuthContext';
@@ -6,6 +6,7 @@ import { userService } from '../services/profileService';
 import { createAdaptedResourceStats } from '../adapters/statsAdapter';
 import { ResourceType, useResource } from 'hooks/useResource';
 import { useNotification } from 'context/NotificationContext';
+import { useFocusEffect } from 'expo-router';
 
 export type CategoryKey = 'libros' | 'películas' | 'series' | 'canciones' | 'videojuegos';
 
@@ -40,6 +41,7 @@ interface User {
 	description: string;
 	followers_count: number;
 	following_count: number;
+	frame: string;
 }
 
 export const useProfile = () => {
@@ -59,22 +61,29 @@ export const useProfile = () => {
   
 
   // Fetch user profile on mount or when user changes
-  useEffect(() => {
-    if (user) {
-	  setLoading(true);
-      userService
-        .fetchUserProfile(user.id)
-        .then((data) => {
-          if (data) {
-			setUserData(data as User);
-          }
-        })
-        .catch((err) => console.error('[useProfile] Error al cargar perfil:', err))
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [user?.id]);
+  useFocusEffect(
+    useCallback(() => {
+      let isActive = true;
+
+      if (user) {
+        userService
+          .fetchUserProfile(user.id)
+          .then((data) => {
+            if (isActive && data) {
+              setUserData(data as User);
+            }
+          })
+          .catch((err) => console.error('[useProfile] Error al cargar perfil:', err))
+          .finally(() => {
+            if (isActive) setLoading(false);
+          });
+      }
+
+      return () => {
+        isActive = false;
+      };
+    }, [user?.id])
+  );
 
   // Fetch stats when category or year changes
   useEffect(() => {    
@@ -151,7 +160,7 @@ export const useProfile = () => {
         await userService.deletePreviousAvatar(userData?.avatar_url || null);
          ('[pickImage] Subiendo nuevo avatar...');
         const newUrl = await userService.uploadAvatar(user.id, result.assets[0].uri);
-        setUserData({ ...userData, avatar_url: newUrl } as User);
+        setUserData({ ...userData, avatar_url: newUrl, frame: userData?.frame || 'none' } as User);
         //Alert.alert('¡Éxito!', 'Foto de perfil actualizada');
         showNotification({
           title: '¡Éxito!',
