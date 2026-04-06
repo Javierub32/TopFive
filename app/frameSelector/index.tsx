@@ -1,102 +1,209 @@
-// app/frameSelector/index.tsx
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { useLocalSearchParams, router } from 'expo-router';
+import { View, Text, TouchableOpacity, Image, ScrollView, Platform } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
-import { AvatarFrame } from '@/Frames/components/AvatarFrame';
 import { useFrame } from '@/Frames/hook/useFrame';
+import { useNotification } from 'context/NotificationContext';
 
-// 5 Marcos disponibles + la opción de quitarlos
+import {
+	RewardedAd,
+	RewardedAdEventType,
+	AdEventType,
+	TestIds,
+} from 'react-native-google-mobile-ads';
+
+import { UserAvatar } from '@/User/components/UserAvatar';
 const availableFrames = ['none', 'libro', 'pelicula', 'cancion', 'videojuego', 'love'];
 
+const adUnitId = __DEV__
+	? TestIds.REWARDED
+	: Platform.OS === 'android'
+		? 'ca-app-pub-2120812527357725/6252066273'
+		: 'ca-app-pub-2120812527357725/6787252895';
+
 export default function FrameSelectorScreen() {
-  const { avatarUrl, currentFrame } = useLocalSearchParams<{ avatarUrl?: string, currentFrame?: string }>();
-  const [selectedFrame, setSelectedFrame] = useState(currentFrame || 'none');
-  const { colors } = useTheme();
-  const { loading, saving, handleSaveFrame } = useFrame();
+	const { avatarUrl, currentFrame } = useLocalSearchParams<{
+		avatarUrl?: string;
+		currentFrame?: string;
+	}>();
 
-  const renderAvatar = (url: string | null | undefined, frame: string, scale: number = 1) => (
-    <View style={{ transform: [{ scale }], width: 112, height: 112, position: 'relative' }}>
-      {url ? (
-        <Image 
-          source={{ uri: url }} 
-          className="w-full h-full rounded-full border-2" 
-          style={{ borderColor: colors.background }} 
-        />
-      ) : (
-        <View 
-          className="w-full h-full rounded-full justify-center items-center border-2" 
-          style={{ borderColor: colors.background, backgroundColor: colors.surfaceButton }}
-        >
-          <MaterialCommunityIcons name="account" size={60} color={colors.secondaryText} />
-        </View>
-      )}
-      {frame !== 'none' && <AvatarFrame frame={frame} />}
-    </View>
-  );
+	const [selectedFrame, setSelectedFrame] = useState(currentFrame || 'none');
+	const { colors } = useTheme();
+	const { loading, saving, handleSaveFrame, userFrames, unlockFrame } = useFrame();
+	const { showNotification } = useNotification();
 
-  return (
-    <Screen>
-      <ReturnButton route="back" title="Selecciona un marco" />
-      <ScrollView className="flex-1 px-4 pt-4" showsVerticalScrollIndicator={false}>
-        
-        {/* Previsualización Superior (Tu foto de perfil + Marco activo) */}
-        <View className="items-center justify-center py-10">
-          {renderAvatar(avatarUrl, selectedFrame, 1.3)}
-        </View>
+	const [rewardedAd, setRewardedAd] = useState<RewardedAd | null>(null);
+	const [adLoaded, setAdLoaded] = useState(false);
+	const [isWatchingAd, setIsWatchingAd] = useState(false);
+	const frameToUnlockRef = useRef<string | null>(null);
 
-        {/* Separador */}
-        <View className="mx-4 h-[1px] mb-6" style={{ backgroundColor: colors.borderButton }} />
+	useEffect(() => {
+		if (Platform.OS === 'web') return;
 
-        {/* Grid 2x3 (3 columnas x 2 filas) */}
-        <View className="flex-row flex-wrap justify-between">
-          {availableFrames.map((frame) => {
-            const isSelected = selectedFrame === frame;
-            return (
-              <TouchableOpacity
-                key={frame}
-                onPress={() => setSelectedFrame(frame)}
-                className="items-center justify-center rounded-2xl mb-4"
-                style={{ 
-                  width: '30%', 
-                  aspectRatio: 1, // Cuadrado perfecto
-                  backgroundColor: isSelected ? `${colors.primary}33` : colors.surfaceButton,
-                  borderWidth: 2,
-                  borderColor: isSelected ? colors.primary : 'transparent'
-                }}
-                activeOpacity={0.7}
-              >
-                {frame === 'none' ? (
-                  <View className="items-center justify-center">
-                    <FontAwesome5 name="ban" size={32} color={colors.error} />
-                  </View>
-                ) : (
-                  // Usamos la previsualización vacía reescalada para que quepa en la caja
-                  <View className="items-center justify-center" style={{ transform: [{ scale: 0.6 }] }}>
-                     {renderAvatar(null, frame, 1)}
-                  </View>
-                )}
-              </TouchableOpacity>
-            )
-          })}
-        </View>
+		const ad = RewardedAd.createForAdRequest(adUnitId, {
+			requestNonPersonalizedAdsOnly: true,
+		});
 
-        {/* Botón de Guardar */}
-        <TouchableOpacity
-          onPress={() => handleSaveFrame(selectedFrame)}
-          className="mt-8 mb-10 rounded-xl py-4 shadow-lg"
-          style={{ backgroundColor: colors.primary }}
-          activeOpacity={0.8}
-        >
-          <Text className="text-center text-lg font-bold" style={{ color: colors.background }}>
-            {saving ? 'Guardando...' : 'Guardar'}
-          </Text>
-        </TouchableOpacity>
+		const unsubscribeLoaded = ad.addAdEventListener(RewardedAdEventType.LOADED, () => {
+			setAdLoaded(true);
+		});
 
-      </ScrollView>
-    </Screen>
-  );
+		const unsubscribeEarned = ad.addAdEventListener(RewardedAdEventType.EARNED_REWARD, () => {
+			// El usuario ha visto el anuncio completo, desbloqueamos el marco guardado en la referencia
+			if (frameToUnlockRef.current) {
+				unlockFrame(frameToUnlockRef.current);
+			}
+		});
+
+		const unsubscribeClosed = ad.addAdEventListener(AdEventType.CLOSED, () => {
+			setIsWatchingAd(false);
+			setAdLoaded(false);
+			ad.load(); // Cargamos el siguiente anuncio en segundo plano
+		});
+
+		const unsubscribeError = ad.addAdEventListener(AdEventType.ERROR, (error) => {
+			setIsWatchingAd(false);
+			console.error('Error cargando el anuncio:', error);
+		});
+
+		ad.load();
+		setRewardedAd(ad);
+
+		return () => {
+			unsubscribeLoaded();
+			unsubscribeEarned();
+			unsubscribeClosed();
+			unsubscribeError();
+		};
+	}, []);
+
+	const renderAvatar = (url: string | null | undefined, frame: string, scaleFactor: number = 1) => (
+		<View
+			style={{
+				width: 112 * scaleFactor,
+				height: 112 * scaleFactor,
+				justifyContent: 'center',
+				alignItems: 'center',
+			}}>
+			<View style={{ transform: [{ scale: scaleFactor }] }} pointerEvents="none">
+				<UserAvatar avatarUrl={url || null} frame={frame} />
+			</View>
+		</View>
+	);
+
+	// Verificamos si el usuario ya posee el marco seleccionado
+	const userOwnsFrame = userFrames.includes(selectedFrame);
+
+	const handleActionButton = () => {
+		if (userOwnsFrame) {
+			handleSaveFrame(selectedFrame);
+		} else {
+			// Lógica para mostrar el anuncio
+			if (Platform.OS === 'web') {
+				// Si está en web simulamos el desbloqueo automático porque no hay anuncios AdMob
+				unlockFrame(selectedFrame);
+				return;
+			}
+
+			if (adLoaded && rewardedAd) {
+				frameToUnlockRef.current = selectedFrame; // Guardamos el marco a desbloquear
+				setIsWatchingAd(true);
+				rewardedAd.show();
+			} else {
+				showNotification({
+					title: 'Anuncio cargando...',
+					description:
+						'El anuncio aún no está listo. Por favor, espera unos segundos e inténtalo de nuevo.',
+					isChoice: false,
+					delete: false,
+					success: false,
+				});
+			}
+		}
+	};
+
+	return (
+		<Screen>
+			<ReturnButton route="back" title="Selecciona un marco" />
+			<ScrollView
+				className="flex-1 px-4 pt-4"
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={{
+					flexGrow: 1,
+					paddingBottom: 20, 
+				}}>
+				<View className="items-center justify-center py-10">
+					{renderAvatar(avatarUrl, selectedFrame, 1.4)}
+				</View>
+
+				<View />
+
+				<View className="flex-row flex-wrap justify-between">
+					{availableFrames.map((frame) => {
+						const isSelected = selectedFrame === frame;
+
+						const isOwned = userFrames.includes(frame);
+
+						return (
+							<TouchableOpacity
+								key={frame}
+								onPress={() => setSelectedFrame(frame)}
+								className="mb-4 items-center justify-center overflow-hidden rounded-2xl"
+								style={{
+									width: '30%',
+									aspectRatio: 1,
+									backgroundColor: isSelected ? `${colors.primary}33` : colors.surfaceButton,
+									borderWidth: 2,
+									borderColor: isSelected ? colors.primary : 'transparent',
+									opacity: !isOwned && !isSelected ? 0.7 : 1,
+								}}
+								activeOpacity={0.7}>
+								{frame === 'none' ? (
+									<View className="items-center justify-center">
+										<FontAwesome5 name="ban" size={32} color={colors.error} />
+									</View>
+								) : (
+									<View className="items-center justify-center">
+										{renderAvatar(null, frame, 0.6)}
+									</View>
+								)}
+
+								{!isOwned && (
+									<View
+										className="absolute right-2 top-2 rounded-full p-1"
+										style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+										<FontAwesome5 name="lock" size={10} color="white" />
+									</View>
+								)}
+							</TouchableOpacity>
+						);
+					})}
+				</View>
+				
+				<TouchableOpacity
+					onPress={handleActionButton}
+					disabled={saving || loading || isWatchingAd}
+					className="mt-[-20px] flex-row items-center justify-center gap-2 rounded-xl py-4 shadow-lg"
+					style={{ backgroundColor: colors.primary }}
+					activeOpacity={0.8}>
+					{!userOwnsFrame && !loading && (
+						<MaterialCommunityIcons
+							name="play-circle-outline"
+							size={24}
+							color={colors.background}
+						/>
+					)}
+
+					<Text className="text-center text-lg font-bold" style={{ color: colors.background }}>
+						{saving || isWatchingAd ? 'Cargando...' : userOwnsFrame ? 'Guardar' : 'Obtener'}
+					</Text>
+				</TouchableOpacity>
+
+				<View />
+			</ScrollView>
+		</Screen>
+	);
 }
