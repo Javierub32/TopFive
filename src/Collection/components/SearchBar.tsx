@@ -31,7 +31,7 @@ export const SearchBar = () => {
   const { colors } = useTheme();
   return (
     <View className="relative z-50 mb-3">
-      <View className="h-12 flex-row items-center rounded-lg border shadow-lg"
+      <View className="h-14 flex-row items-center rounded-lg border shadow-lg"
 	  		style={{ borderColor: colors.accent, backgroundColor: colors.surfaceButton, shadowColor: colors.shadow }}>
         {/* Icono Lupa */}
         <TouchableOpacity 
@@ -45,6 +45,7 @@ export const SearchBar = () => {
         
         <TextInput
           className="h-full flex-1 px-3 text-base text-primaryText"
+          style={{color: colors.primaryText, lineHeight: 17}}
           placeholder={`Buscar en ${resourceTypeMap[categoriaActual as ResourceType]}...`}
           placeholderTextColor={colors.placeholderText}
           value={inputBusqueda}

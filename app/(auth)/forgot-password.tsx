@@ -57,7 +57,7 @@ export default function ForgotPasswordScreen() {
 
   return (
 	<View className='flex-1'>
-		<View className="absolute top-5 left-0 z-10">
+		<View className="absolute top-9 left-0 z-10">
 			<ReturnButton route="back" title="" />
 		</View>
 	  <LinearGradient
@@ -94,7 +94,7 @@ export default function ForgotPasswordScreen() {
 					autoCapitalize="none"
 					keyboardType="email-address"
 					className="flex-1 ml-3 text-base" 
-					style={{color: colors.primaryText}}
+					style={{color: colors.primaryText, lineHeight: 17}}
 				  />
 				</View>
 				<View className="mt-4" style={{}}>

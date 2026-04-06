@@ -52,7 +52,7 @@ export const SearchBar = ({
         {/* Input de texto */}
         <TextInput
           className="h-full flex-1 px-3 text-base"
-          style={{color: colors.primaryText}}
+          style={{color: colors.primaryText, lineHeight: 17}}
           placeholder={`Buscar ${categoryLabel}...`}
           placeholderTextColor={colors.placeholderText}
           value={value}

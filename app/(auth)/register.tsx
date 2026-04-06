@@ -112,7 +112,7 @@ export default function Register() {
                   autoCapitalize="none"
                   className="ml-3 flex-1 text-base"
                   placeholderTextColor={colors.placeholderText}
-                  style={{color: colors.primaryText}}
+                  style={{color: colors.primaryText, lineHeight: 17}}
                 />
               </View>
               <Text className="mb-2 ml-1 font-semibold" style={{color: colors.primaryText}}>Email</Text>
@@ -126,7 +126,7 @@ export default function Register() {
                   keyboardType="email-address"
                   className="ml-3 flex-1 text-base"
                   placeholderTextColor={colors.placeholderText}
-                  style={{color: colors.primaryText}}
+                  style={{color: colors.primaryText, lineHeight: 17}}
                 />
               </View>
               <Text className="mb-2 ml-1 font-semibold" style={{color: colors.primaryText}}>Contraseña</Text>

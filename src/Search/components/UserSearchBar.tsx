@@ -20,7 +20,7 @@ export function UserSearchBar({
 
   return (
     <View className="relative z-50">
-      <View className="h-12 flex-row items-center rounded-lg border shadow-lg" style={{ borderColor: colors.accent, backgroundColor: colors.surfaceButton }} >
+      <View className="h-14 flex-row items-center rounded-lg border shadow-lg" style={{ borderColor: colors.accent, backgroundColor: colors.surfaceButton }} >
         {/* Icono Lupa */}
         {<TouchableOpacity 
           className="justify-center pl-3 py-2"
@@ -34,7 +34,7 @@ export function UserSearchBar({
         {/* Input de texto */}
         <TextInput
           className="h-full flex-1 px-3 text-base"
-          style={{ color: colors.primaryText }}
+          style={{ color: colors.primaryText, lineHeight: 17 }}
           placeholder={`Busca un usuario...`}
           placeholderTextColor={colors.placeholderText}
           value={value}
