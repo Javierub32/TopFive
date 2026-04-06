@@ -42,6 +42,7 @@ interface User {
 	followers_count: number;
 	following_count: number;
 	frame: string;
+  reviews_count: number;
 }
 
 export const useProfile = () => {

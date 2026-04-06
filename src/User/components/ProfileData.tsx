@@ -9,6 +9,7 @@ interface Props {
   description?: string;
   followersCount: number;
   followingCount: number;
+  reviewsCount: number;
 }
 
 export function ProfileData({
@@ -17,6 +18,7 @@ export function ProfileData({
   description,
   followersCount,
   followingCount,
+  reviewsCount
 }: Props) {
   const { colors } = useTheme();
 
@@ -29,10 +31,17 @@ export function ProfileData({
           {/* Estadísticas */}
           <View className="mb-4 flex-row items-center justify-around">
             <View className="mr-4 items-center">
+              <>
+                <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>{reviewsCount}</Text>
+                <Text className="text-xs" style={{ color: colors.secondaryText }}>Reseñas</Text>
+              </>
+            </View>
+            <View className="mr-4 items-center">
               <Pressable
                 onPress={() => {
                   router.push(`/followers?username=${username}&page=followers`);
-                }}>
+                }}
+                className="items-center">
                 <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>{followersCount}</Text>
                 <Text className="text-xs" style={{ color: colors.secondaryText }}>Seguidores</Text>
               </Pressable>
@@ -41,7 +50,8 @@ export function ProfileData({
               <Pressable
                 onPress={() => {
                   router.push(`/followers?username=${username}&page=following`);
-                }}>
+                }}
+                className="items-center">
                 <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>{followingCount}</Text>
                 <Text className="text-xs" style={{ color: colors.secondaryText }}>Siguiendo</Text>
               </Pressable>

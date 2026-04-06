@@ -17,7 +17,7 @@ export const userService = {
 		const [userRes, relRes] = await Promise.all([
 			supabase
 			.from('usuario')
-			.select('id, username, description, avatar_url, followers_count, following_count, frame!fk_usuario_frame_id(codigo)')
+			.select('id, username, description, avatar_url, followers_count, following_count, reviews_count, frame!fk_usuario_frame_id(codigo)')
 			.eq('id', userId)
 			.single(),
 			supabase

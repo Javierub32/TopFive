@@ -5,7 +5,7 @@ export const userService = {
   async fetchUserProfile(userId: string) {
     const { data, error } = await supabase
       .from('usuario')
-      .select('id, username, avatar_url, description, followers_count, following_count, frame!fk_usuario_frame_id(codigo)')
+      .select('id, username, avatar_url, description, followers_count, following_count, reviews_count, frame!fk_usuario_frame_id(codigo)')
       .eq('id', userId)
       .single();
 

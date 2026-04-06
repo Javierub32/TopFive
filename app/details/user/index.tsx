@@ -48,6 +48,7 @@ export default function UserDetailsScreen() {
             username={userData?.username || 'Usuario'} 
             followersCount={userData?.followers_count || 0} 
             followingCount={userData?.following_count || 0} 
+            reviewsCount={userData?.reviews_count || 0}
             description={userData?.description || ''}
           >
             <UserAvatar avatarUrl={userData?.avatar_url || null} frame={userData?.frame || 'none'} />

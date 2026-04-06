@@ -65,7 +65,8 @@ export default function ProfileScreen() {
             username={userData?.username || 'Usuario'}
             description={userData?.description}
             followersCount={userData?.followers_count || 0}
-            followingCount={userData?.following_count || 0}>
+            followingCount={userData?.following_count || 0}
+            reviewsCount={userData?.reviews_count || 0}>
             <ProfileAvatar
               avatarUrl={userData?.avatar_url || null}
               onPickImage={pickImage}
