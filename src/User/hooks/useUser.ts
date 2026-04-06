@@ -14,6 +14,7 @@ export interface User {
 	following_count: number;
 	is_requested: boolean;
 	following_status: 'pending' | 'accepted' | null;
+	frame: string;
 }
 
 // Estructura inicial de estadísticas

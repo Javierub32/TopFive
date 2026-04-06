@@ -2,13 +2,15 @@ import { View, Image, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { useTheme } from 'context/ThemeContext';
+import { AvatarFrame } from '@/Frames/components/AvatarFrame';
 
 interface Props {
   avatarUrl: string | null;
   size?: number;
+  frame: string;
 }
 
-export function UserAvatar({ avatarUrl }: Props) {
+export function UserAvatar({ avatarUrl, frame }: Props) {
   const [isPressed, setIsPressed] = useState(false);
   const { colors } = useTheme();
 
@@ -28,18 +30,7 @@ export function UserAvatar({ avatarUrl }: Props) {
             </View>
           )}
 
-          <Image
-          source={require('../../../assets/hearts.png')}
-          style={{
-            position: 'absolute',
-            top: isPressed ? -18 : -15,
-            right: isPressed ? -13 : -10,
-            width: isPressed ? 55 : 50,
-            height: isPressed ? 65 : 60,
-            transform: [{ rotate: '70deg' }],
-          }}
-          resizeMode="contain"
-          />
+          {frame && frame !== 'none' && <AvatarFrame frame={frame} />}
         </TouchableOpacity>      
       </View>
     </View>
