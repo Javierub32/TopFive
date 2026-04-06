@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, Alert, TouchableOpacity, Platform, ScrollView } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, Alert, TouchableOpacity, Platform, ScrollView, Image } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -211,7 +211,7 @@ export default function Login() {
                   </TouchableOpacity>
                 </View>
 				
-				<View className="my-4 pr-1" style={{}}>
+				        <View className="my-4 pr-1" style={{}}>
                   <TouchableOpacity
                     onPress={() => router.push('/(auth)/forgot-password')}
                     disabled={loading}
@@ -222,11 +222,12 @@ export default function Login() {
                     </Text>
                   </TouchableOpacity>
                 </View>
+
                 <View className="py-2" style={{}}>
                   <TouchableOpacity
                     onPress={handleLogin}
                     disabled={loading}
-                    className="overflow-hidden rounded-xl shadow-lg py-4 items-center"
+                    className="overflow-hidden rounded-xl shadow-lg py-3.5 items-center"
                     style={{backgroundColor: colors.accent}}
                   >
                     <Text className="font-bold text-lg" style={{color: colors.primaryText}}>
@@ -234,21 +235,47 @@ export default function Login() {
                     </Text>
                   </TouchableOpacity>
                 </View>
+
+                <View className="flex-row items-center my-6">
+                  <View
+                    className="flex-1 h-[1px]"
+                    style={{backgroundColor: colors.secondaryText, opacity: 0.3}}
+                  >
+                  </View>
+
+                  <Text
+                  className='mx-4 text-sm font-medium'
+                  style={{color: colors.secondaryText}}
+                  >
+                  o
+                  </Text>
+                  <View
+                  className='flex-1 h-[1px]'
+                  style={{backgroundColor: colors.secondaryText, opacity:0.3}}
+                  >
+                  </View>
+                </View>
+
 				        <View className="" style={{}}>
                   <TouchableOpacity
                     onPress={handleNativeGoogleLogin}
                     disabled={loading}
-                    className="overflow-hidden rounded-xl shadow-lg py-4 items-center"
-                    style={{backgroundColor: colors.accent}}
+                    className="overflow-hidden rounded-xl shadow-lg py-3.5 items-center"
+                    style={{backgroundColor: "#FFFFFF"}}
                   >
                     <View className="flex-row items-center justify-center">
-                      <AntDesign name="google" size={24} color={colors.primaryText} className="mr-2" />
-                      <Text className="font-bold text-lg" style={{color: colors.primaryText}}>
+                      <Image 
+                        source={require('assets/google-color-icon.png')} 
+                        style={{ width: 24, height: 24, marginRight: 10 }} 
+                        resizeMode="contain"
+                      />
+                      <Text className="font-bold text-lg" style={{color: "#000000"}}>
                         {'Continuar con Google'}
                       </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
+
                 {Platform.OS === 'ios' && (
                   <AppleAuthentication.AppleAuthenticationButton
                     buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
