@@ -306,14 +306,14 @@ export default function SeriesForm() {
     <Screen>
       <ThemedStatusBar />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
+        <View className="flex-1 flex-row items-center justify-between px-4 pb-4 pt-2">
           <View className="flex-1 flex-row items-center">
             <ReturnButton route="back" title={series.titulo || series.title} style={' '} />
           </View>
           <FavoriteSetter favorite={favorita} setFavorite={setFavorita} />
         </View>
 
-        <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
+        <View className="flex-1 mb-4 flex-row items-stretch justify-between gap-2 px-4">
           <Image
             source={{
               uri: series.imagenUrl || series.image || 'https://via.placeholder.com/100x150',
@@ -325,18 +325,16 @@ export default function SeriesForm() {
           <ReviewSetter review={reseña} setReview={setReseña} />
         </View>
 
-        <View className="gap-6">
+        <View className="flex-1 gap-6">
           <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Viendo" />
           <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
-          {estado !== 'COMPLETADO' && (
-            <ProgressSetter
-              progress={temporadaActual}
-              setProgress={setTemporadaActual}
-              progressExtra={episodioActual}
-              setProgressExtra={setEpisodioActual}
-              type="serie"
-            />
-          )}
+          <ProgressSetter
+            progress={temporadaActual}
+            setProgress={setTemporadaActual}
+            progressExtra={episodioActual}
+            setProgressExtra={setEpisodioActual}
+            type="serie"
+          />
           <ViewsSetter views={numVisualizaciones} setViews={setNumVisualizaciones} />
           <DateSetter
             startDate={fechaInicio}
@@ -349,15 +347,17 @@ export default function SeriesForm() {
         <TouchableOpacity
           onPress={handleSubmit}
           disabled={loading}
-          className="mx-4 mb-14 mt-4 rounded-lg py-3"
+          className="mx-4 mt-4 rounded-lg py-3"
           style={{ backgroundColor: colors.primary }}
           activeOpacity={0.8}>
           <Text className="text-center text-lg font-bold" style={{ color: colors.background }}>
             {loading ? 'Guardando...' : 'Guardar'}
           </Text>
         </TouchableOpacity>
+        <View className="flex-1">
+          <AdBanner/>
+        </View>
       </ScrollView>
-      <AdBanner />
     </Screen>
   );
 }

@@ -303,13 +303,12 @@ export default function GameForm() {
           <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Jugando" />
           <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
           <DifficultySetter difficulty={dificultad} setDifficulty={setDificultad} />
-          {estado !== 'COMPLETADO' && (
-            <ProgressSetter
-              progress={horasJugadas}
-              setProgress={setHorasJugadas}
-              type="videojuego"
-            />
-          )}
+          <ProgressSetter
+            progress={horasJugadas}
+            setProgress={setHorasJugadas}
+            type="videojuego"
+          />
+
 
           <DateSetter
             startDate={fechaInicio}

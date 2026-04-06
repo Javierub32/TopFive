@@ -21,7 +21,7 @@ export const RatingSetter = ({rating, setRating}: Props) => {
     }
 
     return ( 
-        <View className="flex-row justify-center gap-2 pt-2">
+        <View className="flex-row justify-center gap-2">
             {[1, 2, 3, 4, 5].map((star)=> {
                 let iconName = "star";
                 let isSolid = true;

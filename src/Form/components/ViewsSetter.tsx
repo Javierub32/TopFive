@@ -13,7 +13,7 @@ export const ViewsSetter = ({views, setViews} : Props) => {
     const { colors } = useTheme();
 
     return (
-        <View className="mx-4 p-4 rounded-2xl flex gap-2" style={{backgroundColor: `${colors.accent}33`}}>
+        <View className="flex-1 mx-4 p-4 rounded-2xl flex gap-2" style={{backgroundColor: `${colors.accent}33`}}>
             <View className="flex-row items-center gap-2">
                 <TimesWatchedIcon color={colors.accent}/>
                 <Text className="text-sm font-bold uppercase tracking-widest" style={{color: colors.markerText}}>Vistas</Text>
