@@ -5,7 +5,7 @@ import { collectionAdapter } from '../adapters/collectionAdapter';
 export const CollectionGroup = ({ item, category, onPress, posterWidth, posterHeight, showStatus, onLongPress }: any) => {
   const title = collectionAdapter.getTitle(item, category);
   const image = collectionAdapter.getImage(item, category);
-  const year = item.fechacreacion ? new Date(item.fechacreacion).getFullYear() : '';
+  const year = item.fechaFin ? new Date(item.fechaFin).getFullYear() : item.fechaVisionado ? new Date(item.fechaVisionado).getFullYear() : item.fechaEscucha ? new Date(item.fechaEscucha).getFullYear() : '';
   const statusColor = collectionAdapter.getStatusColor(item.estado); 
   const statusText = collectionAdapter.getStatusText(item.estado, category);
   const finalWidth = posterWidth || 125;
@@ -30,7 +30,7 @@ export const CollectionGroup = ({ item, category, onPress, posterWidth, posterHe
         />
         
 
-        {/* Año (Arriba Izquierda) */}
+        {/* Año de Completado (Arriba Izquierda) */}
         {year ? (
           <View className="absolute top-2 left-2 bg-black/60 px-1.5 py-0.5 rounded">
             <Text className="text-white text-[10px] font-bold">{year}</Text>
