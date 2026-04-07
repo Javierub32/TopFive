@@ -94,10 +94,10 @@ export default function ProfileScreen() {
 					title={currentStats.title}
 					total={currentStats.total}
 					average={currentStats.average}
-					onPress={() => router.push({
+					/* router.push({
 						pathname: '/group',
 						params: { title: 'Completados', state: 'completados', category: selectedCategory, from: 'Profile' }
-					})}
+					})*/
 				/>
 
 				<StatsChart
