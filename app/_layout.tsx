@@ -67,14 +67,20 @@ function InitialLayout() {
   useEffect(() => {
     const checkAppVersion = async () => {
       try {
-        const { data, error } = await supabase
-          .from('version')
-          .select('version')
-          .single();
+		if (Platform.OS === 'web') return; // No verificamos versión en web
+		let query;
+		if (Platform.OS === 'android') {
+			query = supabase.from('version').select('version_android').single()
+		} else {
+			query = supabase.from('version').select('version').single()
+		}
+        const { data, error } = await query;
 
         if (error || !data) return;
 
-        const remoteVersion = data.version;
+        const remoteVersion = Platform.OS === 'android' 
+			? (data as any).version_android 
+			: (data as any).version;
         const localVersion = Constants.expoConfig?.version || Constants.nativeAppVersion || '1.0.0';
 
         // Función auxiliar para comparar versiones semánticas (X.Y.Z)
