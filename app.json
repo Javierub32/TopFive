@@ -46,6 +46,7 @@
     ],
     "ios": {
       "supportsTablet": true,
+      "icon": "./assets/ios_icon.png",
       "bundleIdentifier": "com.leftjoiners.topfive",
       "buildNumber": "1",
       "associatedDomains": [
