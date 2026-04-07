@@ -11,22 +11,29 @@ import { ThemedStatusBar } from 'components/ThemedStatusBar';
 
 export default function AddScreen() {
   const {
-    busqueda, setBusqueda,
-    recursoBusqueda, setRecursoBusqueda,
-    menuAbierto, setMenuAbierto,
-    loading, resultados,
-    handleSearch, navigateToDetails,
+    busqueda,
+    setBusqueda,
+    recursoBusqueda,
+    setRecursoBusqueda,
+    menuAbierto,
+    setMenuAbierto,
+    loading,
+    resultados,
+    handleSearch,
+    navigateToDetails,
   } = useSearchContent();
 
   const { colors } = useTheme();
 
   return (
     <Screen>
-      <ThemedStatusBar/>
+      <ThemedStatusBar />
       <View className="flex-1 px-4 pt-6">
-        <Text className="mt-2 mb-4 text-3xl font-bold" style={{color: colors.primaryText}}>Búsqueda</Text>
+        <Text className="mb-4 mt-2 text-3xl font-bold" style={{ color: colors.primaryText }}>
+          Búsqueda
+        </Text>
 
-        <SearchBar 
+        <SearchBar
           value={busqueda}
           onChangeText={setBusqueda}
           onSearch={handleSearch}
@@ -40,25 +47,24 @@ export default function AddScreen() {
 
         {resultados.length > 0 ? (
           <FlatList
-            className={`flex-1 -z-10 ${loading ? 'hidden' : ''}`}
+            className={`-z-10 flex-1 ${loading ? 'hidden' : ''}`}
             data={resultados}
             keyExtractor={(item) => item.id}
             renderItem={({ item, index }) => (
-              <SearchResultItem 
-                item={item} 
+              <SearchResultItem
+                item={item}
+                type={recursoBusqueda}
                 onPress={() => navigateToDetails(index)}
               />
             )}
             contentContainerStyle={{ paddingBottom: 40, paddingTop: 10 }}
-			showsVerticalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
           />
         ) : (
           <SearchPlaceholder category={recursoBusqueda} loading={loading} />
         )}
 
-        {loading && (
-          <LoadingIndicator />
-        )}
+        {loading && <LoadingIndicator />}
       </View>
     </Screen>
   );

@@ -18,6 +18,7 @@ import { ProgressSetter } from '@/Form/components/ProgressSetter';
 import { DateSetter } from '@/Form/components/DateSetter';
 import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
+import { FallbackCover } from 'components/FallbackCover';
 
 interface Book {
   id: number | null;
@@ -69,7 +70,7 @@ export default function BookForm() {
     }
   };
 
-  const estadoAnterior  = resource?.estado;
+  const estadoAnterior = resource?.estado;
 
   const handleSubmit = async () => {
     const numPaginas = parseInt(paginasLeidas) || 0;
@@ -132,10 +133,10 @@ export default function BookForm() {
             contenido: contentData,
           };
           refreshData();
-          if(estadoAnterior != 'COMPLETADO' && estado === 'COMPLETADO'){
-            await supabase.rpc('increment_review_count', {user_id: user.id})
-          } else if (estadoAnterior === 'COMPLETADO' && estado != 'COMPLETADO') {
-            await supabase.rpc('decrement_review_count', {user_id: user.id})
+          if (estadoAnterior !== 'COMPLETADO' && estado === 'COMPLETADO') {
+            await supabase.rpc('increment_review_count', { user_id: user.id });
+          } else if (estadoAnterior === 'COMPLETADO' && estado !== 'COMPLETADO') {
+            await supabase.rpc('decrement_review_count', { user_id: user.id });
           }
           router.replace({
             pathname: '/details/book/bookResource',
@@ -244,8 +245,8 @@ export default function BookForm() {
           console.error('Error al insertar:', inventoryError);
         } else {
           refreshData();
-          if(estado === 'COMPLETADO'){
-            await supabase.rpc('increment_review_count', {user_id: user.id})
+          if (estado === 'COMPLETADO') {
+            await supabase.rpc('increment_review_count', { user_id: user.id });
           }
           router.back();
           // Mostrar modal después de navegar
@@ -296,12 +297,21 @@ export default function BookForm() {
         </View>
 
         <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
-          <Image
-            source={{ uri: book.imageFull || book.image || 'https://via.placeholder.com/100x150' }}
-            className="aspect-[2/3] h-32 rounded-lg"
-            style={{ backgroundColor: colors.surfaceButton }}
-            resizeMode="cover"
-          />
+          {book.imageFull || book.image ? (
+            <Image
+              source={{ uri: book.imageFull || book.image || '' }}
+              className="aspect-[2/3] h-32 rounded-lg"
+              style={{ backgroundColor: colors.surfaceButton }}
+              resizeMode="cover"
+            />
+          ) : (
+            <FallbackCover
+              type="libro"
+              fullSize={false}
+              style={{ aspectRatio: 2 / 3, borderRadius: 8 }}
+            />
+          )}
+
           <ReviewSetter review={reseña} setReview={setReseña} />
         </View>
 

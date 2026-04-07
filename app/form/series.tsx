@@ -1,19 +1,8 @@
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-  Platform,
-  Alert,
-} from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from 'react';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { SeriesResource } from 'app/types/Resources';
@@ -30,17 +19,7 @@ import { DateSetter } from '@/Form/components/DateSetter';
 import { ProgressSetter } from '@/Form/components/ProgressSetter';
 import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
-interface Series {
-  id: number;
-  title: string;
-  image: string | null;
-  releaseDate: string | null;
-  genre: string[] | null;
-  imageFull: string | null;
-  description: string | null;
-  rating: number | null;
-  ended: string | null;
-}
+import { FallbackCover } from 'components/FallbackCover';
 
 export default function SeriesForm() {
   const { seriesData, item, from } = useLocalSearchParams();
@@ -75,8 +54,6 @@ export default function SeriesForm() {
   const [fechaFin, setFechaFin] = useState<Date | null>(
     resource?.fechaFin ? new Date(resource.fechaFin) : null
   );
-  const [showDatePickerInicio, setShowDatePickerInicio] = useState(false);
-  const [showDatePickerFin, setShowDatePickerFin] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -148,10 +125,10 @@ export default function SeriesForm() {
 
           //Alert.alert('¡Éxito!', `Has actualizado ${series.titulo || series.title} en tu colección.`);
           refreshData();
-          if(estadoAnterior != 'COMPLETADO' && estado === 'COMPLETADO'){
-            await supabase.rpc('increment_review_count', {user_id: user.id})
-          } else if (estadoAnterior === 'COMPLETADO' && estado != 'COMPLETADO') {
-            await supabase.rpc('decrement_review_count', {user_id: user.id})
+          if (estadoAnterior !== 'COMPLETADO' && estado === 'COMPLETADO') {
+            await supabase.rpc('increment_review_count', { user_id: user.id });
+          } else if (estadoAnterior === 'COMPLETADO' && estado !== 'COMPLETADO') {
+            await supabase.rpc('decrement_review_count', { user_id: user.id });
           }
           router.replace({
             pathname: '/details/series/seriesResource',
@@ -258,8 +235,8 @@ export default function SeriesForm() {
         } else {
           //Alert.alert('¡Éxito!', `Has añadido ${series.title} a tu colección.`);
           refreshData();
-          if(estado === 'COMPLETADO'){
-            await supabase.rpc('increment_review_count', {user_id: user.id})
+          if (estado === 'COMPLETADO') {
+            await supabase.rpc('increment_review_count', { user_id: user.id });
           }
           router.back();
           setTimeout(() => {
@@ -276,13 +253,16 @@ export default function SeriesForm() {
     } catch (error) {
       console.error('Error saving series data:', error);
       Alert.alert('Error', 'Ocurrió un error inesperado.');
+      showNotification({
+        title: 'Error',
+        description: 'Ocurrión un error inesperado.',
+        isChoice: false,
+        delete: false,
+        success: false,
+      });
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleBack = () => {
-    router.back();
   };
 
   if (!series) {
@@ -313,15 +293,24 @@ export default function SeriesForm() {
           <FavoriteSetter favorite={favorita} setFavorite={setFavorita} />
         </View>
 
-        <View className="flex-1 mb-4 flex-row items-stretch justify-between gap-2 px-4">
-          <Image
-            source={{
-              uri: series.imagenUrl || series.image || 'https://via.placeholder.com/100x150',
-            }}
-            className="aspect-[2/3] h-32 rounded-lg"
-            style={{ backgroundColor: colors.surfaceButton }}
-            resizeMode="cover"
-          />
+        <View className="mb-4 flex-1 flex-row items-stretch justify-between gap-2 px-4">
+          {series.imagenUrl || series.image ? (
+            <Image
+              source={{
+                uri: series.imagenUrl || series.image,
+              }}
+              className="aspect-[2/3] h-32 rounded-lg"
+              style={{ backgroundColor: colors.surfaceButton }}
+              resizeMode="cover"
+            />
+          ) : (
+            <FallbackCover
+              type="serie"
+              fullSize={false}
+              style={{ aspectRatio: 2 / 3, borderRadius: 8 }}
+            />
+          )}
+
           <ReviewSetter review={reseña} setReview={setReseña} />
         </View>
 
@@ -355,7 +344,7 @@ export default function SeriesForm() {
           </Text>
         </TouchableOpacity>
         <View className="flex-1">
-          <AdBanner/>
+          <AdBanner />
         </View>
       </ScrollView>
     </Screen>

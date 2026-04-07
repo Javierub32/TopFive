@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -6,16 +6,12 @@ import { FilmResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
-import { ResourceType } from 'hooks/useResource';
-import { ResourceAttributes } from '@/Details/components/ResourceAttributes';
 import { RatingCard } from '@/Details/components/RatingCard';
 import { DateCard } from '@/Details/components/DateCard';
 import { ReviewCard } from '@/Details/components/ReviewCard';
-import { EditResourceButton } from '@/Details/components/EditResourceButton';
-import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
-import { useAuth } from "context/AuthContext";
+import { useAuth } from 'context/AuthContext';
 import { AdBanner } from 'components/AdBanner';
-import { ResourceHeader } from "@/Details/components/ResourceHeader";
+import { ResourceHeader } from '@/Details/components/ResourceHeader';
 
 export default function FilmDetail() {
   const { item, from } = useLocalSearchParams();
@@ -37,15 +33,14 @@ export default function FilmDetail() {
     console.error('Error parsing item:', error);
   }
 
-  const isOwner = filmResource?.usuarioId === user?.id
-  const isPending = filmResource?.estado === "PENDIENTE"
-  const isCompleted = filmResource?.estado === "COMPLETADO"
-  
+  const isOwner = filmResource?.usuarioId === user?.id;
+  const isPending = filmResource?.estado === 'PENDIENTE';
+
   if (!filmResource) {
     return (
       <Screen>
         <ThemedStatusBar />
-		<ReturnButton route={path} title="Detalle de la película" />
+        <ReturnButton route={path} title="Detalle de la película" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <Text className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
@@ -65,7 +60,14 @@ export default function FilmDetail() {
     <Screen>
       <ThemedStatusBar />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <ResourceHeader imageUrl={contenido.imagenUrl || 'https://via.placeholder.com/500x750'} resource={filmResource} type="pelicula" returnRoute={path} from={from} isOwner={isOwner}/>
+        <ResourceHeader
+          imageUrl={contenido.imagenUrl}
+          resource={filmResource}
+          type="pelicula"
+          returnRoute={path}
+          from={from}
+          isOwner={isOwner}
+        />
 
         <View className="flex-1 px-4 pb-6">
           {!isPending && (
@@ -79,13 +81,14 @@ export default function FilmDetail() {
               <ReviewCard review={filmResource.reseña} />
             </View>
           )}
-          
         </View>
-        <View className="flex-1">
-          <AdBanner/>
-        </View>
+        {!isPending && (
+          <View className="flex-1">
+            <AdBanner />
+          </View>
+        )}
       </ScrollView>
-	  
+      {isPending && <AdBanner />}
     </Screen>
   );
 }

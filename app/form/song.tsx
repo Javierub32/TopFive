@@ -1,19 +1,7 @@
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-  Platform,
-  Alert,
-} from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from 'react';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { SongResource } from 'app/types/Resources';
@@ -28,19 +16,8 @@ import { RatingSetter } from '@/Form/components/RatingSetter';
 import { DateSetter } from '@/Form/components/DateSetter';
 import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
-
-interface Song {
-  id: number | null;
-  title: string | null;
-  autor: string | null;
-  imageFull: string | null;
-  releaseDate: string | null;
-  genre: string[] | null;
-  albumId: number | null;
-  album: string | null;
-  autorId: number | null;
-  reference: string | null;
-}
+import { FallbackCover } from 'components/FallbackCover';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function SongForm() {
   const { songData, item, from } = useLocalSearchParams();
@@ -61,7 +38,6 @@ export default function SongForm() {
   const [fechaEscuchado, setFechaEscuchado] = useState<Date | null>(
     resource?.fechaEscucha ? new Date(resource.fechaEscucha) : null
   );
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -125,10 +101,10 @@ export default function SongForm() {
 
           //Alert.alert('¡Éxito!', `Has actualizado ${song.titulo || song.title} en tu colección.`);
           refreshData();
-          if(estadoAnterior != 'COMPLETADO' && estado === 'COMPLETADO'){
-            await supabase.rpc('increment_review_count', {user_id: user.id})
-          } else if (estadoAnterior === 'COMPLETADO' && estado != 'COMPLETADO') {
-            await supabase.rpc('decrement_review_count', {user_id: user.id})
+          if (estadoAnterior !== 'COMPLETADO' && estado === 'COMPLETADO') {
+            await supabase.rpc('increment_review_count', { user_id: user.id });
+          } else if (estadoAnterior === 'COMPLETADO' && estado !== 'COMPLETADO') {
+            await supabase.rpc('decrement_review_count', { user_id: user.id });
           }
           router.replace({
             pathname: '/details/song/songResource',
@@ -235,8 +211,8 @@ export default function SongForm() {
         } else {
           //Alert.alert('¡Éxito!', `Has añadido ${song.title} a tu colección.`);
           refreshData();
-          if(estado === 'COMPLETADO'){
-            await supabase.rpc('increment_review_count', {user_id: user.id})
+          if (estado === 'COMPLETADO') {
+            await supabase.rpc('increment_review_count', { user_id: user.id });
           }
           router.back();
           setTimeout(() => {
@@ -255,10 +231,6 @@ export default function SongForm() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleBack = () => {
-    router.back();
   };
 
   if (!song) {
@@ -289,12 +261,21 @@ export default function SongForm() {
           <FavoriteSetter favorite={favorita} setFavorite={setFavorita} />
         </View>
         <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
-          <Image
-            source={{ uri: song.imagenUrl || song.image || 'https://via.placeholder.com/100x150' }}
-            className="aspect-[2/3] h-32 rounded-lg"
-            style={{ backgroundColor: colors.surfaceButton }}
-            resizeMode="cover"
-          />
+          {song.imagenUrl || song.image ? (
+            <Image
+              source={{ uri: song.imagenUrl || song.image || '' }}
+              className="aspect-square h-32 rounded-lg"
+              style={{ backgroundColor: colors.surfaceButton }}
+              resizeMode="cover"
+            />
+          ) : (
+            <FallbackCover
+              type="cancion"
+              fullSize={false}
+              style={{ aspectRatio: 1, borderRadius: 8 }}
+            />
+          )}
+
           <ReviewSetter review={reseña} setReview={setReseña} />
         </View>
 

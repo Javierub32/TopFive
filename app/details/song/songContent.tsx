@@ -1,22 +1,17 @@
-import React from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { View, Text, ScrollView } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Song } from 'app/types/Content';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
-import { ThemedStatusBar } from "components/ThemedStatusBar";
-import { ContentTags } from "@/Details/components/ContentTags";
-import { AuthorCard } from "@/Details/components/AuthorCard";
-import { ContentDateCard } from "@/Details/components/ContentDateCard";
-import { AddToCollectionButton } from "@/Details/components/AddToCollectionButton";
-import { ExtraCard } from "@/Details/components/ExtraCard";
+import { ThemedStatusBar } from 'components/ThemedStatusBar';
+import { AddToCollectionButton } from '@/Details/components/AddToCollectionButton';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useContent } from '@/Details/hooks/useContent';
-import { ModernContentHeader } from "@/Details/components/ContentHeader";
 import { AdBanner } from 'components/AdBanner';
+import { ContentHeader } from '@/Details/components/ContentHeader';
 
 export default function SongDetail() {
   const { id, from } = useLocalSearchParams();
@@ -25,49 +20,49 @@ export default function SongDetail() {
   const { colors } = useTheme();
   const path = from === 'search' ? '/Add?initialCategory=cancion' : '/(tabs)/Home';
 
-
   if (loading) {
-	return (
-	  <Screen>
-		<LoadingIndicator />
-	  </Screen>
-	);
+    return (
+      <Screen>
+        <LoadingIndicator />
+      </Screen>
+    );
   }
 
   if (!song && !loading) {
     return (
       <Screen>
         <StatusBar style="light" />
-		<ReturnButton route={path} title="Detalle de la canción" />
+        <ReturnButton route={path} title="Detalle de la canción" />
         <View className="flex-1 items-center justify-center px-4">
-          <MaterialCommunityIcons name="alert-circle" size={64} color="#ef4444" />
-          <Text className="text-primaryText text-xl font-bold mt-4">Error al cargar</Text>
-          <Text className="text-secondaryText text-center mt-2">No se pudo cargar la información de la canción</Text>
+          <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
+          <Text className="mt-4 text-xl font-bold text-primaryText">Error al cargar</Text>
+          <Text className="mt-2 text-center text-secondaryText">
+            No se pudo cargar la información de la canción
+          </Text>
         </View>
       </Screen>
     );
   }
 
-
   return (
     <Screen>
-      <ThemedStatusBar/>
-      
+      <ThemedStatusBar />
+
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <ModernContentHeader
+        <ContentHeader
           imageUrl={song.imageFull || song.image}
           returnRoute={path}
           content={song}
-          type='cancion'
+          type="cancion"
           autor={song.autor}
         />
-        <View className="flex-1 px-4 pb-6 gap-3 mt-1">
-          <AddToCollectionButton content={song} type='cancion'/>
+        <View className="mt-1 flex-1 gap-3 px-4 pb-6">
+          <AddToCollectionButton content={song} type="cancion" />
         </View>
       </ScrollView>
       <View className="absolute bottom-0 left-0 right-0">
-          <AdBanner/>
-        </View>
+        <AdBanner />
+      </View>
     </Screen>
   );
 }

@@ -1,19 +1,7 @@
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-  Platform,
-  Alert,
-} from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from 'react';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
 import { FilmResource } from 'app/types/Resources';
@@ -27,19 +15,10 @@ import { StateSetter } from '@/Form/components/StateSetter';
 import { RatingSetter } from '@/Form/components/RatingSetter';
 import { DateSetter } from '@/Form/components/DateSetter';
 import { ViewsSetter } from '@/Form/components/ViewsSetter';
-import { NotificationModal } from 'components/NotificationModal';
 import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
-
-interface Film {
-  id: number;
-  title: string;
-  image: string | null;
-  releaseDate: string | null;
-  description: string | null;
-  rating: number | null;
-  genreId: number[] | null;
-}
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FallbackCover } from 'components/FallbackCover';
 
 export default function FilmForm() {
   const { filmData, item, from } = useLocalSearchParams();
@@ -125,10 +104,10 @@ export default function FilmForm() {
           };
 
           refreshData();
-          if(estadoAnterior != 'COMPLETADO' && estado === 'COMPLETADO'){
-            await supabase.rpc('increment_review_count', {user_id: user.id})
-          } else if (estadoAnterior === 'COMPLETADO' && estado != 'COMPLETADO') {
-            await supabase.rpc('decrement_review_count', {user_id: user.id})
+          if (estadoAnterior !== 'COMPLETADO' && estado === 'COMPLETADO') {
+            await supabase.rpc('increment_review_count', { user_id: user.id });
+          } else if (estadoAnterior === 'COMPLETADO' && estado !== 'COMPLETADO') {
+            await supabase.rpc('decrement_review_count', { user_id: user.id });
           }
           router.replace({
             pathname: '/details/film/filmResource',
@@ -235,8 +214,8 @@ export default function FilmForm() {
         } else {
           //Alert.alert("¡Éxito!", `Has añadido a ${film.title} a tu colección.`);
           refreshData();
-          if(estado === 'COMPLETADO'){
-            await supabase.rpc('increment_review_count', {user_id: user.id})
+          if (estado === 'COMPLETADO') {
+            await supabase.rpc('increment_review_count', { user_id: user.id });
           }
           router.back();
           setTimeout(() => {
@@ -286,12 +265,23 @@ export default function FilmForm() {
         </View>
 
         <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
-          <Image
-            source={{ uri: film.imagenUrl || film.image || 'https://via.placeholder.com/100x150' }}
-            className="aspect-[2/3] h-32 rounded-lg"
-            style={{ backgroundColor: colors.surfaceButton }}
-            resizeMode="cover"
-          />
+          {film.imagenUrl || film.image ? (
+            <Image
+              source={{
+                uri: film.imagenUrl || film.image || 'https://via.placeholder.com/100x150',
+              }}
+              className="aspect-[2/3] h-32 rounded-lg"
+              style={{ backgroundColor: colors.surfaceButton }}
+              resizeMode="cover"
+            />
+          ) : (
+            <FallbackCover
+              type="pelicula"
+              fullSize={false}
+              style={{ aspectRatio: 2 / 3, borderRadius: 8 }}
+            />
+          )}
+
           <ReviewSetter review={reseña} setReview={setReseña} />
         </View>
 

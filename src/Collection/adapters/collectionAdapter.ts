@@ -22,7 +22,7 @@ export const collectionAdapter = {
       'libro': item.contenido?.imagenUrl,
       'cancion': item.contenido?.imagenUrl,
     };
-    return map[category] || 'https://via.placeholder.com/150';
+    return map[category] ;
   },
 
   // Lógica visual de estados (Mantenemos tu lógica original)

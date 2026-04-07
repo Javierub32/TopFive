@@ -19,20 +19,7 @@ import { DateSetter } from '@/Form/components/DateSetter';
 import { DifficultySetter } from '@/Form/components/DifficultySetter';
 import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
-
-interface Game {
-  id: number;
-  title: string;
-  autor: string | null;
-  image: string | null;
-  releaseDate: string | null;
-  genre: string[] | null;
-  description: string | null;
-  rating: number | null;
-  platforms: string[] | null;
-  gamemodes: string[] | null;
-  imageFull: string | null;
-}
+import { FallbackCover } from 'components/FallbackCover';
 
 export default function GameForm() {
   const { gameData, item, from } = useLocalSearchParams();
@@ -130,10 +117,10 @@ export default function GameForm() {
 
           //Alert.alert('¡Éxito!', `Has actualizado ${game.titulo || game.title} en tu colección.`);
           refreshData();
-          if(estadoAnterior != 'COMPLETADO' && estado === 'COMPLETADO'){
-            await supabase.rpc('increment_review_count', {user_id: user.id})
-          } else if (estadoAnterior === 'COMPLETADO' && estado != 'COMPLETADO') {
-            await supabase.rpc('decrement_review_count', {user_id: user.id})
+          if (estadoAnterior !== 'COMPLETADO' && estado === 'COMPLETADO') {
+            await supabase.rpc('increment_review_count', { user_id: user.id });
+          } else if (estadoAnterior === 'COMPLETADO' && estado !== 'COMPLETADO') {
+            await supabase.rpc('decrement_review_count', { user_id: user.id });
           }
           router.replace({
             pathname: '/details/game/gameResource',
@@ -239,8 +226,8 @@ export default function GameForm() {
         } else {
           //Alert.alert('¡Éxito!', `Has añadido ${game.title} a tu colección.`);
           refreshData();
-          if(estado === 'COMPLETADO'){
-            await supabase.rpc('increment_review_count', {user_id: user.id})
+          if (estado === 'COMPLETADO') {
+            await supabase.rpc('increment_review_count', { user_id: user.id });
           }
           router.back();
           setTimeout(() => {
@@ -290,12 +277,22 @@ export default function GameForm() {
         </View>
 
         <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
-          <Image
-            source={{ uri: game.imagenUrl || game.image || 'https://via.placeholder.com/100x150' }}
-            className="aspect-[2/3] h-32 rounded-lg"
-            style={{ backgroundColor: colors.surfaceButton }}
-            resizeMode="cover"
-          />
+          {game.imagenUrl || game.image ? (
+            <Image
+              source={{
+                uri: game.imagenUrl || game.image || '',
+              }}
+              className="aspect-[2/3] h-32 rounded-lg"
+              style={{ backgroundColor: colors.surfaceButton }}
+              resizeMode="cover"
+            />
+          ) : (
+            <FallbackCover
+              type="videojuego"
+              fullSize={false}
+              style={{ aspectRatio: 2 / 3, borderRadius: 8 }}
+            />
+          )}
           <ReviewSetter review={reseña} setReview={setReseña} />
         </View>
 
@@ -303,12 +300,7 @@ export default function GameForm() {
           <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Jugando" />
           <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
           <DifficultySetter difficulty={dificultad} setDifficulty={setDificultad} />
-          <ProgressSetter
-            progress={horasJugadas}
-            setProgress={setHorasJugadas}
-            type="videojuego"
-          />
-
+          <ProgressSetter progress={horasJugadas} setProgress={setHorasJugadas} type="videojuego" />
 
           <DateSetter
             startDate={fechaInicio}

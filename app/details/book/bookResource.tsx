@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -6,18 +6,14 @@ import { BookResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
-import { ResourceType } from 'hooks/useResource';
 import { RatingCard } from '@/Details/components/RatingCard';
 import { ProgressCard } from '@/Details/components/ProgressCard';
 import { ReviewCard } from '@/Details/components/ReviewCard';
 import { DateCard } from '@/Details/components/DateCard';
-import { ResourceAttributes } from '@/Details/components/ResourceAttributes';
 import { TimeCard } from '@/Details/components/TimeCard';
-import { EditResourceButton } from '@/Details/components/EditResourceButton';
-import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
-import { useAuth } from "context/AuthContext";
+import { useAuth } from 'context/AuthContext';
 import { AdBanner } from 'components/AdBanner';
-import { ResourceHeader } from "@/Details/components/ResourceHeader";
+import { ResourceHeader } from '@/Details/components/ResourceHeader';
 
 export default function BookDetail() {
   const { item, from } = useLocalSearchParams();
@@ -41,14 +37,14 @@ export default function BookDetail() {
 
   const isOwner = bookResource?.usuarioId === user?.id;
 
-  const isPending = bookResource?.estado === "PENDIENTE";
-  const isCompleted = bookResource?.estado === "COMPLETADO";
+  const isPending = bookResource?.estado === 'PENDIENTE';
+  const isCompleted = bookResource?.estado === 'COMPLETADO';
 
   if (!bookResource) {
     return (
       <Screen>
         <ThemedStatusBar />
-		<ReturnButton route={path} title="Detalle del libro" />
+        <ReturnButton route={path} title="Detalle del libro" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <Text className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
@@ -68,17 +64,22 @@ export default function BookDetail() {
     <Screen>
       <ThemedStatusBar />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <ResourceHeader imageUrl={contenido.imagenUrl || 'https://via.placeholder.com/500x750'} resource={bookResource} type="libro" returnRoute={path} from={from} isOwner={isOwner} />
+        <ResourceHeader
+          imageUrl={contenido.imagenUrl}
+          resource={bookResource}
+          type="libro"
+          returnRoute={path}
+          from={from}
+          isOwner={isOwner}
+        />
         <View className="flex-1 px-4 pb-6">
           {!isPending && (
-              <View className="flex-col justify-between gap-3">
+            <View className="flex-col justify-between gap-3">
               <View className="flex-row gap-2">
                 {bookResource?.calificacion > 0 && (
                   <RatingCard rating={bookResource.calificacion} />
                 )}
-                {!isCompleted && (
-                  <ProgressCard progress={bookResource.paginasLeidas} unit="pags" />
-                )}
+                {!isCompleted && <ProgressCard progress={bookResource.paginasLeidas} unit="pags" />}
               </View>
               <ReviewCard review={bookResource.reseña} />
               <DateCard
@@ -88,13 +89,16 @@ export default function BookDetail() {
               />
             </View>
           )}
-          
+
           <TimeCard resource={bookResource} />
         </View>
-        <View className="flex-1">
-          <AdBanner/>
-        </View>
+        {!isPending && (
+          <View className="flex-1">
+            <AdBanner />
+          </View>
+        )}
       </ScrollView>
+      {isPending && <AdBanner />}
     </Screen>
   );
 }
