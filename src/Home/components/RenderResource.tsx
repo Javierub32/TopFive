@@ -16,11 +16,12 @@ export default function ActivityItem({ item }: { item: Activity }) {
     const then = new Date(date);
     const diffInSeconds = Math.floor((now.getTime() - then.getTime()) / 1000);
 
-    if (diffInSeconds < 60) return 'Ahora mismo';
+    //if (diffInSeconds < 60) return 'Ahora mismo';             
     const minutes = Math.floor(diffInSeconds / 60);
-    if (minutes < 60) return minutes === 1 ? `Hace 1 minuto` : `Hace ${minutes} minutos`;
+    //if (minutes < 60) return minutes === 1 ? `Hace 1 minuto` : `Hace ${minutes} minutos`;
     const hours = Math.floor(minutes / 60);
-    if (hours < 24) return hours === 1 ? `Hace 1 hora` : `Hace ${hours} horas`;
+    //if (hours < 24) return hours === 1 ? `Hace 1 hora` : `Hace ${hours} horas`;
+    if(hours < 24) return "Hoy";                                                //CUANDO FUNCIONE BIEN DESCOMENTAR LAS DE ARRIBA Y BORRAR ESTA LINEA
     const days = Math.floor(hours / 24);
     if (days < 7) return days === 1 ? `Hace 1 día` : `Hace ${days} días`;
     return then.toLocaleDateString(); // Si es más de una semana, mostrar fecha completa
