@@ -13,7 +13,6 @@ import Constants from 'expo-constants';
 import { supabase } from 'lib/supabase';
 import { NotificationModal } from 'components/NotificationModal';
 import { AdsConsent, AdsConsentStatus } from 'lib/adsConsent';
-import * as TrackingTransparency from 'expo-tracking-transparency';
 
 
 SplashScreen.preventAutoHideAsync();
@@ -48,9 +47,10 @@ function InitialLayout() {
 
       try {
 		if (Platform.OS === 'ios') {
+			const TrackingTransparency = require('expo-tracking-transparency');
           await TrackingTransparency.requestTrackingPermissionsAsync();
         }
-		
+
         const consentInfo = await AdsConsent.requestInfoUpdate();
         
         if (
