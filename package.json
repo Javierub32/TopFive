@@ -40,6 +40,7 @@
     "react-native-css-interop": "^0.2.1",
     "react-native-gifted-charts": "^1.4.70",
     "react-native-google-mobile-ads": "^16.3.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-pager-view": "^6.9.1",
     "react-native-reanimated": "~4.1.1",
