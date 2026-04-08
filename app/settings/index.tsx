@@ -65,31 +65,15 @@ export default function SettingsScreen() {
       success: false,
       onLeftPress: () => hideNotification(),
       onRightPress: async () => {
-        try {
-          hideNotification(); // Ocultar antes de cerrar sesión
-          await signOut();
-
-          // En móvil nativo, mostrar notificación de éxito
-          // En web (PC y móvil), el _layout manejará la redirección automáticamente
-          if (Platform.OS !== 'web') {
-            showNotification({
-              title: 'Sesión cerrada',
-              description: 'Has cerrado sesión exitosamente.',
-              isChoice: false,
-              delete: false,
-              success: true,
-            });
+        hideNotification();
+        
+        setTimeout(async () => {
+          try {
+            await signOut();
+          } catch (error) {
+            console.error('Error al cerrar sesión:', error);
           }
-        } catch (error) {
-          console.error('Error al cerrar sesión:', error);
-          showNotification({
-            title: 'Error',
-            description: 'Hubo un problema al cerrar sesión. Intenta de nuevo más tarde.',
-            isChoice: false,
-            delete: false,
-            success: false,
-          });
-        }
+        }, 300);
       },
     });
   };
@@ -117,27 +101,16 @@ export default function SettingsScreen() {
           isChoice: true,
           delete: true,
           success: false,
-          onLeftPress: async () => {
-            try {
-              hideNotification();
-              await deleteAccount();
-              showNotification({
-                title: 'Cuenta eliminada',
-                description: 'Tu cuenta ha sido eliminada exitosamente.',
-                isChoice: false,
-                delete: false,
-                success: true,
-              });
-            } catch (error) {
-              console.error('Error al eliminar cuenta:', error);
-              showNotification({
-                title: 'Error',
-                description: 'Hubo un problema al eliminar tu cuenta. Intenta de nuevo más tarde.',
-                isChoice: false,
-                delete: false,
-                success: false,
-              });
-            }
+		  onLeftPress: () => {
+            hideNotification();
+            
+            setTimeout(async () => {
+              try {
+                await deleteAccount();
+              } catch (error) {
+                console.error('Error al eliminar cuenta:', error);
+              }
+            }, 300);
           },
           onRightPress: () => hideNotification(),
         });

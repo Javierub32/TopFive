@@ -91,6 +91,7 @@ export const useLists = (categoriaActual: ResourceType) => {
 	}
 
 	const fetchListInfo = async () => {
+		if (!user) return;
 		try {
 			setLoading(true);
 			const fetchedLists = await listServices.fetchListInfo(user.id, categoryMap[categoriaActual] as CollectionType);
