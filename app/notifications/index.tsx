@@ -44,6 +44,7 @@ export default function NotificationsScreen() {
         data={notifications}
         className="px-3"
         keyExtractor={(item) => item.id.toString()}
+		showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <NotificationItem
             user={item.user}
