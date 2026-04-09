@@ -37,7 +37,12 @@
           "userTrackingPermission": "Esta aplicación utiliza el identificador de tu dispositivo para mostrarte anuncios relevantes y personalizados."
         }
       ],
-      "@react-native-google-signin/google-signin"
+      [
+  "@react-native-google-signin/google-signin",
+  {
+    "iosClientId": "1045116527499-u3kj7uo06ar23im0rqg9ltis3e8rfa37.apps.googleusercontent.com"
+  }
+]
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -54,20 +59,14 @@
       "supportsTablet": true,
       "icon": "./assets/ios_icon.png",
       "bundleIdentifier": "com.leftjoiners.topfive",
+      "googleServicesFile": "./GoogleService-Info.plist",
       "buildNumber": "1",
       "associatedDomains": [
         "applinks:www.topfive5.me",
         "applinks:topfive5.me"
       ],
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false,
-        "CFBundleURLTypes": [
-          {
-            "CFBundleURLSchemes": [
-              "com.googleusercontent.apps.1045116527499-u3kj7uo06ar23im0rqg9ltis3e8rfa37"
-            ]
-          }
-        ]
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
