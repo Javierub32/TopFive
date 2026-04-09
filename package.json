@@ -32,6 +32,7 @@
     "expo-router": "~6.0.15",
     "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~3.0.8",
+    "expo-tracking-transparency": "~6.0.8",
     "nativewind": "latest",
     "react": "19.1.0",
     "react-dom": "19.1.0",

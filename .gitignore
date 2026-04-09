@@ -34,3 +34,6 @@ android
 repomix-output.xml
 pnpm-lock.yaml
 package-lock.json
+
+# Archivos de Firebase
+google-services.json

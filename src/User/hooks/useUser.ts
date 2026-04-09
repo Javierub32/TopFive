@@ -42,6 +42,7 @@ export const useUser = (username: string) => {
 
 	useEffect(() => {
 		const fetchUserData = async () => {
+			if (!username) return; // No fetch si username está vacío
 			setLoading(true);
 			try {
 				const userId = await userService.getUserIdByUsername(username);
@@ -100,10 +101,10 @@ export const useUser = (username: string) => {
     };
 
 
-	const handleFollow = async () => {
+	const handleFollow = async (userIdToFollow?: string) => {
 		if (!user) return;
 		try {
-			const userId = await userService.getUserIdByUsername(username);
+			const userId = userIdToFollow || await userService.getUserIdByUsername(username);
 			if (!userId) throw new Error("User not found");
 			await userService.requestFollow(user.id, userId);
 			setUserData((prevData: any) => ({

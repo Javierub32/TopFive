@@ -23,6 +23,12 @@
       "expo-router",
       "expo-font",
       "@react-native-community/datetimepicker",
+	    [
+          "expo-tracking-transparency",
+          {
+            "userTrackingPermission": "Esta aplicación utiliza el identificador de tu dispositivo para mostrarte anuncios relevantes y personalizados."
+          }
+        ],
       [
         "react-native-google-mobile-ads",
         {
@@ -71,6 +77,7 @@
         "backgroundColor": "#5781b3"
       },
       "package": "com.leftjoiners.topfive",
+      "googleServicesFile": "./google-services.json",
       "permissions": [
         "com.google.android.gms.permission.AD_ID"
       ],
@@ -79,8 +86,14 @@
           "action": "VIEW",
           "autoVerify": true,
           "data": [
-            { "scheme": "https", "host": "www.topfive5.me" },
-            { "scheme": "https", "host": "topfive5.me" }
+            {
+              "scheme": "https",
+              "host": "www.topfive5.me"
+            },
+            {
+              "scheme": "https",
+              "host": "topfive5.me"
+            }
           ],
           "category": [
             "BROWSABLE",

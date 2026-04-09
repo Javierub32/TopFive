@@ -1,15 +1,16 @@
 import { supabase } from "lib/supabase"
 
 export const notificationServices = {
-	async fetchNotifications(userId: string) {
+	async fetchNotifications(userId: string, from: number , to: number ) {
 		const { data, error } = await supabase
 		.from('relationships')
+		/* Usamos follower para saber quién me intenta seguir o quién me sigue*/
 		.select(`
 			id, 
 			follower_id, 
 			following_id, 
 			status,
-			following:usuario!follower_id (
+			follower:usuario!follower_id (
 				id,
 				username,
 				avatar_url,
@@ -17,16 +18,17 @@ export const notificationServices = {
 			)
 		`)
 		.eq('following_id', userId)
-		.eq('status', 'pending');
+		.range(from, to)
+		.order('created_at', { ascending: false });
+		
 		if (error) throw error;
 		
-		// Mapear los datos para que tenga la estructura que esperamos
 		return data?.map(notification => ({
 			id: notification.id,
 			follower_id: notification.follower_id,
 			following_id: notification.following_id,
 			status: notification.status,
-			user: notification.following
+			user: notification.follower
 		})) || [];
 	},
 
@@ -61,5 +63,4 @@ export const notificationServices = {
 		if (error) throw error;
 		return count || 0;
 	}
-
 }

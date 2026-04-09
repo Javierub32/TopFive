@@ -8,15 +8,27 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useTheme } from "context/ThemeContext";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useUser } from '@/User/hooks/useUser';
+import { useAuth } from 'context/AuthContext';
 
 export default function NotificationsScreen() {
-  const { loading, notifications, handleAcceptNotification, handleDeclineNotification } =
-    useNotification();
+  const { 
+    loading, 
+    notifications, 
+    fetchNotifications,    
+    refreshNotifications,  
+    refreshing,            
+    handleAcceptNotification, 
+    handleDeclineNotification 
+  } = useNotification();
   const { from } = useLocalSearchParams();
-  
+  const {user} = useAuth();
   const {colors} = useTheme();
 
-  if (loading) {
+    const { handleFollow } = useUser('');
+
+
+  if (loading && notifications.length === 0) {
     return (
       <Screen>
         <ReturnButton route={`/(tabs)/${from}`} title="Notificaciones del Usuario" />
@@ -32,9 +44,12 @@ export default function NotificationsScreen() {
         data={notifications}
         className="px-3"
         keyExtractor={(item) => item.id.toString()}
+		showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <NotificationItem
             user={item.user}
+            status={item.status}
+            myFollowStatus={item.myFollowStatus} 
             handleAccept={() =>
               handleAcceptNotification(item.id, item.follower_id, item.following_id)
             }
@@ -47,8 +62,19 @@ export default function NotificationsScreen() {
                 params: { username: item.user.username },
               })
             }
+            followBack={() =>
+              handleFollow(item.follower_id)
+            }
           />
         )}
+        onEndReached={fetchNotifications}
+        onEndReachedThreshold={0.5}
+        onRefresh={refreshNotifications}
+        refreshing={refreshing}
+        ListFooterComponent={() => (
+          loading && !refreshing ? <View className="py-4"><LoadingIndicator /></View> : null
+        )}
+
         contentContainerStyle={
           notifications.length === 0 
           ? {flexGrow: 1, justifyContent: 'center'}

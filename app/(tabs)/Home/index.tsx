@@ -78,7 +78,7 @@ export default function HomeScreen() {
 				keyExtractor={(item, index) => `${item.recurso_id}-${index}`}
 				renderItem={({ item, index }) => (
 					<>
-						<ActivityItem item={item} />
+						<ActivityItem item={item}/>
 						{(index + 1 ) % 4 === 0 && <NativeAdCard />}
 					</>
 
