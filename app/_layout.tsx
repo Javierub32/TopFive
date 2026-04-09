@@ -46,6 +46,11 @@ function InitialLayout() {
       if (Platform.OS === 'web') return;
 
       try {
+		if (Platform.OS === 'ios') {
+			const TrackingTransparency = require('expo-tracking-transparency');
+          await TrackingTransparency.requestTrackingPermissionsAsync();
+        }
+
         const consentInfo = await AdsConsent.requestInfoUpdate();
         
         if (

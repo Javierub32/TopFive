@@ -8,12 +8,7 @@ import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useFrame } from '@/Frames/hook/useFrame';
 import { useNotification } from 'context/NotificationContext';
 
-import {
-  RewardedAd,
-  RewardedAdEventType,
-  AdEventType,
-  TestIds,
-} from 'react-native-google-mobile-ads';
+import { RewardedAd, RewardedAdEventType, AdEventType,TestIds } from 'lib/rewarderAd';
 
 import { UserAvatar } from '@/User/components/UserAvatar';
 import { useProfile } from '@/Profile/hooks/useProfile';
