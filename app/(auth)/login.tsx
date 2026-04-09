@@ -277,7 +277,7 @@ export default function Login() {
                 </TouchableOpacity>
               </View>
 
-              {Platform.OS === 'ios' && (
+  
                 <View className="my-6 flex-row items-center">
                   <View
                     className="h-[1px] flex-1"
@@ -292,9 +292,9 @@ export default function Login() {
                     className="h-[1px] flex-1"
                     style={{ backgroundColor: colors.secondaryText, opacity: 0.3 }}></View>
                 </View>
-              )}
 
-              {/*  
+
+              
               <View className="" style={{}}>
                 <TouchableOpacity
                   onPress={handleNativeGoogleLogin}
@@ -313,7 +313,7 @@ export default function Login() {
                   </View>
                 </TouchableOpacity>
               </View>
-                */}
+                
 
               {Platform.OS === 'ios' && (
                 <AppleAuthentication.AppleAuthenticationButton

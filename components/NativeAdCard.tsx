@@ -29,8 +29,9 @@ export const NativeAdCard = () => {
     let adInstance: NativeAd | null = null;
 
     // Crea y solicita el anuncio
-    NativeAd.createForAdRequest(adUnitId, {})
-      .then((ad) => {
+    NativeAd.createForAdRequest(adUnitId, {
+      requestNonPersonalizedAdsOnly: true,
+    }).then((ad) => {
         if (isMounted) {
           adInstance = ad;
           setNativeAd(ad);

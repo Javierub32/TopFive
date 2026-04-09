@@ -14,7 +14,6 @@ import { supabase } from 'lib/supabase';
 import { NotificationModal } from 'components/NotificationModal';
 import { AdsConsent, AdsConsentStatus } from 'lib/adsConsent';
 
-
 SplashScreen.preventAutoHideAsync();
 
 function InitialLayout() {
@@ -40,19 +39,30 @@ function InitialLayout() {
     prepare();
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     const initAdsConsent = async () => {
       // Evitamos ejecutar esto en web
       if (Platform.OS === 'web') return;
 
       try {
-		if (Platform.OS === 'ios') {
-			const TrackingTransparency = require('expo-tracking-transparency');
-          await TrackingTransparency.requestTrackingPermissionsAsync();
+        let attStatus = 'granted'; // Asumimos granted para Android por defecto
+
+        if (Platform.OS === 'ios') {
+          const TrackingTransparency = require('expo-tracking-transparency');
+          // Guardamos la respuesta del usuario de iOS
+          const { status } = await TrackingTransparency.requestTrackingPermissionsAsync();
+          attStatus = status;
         }
 
+        // REGLA DE APPLE: Si el usuario de iOS rechaza el rastreo,
+        // NO podemos mostrar el formulario web de Google (UMP) porque usa cookies.
+        if (Platform.OS === 'ios' && attStatus !== 'granted') {
+          return; // Salimos de la función. Los anuncios se cargarán como No Personalizados.
+        }
+
+        // Si es Android, o si en iOS el usuario dijo "Permitir", continuamos con Google UMP
         const consentInfo = await AdsConsent.requestInfoUpdate();
-        
+
         if (
           consentInfo.isConsentFormAvailable &&
           consentInfo.status === AdsConsentStatus.REQUIRED
@@ -72,20 +82,19 @@ function InitialLayout() {
   useEffect(() => {
     const checkAppVersion = async () => {
       try {
-		if (Platform.OS === 'web') return; // No verificamos versión en web
-		let query;
-		if (Platform.OS === 'android') {
-			query = supabase.from('version').select('version_android').single()
-		} else {
-			query = supabase.from('version').select('version').single()
-		}
+        if (Platform.OS === 'web') return; // No verificamos versión en web
+        let query;
+        if (Platform.OS === 'android') {
+          query = supabase.from('version').select('version_android').single();
+        } else {
+          query = supabase.from('version').select('version').single();
+        }
         const { data, error } = await query;
 
         if (error || !data) return;
 
-        const remoteVersion = Platform.OS === 'android' 
-			? (data as any).version_android 
-			: (data as any).version;
+        const remoteVersion =
+          Platform.OS === 'android' ? (data as any).version_android : (data as any).version;
         const localVersion = Constants.expoConfig?.version || Constants.nativeAppVersion || '1.0.0';
 
         // Función auxiliar para comparar versiones semánticas (X.Y.Z)
@@ -104,31 +113,35 @@ function InitialLayout() {
         if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'android') {
           showNotification({
             title: 'Actualización disponible',
-            description: 'Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades.',
+            description:
+              'Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades.',
             isChoice: true,
-            rightButtonText: 'Actualizar', 
+            rightButtonText: 'Actualizar',
             onRightPress: () => {
               hideNotification();
-              Linking.openURL('https://play.google.com/store/apps/details?id=com.leftjoiners.topfive');
+              Linking.openURL(
+                'https://play.google.com/store/apps/details?id=com.leftjoiners.topfive'
+              );
             },
             delete: false,
             success: false,
-			info: true,
+            info: true,
           });
         }
-		if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'ios') {
+        if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'ios') {
           showNotification({
             title: 'Actualización disponible',
-            description: 'Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades.',
+            description:
+              'Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades.',
             isChoice: true,
-            rightButtonText: 'Actualizar', 
+            rightButtonText: 'Actualizar',
             onRightPress: () => {
               hideNotification();
               Linking.openURL('https://apps.apple.com/es/app/topfive/id6761102319');
             },
             delete: false,
             success: false,
-			info: true,
+            info: true,
           });
         }
       } catch (e) {
@@ -155,13 +168,13 @@ function InitialLayout() {
 
     const inAuthGroup = segments[0] === '(auth)';
 
-    const isResettingPassword = segments.length > 1 && (segments as string[])[1] === 'reset-password';
-
+    const isResettingPassword =
+      segments.length > 1 && (segments as string[])[1] === 'reset-password';
 
     if (session) {
-	  if (isResettingPassword) return;
+      if (isResettingPassword) return;
       // SI hay usuario:
-      // Redirigir a Home si intenta entrar a login/registro (AuthGroup) 
+      // Redirigir a Home si intenta entrar a login/registro (AuthGroup)
       // O si está en la raíz (segments.length === 0)
       if (inAuthGroup || (segments.length as number) === 0) {
         router.replace('/(tabs)/Home');
@@ -179,11 +192,11 @@ function InitialLayout() {
   return (
     <View style={{ flex: 1 }}>
       <Stack
-        screenOptions={{ 
+        screenOptions={{
           headerShown: false, // Seguimos ocultando la cabecera fea por defecto
           gestureEnabled: true, // ¡Magia activada para iOS!
           fullScreenGestureEnabled: true,
-          animation: 'fade_from_bottom' // Transición nativa fluida para Android/iOS
+          animation: 'fade_from_bottom', // Transición nativa fluida para Android/iOS
         }}
       />
       <NotificationModal
@@ -209,13 +222,13 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <ThemeProvider>
-		<CollectionProvider>
-		  <NotificationProvider>
-			<SearchProvider>
-			  <InitialLayout />
-			</SearchProvider>
-		  </NotificationProvider>
-		</CollectionProvider>
+        <CollectionProvider>
+          <NotificationProvider>
+            <SearchProvider>
+              <InitialLayout />
+            </SearchProvider>
+          </NotificationProvider>
+        </CollectionProvider>
       </ThemeProvider>
     </AuthProvider>
   );
