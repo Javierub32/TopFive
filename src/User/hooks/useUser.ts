@@ -101,17 +101,25 @@ export const useUser = (username: string) => {
     };
 
 
-	const handleFollow = async (userIdToFollow?: string) => {
+	const handleFollow = async (userIdToFollow?: string | any) => {
 		if (!user) return;
 		try {
-			const userId = userIdToFollow || await userService.getUserIdByUsername(username);
+			const userId = typeof userIdToFollow === 'string' 
+				? userIdToFollow 
+				: await userService.getUserIdByUsername(username);
+				
 			if (!userId) throw new Error("User not found");
+			
 			await userService.requestFollow(user.id, userId);
-			setUserData((prevData: any) => ({
-				...prevData,
-				is_requested: true,
-				following_status: 'pending'
-			}));
+			
+			setUserData((prevData: any) => {
+				if (!prevData) return prevData;
+				return {
+					...prevData,
+					is_requested: true,
+					following_status: 'pending'
+				};
+			});
 		} catch (error) {
 			console.error("Error requesting follow:", error);
 		}
@@ -123,11 +131,14 @@ export const useUser = (username: string) => {
 			const userId = await userService.getUserIdByUsername(username);
 			if (!userId) throw new Error("User not found");
 			await userService.unfollow(user.id, userId);
-			setUserData((prevData: any) => ({
-				...prevData,
-				is_requested: false,
-				following_status: null
-			}));
+			setUserData((prevData: any) => {
+				if (!prevData) return prevData;
+				return {
+					...prevData,
+					is_requested: false,
+					following_status: null
+				};
+			});
 		} catch (error) {
 			console.error("Error cancelling follow request:", error);
 		}
