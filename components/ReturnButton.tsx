@@ -12,9 +12,10 @@ interface ReturnButtonProps {
   style?: string;
   params?: Record<string, any>;
   deleteSearchResults?: boolean;
+  returnStyle?: boolean;
 }
 
-export const ReturnButton = ({ route, title, style, params, deleteSearchResults }: ReturnButtonProps) => {
+export const ReturnButton = ({ route, title, style, params, deleteSearchResults, returnStyle }: ReturnButtonProps) => {
   const { colors } = useTheme();
   const { clearUserSearch} = useSearch();
   const navigation = useNavigation();
@@ -52,14 +53,18 @@ export const ReturnButton = ({ route, title, style, params, deleteSearchResults 
   );
   
   style = style ? style : 'px-4 pt-5 pb-2';
+
+  let backgroundStyle = {}
+  backgroundStyle = returnStyle ? {backgroundColor: colors.accent} : {}
+
   return (
     <View className={`flex-row items-center ${style}`}>
       <TouchableOpacity
         onPress={onBackPress}
         className="mr-3 h-10 w-10 items-center justify-center rounded-full"
-        style={{ backgroundColor: colors.accent}}
+        style={backgroundStyle}
         activeOpacity={0.7}>
-        <LeftArrowIcon color={colors.background} />
+        <LeftArrowIcon color={colors.primaryText} />
       </TouchableOpacity>
       <Text className="flex-1 text-xl font-bold" style={{ color: colors.primaryText }} numberOfLines={1}>
         {title}

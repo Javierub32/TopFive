@@ -104,7 +104,7 @@ export const ResourceHeader = ({ imageUrl, returnRoute, resource, type, isOwner,
           <View
             style={styles.returnButtonContainer}
             className="flex-row justify-between px-4 pb-4 pt-2">
-            <ReturnButton route={returnRoute} title="" style={' '} />
+            <ReturnButton route={returnRoute} title="" style={' '} returnStyle={true} />
             {isOwner && (
               <View className="flex-row">
                 <EditResourceButton resource={resource} type={type} from={from} />

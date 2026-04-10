@@ -93,7 +93,7 @@ export const ContentHeader = ({ imageUrl, returnRoute, content, type, autor }: P
           </View>
 
           <View style={styles.returnButtonContainer} className="px-4 pb-4 pt-2">
-            <ReturnButton route={returnRoute} title="" style={' '} />
+            <ReturnButton route={returnRoute} title="" style={' '} returnStyle={true}/>
           </View>
         </Animated.View>
       )}
