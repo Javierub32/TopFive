@@ -44,8 +44,8 @@ export const SearchBar = () => {
         </TouchableOpacity>
         
         <TextInput
-          className="h-full flex-1 px-3 text-base text-primaryText"
-          style={{color: colors.primaryText, lineHeight: 17}}
+          className="h-full flex-1 px-3 text-base text-primaryText overflow-hidden"
+          style={{color: colors.primaryText, lineHeight: 17, maxHeight: 17}}
           placeholder={`Buscar en ${resourceTypeMap[categoriaActual as ResourceType]}...`}
           placeholderTextColor={colors.placeholderText}
           value={inputBusqueda}

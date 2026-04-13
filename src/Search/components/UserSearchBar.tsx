@@ -33,8 +33,8 @@ export function UserSearchBar({
 
         {/* Input de texto */}
         <TextInput
-          className="h-full flex-1 px-3 text-base"
-          style={{ color: colors.primaryText, lineHeight: 17 }}
+          className="h-full flex-1 px-3 text-base overflow-hidden"
+          style={{ color: colors.primaryText, lineHeight: 17, maxHeight:17 }}
           placeholder={`Busca un usuario...`}
           placeholderTextColor={colors.placeholderText}
           value={value}
