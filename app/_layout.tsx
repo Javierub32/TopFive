@@ -41,28 +41,25 @@ function InitialLayout() {
 
   useEffect(() => {
     const initAdsConsent = async () => {
-      // Evitamos ejecutar esto en web
       if (Platform.OS === 'web') return;
 
       try {
-        let attStatus = 'granted'; // Asumimos granted para Android por defecto
+        let attStatus = 'granted';
 
         if (Platform.OS === 'ios') {
           const TrackingTransparency = require('expo-tracking-transparency');
-          // Guardamos la respuesta del usuario de iOS
+
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
           const { status } = await TrackingTransparency.requestTrackingPermissionsAsync();
           attStatus = status;
         }
 
-        // REGLA DE APPLE: Si el usuario de iOS rechaza el rastreo,
-        // NO podemos mostrar el formulario web de Google (UMP) porque usa cookies.
         if (Platform.OS === 'ios' && attStatus !== 'granted') {
-          return; // Salimos de la función. Los anuncios se cargarán como No Personalizados.
+          return;
         }
 
-        // Si es Android, o si en iOS el usuario dijo "Permitir", continuamos con Google UMP
         const consentInfo = await AdsConsent.requestInfoUpdate();
-
         if (
           consentInfo.isConsentFormAvailable &&
           consentInfo.status === AdsConsentStatus.REQUIRED
@@ -74,10 +71,10 @@ function InitialLayout() {
       }
     };
 
-    if (appIsReady && session) {
+    if (appIsReady) {
       initAdsConsent();
     }
-  }, [appIsReady, session]);
+  }, [appIsReady]);
 
   useEffect(() => {
     const checkAppVersion = async () => {
