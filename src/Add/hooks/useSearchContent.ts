@@ -8,6 +8,7 @@ import { useSearch } from 'context/SearchContext';
 export const useSearchContent = () => {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const {
 	setContentQuery: setBusqueda,
@@ -26,6 +27,7 @@ export const useSearchContent = () => {
 	if (params.initialCategory && params.initialCategory !== recursoBusqueda) {
 	  setContentCategory(params.initialCategory as ResourceType);
 	  clearContentSearch();
+    setHasSearched(false);
 	}
   }, [params.initialCategory]);
 
@@ -33,8 +35,10 @@ export const useSearchContent = () => {
   const handleSearch = async (categoria?: ResourceType) => {
     if (!busqueda.trim()) {
 		setResultados([]);
+		setHasSearched(false);
 		return;
 	}
+    setHasSearched(true);
     setLoading(true);
     setMenuAbierto(false);
 
@@ -80,6 +84,7 @@ export const useSearchContent = () => {
     busqueda, setBusqueda,
     recursoBusqueda, setRecursoBusqueda,
     menuAbierto, setMenuAbierto,
+    hasSearched,
     loading, resultados,
     handleSearch, navigateToDetails,
     setResultados

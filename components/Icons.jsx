@@ -216,3 +216,7 @@ export const ListIcon = (props) => {
   )
 }
 
+export const CrossIcon = (props) => {
+  return <Entypo name="cross" size={24} color="black" {...props} />;
+}
+

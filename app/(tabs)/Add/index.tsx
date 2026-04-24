@@ -4,10 +4,11 @@ import { useSearchContent } from 'src/Add/hooks/useSearchContent';
 
 import { SearchBar } from 'src/Add/components/SearchBar';
 import { SearchResultItem } from 'src/Add/components/SearchResultItem';
-import { SearchPlaceholder } from 'src/Add/components/SearchPlaceholder';
+import { FoundPlaceholder } from 'src/Add/components/FoundPlaceholder';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
+import { SearchPlaceholder } from '@/Add/components/SearchPlaceholder';
 
 export default function AddScreen() {
   const {
@@ -17,6 +18,7 @@ export default function AddScreen() {
     setRecursoBusqueda,
     menuAbierto,
     setMenuAbierto,
+    hasSearched,
     loading,
     resultados,
     handleSearch,
@@ -44,7 +46,6 @@ export default function AddScreen() {
           menuAbierto={menuAbierto}
           setMenuAbierto={setMenuAbierto}
         />
-
         {resultados.length > 0 ? (
           <FlatList
             className={`-z-10 flex-1 ${loading ? 'hidden' : ''}`}
@@ -60,6 +61,8 @@ export default function AddScreen() {
             contentContainerStyle={{ paddingBottom: 40, paddingTop: 10 }}
             showsVerticalScrollIndicator={false}
           />
+        ) : hasSearched ? (
+          <FoundPlaceholder category={recursoBusqueda} loading={loading} />
         ) : (
           <SearchPlaceholder category={recursoBusqueda} loading={loading} />
         )}
