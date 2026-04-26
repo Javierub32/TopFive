@@ -54,6 +54,7 @@ export const ProgressSetter = ({progress, setProgress, progressExtra, setProgres
                                 className="w-12 text-center text-lg font-bold border-b pb-0"                                
                                 style={{color: colors.primaryText, borderBottomColor: colors.placeholderText}}
                                 selectTextOnFocus={true}
+                                
                             />
 
                             <TouchableOpacity
@@ -76,7 +77,7 @@ export const ProgressSetter = ({progress, setProgress, progressExtra, setProgres
                                 value={(progressExtra || 1).toString()} onChangeText={(text) => {
                                     const numericText = text.replace(/[^0-9]/g, '');
                                     const num = parseInt(numericText) || 0;
-                                    if (num <= 2000 || numericText === '') {
+                                    if (num <= 9999 || numericText === '') {
                                         setProgressExtra(numericText)
                                     }}}
                                 keyboardType="numeric"
@@ -108,7 +109,7 @@ export const ProgressSetter = ({progress, setProgress, progressExtra, setProgres
                 // Solo permitir números y limitar a 2000
                 const numericText = text.replace(/[^0-9]/g, '');
                 const num = parseInt(numericText) || 0;
-                if (num <= 2000 || numericText === '') {
+                if (num <= 9999 || numericText === '') {
                     setProgress(numericText);
                 }
                 }}
@@ -117,7 +118,7 @@ export const ProgressSetter = ({progress, setProgress, progressExtra, setProgres
                 keyboardType="numeric"
                 maxLength={4}
                 className="rounded-lg p-3 text-base"
-                style={{backgroundColor: colors.surfaceButton, color: colors.primaryText}}
+                style={{backgroundColor: colors.surfaceButton, color: colors.primaryText, lineHeight: 17}}
             />
         </View>
             )

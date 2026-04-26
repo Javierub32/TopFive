@@ -79,7 +79,7 @@ export default function GameDetail() {
                 {gameResource?.calificacion > 0 && (
                   <RatingCard rating={gameResource.calificacion} />
                 )}
-                {!isCompleted && <ProgressCard progress={gameResource.horasJugadas} unit="horas" />}
+                <ProgressCard progress={gameResource.horasJugadas} unit="horas" />
               </View>
               <ReviewCard review={gameResource.reseña} />
               <DateCard
