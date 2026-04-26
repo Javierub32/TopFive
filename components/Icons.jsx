@@ -220,3 +220,13 @@ export const CrossIcon = (props) => {
   return <Entypo name="cross" size={24} color="black" {...props} />;
 }
 
+export const PlusIcon = (props) => {
+  return <Entypo name="plus" size={16} color="black" {...props} />;
+}
+
+export const EditIcon = (props) => {
+  return <AntDesign name="edit" size={16} color="black" {...props} />;
+}
+export const TrashIcon = (props) => {
+  return <AntDesign name="delete" size={16} color="black" {...props} />;
+}

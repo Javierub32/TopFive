@@ -93,7 +93,7 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
         <Text className="flex-1 text-3xl font-bold" style={{ color: colors.primaryText }}>
           {contenido.titulo || 'Sin título'}
         </Text>
-        {isOwner && <AddToListButton resourceCategory="Libros" resourceId={resource.id} />}
+        {isOwner && <AddToListButton resourceCategory={resource.tiporecurso} resourceId={resource.id} />}
       </View>
 
       <View className="flex-row flex-wrap items-stretch gap-2 pt-1">
