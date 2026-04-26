@@ -7,7 +7,7 @@ export const userService = {
 			.select('id')
 			.eq('username', username)
 			.maybeSingle();
-		
+
 		if (error) return null;
 		return data?.id || null;
 	},
@@ -16,16 +16,16 @@ export const userService = {
 		// Ejecutamos ambas consultas al mismo tiempo
 		const [userRes, relRes] = await Promise.all([
 			supabase
-			.from('usuario')
-			.select('id, username, description, avatar_url, followers_count, following_count, reviews_count, frame!fk_usuario_frame_id(codigo)')
-			.eq('id', userId)
-			.single(),
+				.from('usuario')
+				.select('id, username, description, avatar_url, followers_count, following_count, reviews_count, frame!fk_usuario_frame_id(codigo)')
+				.eq('id', userId)
+				.single(),
 			supabase
-			.from('relationships')
-			.select('status')
-			.eq('follower_id', currentUserId)
-			.eq('following_id', userId)
-			.maybeSingle() // Usamos maybeSingle para que no de error si no hay relación
+				.from('relationships')
+				.select('status')
+				.eq('follower_id', currentUserId)
+				.eq('following_id', userId)
+				.maybeSingle() // Usamos maybeSingle para que no de error si no hay relación
 		]);
 
 		if (userRes.error) throw userRes.error;
@@ -43,23 +43,32 @@ export const userService = {
 
 	async requestFollow(userId: string, targetUserId: string) {
 		const { data, error } = await supabase
-		.from('relationships')
-		.insert([{ 
-			follower_id: userId, 
-			following_id: targetUserId,
-			status: 'pending'
-		}]);
+			.from('relationships')
+			.insert([{
+				follower_id: userId,
+				following_id: targetUserId,
+				status: 'pending'
+			}]);
 		if (error) throw error;
 		return data;
 	},
 
 	async unfollow(userId: string, targetUserId: string) {
 		const { data, error } = await supabase
-		.from('relationships')
-		.delete()
-		.eq('follower_id', userId)
-		.eq('following_id', targetUserId);
+			.from('relationships')
+			.delete()
+			.eq('follower_id', userId)
+			.eq('following_id', targetUserId);
 		if (error) throw error;
 		return data;
+	},
+
+	async checkEmail(email: string) {
+		const { data, error } = await supabase.functions.invoke('check-email-exists', {
+			body: { email: email.toLowerCase().trim() },
+		});
+
+		if (error) return false;
+		return data?.isRegistered === true;
 	}
 };

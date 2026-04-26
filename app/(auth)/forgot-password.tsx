@@ -7,118 +7,133 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'context/ThemeContext';
 import { useNotification } from 'context/NotificationContext';
 import { ReturnButton } from 'components/ReturnButton';
+import { supabase } from 'lib/supabase';
+import { userService } from '@/User/services/userService';
 
 // Frases aleatorias con iconos - fuera del componente para mejor rendimiento
 const frasesConIconos = [
-  { texto: '  Tu butaca reservada te espera.', icono: 'movie-open' },
-  { texto: '  Tu inventario de entretenimiento, en un solo lugar.', icono: 'archive-star' },
-  { texto: '  Marca tu página. Guarda tu mundo.', icono: 'bookmark-check' },
-  { texto: '  Tu vida, tu ranking, tu TopFive.', icono: 'podium-gold' },
-  { texto: '  Tu mixtape definitiva está aquí.', icono: 'music-box-multiple' }
+	{ texto: '  Tu butaca reservada te espera.', icono: 'movie-open' },
+	{ texto: '  Tu inventario de entretenimiento, en un solo lugar.', icono: 'archive-star' },
+	{ texto: '  Marca tu página. Guarda tu mundo.', icono: 'bookmark-check' },
+	{ texto: '  Tu vida, tu ranking, tu TopFive.', icono: 'podium-gold' },
+	{ texto: '  Tu mixtape definitiva está aquí.', icono: 'music-box-multiple' }
 ];
 
 export default function ForgotPasswordScreen() {
-  const { requestReset } = useAuth();
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
-  const { colors } = useTheme();
-  const { showNotification } = useNotification();
+	const { requestReset } = useAuth();
+	const [email, setEmail] = useState('');
+	const [loading, setLoading] = useState(false);
+	const { colors } = useTheme();
+	const { showNotification } = useNotification();
 
-  // Seleccionar una frase aleatoria - se ejecuta cada vez que se renderiza el componente
-  const fraseAleatoria = useState(() => 
-	frasesConIconos[Math.floor(Math.random() * frasesConIconos.length)]
-  )[0];
+	// Seleccionar una frase aleatoria - se ejecuta cada vez que se renderiza el componente
+	const fraseAleatoria = useState(() =>
+		frasesConIconos[Math.floor(Math.random() * frasesConIconos.length)]
+	)[0];
+	//Comprobamos antes si el email está registrado para evitar enviar correos innecesarios
+	const handleReset = async () => {
+		setLoading(true);
+		try {
+			const registered = await userService.checkEmail(email);
+			if (!registered) {
+				showNotification({
+					title: 'Error',
+					description: 'El correo no está registrado. Cree una cuenta o verifique el email ingresado.',
+					isChoice: false,
+					delete: false,
+					success: false
+				});
+				setLoading(false);
+				return;
+			}
 
-  const handleReset = async () => {
-	setLoading(true);
-	try {
-	  await requestReset(email);
-	  router.replace('/(auth)/login');
-	  showNotification({
-		title: '¡Éxito!',
-		description: 'Recibirás un email con instrucciones para restablecer tu contraseña.',
-		isChoice: false,
-		delete: false,
-		success: true
-	  });
-	} catch (error) {
-	  showNotification({
-		title: 'Error',
-		description: 'No se pudo enviar el correo de restablecimiento. Por favor, inténtalo de nuevo.',
-		isChoice: false,
-		delete: false,
-		success: false,
-	  });
-	} finally {
-	  setLoading(false);
-	}
-  };
+			await requestReset(email);
+			router.replace('/(auth)/login');
+			showNotification({
+				title: '¡Éxito!',
+				description: 'Recibirás un email con instrucciones para restablecer tu contraseña.',
+				isChoice: false,
+				delete: false,
+				success: true
+			});
+		} catch (error) {
+			showNotification({
+				title: 'Error',
+				description: 'No se pudo enviar el correo de restablecimiento. Por favor, inténtalo de nuevo.',
+				isChoice: false,
+				delete: false,
+				success: false,
+			});
+		} finally {
+			setLoading(false);
+		}
+	};
 
 
-  return (
-	<View className='flex-1'>
-		<View className="absolute top-9 left-0 z-10">
-			<ReturnButton route="back" title="" />
-		</View>
-	  <LinearGradient
-		colors={[colors.background, colors.secondary, colors.secondary]}
-		style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}
-	  >
-		<View style={{ width: '100%', maxWidth: 550 }}>
-		  {/* Título con icono */}
-		  <View className="flex-row items-center justify-center mb-4">
-			<View className="rounded-full p-3 mr-3" style= {{backgroundColor: `${colors.primaryText}20`}}>
-			  <MaterialCommunityIcons name={fraseAleatoria.icono as any} size={40} color={colors.primaryText} />
+	return (
+		<View className='flex-1'>
+			<View className="absolute top-9 left-0 z-10">
+				<ReturnButton route="back" title="" />
 			</View>
-			<Text style={{fontSize: 24, fontWeight: 'bold', color: colors.primaryText}}>
-			  TopFive
-			</Text>
-		  </View>
-		  
-		  {/* Frase aleatoria */}
-		  <Text style={{fontSize: 14, marginBottom: 20, textAlign: 'center', color: colors.primaryText, opacity: 0.9, fontStyle: 'italic'}}>
-			Ingrese su correo para restablecer su contraseña.
-		  </Text>
-		  
-		  <View className="rounded-3xl p-6 shadow-2xl" style={{backgroundColor: colors.background}}>
-			  {/* Email Input */}
-			  <View className="mb-4">
-				<Text className="font-semibold mb-1 ml-1" style= {{color: colors.primaryText}}>Email</Text>
-				<View className="flex-row items-center rounded-xl px-4 py-3 mb-3" style= {{backgroundColor: colors.surfaceButton}}>
-				  <MaterialCommunityIcons name="email-outline" size={24} color={colors.secondaryText}/>
-				  <TextInput 
-					placeholder="tu@gmail.com" 
-					placeholderTextColor={colors.placeholderText}
-					value={email} 
-					onChangeText={setEmail} 
-					autoCapitalize="none"
-					keyboardType="email-address"
-					className="flex-1 ml-3 text-base" 
-					style={{color: colors.primaryText, lineHeight: 17}}
-				  />
-				</View>
-				<View className="mt-4" style={{}}>
-				  <TouchableOpacity
-					onPress={handleReset}
-					disabled={loading}
-					className="overflow-hidden rounded-xl shadow-lg py-4 items-center"
-					style={{backgroundColor: colors.accent}}
-				  >
-					<Text className="font-bold text-lg" style={{color: colors.primaryText}}>
-					  {loading ? 'Cargando...' : 'Enviar'}
+			<LinearGradient
+				colors={[colors.background, colors.secondary, colors.secondary]}
+				style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}
+			>
+				<View style={{ width: '100%', maxWidth: 550 }}>
+					{/* Título con icono */}
+					<View className="flex-row items-center justify-center mb-4">
+						<View className="rounded-full p-3 mr-3" style={{ backgroundColor: `${colors.primaryText}20` }}>
+							<MaterialCommunityIcons name={fraseAleatoria.icono as any} size={40} color={colors.primaryText} />
+						</View>
+						<Text style={{ fontSize: 24, fontWeight: 'bold', color: colors.primaryText }}>
+							TopFive
+						</Text>
+					</View>
+
+					{/* Frase aleatoria */}
+					<Text style={{ fontSize: 14, marginBottom: 20, textAlign: 'center', color: colors.primaryText, opacity: 0.9, fontStyle: 'italic' }}>
+						Ingrese su correo para restablecer su contraseña.
 					</Text>
-				  </TouchableOpacity>
+
+					<View className="rounded-3xl p-6 shadow-2xl" style={{ backgroundColor: colors.background }}>
+						{/* Email Input */}
+						<View className="mb-4">
+							<Text className="font-semibold mb-1 ml-1" style={{ color: colors.primaryText }}>Email</Text>
+							<View className="flex-row items-center rounded-xl px-4 py-3 mb-3" style={{ backgroundColor: colors.surfaceButton }}>
+								<MaterialCommunityIcons name="email-outline" size={24} color={colors.secondaryText} />
+								<TextInput
+									placeholder="tu@gmail.com"
+									placeholderTextColor={colors.placeholderText}
+									value={email}
+									onChangeText={setEmail}
+									autoCapitalize="none"
+									keyboardType="email-address"
+									className="flex-1 ml-3 text-base"
+									style={{ color: colors.primaryText, lineHeight: 17 }}
+								/>
+							</View>
+							<View className="mt-4" style={{}}>
+								<TouchableOpacity
+									onPress={handleReset}
+									disabled={loading}
+									className="overflow-hidden rounded-xl shadow-lg py-4 items-center"
+									style={{ backgroundColor: colors.accent }}
+								>
+									<Text className="font-bold text-lg" style={{ color: colors.primaryText }}>
+										{loading ? 'Cargando...' : 'Enviar'}
+									</Text>
+								</TouchableOpacity>
+							</View>
+						</View>
+					</View>
 				</View>
-			  </View>
-		  </View>
+			</LinearGradient>
 		</View>
-	  </LinearGradient>
-	</View>
-  );
+	);
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-  input: { borderBottomWidth: 1, marginBottom: 15, padding: 10, fontSize: 16 }
+	container: { flex: 1, justifyContent: 'center', padding: 20 },
+	title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
+	input: { borderBottomWidth: 1, marginBottom: 15, padding: 10, fontSize: 16 }
 });
