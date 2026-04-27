@@ -21,8 +21,8 @@ export default function CollectionScreen() {
 
   const routes = [
     { key: 'libro', title: 'Libros' },
-    { key: 'pelicula', title: 'Películas' },
     { key: 'serie', title: 'Series' },
+    { key: 'pelicula', title: 'Películas' },
     { key: 'videojuego', title: 'Juegos' },
     { key: 'cancion', title: 'Música' },
   ];

@@ -24,8 +24,8 @@ export default function ListScreen() {
 
   const [routes] = useState([
     { key: 'libro', nombre: 'Libros' },
-    { key: 'pelicula', nombre: 'Películas' },
     { key: 'serie', nombre: 'Series' },
+    { key: 'pelicula', nombre: 'Películas' },
     { key: 'videojuego', nombre: 'Juegos' },
     { key: 'cancion', nombre: 'Música' },
   ]);

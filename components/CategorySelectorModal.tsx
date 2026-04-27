@@ -6,8 +6,8 @@ import { useRouter } from 'expo-router';
 
 const categories: { type: ResourceType; label: string; icon: any }[] = [
   { type: 'libro', label: 'Libro', icon: BookIcon },
-  { type: 'pelicula', label: 'Película', icon: FilmIcon },
   { type: 'serie', label: 'Serie', icon: ShowIcon },
+  { type: 'pelicula', label: 'Película', icon: FilmIcon },
   { type: 'videojuego', label: 'Videojuego', icon: GameIcon },
   { type: 'cancion', label: 'Álbum', icon: MusicIcon },
 ];

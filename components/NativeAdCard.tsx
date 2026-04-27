@@ -133,7 +133,7 @@ export const NativeAdCard = () => {
 
                   {/* Descripción del anuncio */}
                   <NativeAsset assetType={NativeAssetType.BODY}>
-                    <Text style={{ color: colors.secondaryText, textAlign: 'justify', fontStyle: 'italic', lineHeight: 20 }}>
+                    <Text style={{ color: colors.secondaryText, lineHeight: 20 }}>
                       {displayedDescription}
                     </Text>
                   </NativeAsset>

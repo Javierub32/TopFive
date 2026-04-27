@@ -4,7 +4,7 @@ import { BookResource, FilmResource, GameResource, SeriesResource, SongResource 
 
 // Definimos los tipos de recursos válidos y sus interfaces de configuración
 export type ResourceType = 'pelicula' | 'serie' | 'videojuego' | 'libro' | 'cancion';
-export const RESOURCE_TYPES: ResourceType[] = ['libro', 'pelicula', 'serie', 'videojuego', 'cancion'];
+export const RESOURCE_TYPES: ResourceType[] = ['libro', 'serie', 'pelicula', 'videojuego', 'cancion'];
 
 export type StateType = 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';
 

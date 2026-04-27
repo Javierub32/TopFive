@@ -53,7 +53,7 @@ export const useProfile = () => {
   const [statsLoading, setStatsLoading] = useState(false);
 
 
-  const [selectedCategory, setSelectedCategory] = useState<ResourceType>('libro');
+  const [selectedCategory, setSelectedCategory] = useState<ResourceType>('pelicula');
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
   const [userData, setUserData] = useState<User | null>(null);
   const [isPressed, setIsPressed] = useState(false);
