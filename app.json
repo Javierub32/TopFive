@@ -23,12 +23,12 @@
       "expo-router",
       "expo-font",
       "@react-native-community/datetimepicker",
-	    [
-          "expo-tracking-transparency",
-          {
-            "userTrackingPermission": "Esta aplicación utiliza el identificador de tu dispositivo para mostrarte anuncios relevantes y personalizados."
-          }
-        ],
+      [
+        "expo-tracking-transparency",
+        {
+          "userTrackingPermission": "Esta aplicación utiliza el identificador de tu dispositivo para mostrarte anuncios relevantes y personalizados."
+        }
+      ],
       [
         "react-native-google-mobile-ads",
         {
@@ -42,7 +42,8 @@
         {
           "iosUrlScheme": "com.googleusercontent.apps.1045116527499-u3kj7uo06ar23im0rqg9ltis3e8rfa37"
         }
-]
+      ],
+      "expo-localization"
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",

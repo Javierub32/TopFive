@@ -1,0 +1,44 @@
+{
+    "common":{
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "loading": "Cargando..."
+    },
+    "languages":{
+        "es": "Español",
+        "en": "Inglés"
+    },
+    "themes":{
+        "dark": "Oscuro",
+        "light": "Claro",
+        "system": "Sistema"
+    },
+    "tabs":{
+        "home": "Inicio",
+        "lists": "Listas",
+        "search": "Búsqueda",
+        "library": "Mi Biblioteca"
+    },
+    "settings":{
+        "title": "Configuración",
+        "personalization": {
+            "title":"Personalización",
+            "editProfile": "Editar perfil",
+            "changeTheme": "Cambiar tema",
+            "changeLang": "Cambiar idioma"
+        },
+        "account": {
+            "title": "Cuenta",
+            "share": "Compartir perfil",
+            "logOut": "Cerrar sesión",
+            "delAcc": "Eliminar cuenta"
+        }, 
+        "legal": {
+            "title": "Soporte y legal",
+            "sendFeed": "Enviar feedback",
+            "aboutUs": "Sobre nosotros",
+            "privacy": "Política de privacidad",
+            "adsPriv": "Privacidad de anuncios"
+        }
+    }
+}

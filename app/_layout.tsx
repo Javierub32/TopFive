@@ -1,4 +1,5 @@
 import '../global.css';
+import '../i18n';
 import { SplashScreen, Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect, useCallback, useState } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
