@@ -16,7 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'context/ThemeContext';
 import { useNotification } from 'context/NotificationContext';
 import { supabase } from 'lib/supabase';
-import { GoogleSignin, isSuccessResponse } from '@react-native-google-signin/google-signin';
+import { GoogleSignin, isSuccessResponse, statusCodes } from '@react-native-google-signin/google-signin';
 import * as Linking from 'expo-linking';
 import * as AppleAuthentication from 'expo-apple-authentication';
 
@@ -32,6 +32,7 @@ const frasesConIconos = [
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
   iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+  offlineAccess: false,
 });
 
 export default function Login() {
@@ -51,6 +52,7 @@ export default function Login() {
   )[0];
 
   const handleLogin = async () => {
+    alert("ID de Web: " + process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID);
     setLoading(true);
     try {
       await signIn(email, password);
@@ -69,58 +71,54 @@ export default function Login() {
     }
   };
   const handleNativeGoogleLogin = async () => {
+  setLoading(true);
+  try {
     if (Platform.OS === 'web') {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          // Asegúrate de que esta URL está en tu panel de Supabase
-          redirectTo: Linking.createURL('/Home'),
+          redirectTo: window.location.origin, 
         },
       });
+      if (error) throw error;
 
-      if (error) console.error('Error en Web:', error);
-      return; // Terminamos aquí, no ejecutamos lo de abajo
-    }
-    try {
-      await GoogleSignin.hasPlayServices();
+    } else {
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
       const response = await GoogleSignin.signIn();
-
+      
+      let token: string | null = null;
       if (isSuccessResponse(response)) {
-        const token = response.data.idToken;
-
-        if (token) {
-          const { error } = await supabase.auth.signInWithIdToken({
-            provider: 'google',
-            token: token,
-          });
-
-          if (error) {
-            showNotification({
-              title: 'Error de Supabase',
-              description: error.message,
-              isChoice: false,
-              delete: false,
-              success: false,
-            });
-          } else {
-            showNotification({
-              title: '¡Éxito!',
-              description: 'Sesión iniciada correctamente',
-              isChoice: false,
-              delete: false,
-              success: true,
-            });
-          }
-        }
-      } else {
-        console.log('El usuario canceló el inicio de sesión');
+        token = response.data.idToken;
       }
-    } catch (error: any) {
-      // Si algo explota a nivel de sistema, el móvil te avisará con una alerta
-      Alert.alert('Error de Google', error.message || 'Error desconocido');
-      console.error(error);
+
+      if (!token) throw new Error('Google no devolvió un ID Token');
+
+      const { error } = await supabase.auth.signInWithIdToken({
+        provider: 'google',
+        token: token,
+      });
+
+      if (error) throw error;
+      
+      showNotification({
+        title: '¡Bienvenido!',
+        description: 'Sesión iniciada correctamente.',
+        isChoice: false, delete: false, success: true,
+      });
     }
-  };
+  } catch (error: any) {
+    console.error(error);
+    console.log('statusCode:', error.code);
+    console.log('message:', error.message);
+    showNotification({
+      title: 'Error',
+      description: error.message,
+      isChoice: false, delete: false, success: false,
+    });
+  } finally {
+    setLoading(false);
+  }
+};
   const handleAppleLogin = async () => {
     try {
       const credential = await AppleAuthentication.signInAsync({
@@ -294,7 +292,7 @@ export default function Login() {
                 </View>
               )}
 
-              {/*  
+               
               <View className="" style={{}}>
                 <TouchableOpacity
                   onPress={handleNativeGoogleLogin}
@@ -313,7 +311,7 @@ export default function Login() {
                   </View>
                 </TouchableOpacity>
               </View>
-              */}
+              
 
               {Platform.OS === 'ios' && (
                 <AppleAuthentication.AppleAuthenticationButton
