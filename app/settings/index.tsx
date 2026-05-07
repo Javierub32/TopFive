@@ -53,8 +53,8 @@ export default function SettingsScreen() {
         await AdsConsent.showForm();
       } else {
         showNotification({
-          title: 'Aviso',
-          description: 'El formulario de privacidad no está disponible en tu región.',
+          title: t('common.warning'),
+          description: t('settings.errors.privacyError.description'),
           isChoice: false,
           delete: false,
           success: false,
@@ -67,10 +67,10 @@ export default function SettingsScreen() {
 
   const handleCloseSession = async () => {
     showNotification({
-      title: 'Confirmar cierre de sesión',
-      description: '¿Estás seguro de que deseas cerrar sesión?',
-      leftButtonText: 'Cancelar',
-      rightButtonText: 'Cerrar sesión',
+      title: t('settings.account.logOut.alertTitle'),
+      description: t('settings.account.logOut.alertDescription'),
+      leftButtonText: t('common.cancel'),
+      rightButtonText: t('settings.account.logOut.alertConfirmation'),
       isChoice: true,
       delete: true,
       success: false,
@@ -89,11 +89,10 @@ export default function SettingsScreen() {
   };
   const handleDeleteAccount = async () => {
     showNotification({
-      title: 'Confirmar eliminación',
-      description:
-        '¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.',
+      title: t('settings.account.deleteAccount.firstAlert.alertTitle'),
+      description: t('settings.account.deleteAccount.firstAlert.alertDescription'),
       leftButtonText: t('common.cancel'),
-      rightButtonText: 'Eliminar',
+      rightButtonText: t('settings.account.deleteAccount.firstAlert.alertConfirmation'),
       highlightRight: true,
       isChoice: true,
       delete: true,
@@ -102,11 +101,10 @@ export default function SettingsScreen() {
       onRightPress: async () => {
         hideNotification();
         showNotification({
-          title: 'Última confirmación',
-          description:
-            'Esta es tu última oportunidad para cancelar. ¿Realmente deseas eliminar tu cuenta?',
-          leftButtonText: 'Eliminar',
-          rightButtonText: 'Cancelar',
+          title: t('settings.account.deleteAccount.secondAlert.alertTitle'),
+          description: t('settings.account.deleteAccount.secondAlert.alertDescription'),
+          leftButtonText: t('settings.account.deleteAccount.secondAlert.alertConfirmation'),
+          rightButtonText: t('common.cancel'),
           highlightRight: false,
           isChoice: true,
           delete: true,
@@ -133,7 +131,7 @@ export default function SettingsScreen() {
     try {
       const url = `https://www.topfive5.me/details/user?username=${username}&from=link`;
       await Share.share({
-        message: `¡Echa un vistazo a mi perfil en TopFive!\n${url}`,
+        message: t('settings.account.share.shareMessage', { url }),
       });
     } catch (error) {
       console.error('Error al compartir', error);
@@ -163,7 +161,7 @@ export default function SettingsScreen() {
                     <View className="flex-row items-center justify-start gap-2">
                       <AntDesign name="edit" size={24} color={colors.primaryText} />
                       <Text className="text-lg" style={{ color: colors.primaryText }}>
-                        {t('settings.personalization.editProfile')}
+                        {t('settings.personalization.editProfile.title')}
                       </Text>
                     </View>
                     <View>
@@ -186,7 +184,7 @@ export default function SettingsScreen() {
                     <View className="flex-row items-center justify-start gap-2">
                       <FontAwesome5 name="palette" size={24} color={colors.primaryText} />
                       <Text className="text-lg" style={{ color: colors.primaryText }}>
-                        {t('settings.personalization.changeTheme')}
+                        {t('settings.personalization.changeTheme.title')}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -202,7 +200,7 @@ export default function SettingsScreen() {
                         onPress={() => changeTheme('dark')}>
                         <MaterialIcons name="dark-mode" size={24} color={colors.primaryText} />
                         <Text className="text-center text-sm" style={{ color: colors.primaryText }}>
-                          {t('themes.dark')}
+                          {t('settings.personalization.changeTheme.darkMode')}
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
@@ -215,7 +213,7 @@ export default function SettingsScreen() {
                         onPress={() => changeTheme('light')}>
                         <MaterialIcons name="light-mode" size={24} color={colors.primaryText} />
                         <Text className="text-center text-sm" style={{ color: colors.primaryText }}>
-                          {t('themes.light')}
+                          {t('settings.personalization.changeTheme.lightMode')}
                         </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
@@ -232,7 +230,7 @@ export default function SettingsScreen() {
                           color={colors.primaryText}
                         />
                         <Text className="text-center text-sm" style={{ color: colors.primaryText }}>
-                          {t('themes.system')}
+                          {t('settings.personalization.changeTheme.systemMode')}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -248,7 +246,7 @@ export default function SettingsScreen() {
                     <View className="flex-row items-center justify-start gap-2">
                       <MaterialIcons name="language" size={24} color={colors.primaryText} />
                       <Text className="text-lg" style={{ color: colors.primaryText }}>
-                        {t('settings.personalization.changeLang')}
+                        {t('settings.personalization.changeLanguage')}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -309,7 +307,7 @@ export default function SettingsScreen() {
                     <View className="flex-row items-center justify-start gap-2">
                       <Ionicons name="share-outline" size={24} color={colors.primaryText} />
                       <Text className="text-lg" style={{ color: colors.primaryText }}>
-                        {t('settings.account.share')}
+                        {t('settings.account.share.title')}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -323,7 +321,7 @@ export default function SettingsScreen() {
                     <View className="flex-row items-center justify-start gap-2">
                       <Ionicons name="log-out-outline" size={24} color={colors.primaryText} />
                       <Text className="text-lg" style={{ color: colors.primaryText }}>
-                        {t('settings.account.logOut')}
+                        {t('settings.account.logOut.title')}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -336,7 +334,7 @@ export default function SettingsScreen() {
                   <View className="flex-row items-center justify-start gap-2">
                     <Ionicons name="trash-outline" size={24} color={colors.error} />
                     <Text className="text-lg font-bold" style={{ color: colors.error }}>
-                      {t('settings.account.delAcc')}
+                      {t('settings.account.deleteAccount.title')}
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -382,7 +380,7 @@ export default function SettingsScreen() {
                         color={colors.primaryText}
                       />
                       <Text className="text-lg" style={{ color: colors.primaryText }}>
-                        {t('settings.legal.aboutUs')}
+                        {t('settings.legal.aboutUs.title')}
                       </Text>
                     </View>
                     <View>

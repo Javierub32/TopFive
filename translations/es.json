@@ -2,18 +2,23 @@
     "common":{
         "save": "Guardar",
         "cancel": "Cancelar",
-        "loading": "Cargando..."
+        "loading": "Cargando...",
+        "saveChanges": "Guardar cambios",
+        "warning": "Aviso"
+    },
+    "categories": {
+        "books": "Libros",
+        "series": "Series",
+        "films": "Películas",
+        "videogames": "Videojuegos",
+        "albums": "Álbumes"
+        
     },
     "languages":{
         "es": "Español",
         "en": "Inglés"
     },
-    "themes":{
-        "dark": "Oscuro",
-        "light": "Claro",
-        "system": "Sistema"
-    },
-    "tabs":{
+    "tabs":{    
         "home": "Inicio",
         "lists": "Listas",
         "search": "Búsqueda",
@@ -23,22 +28,82 @@
         "title": "Configuración",
         "personalization": {
             "title":"Personalización",
-            "editProfile": "Editar perfil",
-            "changeTheme": "Cambiar tema",
-            "changeLang": "Cambiar idioma"
+            "editProfile": {
+                "title": "Editar perfil",
+                "username": "Nombre de usuario",
+                "description": "Descripción"
+            },
+            "changeTheme": {
+                "title": "Cambiar tema",
+                "darkMode": "Oscuro",
+                "lightMode": "Claro",
+                "systemMode": "Sistema"
+            },
+            "changeLanguage": "Cambiar idioma"
         },
         "account": {
             "title": "Cuenta",
-            "share": "Compartir perfil",
-            "logOut": "Cerrar sesión",
-            "delAcc": "Eliminar cuenta"
+            "share": {
+                "title": "Compartir perfil",
+                "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}"
+            },
+            "logOut": {
+                "title": "Cerrar sesión",
+                "alertTitle": "Confirmar cierre de sesión",
+                "alertDescription": "¿Estás seguro de que deseas cerrar sesión",
+                "alertConfirmation": "Cerrar sesión"
+            },
+            "deleteAccount": {
+                "title": "Eliminar cuenta",
+                "firstAlert":{
+                    "alertTitle": "Confirmar eliminación",
+                    "alertDescription": "¿Estás seguro de que deseas eliminar la cuenta? Esta acción no se puede deshacer",
+                    "alertConfirmation": "Eliminar" 
+                },
+                "secondAlert":{
+                    "alertTitle": "Última confirmación",
+                    "alertDescription": "Esta es tu última oportunidad para cancelar. ¿Realmente deseas eliminar tu cuenta?",
+                    "alertConfirmation": "Eliminar"
+                } 
+            }
         }, 
         "legal": {
             "title": "Soporte y legal",
             "sendFeed": "Enviar feedback",
-            "aboutUs": "Sobre nosotros",
+            "aboutUs": {
+                "title": "Sobre nosotros",
+                "creditsTitle": "Créditos y Licencias",
+                "creditsDescription": "Esta aplicación utiliza datos de las siguientes fuentes",
+                "filmsCard":{
+                    "description": "Este producto utiliza la API de TMDB pero no está certificada por TMDB.",
+                    "link": "Visitar TMDB"
+                },
+                "seriesCard": {
+                    "description": "Datos proporcionados por TVMaze. Licenciado bajo CC BY-SA 4.0.",
+                    "link": "Visitar TVMaze"
+                },
+                "videogamesCard": {
+                    "description": "Información de videojuegos provista por IGDB.",
+                    "link": "Visitar IGDB"
+                }, 
+                "albumsCard":{
+                    "description": "Datos proporcionados por Discogs. Este producto utiliza la API de Discogs pero no está certificada por Discogs.",
+                    "link": "Visitar Discogs"
+                },
+                "booksCard":{
+                    "description": "Datos proporcionados por OpenLibrary.",
+                    "link": "Visitar OpenLibrary"
+                }
+            },
             "privacy": "Política de privacidad",
             "adsPriv": "Privacidad de anuncios"
+        },
+        "errors": {
+            "privacyError":{
+                "description": "El formulario de privacidad no está disponible en tu región."
+            }
         }
+
     }
+
 }
