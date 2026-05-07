@@ -12,7 +12,9 @@ import { RewardedAd, RewardedAdEventType, AdEventType,TestIds } from 'lib/reward
 
 import { UserAvatar } from '@/User/components/UserAvatar';
 import { useProfile } from '@/Profile/hooks/useProfile';
-const availableFrames = ['none', 'libro', 'pelicula', 'cancion', 'videojuego', 'love'];
+const availableFrames = ['none', 'libro', 'pelicula', 'cancion', 'videojuego', 'love', 'lazoRosa', 'coronaDorada',
+  'cowboy', 'mugiwara'
+];
 
 const adUnitId = __DEV__
   ? TestIds.REWARDED
