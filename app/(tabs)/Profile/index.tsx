@@ -78,7 +78,9 @@ export default function ProfileScreen() {
           <NotificationButton from='Profile'/>
           <Pressable
             className="rounded-full p-3"
-            onPress={() => router.push({ pathname: '/settings' , params: { username: userData?.username, description: userData?.description } })}>
+            onPress={() => router.push({ pathname: '/settings' , params: { username: userData?.username, description: userData?.description,
+              avatar_url: userData?.avatar_url || null, frame: userData?.frame || 'none', from: 'Profile'
+             } })}>
             <Feather name="settings" size={24} color={colors.primaryText} />
           </Pressable>
         </View>
@@ -98,14 +100,16 @@ export default function ProfileScreen() {
           </ProfileData>
 
           {/* EDITAR Y COMPARTIR PERFIL */}
+          
           <View className="flex-row gap-x-2 mt-5">
             {/* Editar perfil */}
             <TouchableOpacity
-              className="flex-1 items-center justify-center rounded-xl py-2.5 px-3"
+              className="flex-1 items-center justify-center rounded-xl py-2 px-3"
               style={{ backgroundColor: `${colors.accent}33` }}
               activeOpacity={0.4}
               onPress={() =>
-                router.push({ pathname: '/editProfile', params: { username: userData?.username, description: userData?.description } })
+                router.push({ pathname: '/editProfile', params: { username: userData?.username, description: userData?.description, 
+                   from: 'Profile'} })
               }>
                 <Text className="text-base font-semibold" style={{ color: colors.primaryText }}>
                   {t('settings.personalization.editProfile')}
@@ -114,7 +118,7 @@ export default function ProfileScreen() {
 
             {/* Compartir perfil */}
             <TouchableOpacity
-              className="flex-1 items-center justify-center rounded-xl py-2.5 px-3"
+              className="flex-1 items-center justify-center rounded-xl py-2 px-3"
               style={{ backgroundColor: `${colors.accent}33` }}
               activeOpacity={0.4}
               onPress={handleShare}>

@@ -158,7 +158,7 @@ export default function SettingsScreen() {
                     className="w-full flex-row items-center justify-between gap-4 p-2 pb-4"
                     activeOpacity={0.4}
                     onPress={() =>
-                      router.push({ pathname: '/editProfile', params: { username, description } })
+                      router.push({ pathname: '/editProfile', params: { username, description,  from: 'Settings' } })
                     }>
                     <View className="flex-row items-center justify-start gap-2">
                       <AntDesign name="edit" size={24} color={colors.primaryText} />

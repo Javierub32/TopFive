@@ -25,7 +25,8 @@
             "title":"Personalización",
             "editProfile": "Editar perfil",
             "changeTheme": "Cambiar tema",
-            "changeLang": "Cambiar idioma"
+            "changeLang": "Cambiar idioma",
+            "editPhoto" : "Editar foto"
         },
         "account": {
             "title": "Cuenta",

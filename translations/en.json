@@ -25,7 +25,8 @@
             "title":"Costumize",
             "editProfile": "Edit profile",
             "changeTheme": "Change theme",
-            "changeLang": "Change language"
+            "changeLang": "Change language",
+            "editPhoto" : "Edit photo"
         },
         "account": {
             "title": "Account",
