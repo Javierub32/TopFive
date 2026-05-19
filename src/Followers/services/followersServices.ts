@@ -16,7 +16,8 @@ export const followersServices = {
 			)
 		`)
 		.eq('following_id', userId) // Yo soy el que está siendo seguido
-		.eq('status', 'accepted');  // Solo traemos seguidores aceptados
+		.eq('status', 'accepted')  // Solo traemos seguidores aceptados
+		.order('created_at', {ascending: false});// Ordenamos de RECIENTE a ANTIGUO
 
 		if (error) {
 			console.error('Error al obtener seguidores:', error.message);
@@ -40,7 +41,8 @@ export const followersServices = {
 			)
 		`)
 		.eq('follower_id', userId) // Yo soy el seguidor
-		.eq('status', 'accepted');
+		.eq('status', 'accepted')
+		.order('created_at', {ascending: false}); //Ordenamos de RECIENTE a ANTIGUO
 
 		if (error) {
 			console.error('Error al obtener seguidos:', error.message);
