@@ -48,6 +48,7 @@ export async function registerForPushNotificationsAsync(userId: string) {
         await Notifications.getExpoPushTokenAsync({ projectId })
       ).data;
       
+	  console.log("MI PUSH TOKEN ES:", pushTokenString);
       // Guardamos el token en la tabla usuario de Supabase
       if (pushTokenString && userId) {
         await supabase
