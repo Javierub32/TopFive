@@ -13,12 +13,20 @@ import { TabView } from 'react-native-tab-view';
 import { BookIcon, FilmIcon, ShowIcon, GameIcon, MusicIcon } from 'components/Icons';
 import { CategoryTabBar } from 'components/CategoryTarBar';
 import Lists from '@/Collection/components/Lists';
+import {FontSizeProvider} from 'context/FontSizeContext';
+import {useFontSize} from 'context/FontSizeContext';
+import {AppText} from 'components/AppText';
+
 
 export default function ListScreen() {
   const { colors } = useTheme();
   const layout = useWindowDimensions();
   const { categoriaActual, setCategoriaActual } = useCollection();
   const [isChanging, setIsChanging] = useState(false);
+
+  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
+  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
+
 
   const { lists, loading, deleteList } = useLists(categoriaActual as ResourceType);
 
@@ -75,9 +83,9 @@ export default function ListScreen() {
       <View className="flex-1 px-4 pt-6">
         
         <View className="mt-2 mb-4 flex-row items-end justify-between">
-            <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>Listas</Text>
+            <AppText className="text-3xl font-bold" style={{ color: colors.primaryText }}>Listas</AppText>
             <TouchableOpacity activeOpacity={0.7} onPress={() => router.push("/form/list")}>
-                <Text className="text-xl" style={{ color: colors.primary }}>+ Nueva lista</Text>
+                <AppText className="text-xl" style={{ color: colors.primary }}>+ Nueva lista</AppText>
             </TouchableOpacity>
         </View>
 

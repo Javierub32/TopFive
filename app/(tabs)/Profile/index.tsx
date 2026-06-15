@@ -15,9 +15,16 @@ import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { NotificationButton } from '@/Notifications/components/NotificationButton';
 import { useTranslation } from 'react-i18next';
+import {FontSizeProvider} from 'context/FontSizeContext';
+import {useFontSize} from 'context/FontSizeContext';
+import {AppText} from 'components/AppText';
+import { useState } from 'react';
+
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
+  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
+  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
   const {
     userData,
@@ -69,9 +76,9 @@ export default function ProfileScreen() {
     <Screen>
       <ThemedStatusBar />
       <View className="flex-1 px-4 pt-6">
-        <Text className="mb-4 text-3xl font-bold" style={{ color: colors.primaryText }}>
+        <AppText className="mb-4 text-3xl font-bold" style={{ color: colors.primaryText }}>
           {userData?.username || 'Usuario'}
-        </Text>
+        </AppText>
 
         {/* Botones de configuración y notificaciones */}
         <View className="absolute right-4 top-5 z-10 flex-row gap-x-2">
@@ -111,9 +118,9 @@ export default function ProfileScreen() {
                 router.push({ pathname: '/editProfile', params: { username: userData?.username, description: userData?.description, 
                    from: 'Profile'} })
               }>
-                <Text className="text-base font-semibold" style={{ color: colors.primaryText }}>
+                <AppText className="text-base font-semibold" style={{ color: colors.primaryText }}>
                   {t('settings.personalization.editProfile')}
-                </Text>
+                </AppText>
             </TouchableOpacity>
 
             {/* Compartir perfil */}
@@ -122,9 +129,9 @@ export default function ProfileScreen() {
               style={{ backgroundColor: `${colors.accent}33` }}
               activeOpacity={0.4}
               onPress={handleShare}>
-                <Text className="text-base font-semibold" style={{ color: colors.primaryText }}>
+                <AppText className="text-base font-semibold" style={{ color: colors.primaryText }}>
                   {t('settings.account.share')}
-                </Text>
+                </AppText>
             </TouchableOpacity>
           </View>
 

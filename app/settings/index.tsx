@@ -10,6 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { Screen } from 'components/Screen';
+//Todos los iconos se importan desde el archivo Icons
 import {
   AntDesign,
   FontAwesome,
@@ -38,6 +39,7 @@ export default function SettingsScreen() {
   const { showNotification, hideNotification } = useNotification();
   const [showThemeOptions, setShowThemeOptions] = useState(false);
   const [showLangOptions, setShowLangOptions] = useState(false);
+  //Tamaño de fuente
   const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
   const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 

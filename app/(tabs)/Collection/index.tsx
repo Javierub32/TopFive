@@ -12,12 +12,19 @@ import { useCollection } from 'context/CollectionContext';
 import Animated, { FadeInUp, LinearTransition } from 'react-native-reanimated';
 import { ResourceType } from 'hooks/useResource';
 import { CategoryTabBar } from 'components/CategoryTarBar';
+import {FontSizeProvider} from 'context/FontSizeContext';
+import {useFontSize} from 'context/FontSizeContext';
+import {AppText} from 'components/AppText';
+
 
 export default function CollectionScreen() {
   const layout = useWindowDimensions();
   const { colors } = useTheme();
   const { categoriaActual, setCategoriaActual, isSearchVisible, toggleSearch } = useCollection();
   const [isChanging, setIsChanging] = useState(false);
+  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
+  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
+
 
   const routes = [
     { key: 'libro', title: 'Libros' },
@@ -54,9 +61,9 @@ export default function CollectionScreen() {
     <Screen>
       <View className="flex-1 px-4 pt-6">
         <View className="mb-4 flex-row items-center justify-between">
-          <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="text-3xl font-bold" style={{ color: colors.primaryText }}>
             Mi Biblioteca
-          </Text>
+          </AppText>
 
           <TouchableOpacity onPress={toggleSearch} className="rounded-full p-3">
             {isSearchVisible ? (
