@@ -15,7 +15,7 @@ import { supabase } from 'lib/supabase';
 import { NotificationModal } from 'components/NotificationModal';
 import { AdsConsent, AdsConsentStatus } from 'lib/adsConsent';
 import { registerForPushNotificationsAsync } from 'lib/pushNotifications';
-
+import { FontSizeProvider } from 'context/FontSizeContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -77,9 +77,9 @@ function InitialLayout() {
     if (appIsReady) {
       initAdsConsent();
     }
-	if (appIsReady && session) {
-		  registerForPushNotificationsAsync(session.user.id);
-	}		
+    if (appIsReady && session) {
+      registerForPushNotificationsAsync(session.user.id);
+    }
   }, [appIsReady]);
 
   useEffect(() => {
@@ -224,15 +224,17 @@ function InitialLayout() {
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <ThemeProvider>
-        <CollectionProvider>
-          <NotificationProvider>
-            <SearchProvider>
-              <InitialLayout />
-            </SearchProvider>
-          </NotificationProvider>
-        </CollectionProvider>
-      </ThemeProvider>
+      <FontSizeProvider>
+        <ThemeProvider>
+          <CollectionProvider>
+            <NotificationProvider>
+              <SearchProvider>
+                <InitialLayout />
+              </SearchProvider>
+            </NotificationProvider>
+          </CollectionProvider>
+        </ThemeProvider>
+      </FontSizeProvider>
     </AuthProvider>
   );
 }

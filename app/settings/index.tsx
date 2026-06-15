@@ -2,7 +2,6 @@ import { ReturnButton } from 'components/ReturnButton';
 import {
   TouchableOpacity,
   View,
-  Text,
   TextComponent,
   Alert,
   Linking,
@@ -14,11 +13,11 @@ import { Screen } from 'components/Screen';
 import {
   AntDesign,
   FontAwesome,
-  Ionicons,
+  FontAwesome5,
+  Ionicons, 
   MaterialCommunityIcons,
   MaterialIcons,
-} from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons/';
+} from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useAuth } from 'context/AuthContext';
@@ -28,6 +27,9 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {FontSizeProvider} from 'context/FontSizeContext';
+import {useFontSize} from 'context/FontSizeContext';
+import {AppText} from 'components/AppText';
 export default function SettingsScreen() {
   const { signOut, deleteAccount } = useAuth();
 
@@ -36,6 +38,8 @@ export default function SettingsScreen() {
   const { showNotification, hideNotification } = useNotification();
   const [showThemeOptions, setShowThemeOptions] = useState(false);
   const [showLangOptions, setShowLangOptions] = useState(false);
+  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
+  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
   const { t, i18n } = useTranslation();
 
@@ -147,9 +151,9 @@ export default function SettingsScreen() {
         <View className="mb-14 flex-1 p-4">
           <View className="flex-1 gap-4">
             <View>
-              <Text className="mb-1 p-1 text-xl font-bold" style={{ color: colors.primaryText }}>
+              <AppText className="mb-1 p-1 text-xl font-bold" style={{ color: colors.primaryText }}>
                 {t('settings.personalization.title')}
-              </Text>
+              </AppText>
               <View
                 className="flex-col justify-center gap-2 rounded-2xl p-2"
                 style={{ backgroundColor: `${colors.accent}33` }}>
@@ -162,9 +166,9 @@ export default function SettingsScreen() {
                     }>
                     <View className="flex-row items-center justify-start gap-2">
                       <AntDesign name="edit" size={24} color={colors.primaryText} />
-                      <Text className="text-lg" style={{ color: colors.primaryText }}>
+                      <AppText className="text-lg" style={{ color: colors.primaryText }}>
                         {t('settings.personalization.editProfile')}
-                      </Text>
+                      </AppText>
                     </View>
                     <View>
                       <MaterialCommunityIcons
@@ -185,9 +189,9 @@ export default function SettingsScreen() {
                     onPress={() => setShowThemeOptions(!showThemeOptions)}>
                     <View className="flex-row items-center justify-start gap-2">
                       <FontAwesome5 name="palette" size={24} color={colors.primaryText} />
-                      <Text className="text-lg" style={{ color: colors.primaryText }}>
+                      <AppText className="text-lg" style={{ color: colors.primaryText }}>
                         {t('settings.personalization.changeTheme')}
-                      </Text>
+                      </AppText>
                     </View>
                   </TouchableOpacity>
                   {showThemeOptions && (
@@ -201,9 +205,9 @@ export default function SettingsScreen() {
                         }}
                         onPress={() => changeTheme('dark')}>
                         <MaterialIcons name="dark-mode" size={24} color={colors.primaryText} />
-                        <Text className="text-center text-sm" style={{ color: colors.primaryText }}>
+                        <AppText className="text-center text-sm" style={{ color: colors.primaryText }}>
                           {t('themes.dark')}
-                        </Text>
+                        </AppText>
                       </TouchableOpacity>
                       <TouchableOpacity
                         className="flex-1 items-center justify-center rounded-xl p-4"
@@ -214,9 +218,9 @@ export default function SettingsScreen() {
                         }}
                         onPress={() => changeTheme('light')}>
                         <MaterialIcons name="light-mode" size={24} color={colors.primaryText} />
-                        <Text className="text-center text-sm" style={{ color: colors.primaryText }}>
+                        <AppText className="text-center text-sm" style={{ color: colors.primaryText }}>
                           {t('themes.light')}
-                        </Text>
+                        </AppText>
                       </TouchableOpacity>
                       <TouchableOpacity
                         className="flex-1 items-center justify-center rounded-xl p-4"
@@ -231,9 +235,9 @@ export default function SettingsScreen() {
                           size={24}
                           color={colors.primaryText}
                         />
-                        <Text className="text-center text-sm" style={{ color: colors.primaryText }}>
+                        <AppText className="text-center text-sm" style={{ color: colors.primaryText }}>
                           {t('themes.system')}
-                        </Text>
+                        </AppText>
                       </TouchableOpacity>
                     </View>
                   )}
@@ -247,9 +251,9 @@ export default function SettingsScreen() {
                     onPress={() => setShowLangOptions(!showLangOptions)}>
                     <View className="flex-row items-center justify-start gap-2">
                       <MaterialIcons name="language" size={24} color={colors.primaryText} />
-                      <Text className="text-lg" style={{ color: colors.primaryText }}>
+                      <AppText className="text-lg" style={{ color: colors.primaryText }}>
                         {t('settings.personalization.changeLang')}
-                      </Text>
+                      </AppText>
                     </View>
                   </TouchableOpacity>
                   {showLangOptions && (
@@ -262,14 +266,14 @@ export default function SettingsScreen() {
                           borderColor: i18n.language === 'es' ? colors.accent : 'transparent',
                         }}
                         onPress={() => changeLanguage('es')}>
-                        <Text
+                        <AppText
                           className="font-sans text-base font-bold uppercase tracking-wider"
                           style={{ color: colors.primaryText }}>
                           ES
-                        </Text>
-                        <Text className="text-sm" style={{ color: colors.primaryText }}>
+                        </AppText>
+                        <AppText className="text-sm" style={{ color: colors.primaryText }}>
                           {t('languages.es')}
-                        </Text>
+                        </AppText>
                       </TouchableOpacity>
                       <TouchableOpacity
                         className="flex-1 items-center justify-center rounded-xl p-4"
@@ -279,15 +283,64 @@ export default function SettingsScreen() {
                           borderColor: i18n.language === 'en' ? colors.accent : 'transparent',
                         }}
                         onPress={() => changeLanguage('en')}>
-                        <Text
+                        <AppText
                           className="font-sans text-base font-bold uppercase tracking-wider"
                           style={{ color: colors.primaryText }}>
                           EN
-                        </Text>
-                        <Text className="text-sm" style={{ color: colors.primaryText }}>
+                        </AppText>
+                        <AppText className="text-sm" style={{ color: colors.primaryText }}>
                           {t('languages.en')}
-                        </Text>
+                        </AppText>
                       </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
+                {/* Cambiar tamaño de letra */}
+                <View>
+                  <TouchableOpacity
+                    className="w-full flex-row items-center justify-between gap-4 p-2"
+                    activeOpacity={0.4}
+                    onPress={() => setShowFontSizeOptions(!showFontSizeOptions)}>
+                    <View className="flex-row items-center justify-start gap-2">
+                      <Ionicons name="text" size={24} color={colors.primaryText} />
+                      <AppText style={{ color: colors.primaryText, fontSize: 14}}>
+                        {t('settings.personalization.changeFontSize')}
+                      </AppText>
+                    </View>
+                  </TouchableOpacity>
+                  {showFontSizeOptions && (
+                    <View className="mt-2 flex-row justify-between gap-2">
+                      {[
+                        { id: 'sm', label: 'Aa', multiplier: 0.85, title: t('fontsizes.small') },
+                        { id: 'md', label: 'Aa', multiplier: 1.0, title: t('fontsizes.medium') },
+                        { id: 'lg', label: 'Aa', multiplier: 1.2, title: t('fontsizes.large') },
+                      ].map((item) => (
+                        <TouchableOpacity
+                          key={item.id}
+                          className="flex-1 items-center justify-center rounded-xl p-3"
+                          style={{
+                            backgroundColor: colors.background,
+                            borderWidth: 2,
+                            borderColor: fontSizeMultiplier === item.multiplier ? colors.accent : 'transparent',
+                          }}
+                          onPress={() => changeFontSizeMultiplier(item.multiplier)}>
+                          <AppText
+                            style={{
+                              color: colors.primaryText,
+                              fontSize: 20,
+                              fontWeight: 'bold'
+                            }}
+                          >
+                            {item.label}
+                          </AppText>
+                          <AppText style={{ 
+                            color: colors.secondaryText,
+                            fontSize: 14
+                          }}>
+                            {item.title}
+                          </AppText>
+                        </TouchableOpacity>
+                      ))}
                     </View>
                   )}
                 </View>
@@ -295,9 +348,9 @@ export default function SettingsScreen() {
             </View>
 
             <View>
-              <Text className="mb-1 p-1 text-xl font-bold" style={{ color: colors.primaryText }}>
+              <AppText className="mb-1 p-1 text-xl font-bold" style={{ color: colors.primaryText }}>
                 {t('settings.account.title')}
-              </Text>
+              </AppText>
               <View
                 className="flex-col justify-center gap-2 rounded-2xl p-2"
                 style={{ backgroundColor: `${colors.accent}33` }}>
@@ -308,9 +361,9 @@ export default function SettingsScreen() {
                     onPress={handleShare}>
                     <View className="flex-row items-center justify-start gap-2">
                       <Ionicons name="share-outline" size={24} color={colors.primaryText} />
-                      <Text className="text-lg" style={{ color: colors.primaryText }}>
+                      <AppText className="text-lg" style={{ color: colors.primaryText }}>
                         {t('settings.account.share')}
-                      </Text>
+                      </AppText>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -322,9 +375,9 @@ export default function SettingsScreen() {
                     onPress={handleCloseSession}>
                     <View className="flex-row items-center justify-start gap-2">
                       <Ionicons name="log-out-outline" size={24} color={colors.primaryText} />
-                      <Text className="text-lg" style={{ color: colors.primaryText }}>
+                      <AppText className="text-lg" style={{ color: colors.primaryText }}>
                         {t('settings.account.logOut')}
-                      </Text>
+                      </AppText>
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -335,18 +388,18 @@ export default function SettingsScreen() {
                   onPress={handleDeleteAccount}>
                   <View className="flex-row items-center justify-start gap-2">
                     <Ionicons name="trash-outline" size={24} color={colors.error} />
-                    <Text className="text-lg font-bold" style={{ color: colors.error }}>
+                    <AppText className="text-lg font-bold" style={{ color: colors.error }}>
                       {t('settings.account.delAcc')}
-                    </Text>
+                    </AppText>
                   </View>
                 </TouchableOpacity>
               </View>
             </View>
 
             <View>
-              <Text className="mb-1 p-1 text-xl font-bold" style={{ color: colors.primaryText }}>
+              <AppText className="mb-1 p-1 text-xl font-bold" style={{ color: colors.primaryText }}>
                 {t('settings.legal.title')}
-              </Text>
+              </AppText>
               <View
                 className="flex-col justify-center gap-2 rounded-2xl p-2"
                 style={{ backgroundColor: `${colors.accent}33` }}>
@@ -357,9 +410,9 @@ export default function SettingsScreen() {
                     onPress={() => Linking.openURL('https://forms.gle/2FCL2eyicn4yLuTw8')}>
                     <View className="flex-row items-center justify-start gap-2">
                       <MaterialIcons name="feedback" size={24} color={colors.primaryText} />
-                      <Text className="text-lg" style={{ color: colors.primaryText }}>
+                      <AppText className="text-lg" style={{ color: colors.primaryText }}>
                         {t('settings.legal.sendFeed')}
-                      </Text>
+                      </AppText>
                     </View>
                     <View>
                       <MaterialCommunityIcons
@@ -381,9 +434,9 @@ export default function SettingsScreen() {
                         size={24}
                         color={colors.primaryText}
                       />
-                      <Text className="text-lg" style={{ color: colors.primaryText }}>
+                      <AppText className="text-lg" style={{ color: colors.primaryText }}>
                         {t('settings.legal.aboutUs')}
-                      </Text>
+                      </AppText>
                     </View>
                     <View>
                       <MaterialCommunityIcons
@@ -403,9 +456,9 @@ export default function SettingsScreen() {
                   }>
                   <View className="flex-row items-center justify-start gap-2">
                     <FontAwesome name="check-circle-o" size={24} color={colors.primaryText} />
-                    <Text className="text-lg" style={{ color: colors.primaryText }}>
+                    <AppText className="text-lg" style={{ color: colors.primaryText }}>
                       {t('settings.legal.privacy')}
-                    </Text>
+                    </AppText>
                   </View>
                   <View>
                     <MaterialCommunityIcons
@@ -425,9 +478,9 @@ export default function SettingsScreen() {
                       onPress={handleRevokeConsent}>
                       <View className="flex-row items-center justify-start gap-2">
                         <MaterialIcons name="security" size={24} color={colors.primaryText} />
-                        <Text className="text-lg" style={{ color: colors.primaryText }}>
+                        <AppText className="text-lg" style={{ color: colors.primaryText }}>
                           {t('settings.legal.adsPriv')}
-                        </Text>
+                        </AppText>
                       </View>
                       <View>
                         <MaterialCommunityIcons

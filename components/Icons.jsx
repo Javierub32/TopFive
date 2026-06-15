@@ -1,14 +1,32 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import Feather from '@expo/vector-icons/Feather';
-import Entypo from '@expo/vector-icons/Entypo';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import RNFontAwesome from '@expo/vector-icons/FontAwesome';
+import RNMaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import RNIonicons from '@expo/vector-icons/Ionicons';
+import RNFontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import RNFeather from '@expo/vector-icons/Feather';
+import RNEntypo from '@expo/vector-icons/Entypo';
+import RNAntDesign from '@expo/vector-icons/AntDesign';
+import RNMaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { useTheme } from 'context/ThemeContext';
+import { useFontSize } from 'context/FontSizeContext';
+// Para el tamaño de los iconos
+const withScalableSize = (IconComponent) => {
+  return function ScalableIcon({ size = 24, ...props }) {
+    const { fontSizeMultiplier } = useFontSize();
+    return <IconComponent size={size * fontSizeMultiplier} {...props} />;
+  };
+};
+export const FontAwesome = withScalableSize(RNFontAwesome);
+export const MaterialCommunityIcons = withScalableSize(RNMaterialCommunityIcons);
+export const Ionicons = withScalableSize(RNIonicons);
+export const FontAwesome5 = withScalableSize(RNFontAwesome5);
+export const Feather = withScalableSize(RNFeather);
+export const Entypo = withScalableSize(RNEntypo);
+export const AntDesign = withScalableSize(RNAntDesign);
+export const MaterialIcons = withScalableSize(RNMaterialIcons);
 
 
+//-----ICONOS-----//
 export const SocialIcon = (props) => (
   <FontAwesome name="users" size={24} color="black"  {...props} />
 );

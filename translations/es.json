@@ -8,6 +8,11 @@
         "es": "Español",
         "en": "Inglés"
     },
+    "fontsizes":{
+        "small": "Pequeño",
+        "medium": "Mediano",
+        "large": "Grande"
+    },
     "themes":{
         "dark": "Oscuro",
         "light": "Claro",
@@ -26,6 +31,7 @@
             "editProfile": "Editar perfil",
             "changeTheme": "Cambiar tema",
             "changeLang": "Cambiar idioma",
+            "changeFontSize": "Cambiar tamaño de fuente",
             "editPhoto" : "Editar foto"
         },
         "account": {
