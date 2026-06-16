@@ -1,6 +1,7 @@
 import { useTheme } from "context/ThemeContext"
 import { TextInput, Text, View } from "react-native"
 import {AppText} from 'components/AppText';
+import {AppTextInput} from 'components/AppTextInput';
 interface Props {
     review: any;
     setReview: any;
@@ -11,7 +12,7 @@ export const ReviewSetter = ({review, setReview} : Props) => {
 
     return (
         <View className="relative flex-1 min-h-24 rounded-xl" style={{backgroundColor: colors.surfaceButton}}>
-            <TextInput value={review}
+            <AppTextInput value={review}
             onChangeText={setReview}
             placeholder="Escribe tu opinión..."
             placeholderTextColor={colors.placeholderText}

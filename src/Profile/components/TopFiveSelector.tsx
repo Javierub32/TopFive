@@ -96,7 +96,6 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
       </View>
 
       <CategorySelectorModal
-	    title='Selecciona tu Top 5'
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onSelectCategory={(category) => handleCategorySelect(category)}

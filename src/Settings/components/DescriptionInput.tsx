@@ -1,6 +1,7 @@
 import { useTheme } from 'context/ThemeContext';
 import { Text, TextInput, View } from 'react-native';
 import {AppText} from 'components/AppText';
+import {AppTextInput} from 'components/AppTextInput';
 interface DescriptionInputProps {
   description: string;
   onChange: (text: string) => void;
@@ -25,7 +26,7 @@ export const FormInput = ({
   return (
     <View>
       <AppText className="mb-3 text-lg font-semibold text-primaryText">{title}</AppText>
-      <TextInput
+      <AppTextInput
         value={description}
         onChangeText={onChange}
         placeholder={placeholder}

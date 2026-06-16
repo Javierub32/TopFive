@@ -4,6 +4,7 @@ import { ResourceType } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { SearchIcon } from 'components/Icons';
 import {AppText} from 'components/AppText';
+import {AppTextInput} from 'components/AppTextInput';
 interface SearchBarProps {
   value: string;
   onChangeText: (text: string) => void;
@@ -50,7 +51,7 @@ export const SearchBar = ({
         </TouchableOpacity>
 
         {/* Input de texto */}
-        <TextInput
+        <AppTextInput
           className="h-full flex-1 px-3 text-base overflow-hidden"
           style={{color: colors.primaryText, lineHeight: 17, maxHeight: 17}}
           placeholder={`Buscar ${categoryLabel}...`}

@@ -2,6 +2,7 @@ import { useTheme } from 'context/ThemeContext';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, TextInput, Pressable } from 'react-native';
 import {AppText} from 'components/AppText';
+import {AppTextInput} from 'components/AppTextInput';
 interface DateSelectorProps {
   selectedYear: number;
   onYearChange: (year: number) => void;
@@ -86,7 +87,7 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
               Seleccionar Año
             </AppText>
             
-            <TextInput
+            <AppTextInput
               value={inputYear}
               onChangeText={setInputYear}
               keyboardType="numeric"

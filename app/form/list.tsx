@@ -12,7 +12,7 @@ import { ResourceType } from 'hooks/useResource';
 import { supabase } from 'lib/supabase';
 import { useNotification } from 'context/NotificationContext';
 import {AppText} from 'components/AppText';
-
+import {AppTextInput} from 'components/AppTextInput';
 export default function ListForm() {
   const { colors } = useTheme();
   const { categoriaActual, setIsSearchVisible } = useCollection();
@@ -153,7 +153,7 @@ const handleSubmit = async () => {
           <AppText className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
             Nombre de la lista
           </AppText>
-          <TextInput
+          <AppTextInput
             placeholder="Ej: Películas favoritas"
             placeholderTextColor={colors.secondaryText}
             value={formData.name}
@@ -167,7 +167,7 @@ const handleSubmit = async () => {
           <AppText className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
             Descripción
           </AppText>
-          <TextInput
+          <AppTextInput
             placeholder="Describe el contenido de esta lista..."
             placeholderTextColor={colors.secondaryText}
             value={formData.description}
