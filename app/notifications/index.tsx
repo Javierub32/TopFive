@@ -7,10 +7,10 @@ import { NotificationItem } from '@/Notifications/components/NotificationItems';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useTheme } from "context/ThemeContext";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "components/Icons";
 import { useUser } from '@/User/hooks/useUser';
 import { useAuth } from 'context/AuthContext';
-
+import {AppText} from 'components/AppText';
 export default function NotificationsScreen() {
   const { 
     loading, 
@@ -90,18 +90,18 @@ export default function NotificationsScreen() {
             </View>
             
           
-          <Text
+          <AppText
             className="mb-3 text-center text-2xl font-bold"
             style={{color: colors.primaryText}}
           >
             Sin Notificaciones
-          </Text>
-          <Text
+          </AppText>
+          <AppText
             className="text-center text-base px-12"
             style={{color: colors.secondaryText}}
           >
             No tienes notifiaciones pendientes en este momento. ¡Vuelve más tarde!
-          </Text>
+          </AppText>
           </View>
           
         )}

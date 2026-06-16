@@ -1,11 +1,10 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { router, useNavigation } from 'expo-router';
 import { BackHandler, Text, TouchableOpacity, View } from 'react-native';
 import { LeftArrowIcon } from './Icons';
 import { useTheme } from 'context/ThemeContext';
 import { useSearch } from 'context/SearchContext';
 import { useCallback, useEffect, useRef } from "react";
-
+import {AppText} from 'components/AppText';
 interface ReturnButtonProps {
   route: string;
   title: string;
@@ -66,9 +65,9 @@ export const ReturnButton = ({ route, title, style, params, deleteSearchResults,
         activeOpacity={0.7}>
         <LeftArrowIcon color={colors.primaryText} />
       </TouchableOpacity>
-      <Text className="flex-1 text-xl font-bold" style={{ color: colors.primaryText }} numberOfLines={1}>
+      <AppText className="flex-1 text-xl font-bold" style={{ color: colors.primaryText }} numberOfLines={1}>
         {title}
-      </Text>
+      </AppText>
     </View>
   );
 };

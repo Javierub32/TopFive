@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useFrame } from '@/Frames/hook/useFrame';
 import { useNotification } from 'context/NotificationContext';
-
+import {AppText} from 'components/AppText';
 import { RewardedAd, RewardedAdEventType, AdEventType,TestIds } from 'lib/rewarderAd';
 
 import { UserAvatar } from '@/User/components/UserAvatar';
@@ -230,9 +230,9 @@ export default function FrameSelectorScreen() {
             />
           )}
 
-          <Text className="text-center text-lg font-bold" style={{ color: colors.background }}>
+          <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
             {saving || isWatchingAd ? 'Cargando...' : userOwnsFrame ? 'Guardar cambios' : 'Obtener'}
-          </Text>
+          </AppText>
         </TouchableOpacity>
 
         <View />

@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
 import { BookIcon, FilmIcon, ShowIcon, GameIcon, MusicIcon } from 'components/Icons';
 import { ResourceType } from 'hooks/useResource';
-
+import {AppText} from 'components/AppText';
 interface FallbackCoverProps {
   type: ResourceType;
   fullSize: boolean;
@@ -44,11 +44,11 @@ export const FallbackCover = ({ type, style, fullSize }: FallbackCoverProps) => 
       ]}>
       <Icon size={40} color={colors.primaryText} />
       {fullSize && (
-        <Text
+        <AppText
           className="mt-2 text-center text-xs font-semibold"
           style={{ color: colors.primaryText }}>
           {text}
-        </Text>
+        </AppText>
       )}
     </View>
   );

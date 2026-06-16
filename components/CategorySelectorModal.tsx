@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { BookIcon, FilmIcon, GameIcon, MusicIcon, ShowIcon } from 'components/Icons';
 import { ResourceType } from 'hooks/useResource';
 import { useRouter } from 'expo-router';
-
+import {AppText} from 'components/AppText';
 const categories: { type: ResourceType; label: string; icon: any }[] = [
   { type: 'libro', label: 'Libro', icon: BookIcon },
   { type: 'serie', label: 'Serie', icon: ShowIcon },
@@ -62,11 +62,11 @@ export const CategorySelectorModal = ({
           style={{ backgroundColor: colors.surfaceButton, borderColor: colors.borderButton }}
           activeOpacity={1}
           onPress={(e) => e.stopPropagation()}>
-          <Text
+          <AppText
             className="mb-4 text-center text-xl font-bold"
             style={{ color: colors.primaryText }}>
             {'¿Qué quieres añadir?'}
-          </Text>
+          </AppText>
 
           <View className="flex-row justify-around items-center">
             {categories.map((cat) => {
@@ -81,9 +81,9 @@ export const CategorySelectorModal = ({
                     style={{ backgroundColor: `${colors[`ground${categories.indexOf(cat) + 1}`]}26`, borderWidth: 0 }}>
                     <Icon size={24} color={`${colors[`ground${categories.indexOf(cat) + 1}`]}FF`} />
                   </View>
-                  <Text className="text-xs text-center mb-10" style={{ color: colors.primaryText }}>
+                  <AppText className="text-xs text-center mb-10" style={{ color: colors.primaryText }}>
                     {cat.label}
-                  </Text>
+                  </AppText>
                 </TouchableOpacity>
               );
             })}
