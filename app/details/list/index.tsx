@@ -8,8 +8,12 @@ import { ReturnButton } from "components/ReturnButton";
 import { LoadingIndicator } from "components/LoadingIndicator";
 import { CollectionStructure } from "components/CollectionStructure";
 import { useTheme } from "context/ThemeContext";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "components/Icons";
 import { ResourceType } from "hooks/useResource";
+import {FontSizeProvider} from 'context/FontSizeContext';
+import {useFontSize} from 'context/FontSizeContext';
+import {AppText} from 'components/AppText';
+import { useState } from 'react';
 
 export default function ListDetails() {
   const { categoriaActual, handleItemPress } = useCollection();
@@ -62,23 +66,23 @@ export default function ListDetails() {
 
             {/* Textos */}
             <View className="flex-1 justify-center">
-                <Text 
+                <AppText 
                     className="text-2xl font-bold leading-tight mb-1" 
                     style={{ color: colors.primaryText }}
                 >
                     {parsedListData?.nombre}
-                </Text>
+                </AppText>
                 {parsedListData?.descripcion ? (
-                    <Text 
+                    <AppText 
                         className="text-sm leading-5" 
                         style={{ color: colors.secondaryText }}
                     >
                         {parsedListData?.descripcion}
-                    </Text>
+                    </AppText>
                 ) : (
-                    <Text className="text-xs italic" style={{ color: colors.placeholderText }}>
+                    <AppText className="text-xs italic" style={{ color: colors.placeholderText }}>
                         Sin descripción
-                    </Text>
+                    </AppText>
                 )}
             </View>
         </View>

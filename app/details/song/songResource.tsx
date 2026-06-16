@@ -2,7 +2,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "components/Icons";
 import { SongResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
@@ -13,6 +13,10 @@ import { useAuth } from 'context/AuthContext';
 import { AdBanner } from 'components/AdBanner';
 import { ResourceHeader } from '@/Details/components/ResourceHeader';
 import { useTheme } from 'context/ThemeContext';
+import {FontSizeProvider} from 'context/FontSizeContext';
+import {useFontSize} from 'context/FontSizeContext';
+import {AppText} from 'components/AppText';
+import { useState } from 'react';
 
 export default function SongDetail() {
   const { item, from } = useLocalSearchParams();
@@ -25,6 +29,8 @@ export default function SongDetail() {
     return '/(tabs)/Collection';
   };
   const path = getPath();
+  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
+  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
   let songResource: SongResource | null = null;
 
@@ -45,10 +51,10 @@ export default function SongDetail() {
         <ReturnButton route={path} title="Detalle de la canción" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
-          <Text className="mt-4 text-xl font-bold text-primaryText">Error al cargar</Text>
-          <Text className="mt-2 text-center text-secondaryText">
+          <AppText className="mt-4 text-xl font-bold text-primaryText">Error al cargar</AppText>
+          <AppText className="mt-2 text-center text-secondaryText">
             No se pudo cargar la información de la canción
-          </Text>
+          </AppText>
         </View>
       </Screen>
     );

@@ -1,7 +1,7 @@
 import { View, Text, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "components/Icons";
 import { GameResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
@@ -13,11 +13,18 @@ import { DateCard } from '@/Details/components/DateCard';
 import { useAuth } from 'context/AuthContext';
 import { AdBanner } from 'components/AdBanner';
 import { ResourceHeader } from '@/Details/components/ResourceHeader';
+import {FontSizeProvider} from 'context/FontSizeContext';
+import {useFontSize} from 'context/FontSizeContext';
+import {AppText} from 'components/AppText';
+import { useState } from 'react';
 
 export default function GameDetail() {
   const { item, from } = useLocalSearchParams();
   const { colors } = useTheme();
   const { user } = useAuth();
+  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
+  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
+
 
   const getPath = () => {
     if (from === 'profile') return '/(tabs)/Profile';
@@ -45,12 +52,12 @@ export default function GameDetail() {
         <ReturnButton route={path} title="Detalle del videojuego" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
-          <Text className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
             Error al cargar
-          </Text>
-          <Text className="mt-2 text-center" style={{ color: colors.secondaryText }}>
+          </AppText>
+          <AppText className="mt-2 text-center" style={{ color: colors.secondaryText }}>
             No se pudo cargar la información del videojuego
-          </Text>
+          </AppText>
         </View>
       </Screen>
     );

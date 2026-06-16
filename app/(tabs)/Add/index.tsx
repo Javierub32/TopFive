@@ -15,10 +15,10 @@ import {AppText} from 'components/AppText';
 import { useState } from 'react';
 
 
-  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
-  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
 export default function AddScreen() {
+  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
+  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
   const {
     busqueda,
     setBusqueda,
