@@ -10,7 +10,7 @@ import { useTheme } from 'context/ThemeContext';
 import { View, Text } from 'react-native';
 import { AddToListButton } from 'components/AddToListButton';
 import { useLocalSearchParams } from 'expo-router';
-
+import {AppText} from 'components/AppText';
 interface Props {
   resource: BookResource | FilmResource | SeriesResource | SongResource | GameResource;
   isOwner?: boolean;
@@ -90,9 +90,9 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
   return (
     <View className="mb-4">
       <View className="flex-1 flex-row items-center justify-between">
-        <Text className="flex-1 text-3xl font-bold" style={{ color: colors.primaryText }}>
+        <AppText className="flex-1 text-3xl font-bold" style={{ color: colors.primaryText }}>
           {contenido.titulo || 'Sin título'}
-        </Text>
+        </AppText>
         {isOwner && <AddToListButton resourceCategory={resource.tiporecurso} resourceId={resource.id} />}
       </View>
 
@@ -101,20 +101,20 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
         <View
           className="justify-center rounded-lg px-3 py-1.5"
           style={{ backgroundColor: colors.surfaceButton }}>
-          <Text className="text-sm font-semibold" style={{ color: colors.markerText }}>
+          <AppText className="text-sm font-semibold" style={{ color: colors.markerText }}>
             {releaseYear}
-          </Text>
+          </AppText>
         </View>
 
         {/* Estado */}
         <View
           className="justify-center rounded-lg px-3 py-1.5"
           style={{ backgroundColor: `${getStatusColor(resource.estado)}33` }}>
-          <Text
+          <AppText
             className="text-sm font-semibold uppercase"
             style={{ color: getStatusColor(resource.estado) }}>
             {getStatusText(resource.estado)}
-          </Text>
+          </AppText>
         </View>
 
         {!!getConsumptionCount(resource) && (
@@ -122,9 +122,9 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
             className="flex-row items-center rounded-lg px-3 py-1.5"
             style={{ backgroundColor: `${colors.accent}33` }}>
             <TimesWatchedIcon />
-            <Text className="ml-1 text-xs font-bold" style={{ color: colors.markerText }}>
+            <AppText className="ml-1 text-xs font-bold" style={{ color: colors.markerText }}>
               {getConsumptionCount(resource)}x
-            </Text>
+            </AppText>
           </View>
         )}
 
@@ -133,11 +133,11 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
             className="flex-row items-center justify-between rounded-lg px-3 py-1.5"
             style={{ backgroundColor: `${getDificultyColor(getDificulty(resource))}33` }}>
             <DificultyIcon color={getDificultyColor(getDificulty(resource))} />
-            <Text
+            <AppText
               className="text-semibold ml-1 text-xs"
               style={{ color: getDificultyColor(getDificulty(resource)) }}>
               {getDificulty(resource)}
-            </Text>
+            </AppText>
           </View>
         )}
 

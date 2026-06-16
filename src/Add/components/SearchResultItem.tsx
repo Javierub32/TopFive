@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons } from 'components/Icons';
 import { SearchResult } from '../../Add/adapters/searchResultsAdapter';
 import { useTheme } from 'context/ThemeContext';
 import { ResourceType } from 'hooks/useResource';
 import { FallbackCover } from 'components/FallbackCover';
-
+import {AppText} from 'components/AppText';
 interface SearchResultItemProps {
   item: SearchResult;
   onPress: () => void;
@@ -44,33 +44,33 @@ export const SearchResultItem = ({ item, onPress, type }: SearchResultItemProps)
 
       {/* Información del Recurso */}
       <View className="flex-1 justify-center p-3 ">
-        <Text
+        <AppText
           className="mb-1 text-lg font-bold leading-tight"
           style={{ color: colors.primaryText }}
           numberOfLines={2}>
           {item.title}
-        </Text>
+        </AppText>
 
-        <Text className="mb-2 text-sm" style={{ color: colors.secondaryText }} numberOfLines={1}>
+        <AppText className="mb-2 text-sm" style={{ color: colors.secondaryText }} numberOfLines={1}>
           {item.artist}
-        </Text>
+        </AppText>
 
         {/* Fecha/Rating */}
         {item.date && item.rating && (
-          <Text className="mb-2 text-sm" style={{ color: colors.secondaryText }} numberOfLines={1}>
+          <AppText className="mb-2 text-sm" style={{ color: colors.secondaryText }} numberOfLines={1}>
             {item.date} | <FontAwesome5 name="star" size={16} color={colors.rating} solid={true} />{' '}
             {item.rating}
-          </Text>
+          </AppText>
         )}
         {item.date && !item.rating && (
-          <Text className="mb-2 text-sm" style={{ color: colors.secondaryText }} numberOfLines={1}>
+          <AppText className="mb-2 text-sm" style={{ color: colors.secondaryText }} numberOfLines={1}>
             {item.date}
-          </Text>
+          </AppText>
         )}
         {!item.date && item.rating && (
-          <Text className="mb-2 text-sm" style={{ color: colors.secondaryText }} numberOfLines={1}>
+          <AppText className="mb-2 text-sm" style={{ color: colors.secondaryText }} numberOfLines={1}>
             <FontAwesome5 name="star" size={16} color={colors.rating} solid={true} /> {item.rating}
-          </Text>
+          </AppText>
         )}
 
         {/* Badge de Género */}
@@ -80,9 +80,9 @@ export const SearchResultItem = ({ item, onPress, type }: SearchResultItemProps)
             <View
               className="mr-2 rounded-lg px-3 py-1.5"
               style={{ backgroundColor: colors.surfaceButton }}>
-              <Text className="text-xs font-semibold" style={{ color: colors.markerText }}>
+              <AppText className="text-xs font-semibold" style={{ color: colors.markerText }}>
                 {item.genre}
-              </Text>
+              </AppText>
             </View>
           </View>
         ) : null}

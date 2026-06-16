@@ -1,9 +1,9 @@
 import { View, TextInput, TouchableOpacity, Text } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from 'components/Icons';
 import { ResourceType } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { SearchIcon } from 'components/Icons';
-
+import {AppText} from 'components/AppText';
 interface SearchBarProps {
   value: string;
   onChangeText: (text: string) => void;
@@ -71,9 +71,9 @@ export const SearchBar = ({
           onPress={() => setMenuAbierto(!menuAbierto)}
         >
           <View className="max-w-[80px]">
-            <Text className="mr-1 font-medium" style={{color: colors.secondaryText}} numberOfLines={1}>
+            <AppText className="mr-1 font-medium" style={{color: colors.secondaryText}} numberOfLines={1}>
               {categoryLabel}
-            </Text>
+            </AppText>
           </View>
           <MaterialCommunityIcons
             name={menuAbierto ? 'chevron-up' : 'chevron-down'}
@@ -97,9 +97,9 @@ export const SearchBar = ({
               }}
               onPress={() => onCategoryChange(opcion)}
             >
-              <Text className="text-base" style={{fontWeight: selectedCategory === opcion ? 'bold' : 'normal', color: selectedCategory === opcion ? colors.primaryText : colors.secondaryText}}>
+              <AppText className="text-base" style={{fontWeight: selectedCategory === opcion ? 'bold' : 'normal', color: selectedCategory === opcion ? colors.primaryText : colors.secondaryText}}>
                 {CATEGORY_LABELS[opcion]}
-              </Text>
+              </AppText>
               {selectedCategory === opcion && (
                 <MaterialCommunityIcons name="check" size={16} color={colors.primaryText} />
               )}

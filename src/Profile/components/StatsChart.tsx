@@ -3,7 +3,7 @@ import { BarChart } from 'react-native-gifted-charts';
 import { DateSelector } from './DateSelector';
 import { useTheme } from 'context/ThemeContext';
 import { useState, useEffect } from 'react';
-
+import {AppText} from 'components/AppText';
 export const StatsChart = ({
   data,
   selectedYear,
@@ -43,7 +43,7 @@ export const StatsChart = ({
       frontColor: value > 0 ? colors.primary : colors.borderButton,
       topLabelComponent: () => (
         value > 0 ? (
-            <Text style={{ 
+            <AppText style={{ 
                 color: colors.primaryText, 
                 fontSize: fontSizeValue,
                 marginBottom: 4, 
@@ -52,7 +52,7 @@ export const StatsChart = ({
                 textAlign: 'center'
             }}>
             {value}
-            </Text>
+            </AppText>
         ) : null
       ),
       barBorderTopLeftRadius: 4,
@@ -79,9 +79,9 @@ export const StatsChart = ({
         }}
       >
         <View className="mb-6 flex-row justify-between items-center px-2">
-          <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="text-lg font-bold" style={{ color: colors.primaryText }}>
             Actividad
-          </Text>
+          </AppText>
           <DateSelector selectedYear={selectedYear} onYearChange={setSelectedYear} />
         </View>
 

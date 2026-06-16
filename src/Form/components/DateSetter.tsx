@@ -3,7 +3,7 @@ import { CalendarEndIcon, CalendarIcon, CalendarStartIcon } from "components/Ico
 import { useTheme } from "context/ThemeContext"
 import { useState } from "react";
 import { Modal, Platform, Text, TouchableOpacity, View } from "react-native";
-
+import {AppText} from 'components/AppText';
 interface Props {
     startDate: Date | null;
     setStartDate: any;
@@ -55,9 +55,9 @@ const PlatformDatePicker = ({show, setShow, date, setDate}: {show: boolean, setS
                             }
                             setShow(false)}
                         }>
-                            <Text className="font-bold text-lg" style={{color: colors.primary}}>
+                            <AppText className="font-bold text-lg" style={{color: colors.primary}}>
                                 Listo
-                            </Text>
+                            </AppText>
                         </TouchableOpacity>
                     </View>
                     <View className="items-center">
@@ -95,10 +95,10 @@ export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRang
                 onPress={() => setShowDatePickerInicio(true)}>
                     <View className='flex-row items-center gap-2 p-1'>
                         <CalendarIcon/>
-                        <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Ultima Vez</Text>
+                        <AppText className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Ultima Vez</AppText>
                     </View>
                     <View className='flex-row justify-center'>
-                        <Text className="text-sm font-bold p-3" style={{color: colors.primaryText}}>
+                        <AppText className="text-sm font-bold p-3" style={{color: colors.primaryText}}>
                             {startDate
                             ? startDate.toLocaleDateString('es-ES', {
                                 day: '2-digit',
@@ -106,13 +106,13 @@ export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRang
                                 year: 'numeric',
                                 })
                             : 'Sin fecha'}
-                        </Text>
+                        </AppText>
                     </View>
                 </TouchableOpacity>
                 {startDate && (
                     <TouchableOpacity onPress={() => setStartDate(null)}
                     className="mt-1 items-center">
-                        <Text className="text-xs" style={{color: colors.error}}>Limpiar fecha</Text>
+                        <AppText className="text-xs" style={{color: colors.error}}>Limpiar fecha</AppText>
                     </TouchableOpacity>
                 )}                
 
@@ -134,10 +134,10 @@ export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRang
                 onPress={() => setShowDatePickerInicio(true)}>
                     <View className='flex-row items-center gap-2'>
                         <CalendarStartIcon/>
-                        <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Fecha Inicio</Text>
+                        <AppText className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Fecha Inicio</AppText>
                     </View>
                     <View className='flex-row justify-center'>
-                        <Text className="text-sm font-bold text-primaryText">
+                        <AppText className="text-sm font-bold text-primaryText">
                             {startDate
                             ? startDate.toLocaleDateString('es-ES', {
                                 day: '2-digit',
@@ -145,12 +145,12 @@ export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRang
                                 year: 'numeric',
                                 })
                             : 'Sin fecha'}
-                        </Text>
+                        </AppText>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setStartDate(null)} disabled={!startDate}
                 className="mt-1 items-center">
-                    <Text className="text-xs" style={startDate? {color: colors.error} : {color: colors.background}}>Limpiar fecha</Text>
+                    <AppText className="text-xs" style={startDate? {color: colors.error} : {color: colors.background}}>Limpiar fecha</AppText>
                 </TouchableOpacity>
             </View>            
 
@@ -160,10 +160,10 @@ export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRang
                 onPress={() => setShowDatePickerFin(true)}>
                     <View className='flex-row items-center gap-2'>
                         <CalendarEndIcon/>
-                        <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Fecha Fin</Text>
+                        <AppText className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Fecha Fin</AppText>
                     </View>
                     <View className='flex-row justify-center'>
-                        <Text className="text-sm font-bold text-primaryText">
+                        <AppText className="text-sm font-bold text-primaryText">
                             {endDate
                             ? endDate.toLocaleDateString('es-ES', {
                                 day: '2-digit',
@@ -171,12 +171,12 @@ export const DateSetter = ({startDate, setStartDate, endDate, setEndDate, isRang
                                 year: 'numeric',
                                 })
                             : 'Sin fecha'}
-                        </Text>
+                        </AppText>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setEndDate(null)} disabled={!endDate}
                 className="mt-1 items-center">
-                    <Text className="text-xs" style={endDate ? {color: colors.error} : {color: colors.background}}>Limpiar fecha</Text>
+                    <AppText className="text-xs" style={endDate ? {color: colors.error} : {color: colors.background}}>Limpiar fecha</AppText>
                 </TouchableOpacity>
             
             </View>

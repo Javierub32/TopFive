@@ -1,7 +1,7 @@
 import { TouchableOpacity, Image, View, Text } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from 'components/Icons';
 import { collectionAdapter } from '../adapters/collectionAdapter';
-
+import {AppText} from 'components/AppText';
 export const CollectionItem = ({ item, category, onPress }: any) => {
   const title = collectionAdapter.getTitle(item, category);
   const image = collectionAdapter.getImage(item, category);
@@ -14,18 +14,18 @@ export const CollectionItem = ({ item, category, onPress }: any) => {
       <View className="flex-1 p-3 justify-between">
         <View>
           <View className="flex-row justify-between items-start">
-            <Text className="text-primaryText font-bold text-lg flex-1 mr-2" numberOfLines={1}>{title}</Text>
+            <AppText className="text-primaryText font-bold text-lg flex-1 mr-2" numberOfLines={1}>{title}</AppText>
             {item.favorito && <MaterialCommunityIcons name="heart" size={16} color="#ef4444" />}
           </View>
-          <Text className="text-secondaryText text-sm">{new Date(item.fechacreacion).toLocaleDateString()}</Text>
+          <AppText className="text-secondaryText text-sm">{new Date(item.fechacreacion).toLocaleDateString()}</AppText>
         </View>
         <View className="flex-row items-center justify-between mt-2">
           <View className="flex-row items-center bg-marker px-2 py-1 rounded border border-primary/20">
             <MaterialCommunityIcons name="star" size={12} color="#fbbf24" />
-            <Text className="text-markerText text-xs font-bold ml-1">{item.calificacion || 0}</Text>
+            <AppText className="text-markerText text-xs font-bold ml-1">{item.calificacion || 0}</AppText>
           </View>
           <View className={`px-2 py-1 rounded ${statusColor}`}>
-            <Text className="text-[10px] text-primaryText font-bold uppercase">{statusText}</Text>
+            <AppText className="text-[10px] text-primaryText font-bold uppercase">{statusText}</AppText>
           </View>
         </View>
       </View>

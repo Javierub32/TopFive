@@ -4,7 +4,7 @@ import { useTopFive } from '../hooks/useTopFive';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { CategorySelectorModal } from 'components/CategorySelectorModal';
 import { useAuth } from 'context/AuthContext';
-
+import {AppText} from 'components/AppText';
 export const TopFiveSelector = ({ userId }: { userId: string }) => {
   const slots = Array.from({ length: 5 });
   const { colors } = useTheme();
@@ -31,9 +31,9 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
 
   return (
     <View className="mb-4 mt-4">
-      <Text className="mb-2 text-lg font-bold" style={{ color: colors.primaryText }}>
+      <AppText className="mb-2 text-lg font-bold" style={{ color: colors.primaryText }}>
         Mi Top 5
-      </Text>
+      </AppText>
 
       {/* Grid de Slots */}
       <View className="flex-row gap-2">
@@ -60,9 +60,9 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
                       backgroundColor: colors.surfaceButton,
                       borderColor: colors.borderButton,
                     }}>
-                    <Text className="text-xl" style={{ color: colors.secondaryText }}>
+                    <AppText className="text-xl" style={{ color: colors.secondaryText }}>
                       +
-                    </Text>
+                    </AppText>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -86,7 +86,7 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
                   {imageUrl ? (
                     <Image source={{ uri: imageUrl }} className="h-full w-full" resizeMode="cover" />
                   ) : (
-                    <Text style={{ color: colors.secondaryText }}>Sin imagen</Text>
+                    <AppText style={{ color: colors.secondaryText }}>Sin imagen</AppText>
                   )}
                 </View>
               </TouchableOpacity>

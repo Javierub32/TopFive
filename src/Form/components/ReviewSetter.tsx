@@ -1,6 +1,6 @@
 import { useTheme } from "context/ThemeContext"
 import { TextInput, Text, View } from "react-native"
-
+import {AppText} from 'components/AppText';
 interface Props {
     review: any;
     setReview: any;
@@ -21,7 +21,7 @@ export const ReviewSetter = ({review, setReview} : Props) => {
             className="min-h-24 p-3 text-base"
             style={{color: colors.primaryText}}
             textAlignVertical="top"/>
-            <Text className="absolute bottom-0 right-0 text-right text-xs m-2" style={{color: colors.placeholderText}}>{review.length}/500</Text>
+            <AppText className="absolute bottom-0 right-0 text-right text-xs m-2" style={{color: colors.placeholderText}}>{review.length}/500</AppText>
         </View>
     )
 }

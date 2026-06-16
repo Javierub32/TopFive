@@ -1,8 +1,8 @@
 import { View, Text } from "react-native";
 import { useTheme } from "context/ThemeContext";
 import { RatingIcon } from "components/Icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-
+import { FontAwesome5 } from "components/Icons";
+import {AppText} from 'components/AppText';
 
 interface Props {
     rating: number;
@@ -15,7 +15,7 @@ export const RatingCard =({rating}: Props) => {
          <View className='flex-1 p-4 rounded-2xl flex justify-between gap-2' style={{backgroundColor: `${colors.rating}1A`}}>
             <View className='flex-row items-center gap-2'>
                 <RatingIcon/>
-                <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Calificación</Text>
+                <AppText className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Calificación</AppText>
             </View>
             <View className="flex-1 flex-row justify-center items-center">
                 {[1, 2, 3, 4, 5].map((star) => {

@@ -1,7 +1,7 @@
 import { Text } from 'react-native';
 import { Image } from 'react-native';
 import { View } from 'react-native';
-
+import {AppText} from 'components/AppText';
 
 interface MediaItemProps {
   item: { id: string; title: string; image: string; type?: string };
@@ -22,9 +22,9 @@ export function RenderContent({ item, variant }: MediaItemProps) {
           resizeMode="cover"
         />
       </View>
-      <Text className="mt-2 text-primaryText" numberOfLines={isVertical ? 2 : undefined}>
+      <AppText className="mt-2 text-primaryText" numberOfLines={isVertical ? 2 : undefined}>
         {item.title} {!isVertical && item.type ? ` (${item.type})` : ''}
-      </Text>
+      </AppText>
     </View>
   );
 }
@@ -42,10 +42,10 @@ export function RenderSong({ song }: { song: { id: string; title: string; artist
         />
       </View>
       <View className="flex-1 justify-center p-3">
-        <Text className="text-base font-bold text-primaryText" numberOfLines={2}>
+        <AppText className="text-base font-bold text-primaryText" numberOfLines={2}>
           {song.title}
-        </Text>
-        <Text className="mt-1 text-xs text-secondaryText">{song.artist}</Text>
+        </AppText>
+        <AppText className="mt-1 text-xs text-secondaryText">{song.artist}</AppText>
       </View>
     </View>
   );

@@ -1,11 +1,12 @@
 import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { ListInfo } from '../services/listServices';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { useNotification } from 'context/NotificationContext';
 import { PlusIcon, EditIcon, TrashIcon } from 'components/Icons';
+import {AppText} from 'components/AppText';
 interface ListItemProps {
 	list: ListInfo;
 	onDelete: (listId: string) => void;
@@ -94,16 +95,16 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
 
 				{/* Título y contador */}
 				<View className="flex-1">
-					<Text
+					<AppText
 						className="text-lg font-bold leading-tight"
 						style={{ color: colors.primaryText }}
 						numberOfLines={1}
 					>
 						{list.nombre}
-					</Text>
-					<Text className="text-sm" style={{ color: colors.secondaryText }}>
+					</AppText>
+					<AppText className="text-sm" style={{ color: colors.secondaryText }}>
 						{list.totalElementos} elementos
-					</Text>
+					</AppText>
 				</View>
 
 				{/* Botón de menú (3 puntos) */}
@@ -133,7 +134,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
 						}}
 					>
 						<EditIcon style={{ marginRight: 8 }} color={colors.primaryText} />
-						<Text className="text-m" style={{ color: colors.primaryText }}>Editar lista</Text>
+						<AppText className="text-m" style={{ color: colors.primaryText }}>Editar lista</AppText>
 					</TouchableOpacity>
 
 					<TouchableOpacity
@@ -145,7 +146,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
 						}}
 					>
 						<PlusIcon style={{ marginRight: 8 }} color={colors.primaryText} />
-						<Text className="text-m" style={{ color: colors.primaryText }}>Añadir a lista</Text>
+						<AppText className="text-m" style={{ color: colors.primaryText }}>Añadir a lista</AppText>
 					</TouchableOpacity>
 
 					<TouchableOpacity
@@ -157,7 +158,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
 						}}
 					>
 						<TrashIcon style={{ marginRight: 8 }} color={colors.error} />
-						<Text className="text-m" style={{ color: colors.error }}>Eliminar lista</Text>
+						<AppText className="text-m" style={{ color: colors.error }}>Eliminar lista</AppText>
 					</TouchableOpacity>
 				</View>
 			)}
@@ -180,9 +181,9 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
 						className="w-[18%] aspect-[2/3] rounded-lg items-center justify-center"
 						style={{ backgroundColor: `${colors.placeholderText}20` }}
 					>
-						<Text className="font-bold text-sm" style={{ color: colors.secondaryText }}>
+						<AppText className="font-bold text-sm" style={{ color: colors.secondaryText }}>
 							+{list.totalElementos - 4}
-						</Text>
+						</AppText>
 					</View>
 				)}
 

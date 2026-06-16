@@ -3,7 +3,7 @@ import { useTheme } from "context/ThemeContext";
 import { router } from "expo-router";
 import { ResourceType } from "hooks/useResource";
 import { Text, TouchableOpacity, View } from "react-native"
-
+import {AppText} from 'components/AppText';
 interface Props  {
     category : ResourceType
     loading : boolean
@@ -26,20 +26,20 @@ export const TopFivePlaceholder = ({category, loading} : Props) => {
         <View className={`absolute top-0 right-0 bottom-0 left-0 flex-1 items-center justify-center px-2 ${loading ? 'hidden' : ''}`}>
     
             {/* Texto Principal (Nombre de la categoría) */}
-            <Text className="mb-3 text-center text-3xl font-bold" style={{color: colors.primaryText}}>
+            <AppText className="mb-3 text-center text-3xl font-bold" style={{color: colors.primaryText}}>
             No hay {categoryLabel.toLowerCase()}
-            </Text>
+            </AppText>
     
             {/* Texto Secundario (Instrucciones) */}
-            <Text className="mb-3 px-4 text-center" style={{color: colors.secondaryText}}>
+            <AppText className="mb-3 px-4 text-center" style={{color: colors.secondaryText}}>
                 Primero añade a tu colección para que formen parte de tu TopFive.
-            </Text>
+            </AppText>
             <TouchableOpacity
                 onPress={() => router.push({pathname: '/Add', params: {initialCategory: category}})}
                 className="px-6 py-3 rounded-3xl"
                 style={{backgroundColor: `${colors.primary}CC`}}
             >
-                <Text className="text-base font-bold" style={{color: colors.primaryText}}>Buscar</Text>
+                <AppText className="text-base font-bold" style={{color: colors.primaryText}}>Buscar</AppText>
                 
             </TouchableOpacity>
         </View>

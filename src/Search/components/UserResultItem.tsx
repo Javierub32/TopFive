@@ -1,6 +1,6 @@
 import { useTheme } from 'context/ThemeContext';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-
+import {AppText} from 'components/AppText';
 interface User {
   id: string;
   username: string;
@@ -30,22 +30,22 @@ export function UserResultItem({ item, onPress }: UserResultItemProps) {
           />
         ) : (
           <View className="h-20 w-20 items-center justify-center rounded-full" style={{ backgroundColor: colors.surfaceButton }}>
-            <Text className="text-xl font-bold" style={{ color: colors.secondaryText }}>
+            <AppText className="text-xl font-bold" style={{ color: colors.secondaryText }}>
               {item.username.charAt(0).toUpperCase()}
-            </Text>
+            </AppText>
           </View>
         )}
       </View>
 
       {/* Información del usuario */}
       <View className="flex-1">
-        <Text className="text-base font-semibold" style={{ color: colors.primaryText }}>
+        <AppText className="text-base font-semibold" style={{ color: colors.primaryText }}>
           {item.username}
-        </Text>
+        </AppText>
         {item.description && (
-          <Text className="text-sm" style={{ color: colors.secondaryText }} numberOfLines={3}>
+          <AppText className="text-sm" style={{ color: colors.secondaryText }} numberOfLines={3}>
             {item.description}
-          </Text>
+          </AppText>
         )}
       </View>
     </TouchableOpacity>

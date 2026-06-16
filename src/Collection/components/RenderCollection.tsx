@@ -1,8 +1,8 @@
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { CollectionGroup } from './CollectionGroup'; 
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
-
+import {AppText} from 'components/AppText';
 export const RenderCollection = ({ title, data, total, category, onPressItem, onPressTitle }: any) => {
   const safeData = data || [];
   const { colors } = useTheme();
@@ -15,10 +15,10 @@ export const RenderCollection = ({ title, data, total, category, onPressItem, on
         className="px-1 mb-3"
       >
         <View className="px-0 mb-1">
-          <Text className="text-xl font-bold text-primaryText">
-            {title} <Text className="text-sm font-normal text-secondaryText">({total})</Text>
+          <AppText className="text-xl font-bold text-primaryText">
+            {title} <AppText className="text-sm font-normal text-secondaryText">({total})</AppText>
             <MaterialCommunityIcons name="chevron-right" size={14} color={colors.secondaryText} />
-          </Text>
+          </AppText>
         </View>
       </TouchableOpacity>
 
@@ -37,9 +37,9 @@ export const RenderCollection = ({ title, data, total, category, onPressItem, on
           />
         )}
         ListEmptyComponent={
-          <Text className="text-secondaryText italic text-sm ml-2">
+          <AppText className="text-secondaryText italic text-sm ml-2">
             No hay contenido disponible.
-          </Text>
+          </AppText>
         }
       />
       <View className="mt-3 mx-0 h-[1px] " style={{ backgroundColor: colors.placeholderText }} />

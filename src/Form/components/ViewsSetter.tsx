@@ -3,7 +3,7 @@ import { TimesWatchedIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-
+import {AppText} from 'components/AppText';
 interface Props {
     views : any;
     setViews : any;
@@ -16,7 +16,7 @@ export const ViewsSetter = ({views, setViews} : Props) => {
         <View className="flex-1 mx-4 p-4 rounded-2xl flex gap-2" style={{backgroundColor: `${colors.accent}33`}}>
             <View className="flex-row items-center gap-2">
                 <TimesWatchedIcon color={colors.accent}/>
-                <Text className="text-sm font-bold uppercase tracking-widest" style={{color: colors.markerText}}>Vistas</Text>
+                <AppText className="text-sm font-bold uppercase tracking-widest" style={{color: colors.markerText}}>Vistas</AppText>
             </View>
             <View className="flex-1 flex-row justify-between items-center">
                 <TouchableOpacity

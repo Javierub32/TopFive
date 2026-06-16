@@ -1,7 +1,7 @@
 import { FlatList, Text } from 'react-native';
 import { ListItem } from './ListItem';
 import { useTheme } from 'context/ThemeContext';
-
+import {AppText} from 'components/AppText';
 
 export default function Lists({ data, placeholder, deleteList }: { data: any[], placeholder: string, deleteList: any }) {
 	const { colors } = useTheme();
@@ -19,9 +19,9 @@ export default function Lists({ data, placeholder, deleteList }: { data: any[], 
 				? { flexGrow: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }
 				: { paddingBottom: 100, paddingHorizontal: 0 }}
 		ListEmptyComponent={
-			<Text className="italic" style={{ color: colors.secondaryText }}>
+			<AppText className="italic" style={{ color: colors.secondaryText }}>
 			  No tienes listas de {placeholder}.
-			</Text>
+			</AppText>
 		}
 	  />
 	);

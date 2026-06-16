@@ -1,7 +1,7 @@
 import { useTheme } from 'context/ThemeContext';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import { MaterialCommunityIcons } from 'components/Icons';
+import {AppText} from 'components/AppText';
 interface Props {
   title: string;
   total: number;
@@ -30,17 +30,17 @@ export const StatsGrid = ({ title, total, average, onPress }: Props) => {
             <View className="p-2 rounded-full" style={{ backgroundColor: `${colors.primary}20` }}>
                 <MaterialCommunityIcons name="chart-bar" size={20} color={colors.primary} />
             </View>
-            <Text className="text-xs font-bold uppercase" style={{ color: colors.secondaryText }}>
+            <AppText className="text-xs font-bold uppercase" style={{ color: colors.secondaryText }}>
                 Total
-            </Text>
+            </AppText>
         </View>
         
-        <Text className="text-3xl font-bold mt-1" style={{ color: colors.primaryText }}>
+        <AppText className="text-3xl font-bold mt-1" style={{ color: colors.primaryText }}>
             {total}
-        </Text>
-        <Text className="text-xs mt-1" style={{ color: colors.secondaryText }} numberOfLines={1}>
+        </AppText>
+        <AppText className="text-xs mt-1" style={{ color: colors.secondaryText }} numberOfLines={1}>
             {title}
-        </Text>
+        </AppText>
       </TotalContainer>
 
       {/* Tarjeta de PROMEDIO */}
@@ -55,17 +55,17 @@ export const StatsGrid = ({ title, total, average, onPress }: Props) => {
             <View className="p-2 rounded-full" style={{ backgroundColor: `${colors.accent}20` }}>
                 <MaterialCommunityIcons name="chart-timeline-variant" size={20} color={colors.accent} />
             </View>
-            <Text className="text-xs font-bold uppercase" style={{ color: colors.secondaryText }}>
+            <AppText className="text-xs font-bold uppercase" style={{ color: colors.secondaryText }}>
                 Media
-            </Text>
+            </AppText>
         </View>
 
-        <Text className="text-3xl font-bold mt-1" style={{ color: colors.primaryText }}>
+        <AppText className="text-3xl font-bold mt-1" style={{ color: colors.primaryText }}>
             {average}
-        </Text>
-        <Text className="text-xs mt-1" style={{ color: colors.secondaryText }}>
+        </AppText>
+        <AppText className="text-xs mt-1" style={{ color: colors.secondaryText }}>
             Mensual
-        </Text>
+        </AppText>
       </View>
     </View>
   );

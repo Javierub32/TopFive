@@ -1,9 +1,9 @@
 import { TouchableOpacity, Image, View, Text } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from 'components/Icons';
 import { collectionAdapter } from '../adapters/collectionAdapter';
 import { FallbackCover } from 'components/FallbackCover';
 import { useTheme } from 'context/ThemeContext';
-
+import {AppText} from 'components/AppText';
 export const CollectionGroup = ({
   item,
   category,
@@ -58,7 +58,7 @@ export const CollectionGroup = ({
         {/* Año de Completado (Arriba Izquierda) */}
         {year ? (
           <View className="absolute left-2 top-2 rounded bg-black/60 px-1.5 py-0.5">
-            <Text className="text-[10px] font-bold text-white">{year}</Text>
+            <AppText className="text-[10px] font-bold text-white">{year}</AppText>
           </View>
         ) : null}
 
@@ -66,7 +66,7 @@ export const CollectionGroup = ({
         {item.estado !== 'PENDIENTE' && item.calificacion > 0 ? (
           <View className="absolute right-2 top-2 flex-row items-center rounded-sm bg-black/30 px-1">
             <MaterialCommunityIcons name="star" size={12} color="#fbbf24" />
-            <Text className="ml-1 text-xs font-bold text-white">{item.calificacion || '0'}</Text>
+            <AppText className="ml-1 text-xs font-bold text-white">{item.calificacion || '0'}</AppText>
           </View>
         ) : null}
 
@@ -75,16 +75,16 @@ export const CollectionGroup = ({
           <View
             className="absolute bottom-2 right-2 rounded px-2 py-1"
             style={{ backgroundColor: statusColor + '90' }}>
-            <Text className="text-[7px] font-bold text-white">{statusText}</Text>
+            <AppText className="text-[7px] font-bold text-white">{statusText}</AppText>
           </View>
         ) : null}
       </View>
 
       {/* Título */}
       <View className="mt-2 pl-1">
-        <Text className="text-sm font-semibold leading-4 text-primaryText" numberOfLines={2}>
+        <AppText className="text-sm font-semibold leading-4 text-primaryText" numberOfLines={2}>
           {title}
-        </Text>
+        </AppText>
       </View>
     </TouchableOpacity>
   );
