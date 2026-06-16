@@ -3,15 +3,10 @@ import { Screen } from "components/Screen";
 import { useTheme } from "context/ThemeContext";
 import { View, Text, ScrollView, TouchableOpacity, Linking } from "react-native";
 import Svg, { Path } from "react-native-svg";
-import {FontSizeProvider} from 'context/FontSizeContext';
-import {useFontSize} from 'context/FontSizeContext';
 import {AppText} from 'components/AppText';
-import { useState } from "react";
 
 export default function AboutUsScreen() {
   const { colors } = useTheme();
-  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
-  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
   const openLink = (url: any) => {
     Linking.openURL(url).catch((err) => console.error("Error al abrir link", err));

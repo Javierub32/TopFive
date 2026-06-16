@@ -9,16 +9,11 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { SearchPlaceholder } from '@/Add/components/SearchPlaceholder';
-import {FontSizeProvider} from 'context/FontSizeContext';
-import {useFontSize} from 'context/FontSizeContext';
 import {AppText} from 'components/AppText';
-import { useState } from 'react';
 
 
 
 export default function AddScreen() {
-  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
-  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
   const {
     busqueda,
     setBusqueda,

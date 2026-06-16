@@ -15,16 +15,11 @@ import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { NotificationButton } from '@/Notifications/components/NotificationButton';
 import { useTranslation } from 'react-i18next';
-import {FontSizeProvider} from 'context/FontSizeContext';
-import {useFontSize} from 'context/FontSizeContext';
 import {AppText} from 'components/AppText';
-import { useState } from 'react';
 
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
-  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
-  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
   const {
     userData,

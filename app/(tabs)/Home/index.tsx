@@ -8,10 +8,8 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { SearchIcon2, SocialBubblesIcon } from 'components/Icons';
 import { NotificationButton } from '@/Notifications/components/NotificationButton';
 import { NativeAdCard } from 'components/NativeAdCard';
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useNotification } from "context/NotificationContext";
-import {FontSizeProvider} from 'context/FontSizeContext';
-import {useFontSize} from 'context/FontSizeContext';
 import {AppText} from 'components/AppText';
 
 
@@ -22,8 +20,6 @@ export default function HomeScreen() {
 	const navigation  = useNavigation();
 	const lastBackPress = useRef(0);
 	const { showNotification } = useNotification();
-	const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
-  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
 
 	useFocusEffect(

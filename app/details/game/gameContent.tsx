@@ -14,10 +14,7 @@ import { useContent } from '@/Details/hooks/useContent';
 import { ContentRating } from '@/Details/components/ContentRating';
 import { AdBanner } from 'components/AdBanner';
 import { ContentHeader } from '@/Details/components/ContentHeader';
-import {FontSizeProvider} from 'context/FontSizeContext';
-import {useFontSize} from 'context/FontSizeContext';
 import {AppText} from 'components/AppText';
-import { useState } from 'react';
 
 export default function GameDetail() {
   const { id, from } = useLocalSearchParams();
@@ -25,8 +22,6 @@ export default function GameDetail() {
   const game: Game = content as Game;
   const { colors } = useTheme();
   const path = from === 'search' ? '/Add?initialCategory=videojuego' : '/(tabs)/Home';
-  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
-  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
   if (loading) {
     return (

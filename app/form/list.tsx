@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons } from "components/Icons";
 import { use, useEffect, useState } from 'react';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
@@ -11,6 +11,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { ResourceType } from 'hooks/useResource';
 import { supabase } from 'lib/supabase';
 import { useNotification } from 'context/NotificationContext';
+import {AppText} from 'components/AppText';
 
 export default function ListForm() {
   const { colors } = useTheme();
@@ -149,9 +150,9 @@ const handleSubmit = async () => {
         </View>
 
         <View className="mb-5">
-          <Text className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
             Nombre de la lista
-          </Text>
+          </AppText>
           <TextInput
             placeholder="Ej: Películas favoritas"
             placeholderTextColor={colors.secondaryText}
@@ -163,9 +164,9 @@ const handleSubmit = async () => {
         </View>
 
         <View className="mb-5">
-          <Text className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
             Descripción
-          </Text>
+          </AppText>
           <TextInput
             placeholder="Describe el contenido de esta lista..."
             placeholderTextColor={colors.secondaryText}
@@ -187,9 +188,9 @@ const handleSubmit = async () => {
         </View>
 
         <View className="mb-5">
-          <Text className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
             Icono
-          </Text>
+          </AppText>
           <View className="flex-row flex-wrap justify-between">
             {icons.map((iconName) => (
               <TouchableOpacity
@@ -213,9 +214,9 @@ const handleSubmit = async () => {
         </View>
 
         <View className="mb-6">
-          <Text className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
             Color
-          </Text>
+          </AppText>
           <View className="flex-row flex-wrap gap-2">
             {iconoColors.map(({ name, value }) => (
               <TouchableOpacity
@@ -247,9 +248,9 @@ const handleSubmit = async () => {
             color={colors.primaryText}
             style={{ marginRight: 8 }}
           />
-          <Text className=" font-bold" style={{ color: colors.primaryText }}>
+          <AppText className=" font-bold" style={{ color: colors.primaryText }}>
             {editando ? 'Actualizar lista' : 'Crear lista'}
-          </Text>
+          </AppText>
         </TouchableOpacity>
       </ScrollView>
     </Screen>

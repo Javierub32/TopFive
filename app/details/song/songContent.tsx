@@ -12,10 +12,7 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useContent } from '@/Details/hooks/useContent';
 import { AdBanner } from 'components/AdBanner';
 import { ContentHeader } from '@/Details/components/ContentHeader';
-import {FontSizeProvider} from 'context/FontSizeContext';
-import {useFontSize} from 'context/FontSizeContext';
 import {AppText} from 'components/AppText';
-import { useState } from 'react';
 
 export default function SongDetail() {
   const { id, from } = useLocalSearchParams();
@@ -23,8 +20,6 @@ export default function SongDetail() {
   const song: Song = content as Song;
   const { colors } = useTheme();
   const path = from === 'search' ? '/Add?initialCategory=cancion' : '/(tabs)/Home';
-  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
-  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
 
   if (loading) {

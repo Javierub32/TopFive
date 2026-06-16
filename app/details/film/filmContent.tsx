@@ -13,10 +13,7 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { ContentRating } from '@/Details/components/ContentRating';
 import { AdBanner } from 'components/AdBanner';
 import { ContentHeader } from '@/Details/components/ContentHeader';
-import {FontSizeProvider} from 'context/FontSizeContext';
-import {useFontSize} from 'context/FontSizeContext';
 import {AppText} from 'components/AppText';
-import { useState } from 'react';
 
 export default function FilmDetail() {
   const { id, from } = useLocalSearchParams();
@@ -24,8 +21,6 @@ export default function FilmDetail() {
   const film: Film = content as Film;
   const { colors } = useTheme();
   const path = from === 'search' ? '/Add?initialCategory=pelicula' : '/(tabs)/Home';
-  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
-  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
   if (loading) {
     return (

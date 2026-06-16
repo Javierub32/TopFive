@@ -12,8 +12,6 @@ import { useCollection } from 'context/CollectionContext';
 import Animated, { FadeInUp, LinearTransition } from 'react-native-reanimated';
 import { ResourceType } from 'hooks/useResource';
 import { CategoryTabBar } from 'components/CategoryTarBar';
-import {FontSizeProvider} from 'context/FontSizeContext';
-import {useFontSize} from 'context/FontSizeContext';
 import {AppText} from 'components/AppText';
 
 
@@ -22,8 +20,6 @@ export default function CollectionScreen() {
   const { colors } = useTheme();
   const { categoriaActual, setCategoriaActual, isSearchVisible, toggleSearch } = useCollection();
   const [isChanging, setIsChanging] = useState(false);
-  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
-  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
 
   const routes = [

@@ -14,10 +14,7 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { ContentHeader } from '@/Details/components/ContentHeader';
 import { ContentRating } from '@/Details/components/ContentRating';
 import { AdBanner } from 'components/AdBanner';
-import {FontSizeProvider} from 'context/FontSizeContext';
-import {useFontSize} from 'context/FontSizeContext';
 import {AppText} from 'components/AppText';
-import { useState } from 'react';
 
 
 export default function SeriesDetail() {
@@ -26,8 +23,6 @@ export default function SeriesDetail() {
   const series: Series = content as Series;
   const { colors } = useTheme();
   const path = from === 'search' ? '/Add?initialCategory=serie' : '/(tabs)/Home';
-  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
-  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
   if (loading) {
     return (

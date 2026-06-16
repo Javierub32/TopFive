@@ -13,17 +13,12 @@ import { DateCard } from '@/Details/components/DateCard';
 import { useAuth } from 'context/AuthContext';
 import { AdBanner } from 'components/AdBanner';
 import { ResourceHeader } from '@/Details/components/ResourceHeader';
-import {FontSizeProvider} from 'context/FontSizeContext';
-import {useFontSize} from 'context/FontSizeContext';
 import {AppText} from 'components/AppText';
-import { useState } from 'react';
 
 export default function GameDetail() {
   const { item, from } = useLocalSearchParams();
   const { colors } = useTheme();
   const { user } = useAuth();
-  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
-  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
 
   const getPath = () => {

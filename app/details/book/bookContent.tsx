@@ -12,10 +12,7 @@ import { useContent } from '@/Details/hooks/useContent';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { ContentHeader } from '@/Details/components/ContentHeader';
 import { AdBanner } from 'components/AdBanner';
-import {FontSizeProvider} from 'context/FontSizeContext';
-import {useFontSize} from 'context/FontSizeContext';
 import {AppText} from 'components/AppText';
-import { useState } from 'react';
 
 
 export default function BookDetail() {
@@ -24,9 +21,6 @@ export default function BookDetail() {
   const book: Book = content as Book;
   const { colors } = useTheme();
   const path = from === 'search' ? '/Add?initialCategory=libro' : '/(tabs)/Home';
-
-  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
-  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
   if (loading) {
     return (

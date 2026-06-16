@@ -10,10 +10,7 @@ import { CollectionStructure } from "components/CollectionStructure";
 import { useTheme } from "context/ThemeContext";
 import { MaterialCommunityIcons } from "components/Icons";
 import { ResourceType } from "hooks/useResource";
-import {FontSizeProvider} from 'context/FontSizeContext';
-import {useFontSize} from 'context/FontSizeContext';
 import {AppText} from 'components/AppText';
-import { useState } from 'react';
 
 export default function ListDetails() {
   const { categoriaActual, handleItemPress } = useCollection();

@@ -9,6 +9,8 @@ import { useTheme } from "context/ThemeContext";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
 import { useTranslation } from 'react-i18next';
+import {AppText} from 'components/AppText';
+import { useState } from 'react';
 
 
 
@@ -56,9 +58,9 @@ export default function EditProfileScreen() {
 					});
 				}}
 			>
-				<Text className="text-base font-bold mt-3 mb-3" style={{ color: colors.primaryText, textAlign: "center" }}> 
+				<AppText className="text-base font-bold mt-3 mb-3" style={{ color: colors.primaryText, textAlign: "center" }}> 
 					{t('settings.personalization.editPhoto')}
-				</Text>
+				</AppText>
 
 			</TouchableOpacity>
 
@@ -83,7 +85,7 @@ export default function EditProfileScreen() {
 				className="mt-4 w-full items-center rounded-xl py-3"
 				style={{ backgroundColor: colors.primary }}
 				onPress={() => handleSubmit(uname.trim(), udesc.trim())}>
-				<Text className="text-lg font-bold" style={{color: colors.background}}>Guardar cambios</Text>
+				<AppText className="text-lg font-bold" style={{color: colors.background}}>Guardar cambios</AppText>
 			</TouchableOpacity>
 		 </View>
 

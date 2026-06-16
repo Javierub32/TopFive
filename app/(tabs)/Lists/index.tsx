@@ -6,15 +6,11 @@ import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { useCollection } from 'context/CollectionContext';
 import { useLists } from '@/Collection/hooks/useLists';
 import { ResourceType } from 'hooks/useResource';
-import { ListItem } from '@/Collection/components/ListItem';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { router } from 'expo-router';
 import { TabView } from 'react-native-tab-view';
-import { BookIcon, FilmIcon, ShowIcon, GameIcon, MusicIcon } from 'components/Icons';
 import { CategoryTabBar } from 'components/CategoryTarBar';
 import Lists from '@/Collection/components/Lists';
-import {FontSizeProvider} from 'context/FontSizeContext';
-import {useFontSize} from 'context/FontSizeContext';
 import {AppText} from 'components/AppText';
 
 
@@ -23,9 +19,6 @@ export default function ListScreen() {
   const layout = useWindowDimensions();
   const { categoriaActual, setCategoriaActual } = useCollection();
   const [isChanging, setIsChanging] = useState(false);
-
-  const [showFontSizeOptions, setShowFontSizeOptions] = useState(false);
-  const {fontSizeMultiplier, changeFontSizeMultiplier} = useFontSize();
 
 
   const { lists, loading, deleteList } = useLists(categoriaActual as ResourceType);
