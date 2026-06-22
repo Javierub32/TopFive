@@ -18,11 +18,11 @@ export const ReviewSetter = ({review, setReview} : Props) => {
             placeholderTextColor={colors.placeholderText}
             multiline
             numberOfLines={3}
-            maxLength={500}
+            maxLength={1000}
             className="min-h-24 p-3 text-base"
             style={{color: colors.primaryText}}
             textAlignVertical="top"/>
-            <AppText className="absolute bottom-0 right-0 text-right text-xs m-2" style={{color: colors.placeholderText}}>{review.length}/500</AppText>
+            <AppText className="absolute bottom-0 right-0 text-right text-xs m-2" style={{color: colors.placeholderText}}>{review.length}/1000</AppText>
         </View>
     )
 }
