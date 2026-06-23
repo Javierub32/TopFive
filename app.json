@@ -43,7 +43,16 @@
           "iosUrlScheme": "com.googleusercontent.apps.1045116527499-u3kj7uo06ar23im0rqg9ltis3e8rfa37"
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      "expo-build-properties",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ]
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
