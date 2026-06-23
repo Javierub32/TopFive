@@ -11,8 +11,10 @@ import { NativeAdCard } from 'components/NativeAdCard';
 import { useCallback, useRef, useState } from "react";
 import { useNotification } from "context/NotificationContext";
 import {AppText} from 'components/AppText';
+import Animated from 'react-native-reanimated';
+import { useCollapsibleHeader } from 'hooks/useCollapsibleHeader';	
 
-
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 export default function HomeScreen() {
 	const { colors } = useTheme();
@@ -20,6 +22,9 @@ export default function HomeScreen() {
 	const navigation  = useNavigation();
 	const lastBackPress = useRef(0);
 	const { showNotification } = useNotification();
+
+	const [headerHeight, setHeaderHeight] = useState(80);
+	const { scrollHandler, headerStyle, headerOpacityStyle } = useCollapsibleHeader(headerHeight);
 
 
 	useFocusEffect(
@@ -54,42 +59,67 @@ export default function HomeScreen() {
 
 	return (
 		<Screen>
-			<View className="px-4 pt-6">
-				<View className="mb-4 flex-row items-center justify-between">
-					<AppText className="text-3xl font-bold" style={{ color: colors.primaryText }}>
-						Inicio
-					</AppText>
-					
-					<View className="flex-row gap-x-2">
-						<NotificationButton from="Home" />
-						<TouchableOpacity
-							onPress={() => router.push('/search')}
-							className="rounded-full p-3"
-						>
-							<SearchIcon2 size={24} color={colors.primaryText} />
-						</TouchableOpacity>
+			<Animated.View 
+                //  onLayout PARA CAPTURAR LA ALTURA EXACTA sin hacerlo a mano
+                onLayout={(event) => {
+                    const { height } = event.nativeEvent.layout;
+                    // solo actualizamos si la diferencia es notable con la por defecto
+                    if (Math.abs(headerHeight - height) > 1) {
+                        setHeaderHeight(height);
+                    }
+                }}
+                style={[
+                    headerStyle, 
+                    { 
+                        position: 'absolute', 
+                        top: 0, left: 0, right: 0, 
+                        height: headerHeight, 
+                        zIndex: 10,
+                        backgroundColor: colors.background
+                    }
+                ]}
+            >
+				<Animated.View style={headerOpacityStyle} className="px-4 pt-6">
+					<View className="mb-4 flex-row items-center justify-between">
+						<AppText className="text-3xl font-bold" style={{ color: colors.primaryText }}>
+							Inicio
+						</AppText>
+						
+						<View className="flex-row gap-x-2">
+							<NotificationButton from="Home" />
+							<TouchableOpacity
+								onPress={() => router.push('/search')}
+								className="rounded-full p-3"
+							>
+								<SearchIcon2 size={24} color={colors.primaryText} />
+							</TouchableOpacity>
+						</View>
 					</View>
-				</View>
-			</View>
+				</Animated.View>
+			</Animated.View>
 
 			{loading && activities.length === 0 ? (
 				<LoadingIndicator />
 			) : (
-			<FlatList
+			<AnimatedFlatList
 				data={activities}
-				keyExtractor={(item, index) => `${item.recurso_id}-${index}`}
-				renderItem={({ item, index }) => (
+				onScroll={scrollHandler}
+                scrollEventThrottle={16}
+				keyExtractor={(item: any, index: number) => `${item.recurso_id}-${index}`} //hay que tiparlos explicitamente por el ANIMATED
+				renderItem={({ item, index }: {item: any, index: number}) => (
 					<>
 						<ActivityItem item={item}/>
 						{(index + 1 ) % 4 === 0 && <NativeAdCard />}
 					</>
 
 				)}
-				contentContainerStyle={activities.length === 0 ? { flex: 1, paddingHorizontal: 16, paddingVertical: 150 } : { paddingHorizontal: 16, paddingBottom: 16 }}
+				contentContainerStyle={activities.length === 0 ? 
+					{ flex: 1, paddingHorizontal: 16, paddingVertical: 150, paddingTop: headerHeight + 20 } : 
+					{ paddingHorizontal: 16, paddingBottom: 16, paddingTop: headerHeight + 10 }}
 				onEndReached={fetchActivities}
 				onEndReachedThreshold={0.5}
 				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={refreshActivities} tintColor={colors.primaryText} />	
+					<RefreshControl refreshing={refreshing} onRefresh={refreshActivities} tintColor={colors.primaryText} progressViewOffset={headerHeight} />	
 				}
 				ListEmptyComponent={() => (
 					<View className="flex-1 items-center px-4 ">
