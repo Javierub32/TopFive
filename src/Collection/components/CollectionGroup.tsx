@@ -4,6 +4,7 @@ import { collectionAdapter } from '../adapters/collectionAdapter';
 import { FallbackCover } from 'components/FallbackCover';
 import { useTheme } from 'context/ThemeContext';
 import {AppText} from 'components/AppText';
+import { useFontSize } from 'context/FontSizeContext';
 export const CollectionGroup = ({
   item,
   category,
@@ -25,9 +26,10 @@ export const CollectionGroup = ({
         : '';
   const statusColor = collectionAdapter.getStatusColor(item.estado);
   const statusText = collectionAdapter.getStatusText(item.estado, category);
-  const finalWidth = posterWidth || 125;
-  const finalHeight = posterHeight || (category === 'cancion' ? 125 : 190);
-  const marginRight = posterWidth ? 0 : 12;
+  const { fontSizeMultiplier } = useFontSize();
+  const finalWidth = posterWidth || 125 * fontSizeMultiplier;
+  const finalHeight = posterHeight || (category === 'cancion' ? 125 : 190) * fontSizeMultiplier;
+  const marginRight = posterWidth ? 0 : 12 * fontSizeMultiplier;
 
   return (
     <TouchableOpacity
@@ -58,15 +60,19 @@ export const CollectionGroup = ({
         {/* Año de Completado (Arriba Izquierda) */}
         {year ? (
           <View className="absolute left-2 top-2 rounded bg-black/60 px-1.5 py-0.5">
-            <AppText className="text-[10px] font-bold text-white">{year}</AppText>
+            <AppText className="font-bold text-white" style={{ fontSize: 10 }}>
+              {year}
+            </AppText>
           </View>
         ) : null}
 
         {/* Rating (Arriba Derecha) */}
         {item.estado !== 'PENDIENTE' && item.calificacion > 0 ? (
           <View className="absolute right-2 top-2 flex-row items-center rounded-sm bg-black/30 px-1">
-            <MaterialCommunityIcons name="star" size={12} color="#fbbf24" />
-            <AppText className="ml-1 text-xs font-bold text-white">{item.calificacion || '0'}</AppText>
+            <MaterialCommunityIcons name="star" size={10} color="#fbbf24" />
+            <AppText className="ml-1  font-bold text-white" style={{ fontSize: 10 }}>
+              {item.calificacion || '0'}
+            </AppText>
           </View>
         ) : null}
 
@@ -75,7 +81,7 @@ export const CollectionGroup = ({
           <View
             className="absolute bottom-2 right-2 rounded px-2 py-1"
             style={{ backgroundColor: statusColor + '90' }}>
-            <AppText className="text-[7px] font-bold text-white">{statusText}</AppText>
+            <AppText className=" font-bold text-white" style={{ fontSize: 10 }}>{statusText}</AppText>
           </View>
         ) : null}
       </View>
