@@ -1,14 +1,5 @@
 import { ReturnButton } from 'components/ReturnButton';
-import {
-  TouchableOpacity,
-  View,
-  TextComponent,
-  Alert,
-  Linking,
-  Platform,
-  Share,
-  ScrollView,
-} from 'react-native';
+import { TouchableOpacity, View, Linking, Platform, Share, ScrollView } from 'react-native';
 import { Screen } from 'components/Screen';
 //Todos los iconos se importan desde el archivo Icons
 import {
@@ -26,9 +17,7 @@ import { useNotification } from 'context/NotificationContext';
 import { AdsConsent } from 'lib/adsConsent';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import i18n from 'i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FontSizeProvider } from 'context/FontSizeContext';
 import { useFontSize } from 'context/FontSizeContext';
 import { AppText } from 'components/AppText';
 export default function SettingsScreen() {
