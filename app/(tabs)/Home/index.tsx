@@ -8,8 +8,9 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { SearchIcon2, SocialBubblesIcon } from 'components/Icons';
 import { NotificationButton } from '@/Notifications/components/NotificationButton';
 import { NativeAdCard } from 'components/NativeAdCard';
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useNotification } from "context/NotificationContext";
+import {AppText} from 'components/AppText';
 
 
 
@@ -19,6 +20,7 @@ export default function HomeScreen() {
 	const navigation  = useNavigation();
 	const lastBackPress = useRef(0);
 	const { showNotification } = useNotification();
+
 
 	useFocusEffect(
 		useCallback(() => {
@@ -54,9 +56,9 @@ export default function HomeScreen() {
 		<Screen>
 			<View className="px-4 pt-6">
 				<View className="mb-4 flex-row items-center justify-between">
-					<Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
+					<AppText className="text-3xl font-bold" style={{ color: colors.primaryText }}>
 						Inicio
-					</Text>
+					</AppText>
 					
 					<View className="flex-row gap-x-2">
 						<NotificationButton from="Home" />
@@ -92,18 +94,18 @@ export default function HomeScreen() {
 				ListEmptyComponent={() => (
 					<View className="flex-1 items-center px-4 ">
 						<SocialBubblesIcon className="mb-4" size={100} color={colors.primaryText} />
-						<Text className="text-2xl text-center mb-4 font-bold" style={{color: colors.primaryText}}>
+						<AppText className="text-2xl text-center mb-4 font-bold" style={{color: colors.primaryText}}>
 							No tienes ningún amigo con reseñas acabadas.
-						</Text>
-						<Text className="text-md text-center mb-6" style={{color: colors.primaryText}}>
+						</AppText>
+						<AppText className="text-md text-center mb-6" style={{color: colors.primaryText}}>
 							Agrega amigos para poder ver sus reseñas.
-						</Text>
+						</AppText>
 						<TouchableOpacity
 							onPress={() => router.push('/search')}
 							className="px-6 py-3 rounded-3xl"
 							style={{backgroundColor: colors.primary}}
 						>
-							<Text className="text-white text-base font-bold">Buscar amigos </Text>
+							<AppText className="text-white text-base font-bold">Buscar amigos </AppText>
 							
 						</TouchableOpacity>
 					</View>

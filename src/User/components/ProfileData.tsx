@@ -2,7 +2,7 @@ import { View, Text, Pressable } from 'react-native';
 import { ReactNode } from 'react';
 import { router } from 'expo-router';
 import { useTheme } from 'context/ThemeContext';
-
+import {AppText} from 'components/AppText';
 interface Props {
   children: ReactNode;
   username: string;
@@ -32,8 +32,8 @@ export function ProfileData({
           <View className="mb-4 flex-row items-center justify-around">
             <View className="mr-4 items-center">
               <>
-                <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>{reviewsCount}</Text>
-                <Text className="text-xs" style={{ color: colors.secondaryText }}>Reseñas</Text>
+                <AppText className="text-lg font-bold" style={{ color: colors.primaryText }}>{reviewsCount}</AppText>
+                <AppText className="text-xs" style={{ color: colors.secondaryText }}>Reseñas</AppText>
               </>
             </View>
             <View className="mr-4 items-center">
@@ -42,8 +42,8 @@ export function ProfileData({
                   router.push(`/followers?username=${username}&page=followers`);
                 }}
                 className="items-center">
-                <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>{followersCount}</Text>
-                <Text className="text-xs" style={{ color: colors.secondaryText }}>Seguidores</Text>
+                <AppText className="text-lg font-bold" style={{ color: colors.primaryText }}>{followersCount}</AppText>
+                <AppText className="text-xs" style={{ color: colors.secondaryText }}>Seguidores</AppText>
               </Pressable>
             </View>
             <View className="items-center">
@@ -52,8 +52,8 @@ export function ProfileData({
                   router.push(`/followers?username=${username}&page=following`);
                 }}
                 className="items-center">
-                <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>{followingCount}</Text>
-                <Text className="text-xs" style={{ color: colors.secondaryText }}>Siguiendo</Text>
+                <AppText className="text-lg font-bold" style={{ color: colors.primaryText }}>{followingCount}</AppText>
+                <AppText className="text-xs" style={{ color: colors.secondaryText }}>Siguiendo</AppText>
               </Pressable>
             </View>
           </View>
@@ -62,7 +62,7 @@ export function ProfileData({
           <View>
             {/* Descripción */}
             {description && (
-              <Text className="text-sm leading-tight" style={{ color: colors.secondaryText }}>{description}</Text>
+              <AppText className="text-sm leading-tight" style={{ color: colors.secondaryText }}>{description}</AppText>
             )}
           </View>
         </View>

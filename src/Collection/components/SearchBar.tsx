@@ -5,7 +5,7 @@ import { CategoryType, useCollection } from 'context/CollectionContext';
 import { useTheme } from 'context/ThemeContext';
 import { ResourceType } from 'hooks/useResource';
 import { SearchIcon } from 'components/Icons';
-
+import {AppTextInput} from 'components/AppTextInput';
 const OPCIONES_CATEGORIA: string[] = ['Libros', 'Películas', 'Series', 'Videojuegos', 'Canciones'];
 
 export const resourceTypeMap: Record<ResourceType, string> = {
@@ -43,7 +43,7 @@ export const SearchBar = () => {
           <SearchIcon color={colors.secondaryText}/>
         </TouchableOpacity>
         
-        <TextInput
+        <AppTextInput
           className="h-full flex-1 px-3 text-base text-primaryText overflow-hidden"
           style={{color: colors.primaryText, lineHeight: 17, maxHeight: 17}}
           placeholder={`Buscar en ${resourceTypeMap[categoriaActual as ResourceType]}...`}

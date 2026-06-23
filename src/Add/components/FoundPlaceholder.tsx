@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from 'components/Icons';
 import { ResourceType } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { CrossIcon } from 'components/Icons';
-
+import {AppText} from 'components/AppText';
 interface SearchPlaceholderProps {
   category: ResourceType;
   loading: boolean;
@@ -35,9 +35,9 @@ export const FoundPlaceholder = ({ category, loading }: SearchPlaceholderProps) 
       </View>
 
       {/* Texto Principal (Nombre de la categoría) */}
-      <Text className="mb-3 text-center text-3xl font-bold" style={{color: colors.primaryText}}>
+      <AppText className="mb-3 text-center text-3xl font-bold" style={{color: colors.primaryText}}>
         Sin resultados
-      </Text>
+      </AppText>
     </View>
   );
 };

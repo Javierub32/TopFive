@@ -18,7 +18,17 @@
         "es": "Español",
         "en": "Inglés"
     },
-    "tabs":{    
+    "fontsizes":{
+        "small": "Pequeño",
+        "medium": "Mediano",
+        "large": "Grande"
+    },
+    "themes":{
+        "dark": "Oscuro",
+        "light": "Claro",
+        "system": "Sistema"
+    },
+    "tabs":{
         "home": "Inicio",
         "lists": "Listas",
         "search": "Búsqueda",
@@ -39,7 +49,9 @@
                 "lightMode": "Claro",
                 "systemMode": "Sistema"
             },
-            "changeLanguage": "Cambiar idioma"
+            "changeLanguage": "Cambiar idioma",
+            "changeFontSize": "Cambiar tamaño de fuente",
+            "editPhoto" : "Editar foto"
         },
         "account": {
             "title": "Cuenta",

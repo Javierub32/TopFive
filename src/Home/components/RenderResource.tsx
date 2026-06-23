@@ -7,7 +7,7 @@ import { BookIcon, FilmIcon, GameIcon, MusicIcon, ShowIcon } from 'components/Ic
 import { router } from 'expo-router';
 import { ResourceType } from 'hooks/useResource';
 import { useState } from 'react';
-
+import {AppText} from 'components/AppText';
 export default function ActivityItem({ item }: { item: Activity }) {
   const { colors } = useTheme();
 
@@ -122,11 +122,11 @@ export default function ActivityItem({ item }: { item: Activity }) {
               <View className="flex-1 flex-col ">
                 <View className="flex-row items-start justify-between">
                   <View className="flex-1">
-                    <Text
+                    <AppText
                       className="mb-2 mr-2 text-base font-bold leading-tight"
                       style={{ color: colors.primaryText }}>
                       {item.titulo}
-                    </Text>
+                    </AppText>
                     {/* Calificación */}
                     {rating > 0 && (
                       <View className="mt-0 flex-row items-center gap-1">
@@ -161,17 +161,17 @@ export default function ActivityItem({ item }: { item: Activity }) {
                   </View>
                 </View>
                 {/* Reseña */}
-                <Text style={{ color: colors.secondaryText }} className="mt-2">
-                  <Text className="text-xs leading-relaxed ">{displayedDescription}</Text>
+                <AppText style={{ color: colors.secondaryText }} className="mt-2">
+                  <AppText className="text-xs leading-relaxed ">{displayedDescription}</AppText>
                   {shouldTruncate && (
-                    <Text
+                    <AppText
                       className="text-xs font-bold"
                       style={{ color: colors.primary }}
                       onPress={() => setIsExpanded(!isExpanded)}>
                       {isExpanded ? ' Leer menos' : 'Leer más'}
-                    </Text>
+                    </AppText>
                   )}
-                </Text>
+                </AppText>
               </View>
             </View>
           </View>
@@ -204,7 +204,7 @@ export default function ActivityItem({ item }: { item: Activity }) {
                   borderWidth: 0,
                   borderColor: colors.borderButton,
                 }}>
-                <Text
+                <AppText
                   onPress={() =>
                     router.push({
                       pathname: 'details/user/',
@@ -214,13 +214,13 @@ export default function ActivityItem({ item }: { item: Activity }) {
                   className="text-xl font-bold"
                   style={{ color: colors.primaryText }}>
                   {item.username.charAt(0).toUpperCase()}
-                </Text>
+                </AppText>
               </View>
             )}
 
             <View className="flex-col">
-              <Text>
-                <Text
+              <AppText>
+                <AppText
                   onPress={() =>
                     router.push({
                       pathname: 'details/user/',
@@ -230,11 +230,11 @@ export default function ActivityItem({ item }: { item: Activity }) {
                   className="text-base font-bold"
                   style={{ color: colors.primaryText }}>
                   {item.username}{' '}
-                </Text>
-                <Text className="text-xs" style={{ color: colors.secondaryText }}>
+                </AppText>
+                <AppText className="text-xs" style={{ color: colors.secondaryText }}>
                   {getRelativeTime(item.fecha_actividad)}
-                </Text>
-              </Text>
+                </AppText>
+              </AppText>
             </View>
           </View>
         </View>

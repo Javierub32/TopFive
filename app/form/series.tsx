@@ -1,7 +1,7 @@
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Screen } from 'components/Screen';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "components/Icons";
 import { useState } from 'react';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
@@ -20,6 +20,7 @@ import { ProgressSetter } from '@/Form/components/ProgressSetter';
 import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
 import { FallbackCover } from 'components/FallbackCover';
+import {AppText} from 'components/AppText';
 
 export default function SeriesForm() {
   const { seriesData, item, from } = useLocalSearchParams();
@@ -271,12 +272,12 @@ export default function SeriesForm() {
         <ThemedStatusBar />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
-          <Text className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
             Error al cargar
-          </Text>
-          <Text className="mt-2 text-center" style={{ color: colors.secondaryText }}>
+          </AppText>
+          <AppText className="mt-2 text-center" style={{ color: colors.secondaryText }}>
             No se pudo cargar la información de la serie
-          </Text>
+          </AppText>
         </View>
       </Screen>
     );
@@ -339,9 +340,9 @@ export default function SeriesForm() {
           className="mx-4 mt-4 rounded-lg py-3"
           style={{ backgroundColor: colors.primary }}
           activeOpacity={0.8}>
-          <Text className="text-center text-lg font-bold" style={{ color: colors.background }}>
+          <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
             {loading ? 'Guardando...' : 'Guardar'}
-          </Text>
+          </AppText>
         </TouchableOpacity>
         <View className="flex-1">
           <AdBanner />

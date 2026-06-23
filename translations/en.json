@@ -8,6 +8,11 @@
         "es": "Spanish",
         "en": "English"
     },
+    "fontsizes":{
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large"
+    },
     "themes":{
         "dark": "Dark",
         "light": "Light",
@@ -22,10 +27,12 @@
     "settings":{
         "title": "Settings",
         "personalization": {
-            "title":"Costumize",
+            "title":"Customize",
             "editProfile": "Edit profile",
             "changeTheme": "Change theme",
-            "changeLang": "Change language"
+            "changeLang": "Change language",
+            "changeFontSize": "Change font size",
+            "editPhoto" : "Edit photo"
         },
         "account": {
             "title": "Account",

@@ -1,9 +1,9 @@
 import '../global.css';
 import '../i18n';
 import { SplashScreen, Stack, useRouter, useSegments } from 'expo-router';
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
-import { View, ActivityIndicator, Linking, Platform } from 'react-native';
+import { View, Linking, Platform } from 'react-native';
 import * as Font from 'expo-font';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeProvider } from 'context/ThemeContext';
@@ -14,6 +14,8 @@ import Constants from 'expo-constants';
 import { supabase } from 'lib/supabase';
 import { NotificationModal } from 'components/NotificationModal';
 import { AdsConsent, AdsConsentStatus } from 'lib/adsConsent';
+import { registerForPushNotificationsAsync } from 'lib/pushNotifications';
+import { FontSizeProvider } from 'context/FontSizeContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -74,6 +76,9 @@ function InitialLayout() {
 
     if (appIsReady) {
       initAdsConsent();
+    }
+    if (appIsReady && session) {
+      registerForPushNotificationsAsync(session.user.id);
     }
   }, [appIsReady]);
 
@@ -219,15 +224,17 @@ function InitialLayout() {
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <ThemeProvider>
-        <CollectionProvider>
-          <NotificationProvider>
-            <SearchProvider>
-              <InitialLayout />
-            </SearchProvider>
-          </NotificationProvider>
-        </CollectionProvider>
-      </ThemeProvider>
+      <FontSizeProvider>
+        <ThemeProvider>
+          <CollectionProvider>
+            <NotificationProvider>
+              <SearchProvider>
+                <InitialLayout />
+              </SearchProvider>
+            </NotificationProvider>
+          </CollectionProvider>
+        </ThemeProvider>
+      </FontSizeProvider>
     </AuthProvider>
   );
 }

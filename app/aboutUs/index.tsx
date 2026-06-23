@@ -3,10 +3,11 @@ import { Screen } from "components/Screen";
 import { useTheme } from "context/ThemeContext";
 import { View, Text, ScrollView, TouchableOpacity, Linking } from "react-native";
 import Svg, { Path } from "react-native-svg";
+import {AppText} from 'components/AppText';
 
 export default function AboutUsScreen() {
   const { colors } = useTheme();
-  
+
   const openLink = (url: any) => {
     Linking.openURL(url).catch((err) => console.error("Error al abrir link", err));
   };
@@ -20,20 +21,20 @@ export default function AboutUsScreen() {
         contentContainerStyle={{ paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}
       >
-        <Text className="text-3xl font-bold text-center mb-8" style={{color: colors.primaryText}}>
+        <AppText className="text-3xl font-bold text-center mb-8" style={{color: colors.primaryText}}>
           Créditos y Licencias
-        </Text>
+        </AppText>
 
-        <Text className="text-base text-center mb-8" style={{color: colors.secondaryText}}>
+        <AppText className="text-base text-center mb-8" style={{color: colors.secondaryText}}>
           Esta aplicación utiliza datos de las siguientes fuentes:
-        </Text>
+        </AppText>
 
         {/* --- TMDB (Películas) --- */}
         <View className="mb-6 p-4 rounded-xl" style={{backgroundColor: colors.surfaceButton, }}>
-          <Text className="text-xl font-bold mb-2" style={{color: colors.primaryText}}>Películas</Text>
-		  <Text className="text-sm" style={{color: colors.secondaryText}}>
+          <AppText className="text-xl font-bold mb-2" style={{color: colors.primaryText}}>Películas</AppText>
+		  <AppText className="text-sm" style={{color: colors.secondaryText}}>
 			Este producto utiliza la API de TMDB pero no está certificado por TMDB
-		  </Text>
+		  </AppText>
           
           
           {/* LOGO SVG DE TMDB */}
@@ -47,51 +48,51 @@ export default function AboutUsScreen() {
           </TouchableOpacity>
           
           <TouchableOpacity onPress={() => openLink("https://www.themoviedb.org/")}>
-            <Text className="underline" style={{color: colors.accent}}>Visitar TMDB</Text>
+            <AppText className="underline" style={{color: colors.accent}}>Visitar TMDB</AppText>
           </TouchableOpacity>
         </View>
 
         {/* --- TVMaze (Series) --- */}
         <View className="mb-6 p-4 rounded-xl" style={{backgroundColor: colors.surfaceButton, }}>
-          <Text className="text-xl font-bold mb-2" style={{color: colors.primaryText}}>Series</Text>
-          <Text className="text-sm mb-3" style={{color: colors.secondaryText}}>
+          <AppText className="text-xl font-bold mb-2" style={{color: colors.primaryText}}>Series</AppText>
+          <AppText className="text-sm mb-3" style={{color: colors.secondaryText}}>
             Datos proporcionados por TVMaze. Licenciado bajo CC BY-SA 4.0.
-          </Text>
+          </AppText>
           <TouchableOpacity onPress={() => openLink("https://www.tvmaze.com/")}>
-            <Text className="underline" style={{color: colors.accent}}>Visitar TVMaze</Text>
+            <AppText className="underline" style={{color: colors.accent}}>Visitar TVMaze</AppText>
           </TouchableOpacity>
         </View>
 
         {/* --- IGDB (Juegos) --- */}
         <View className="mb-6 p-4 rounded-xl" style={{backgroundColor: colors.surfaceButton, }}>
-          <Text className="text-xl font-bold mb-2" style={{color: colors.primaryText}}>Videojuegos</Text>
-          <Text className="text-sm mb-3" style={{color: colors.secondaryText}}>
+          <AppText className="text-xl font-bold mb-2" style={{color: colors.primaryText}}>Videojuegos</AppText>
+          <AppText className="text-sm mb-3" style={{color: colors.secondaryText}}>
             Información de videojuegos provista por IGDB.
-          </Text>
+          </AppText>
           <TouchableOpacity onPress={() => openLink("https://www.igdb.com/")}>
-            <Text className="underline" style={{color: colors.accent}}>Visitar IGDB</Text>
+            <AppText className="underline" style={{color: colors.accent}}>Visitar IGDB</AppText>
           </TouchableOpacity>
         </View>
 
         {/* --- Discogs (Música) --- */}
         <View className="mb-6 p-4 rounded-xl" style={{backgroundColor: colors.surfaceButton, }}>
-          <Text className="text-xl font-bold mb-2" style={{color: colors.primaryText}}>Música</Text>
-          <Text className="text-sm mb-3" style={{color: colors.secondaryText}}>
+          <AppText className="text-xl font-bold mb-2" style={{color: colors.primaryText}}>Música</AppText>
+          <AppText className="text-sm mb-3" style={{color: colors.secondaryText}}>
             Datos proporcionados por Discogs. Este producto utiliza la API de Discogs pero no está certificado por Discogs. 
-          </Text>
+          </AppText>
           <TouchableOpacity onPress={() => openLink("https://www.discogs.com/es/?srsltid=AfmBOooV22Qg4h2z4-2zH1I8OTeYsmyeMaNwryyQYaBrslWh8dDZK5fa")}>
-            <Text className="underline" style={{color: colors.accent}}>Visitar Discogs</Text>
+            <AppText className="underline" style={{color: colors.accent}}>Visitar Discogs</AppText>
           </TouchableOpacity>
         </View>
 
         {/* --- OpenLibrary (Libros) --- */}
         <View className="mb-6 p-4 rounded-xl" style={{backgroundColor: colors.surfaceButton, }}>
-          <Text className="text-xl font-bold mb-2" style={{color: colors.primaryText}}>Libros</Text>
-          <Text className="text-sm mb-3" style={{color: colors.secondaryText}}>
+          <AppText className="text-xl font-bold mb-2" style={{color: colors.primaryText}}>Libros</AppText>
+          <AppText className="text-sm mb-3" style={{color: colors.secondaryText}}>
             Datos proporcionados por OpenLibrary. 
-          </Text>
+          </AppText>
           <TouchableOpacity onPress={() => openLink("https://openlibrary.org/")}>
-            <Text className="underline" style={{color: colors.accent}}>Visitar Openlibrary</Text>
+            <AppText className="underline" style={{color: colors.accent}}>Visitar Openlibrary</AppText>
           </TouchableOpacity>
         </View>
         

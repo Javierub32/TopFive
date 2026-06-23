@@ -7,12 +7,14 @@ import { useState, useEffect, useRef } from 'react';
 import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useFrame } from '@/Frames/hook/useFrame';
 import { useNotification } from 'context/NotificationContext';
-
+import {AppText} from 'components/AppText';
 import { RewardedAd, RewardedAdEventType, AdEventType,TestIds } from 'lib/rewarderAd';
 
 import { UserAvatar } from '@/User/components/UserAvatar';
 import { useProfile } from '@/Profile/hooks/useProfile';
-const availableFrames = ['none', 'libro', 'pelicula', 'cancion', 'videojuego', 'love'];
+const availableFrames = ['none', 'libro', 'pelicula', 'cancion', 'videojuego', 'love', 'lazoRosa', 'coronaDorada',
+  'cowboy', 'mugiwara'
+];
 
 const adUnitId = __DEV__
   ? TestIds.REWARDED
@@ -148,8 +150,25 @@ export default function FrameSelectorScreen() {
           paddingBottom: 20,
         }}>
         <View className="items-center justify-center py-10">
-          <TouchableOpacity onPress={pickImage} activeOpacity={0.7}>
+          <TouchableOpacity onPress={pickImage} activeOpacity={0.7} style={{ position: 'relative' }}>
+            {/* Avatar con el Marco */}
             {renderAvatar(currentAvatarUrl, selectedFrame, 1.4)}
+
+            {/* Icono de Cámara */}
+            <View 
+              className="absolute bottom-1 right-1 rounded-full p-2 border-2"
+              style={{ 
+                backgroundColor: colors.primary, 
+                borderColor: colors.background, 
+                elevation: 5, // Sombra android
+                shadowColor: '#000', // Sombra ios
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+              }}
+            >
+              <MaterialCommunityIcons name="camera" size={20} color={colors.background} />
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -211,9 +230,9 @@ export default function FrameSelectorScreen() {
             />
           )}
 
-          <Text className="text-center text-lg font-bold" style={{ color: colors.background }}>
-            {saving || isWatchingAd ? 'Cargando...' : userOwnsFrame ? 'Guardar' : 'Obtener'}
-          </Text>
+          <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
+            {saving || isWatchingAd ? 'Cargando...' : userOwnsFrame ? 'Guardar cambios' : 'Obtener'}
+          </AppText>
         </TouchableOpacity>
 
         <View />

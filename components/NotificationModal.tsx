@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from 'components/Icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from 'react-native-reanimated';
-
+import {AppText} from 'components/AppText';
 interface NotificationModalProps {
   visible: boolean;
   title: string;
@@ -74,18 +74,18 @@ export const NotificationModal = ({
           className="w-11/12 max-w-md rounded-2xl p-6"
           style={{ backgroundColor: colors.surfaceButton, zIndex: 1001 }}>
           {/* Título */}
-          <Text
+          <AppText
             className="mb-4 text-center text-2xl font-bold"
             style={{ color: info ? colors.primaryText : success ? colors.success : colors.error }}>
             {title}
-          </Text>
+          </AppText>
 
           {/* Descripción */}
-          <Text
+          <AppText
             className="mb-6 text-center text-base leading-6"
             style={{ color: colors.secondaryText }}>
             {description}
-          </Text>
+          </AppText>
 
           {/* Botones */}
           <View className="flex-row gap-3">
@@ -98,11 +98,11 @@ export const NotificationModal = ({
                 }}
                 onPress={onLeftPress}
                 activeOpacity={0.7}>
-                <Text
+                <AppText
                   className="text-center text-base font-semibold"
                   style={{ color: colors.primaryText }}>
                   {leftButtonText}
-                </Text>
+                </AppText>
               </TouchableOpacity>
             )}
 
@@ -115,11 +115,11 @@ export const NotificationModal = ({
                 }}
                 onPress={onRightPress}
                 activeOpacity={0.7}>
-                <Text
+                <AppText
                   className="text-center text-base font-semibold"
                   style={{ color: colors.primaryText }}>
                   {rightButtonText}
-                </Text>
+                </AppText>
               </TouchableOpacity>
             )}
           </View>
@@ -156,18 +156,18 @@ export const NotificationModal = ({
           <View className="flex-row items-start justify-between">
             <View className="flex-1 pr-2">
               {/* Título */}
-              <Text
+              <AppText
                 className="mb-2 text-lg font-bold"
                 style={{
                   color: info ? colors.primaryText : success ? colors.success : colors.error,
                 }}>
                 {title}
-              </Text>
+              </AppText>
 
               {/* Descripción */}
-              <Text className="text-sm leading-5" style={{ color: colors.secondaryText }}>
+              <AppText className="text-sm leading-5" style={{ color: colors.secondaryText }}>
                 {description}
-              </Text>
+              </AppText>
 
               {/* Botón de cerrar */}
               {(leftButtonText || rightButtonText) && (
@@ -182,11 +182,11 @@ export const NotificationModal = ({
                       }}
                       onPress={onLeftPress}
                       activeOpacity={0.7}>
-                      <Text
+                      <AppText
                         className="text-center text-sm font-semibold"
                         style={{ color: !highlightRight ? colors.background : colors.primaryText }}>
                         {leftButtonText}
-                      </Text>
+                      </AppText>
                     </TouchableOpacity>
                   )}
 
@@ -200,11 +200,11 @@ export const NotificationModal = ({
                       }}
                       onPress={onRightPress}
                       activeOpacity={0.7}>
-                      <Text
+                      <AppText
                         className="text-center text-sm font-semibold"
                         style={{ color: highlightRight ? colors.background : colors.primaryText }}>
                         {rightButtonText}
-                      </Text>
+                      </AppText>
                     </TouchableOpacity>
                   )}
                 </View>

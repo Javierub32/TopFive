@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
 import { ProgressIcon } from 'components/Icons';
-
+import {AppText} from 'components/AppText';
 interface Props {
   progress: string | number;
   unit?: string;
@@ -24,19 +24,19 @@ export const ProgressCard = ({ progress, unit }: Props) => {
         style={{ backgroundColor: `${colors.primary}1A` }}>
         <View className="flex-row items-center gap-2">
           <ProgressIcon />
-          <Text
+          <AppText
             className="text-sm font-bold uppercase tracking-widest"
             style={{ color: colors.markerText }}>
             Progreso
-          </Text>
+          </AppText>
         </View>
         <View className="flex-row items-baseline">
-          <Text className="text-xl font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="text-xl font-bold" style={{ color: colors.primaryText }}>
             {progress || 0}
-          </Text>
-          <Text className="ml-1 text-xs" style={{ color: colors.markerText }}>
+          </AppText>
+          <AppText className="ml-1 text-xs" style={{ color: colors.markerText }}>
             {unit}
-          </Text>
+          </AppText>
         </View>
       </View>
     );
@@ -49,16 +49,16 @@ export const ProgressCard = ({ progress, unit }: Props) => {
       style={{ backgroundColor: `${colors.primary}1A` }}>
       <View className="flex-row items-center gap-2">
         <ProgressIcon />
-        <Text
+        <AppText
           className="text-sm font-bold uppercase tracking-widest"
           style={{ color: colors.markerText }}>
           Progreso
-        </Text>
+        </AppText>
       </View>
       <View className="flex-row items-baseline">
-        <Text className="text-xl font-bold" style={{ color: colors.primaryText }}>
+        <AppText className="text-xl font-bold" style={{ color: colors.primaryText }}>
           T{newProgress[0]} - E{newProgress[1]}
-        </Text>
+        </AppText>
       </View>
     </View>
   );

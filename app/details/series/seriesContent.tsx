@@ -2,7 +2,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "components/Icons";
 import { Series } from 'app/types/Content';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
@@ -14,6 +14,8 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { ContentHeader } from '@/Details/components/ContentHeader';
 import { ContentRating } from '@/Details/components/ContentRating';
 import { AdBanner } from 'components/AdBanner';
+import {AppText} from 'components/AppText';
+
 
 export default function SeriesDetail() {
   const { id, from } = useLocalSearchParams();
@@ -37,10 +39,10 @@ export default function SeriesDetail() {
         <ReturnButton route={path} title="Detalle de la serie" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} style={{ color: colors.error }} />
-          <Text className="mt-4 text-xl font-bold text-primaryText">Error al cargar</Text>
-          <Text className="mt-2 text-center text-secondaryText">
+          <AppText className="mt-4 text-xl font-bold text-primaryText">Error al cargar</AppText>
+          <AppText className="mt-2 text-center text-secondaryText">
             No se pudo cargar la información de la serie
-          </Text>
+          </AppText>
         </View>
       </Screen>
     );

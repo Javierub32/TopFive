@@ -4,7 +4,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { UserResultItem } from '@/Search/components/UserResultItem';
 import { useTheme } from "context/ThemeContext";
 import { useState } from 'react';
-
+import {AppText} from 'components/AppText';
 interface NotificationButtonProps {
   user: User;
   status: 'pending' | 'accepted';
@@ -67,9 +67,9 @@ export function NotificationItem({ user, status, myFollowStatus = 'none', handle
 					backgroundColor: isPendingFollow ? `${colors.secondary}20` : colors.accent,
 				}}
 				activeOpacity={0.7}>
-				<Text className="text-sm font-medium" style={{ color: isPendingFollow ? colors.secondaryText : 'white' }}>
+				<AppText className="text-sm font-medium" style={{ color: isPendingFollow ? colors.secondaryText : 'white' }}>
 					{isPendingFollow ? 'Pendiente' : 'Seguir de vuelta'}
-				</Text>
+				</AppText>
 			</TouchableOpacity>
 		)
 	  	)}

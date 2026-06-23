@@ -2,7 +2,7 @@ import { BookResource, FilmResource, SeriesResource, SongResource, GameResource 
 import { TimerIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext";
 import { View, Text } from "react-native"; 
-
+import {AppText} from 'components/AppText';
 
 interface Props {
     resource: BookResource | SeriesResource | GameResource
@@ -48,12 +48,12 @@ export const TimeCard = ({resource} : Props) => {
             style={{ backgroundColor: `${colors.accent}BF` }}
             >
                 <View>
-                    <Text className="text-sm font-medium uppercase tracking-widest mb-1" style={{ color: colors.primaryText }}>
+                    <AppText className="text-sm font-medium uppercase tracking-widest mb-1" style={{ color: colors.primaryText }}>
                     Tiempo de lectura total
-                    </Text>
-                    <Text className="text-2xl font-bold" style={{ color: colors.primaryText }}>
+                    </AppText>
+                    <AppText className="text-2xl font-bold" style={{ color: colors.primaryText }}>
                     {readingTime}
-                    </Text>
+                    </AppText>
                 </View>
                 <View className="w-12 h-12 rounded-2xl items-center justify-center" style={{ backgroundColor: `${colors.primaryText}33` }}>
                     <TimerIcon/>

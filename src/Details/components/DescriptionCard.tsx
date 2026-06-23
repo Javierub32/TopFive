@@ -1,8 +1,8 @@
 import { useTheme } from 'context/ThemeContext';
 import { View, Text } from 'react-native';
 import { useState } from 'react';
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-
+import { MaterialCommunityIcons } from "components/Icons";
+import {AppText} from 'components/AppText';
 
 interface Props {
   description: string | null;
@@ -50,23 +50,23 @@ export const DescriptionCard = ({ description }: Props) => {
       style={{ backgroundColor: colors.surfaceButton, borderColor: colors.borderButton }}>
       <View className="flex-row items-center gap-2">
         <MaterialCommunityIcons name="book-open-page-variant" size={20} color={colors.primary} />
-        <Text
+        <AppText
           className="text-sm font-bold uppercase tracking-widest"
           style={{ color: colors.markerText }}>
           Sinopsis
-        </Text>
+        </AppText>
       </View>
-      <Text style={{ color: colors.secondaryText }}>
-        <Text className="italic leading-relaxed">{displayedDescription}</Text>
+      <AppText style={{ color: colors.secondaryText }}>
+        <AppText className="italic leading-relaxed">{displayedDescription}</AppText>
         {shouldTruncate && (
-          <Text
+          <AppText
             className="font-bold"
             style={{ color: colors.primary }}
             onPress={() => setIsExpanded(!isExpanded)}>
             {isExpanded ? ' Leer menos' : 'Leer más'}
-          </Text>
+          </AppText>
         )}
-      </Text>
+      </AppText>
     </View>
   );
 };

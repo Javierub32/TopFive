@@ -1,9 +1,8 @@
 import { View, Text } from 'react-native';
 import { Book, Film, Game, Series, Song } from 'app/types/Content';
 import { useTheme } from 'context/ThemeContext';
-import { RatingStarIcon } from 'components/Icons';
 import { ResourceType } from "hooks/useResource";
-
+import {AppText} from 'components/AppText';
 interface Props {
   content: Book | Film | Series | Song | Game;
   type: ResourceType;
@@ -68,13 +67,13 @@ export const ContentTags = ({ content, type, autor }: Props) => {
   return (
     <View className="mb-4 gap-1">
       <View>
-        <Text className="text-3xl font-bold" style={{ color: colors.primaryText }}>
+        <AppText className="text-3xl font-bold" style={{ color: colors.primaryText }}>
           {content.title || 'Sin título'}
-        </Text>
+        </AppText>
         {autor && (
-          <Text className="text-base" style={{color: colors.secondaryText}}>
+          <AppText className="text-base" style={{color: colors.secondaryText}}>
             {autor}
-          </Text>
+          </AppText>
         )}
       </View>
       
@@ -85,9 +84,9 @@ export const ContentTags = ({ content, type, autor }: Props) => {
           <View
           className="justify-center rounded-lg px-3 py-1.5"
           style={{ backgroundColor: colors.surfaceButton }}>
-            <Text className="text-sm font-semibold" style={{ color: colors.markerText }}>
+            <AppText className="text-sm font-semibold" style={{ color: colors.markerText }}>
               {endedYear ? `${releaseYear} - ${endedYear}` : releaseYear}
-            </Text>
+            </AppText>
           </View>
         )}
 
@@ -95,9 +94,9 @@ export const ContentTags = ({ content, type, autor }: Props) => {
           <View
             className="rounded-lg px-3 py-1.5 flex-shrink"
             style={{ backgroundColor: colors.surfaceButton}}>
-            <Text className="text-sm" numberOfLines={1} style={{ color: colors.markerText }}>
+            <AppText className="text-sm" numberOfLines={1} style={{ color: colors.markerText }}>
               {formatedGenres}
-            </Text>
+            </AppText>
           </View>
         )}
 
@@ -105,9 +104,9 @@ export const ContentTags = ({ content, type, autor }: Props) => {
           <View 
             className="rounded-lg px-3 py-1.5" 
             style={{ backgroundColor: `${colors.accent}1A` }}>
-            <Text className="text-sm" style={{ color: colors.accent }}>
+            <AppText className="text-sm" style={{ color: colors.accent }}>
               {formatedPlatforms}
-            </Text>
+            </AppText>
           </View>
         )}
       </View>

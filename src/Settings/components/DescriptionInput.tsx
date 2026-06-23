@@ -1,6 +1,7 @@
 import { useTheme } from 'context/ThemeContext';
 import { Text, TextInput, View } from 'react-native';
-
+import {AppText} from 'components/AppText';
+import {AppTextInput} from 'components/AppTextInput';
 interface DescriptionInputProps {
   description: string;
   onChange: (text: string) => void;
@@ -24,8 +25,8 @@ export const FormInput = ({
 
   return (
     <View>
-      <Text className="mb-3 text-lg font-semibold text-primaryText">{title}</Text>
-      <TextInput
+      <AppText className="mb-3 text-lg font-semibold text-primaryText">{title}</AppText>
+      <AppTextInput
         value={description}
         onChangeText={onChange}
         placeholder={placeholder}
@@ -41,11 +42,11 @@ export const FormInput = ({
         }}
       />
       <View className="flex-row justify-between">
-        <Text className="mt-1 text-left text-sm text-secondaryText"
+        <AppText className="mt-1 text-left text-sm text-secondaryText"
             style={{ color: colors.error }}>
             {hasError ? 'El nombre de usuario ya está en uso.' : null}
-        </Text>
-        <Text className="mt-1 text-right text-xs text-secondaryText">{description.length}/{maxLength}</Text>
+        </AppText>
+        <AppText className="mt-1 text-right text-xs text-secondaryText">{description.length}/{maxLength}</AppText>
       </View>
       
       

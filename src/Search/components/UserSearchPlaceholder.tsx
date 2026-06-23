@@ -1,7 +1,7 @@
 import { Text, View } from "react-native";
 import { UserIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext";
-
+import {AppText} from 'components/AppText';
 interface UserSearchPlaceholderProps {
 	loading: boolean;
 }
@@ -18,14 +18,14 @@ export const UserSearchPlaceholder = ({ loading }: UserSearchPlaceholderProps) =
 			</View>
 
 			{/* Texto Principal */}
-			<Text className="mb-3 text-center text-3xl font-bold" style={{ color: colors.primaryText }}>
+			<AppText className="mb-3 text-center text-3xl font-bold" style={{ color: colors.primaryText }}>
 				Usuarios
-			</Text>
+			</AppText>
 
 			{/* Texto Secundario (Instrucciones) */}
-			<Text className="px-4 text-center" style={{ color: colors.secondaryText }}>
+			<AppText className="px-4 text-center" style={{ color: colors.secondaryText }}>
 				Realiza una búsqueda para buscar usuarios.
-			</Text>
+			</AppText>
 		</View>
 	);
 };

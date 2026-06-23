@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, TextInput, TouchableOpacity, Text } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';    
+import { View, TextInput, TouchableOpacity, Text } from 'react-native';    
 import { useTheme } from 'context/ThemeContext';
 import { SearchIcon } from 'components/Icons';
+import {AppTextInput} from 'components/AppTextInput';
 
 interface SearchBarProps {
   value: string;
@@ -32,7 +32,7 @@ export function UserSearchBar({
         </TouchableOpacity>}
 
         {/* Input de texto */}
-        <TextInput
+        <AppTextInput
           className="h-full flex-1 px-3 text-base overflow-hidden"
           style={{ color: colors.primaryText, lineHeight: 17, maxHeight:17 }}
           placeholder={`Busca un usuario...`}

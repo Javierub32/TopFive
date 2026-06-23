@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, ImageBackground, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'context/ThemeContext';
-import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons } from 'components/Icons';
 import {
   NativeAd,
   NativeAdView,
@@ -10,6 +10,7 @@ import {
   NativeAssetType,
   NativeMediaView,
 } from 'react-native-google-mobile-ads';
+import {AppText} from 'components/AppText';
 
 // Usamos el Test ID de Google para desarrollo y tu ID real para producción
 const adUnitId = __DEV__ 
@@ -80,7 +81,7 @@ export const NativeAdCard = () => {
               
               {/* Etiqueta de "PATROCINADO" obligatoria por políticas de Google */}
               <View className="rounded-full" style={{ alignSelf: 'flex-start', backgroundColor: `${colors.primary}33`, paddingHorizontal: 12, padding: 4, marginBottom: 30 }}>
-                <Text style={{ color: colors.primary, fontSize: 10, fontWeight: 'bold' }}>PATROCINADO</Text>
+                <AppText style={{ color: colors.primary, fontSize: 10, fontWeight: 'bold' }}>PATROCINADO</AppText>
               </View>
 
               <View className="flex-row gap-4">
@@ -96,9 +97,9 @@ export const NativeAdCard = () => {
                       
                       {/* Título del anuncio */}
                       <NativeAsset assetType={NativeAssetType.HEADLINE}>
-                        <Text className="font-bold text-base leading-tight mr-2 mb-2" style={{ color: colors.primaryText }}>
+                        <AppText className="font-bold text-base leading-tight mr-2 mb-2" style={{ color: colors.primaryText }}>
                           {nativeAd.headline}
-                        </Text>
+                        </AppText>
                       </NativeAsset>
                       
                       {/* Estrellas de calificación */}
@@ -133,9 +134,9 @@ export const NativeAdCard = () => {
 
                   {/* Descripción del anuncio */}
                   <NativeAsset assetType={NativeAssetType.BODY}>
-                    <Text style={{ color: colors.secondaryText, lineHeight: 20 }}>
+                    <AppText style={{ color: colors.secondaryText, lineHeight: 20 }}>
                       {displayedDescription}
-                    </Text>
+                    </AppText>
                   </NativeAsset>
 
                   {/* Botón de llamada a la acción (ej: "Instalar", "Visitar web") */}
@@ -143,9 +144,9 @@ export const NativeAdCard = () => {
                     <View style={{ marginTop: 8, alignSelf: 'flex-start' }}>
                       <NativeAsset assetType={NativeAssetType.CALL_TO_ACTION}>
                         <View style={{ backgroundColor: colors.accent, paddingVertical: 6, paddingHorizontal: 12, borderRadius: 8 }}>
-                          <Text style={{ color: colors.primaryText, fontWeight: 'bold', fontSize: 12 }}>
+                          <AppText style={{ color: colors.primaryText, fontWeight: 'bold', fontSize: 12 }}>
                             {nativeAd.callToAction}
-                          </Text>
+                          </AppText>
                         </View>
                       </NativeAsset>
                     </View>
@@ -171,11 +172,11 @@ export const NativeAdCard = () => {
 
               <View className="flex-col flex-1">
                 <NativeAsset assetType={NativeAssetType.ADVERTISER}>
-                  <Text className="font-bold text-base" style={{ color: colors.primaryText }} numberOfLines={1}>
+                  <AppText className="font-bold text-base" style={{ color: colors.primaryText }} numberOfLines={1}>
                     {nativeAd.advertiser || 'Anunciante Externo'}
-                  </Text>
+                  </AppText>
                 </NativeAsset>
-                <Text className="text-xs" style={{ color: colors.secondaryText }}>Recomendado para ti</Text>
+                <AppText className="text-xs" style={{ color: colors.secondaryText }}>Recomendado para ti</AppText>
               </View>
             </View>
           </View>

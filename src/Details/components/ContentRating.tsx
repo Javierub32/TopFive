@@ -1,10 +1,9 @@
 import { View, Text } from "react-native";
 import { useTheme } from "context/ThemeContext";
-import { RatingIcon } from "components/Icons";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { RatingIcon, FontAwesome5 } from "components/Icons";
 import { Book, Film, Game, Series, Song } from "app/types/Content";
 import { ResourceType } from "hooks/useResource";
-
+import {AppText} from 'components/AppText';
 
 interface Props {
     content: Book | Film | Series | Song | Game;
@@ -49,7 +48,7 @@ export const ContentRating =({content, type}: Props) => {
             <View className='flex-1 p-4 rounded-2xl flex justify-between gap-2' style={{backgroundColor: `${colors.rating}1A`}}>
                 <View className='flex-row items-center gap-2'>
                     <RatingIcon/>
-                    <Text className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Calificación general</Text>
+                    <AppText className='text-sm font-bold uppercase tracking-widest' style={{color: colors.markerText}}>Calificación general</AppText>
                 </View>
                 <View className="flex-row justify-center gap-6 items-center">
                     <View className="flex-row justify-center items-center">
@@ -82,9 +81,9 @@ export const ContentRating =({content, type}: Props) => {
                             );
                         })}
                     </View>
-                    <Text className="text-lg font-semibold" style={{color: colors.secondaryText}}>
+                    <AppText className="text-lg font-semibold" style={{color: colors.secondaryText}}>
                         {rating}
-                    </Text>
+                    </AppText>
                 </View>
                 
             </View>

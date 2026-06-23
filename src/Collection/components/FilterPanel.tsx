@@ -1,6 +1,5 @@
-import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
-
+import {AppText} from 'components/AppText';
 type SortType = 'FECHA_DESC' | 'FECHA_ASC';
 type StatusType = 'TODOS' | 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';
 
@@ -25,7 +24,7 @@ export const FilterPanel = ({
     <View className="mb-4 rounded-xl border border-borderButton bg-surfaceButton/80 p-4">
       {/* Sección Orden */}
       <View className="mb-4">
-        <Text className="text-secondaryText text-xs font-bold uppercase mb-2">Ordenar por</Text>
+        <AppText className="text-secondaryText text-xs font-bold uppercase mb-2">Ordenar por</AppText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
           {[
             { id: 'FECHA_DESC', label: 'Más recientes' },
@@ -36,9 +35,9 @@ export const FilterPanel = ({
               onPress={() => setOrden(opt.id as SortType)}
               className={`mr-2 rounded-full border px-3 py-1.5 ${orden === opt.id ? 'bg-primary border-primary' : 'border-borderButton bg-transparent'}`}
             >
-              <Text className={`text-xs ${orden === opt.id ? 'text-primaryText font-bold' : 'text-secondaryText'}`}>
+              <AppText className={`text-xs ${orden === opt.id ? 'text-primaryText font-bold' : 'text-secondaryText'}`}>
                 {opt.label}
-              </Text>
+              </AppText>
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -46,7 +45,7 @@ export const FilterPanel = ({
 
       {/* Sección Estado */}
       <View className="mb-4">
-        <Text className="text-secondaryText text-xs font-bold uppercase mb-2">Estado</Text>
+        <AppText className="text-secondaryText text-xs font-bold uppercase mb-2">Estado</AppText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
           {[
             { id: 'TODOS', label: 'Todos' },
@@ -59,9 +58,9 @@ export const FilterPanel = ({
               onPress={() => setFiltroEstado(opt.id as StatusType)}
               className={`mr-2 rounded-full border px-3 py-1.5 ${filtroEstado === opt.id ? 'bg-surfaceButton border-white' : 'border-borderButton bg-transparent'}`}
             >
-              <Text className={`text-xs ${filtroEstado === opt.id ? 'text-background font-bold' : 'text-secondaryText'}`}>
+              <AppText className={`text-xs ${filtroEstado === opt.id ? 'text-background font-bold' : 'text-secondaryText'}`}>
                 {opt.label}
-              </Text>
+              </AppText>
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -69,7 +68,7 @@ export const FilterPanel = ({
 
       {/* Switch Favoritos */}
       <View className="flex-row items-center justify-between pt-2 border-t border-borderButton">
-        <Text className="text-primaryText text-sm">Solo Favoritos</Text>
+        <AppText className="text-primaryText text-sm">Solo Favoritos</AppText>
         <TouchableOpacity 
           onPress={() => setSoloFavoritos(!soloFavoritos)}
           activeOpacity={0.8}

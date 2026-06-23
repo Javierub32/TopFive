@@ -9,6 +9,9 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { SearchPlaceholder } from '@/Add/components/SearchPlaceholder';
+import {AppText} from 'components/AppText';
+
+
 
 export default function AddScreen() {
   const {
@@ -31,9 +34,9 @@ export default function AddScreen() {
     <Screen>
       <ThemedStatusBar />
       <View className="flex-1 px-4 pt-6">
-        <Text className="mb-4 mt-2 text-3xl font-bold" style={{ color: colors.primaryText }}>
+        <AppText className="mb-4 mt-2 text-3xl font-bold" style={{ color: colors.primaryText }}>
           Búsqueda
-        </Text>
+        </AppText>
 
         <SearchBar
           value={busqueda}

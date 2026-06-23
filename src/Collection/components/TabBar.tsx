@@ -1,7 +1,7 @@
 import { useTheme } from "context/ThemeContext";
 import { Text, View } from "react-native";
 import { TabBar, TabBarProps } from "react-native-tab-view";
-
+import {AppText} from 'components/AppText';
 export default function renderTabBar(props: TabBarProps<any>) {
 	const { colors } = useTheme();
 	return (
@@ -29,7 +29,7 @@ export default function renderTabBar(props: TabBarProps<any>) {
 			padding: 0, 
 		  }}
 		  renderLabel={({ route, focused }: any) => (
-			<Text
+			<AppText
 			  style={{ 
 				color: focused ? 'white' : '#94a3b8',
 				fontWeight: '600',
@@ -38,7 +38,7 @@ export default function renderTabBar(props: TabBarProps<any>) {
 			  }}
 			>
 			  {route.title}
-			</Text>
+			</AppText>
 		  )}
 		  pressColor="transparent"
 		  {...({} as any)}

@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from 'components/Icons';
 import { ResourceType } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { BookIcon, FilmIcon, ShowIcon, GameIcon, MusicIcon, WrenchIcon } from 'components/Icons';
-
+import {AppText} from 'components/AppText';
 interface SearchPlaceholderProps {
   category: ResourceType;
   loading: boolean;
@@ -44,14 +44,14 @@ export const SearchPlaceholder = ({ category, loading }: SearchPlaceholderProps)
       </View>
 
       {/* Texto Principal (Nombre de la categoría) */}
-      <Text className="mb-3 text-center text-3xl font-bold" style={{color: colors.primaryText}}>
+      <AppText className="mb-3 text-center text-3xl font-bold" style={{color: colors.primaryText}}>
         {categoryLabel}
-      </Text>
+      </AppText>
 
       {/* Texto Secundario (Instrucciones) */}
-      <Text className="px-4 text-center" style={{color: colors.secondaryText}}>
+      <AppText className="px-4 text-center" style={{color: colors.secondaryText}}>
         Realiza una búsqueda para ver resultados de {categoryLabel.toLowerCase()}.
-      </Text>
+      </AppText>
     </View>
   );
 };

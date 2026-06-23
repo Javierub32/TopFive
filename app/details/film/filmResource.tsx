@@ -1,7 +1,7 @@
 import { View, Text, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from 'components/Icons';
 import { FilmResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
@@ -12,6 +12,7 @@ import { ReviewCard } from '@/Details/components/ReviewCard';
 import { useAuth } from 'context/AuthContext';
 import { AdBanner } from 'components/AdBanner';
 import { ResourceHeader } from '@/Details/components/ResourceHeader';
+import {AppText} from 'components/AppText';
 
 export default function FilmDetail() {
   const { item, from } = useLocalSearchParams();
@@ -43,12 +44,12 @@ export default function FilmDetail() {
         <ReturnButton route={path} title="Detalle de la película" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
-          <Text className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
             Error al cargar
-          </Text>
-          <Text className="mt-2 text-center" style={{ color: colors.secondaryText }}>
+          </AppText>
+          <AppText className="mt-2 text-center" style={{ color: colors.secondaryText }}>
             No se pudo cargar la información de la película
-          </Text>
+          </AppText>
         </View>
       </Screen>
     );

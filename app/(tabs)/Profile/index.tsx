@@ -15,6 +15,8 @@ import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { NotificationButton } from '@/Notifications/components/NotificationButton';
 import { useTranslation } from 'react-i18next';
+import {AppText} from 'components/AppText';
+
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
@@ -69,16 +71,18 @@ export default function ProfileScreen() {
     <Screen>
       <ThemedStatusBar />
       <View className="flex-1 px-4 pt-6">
-        <Text className="mb-4 text-3xl font-bold" style={{ color: colors.primaryText }}>
+        <AppText className="mb-4 text-3xl font-bold" style={{ color: colors.primaryText }}>
           {userData?.username || 'Usuario'}
-        </Text>
+        </AppText>
 
         {/* Botones de configuración y notificaciones */}
         <View className="absolute right-4 top-5 z-10 flex-row gap-x-2">
           <NotificationButton from='Profile'/>
           <Pressable
             className="rounded-full p-3"
-            onPress={() => router.push({ pathname: '/settings' , params: { username: userData?.username, description: userData?.description } })}>
+            onPress={() => router.push({ pathname: '/settings' , params: { username: userData?.username, description: userData?.description,
+              avatar_url: userData?.avatar_url || null, frame: userData?.frame || 'none', from: 'Profile'
+             } })}>
             <Feather name="settings" size={24} color={colors.primaryText} />
           </Pressable>
         </View>
@@ -98,29 +102,31 @@ export default function ProfileScreen() {
           </ProfileData>
 
           {/* EDITAR Y COMPARTIR PERFIL */}
+          
           <View className="flex-row gap-x-2 mt-5">
             {/* Editar perfil */}
             <TouchableOpacity
-              className="flex-1 items-center justify-center rounded-xl py-2.5 px-3"
+              className="flex-1 items-center justify-center rounded-xl py-2 px-3"
               style={{ backgroundColor: `${colors.accent}33` }}
               activeOpacity={0.4}
               onPress={() =>
-                router.push({ pathname: '/editProfile', params: { username: userData?.username, description: userData?.description } })
+                router.push({ pathname: '/editProfile', params: { username: userData?.username, description: userData?.description, 
+                   from: 'Profile'} })
               }>
-                <Text className="text-base font-semibold" style={{ color: colors.primaryText }}>
+                <AppText className="text-base font-semibold" style={{ color: colors.primaryText }}>
                   {t('settings.personalization.editProfile')}
-                </Text>
+                </AppText>
             </TouchableOpacity>
 
             {/* Compartir perfil */}
             <TouchableOpacity
-              className="flex-1 items-center justify-center rounded-xl py-2.5 px-3"
+              className="flex-1 items-center justify-center rounded-xl py-2 px-3"
               style={{ backgroundColor: `${colors.accent}33` }}
               activeOpacity={0.4}
               onPress={handleShare}>
-                <Text className="text-base font-semibold" style={{ color: colors.primaryText }}>
+                <AppText className="text-base font-semibold" style={{ color: colors.primaryText }}>
                   {t('settings.account.share')}
-                </Text>
+                </AppText>
             </TouchableOpacity>
           </View>
 

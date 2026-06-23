@@ -50,6 +50,39 @@ export const userService = {
 				status: 'pending'
 			}]);
 		if (error) throw error;
+
+		try {
+			// Obtenemos mi username y el push_token de la persona a la que quiero seguir
+			const [myUserRes, targetUserRes] = await Promise.all([
+				supabase.from('usuario').select('username').eq('id', userId).single(),
+				supabase.from('usuario').select('push_token').eq('id', targetUserId).single()
+			]);
+
+			const myUsername = myUserRes.data?.username || 'Alguien';
+			const pushToken = targetUserRes.data?.push_token;
+
+			// Si la persona tiene un token guardado, le disparamos la notificación
+			if (pushToken) {
+				fetch('https://exp.host/--/api/v2/push/send', {
+					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+						'Accept-encoding': 'gzip, deflate',
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						to: pushToken,
+						sound: 'default',
+						title: 'Nueva solicitud de seguimiento',
+						body: `${myUsername} ha solicitado seguirte.`,
+						data: { type: 'new_follow_request', followerId: userId },
+					}),
+				});
+			}
+		} catch (err) {
+			console.error("Error enviando notificación push de solicitud:", err);
+		}
+
 		return data;
 	},
 

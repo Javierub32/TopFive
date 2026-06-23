@@ -2,7 +2,7 @@ import { useTheme } from "context/ThemeContext"
 import { useState } from "react";
 import { StateType } from "hooks/useResource";
 import { View, TouchableOpacity, Text } from "react-native";
-
+import {AppText} from 'components/AppText';
 interface Props {
     state: any;
     setState: any;
@@ -47,9 +47,9 @@ export const StateSetter = ({state, setState, inProgressLabel} : Props) => {
                             style = { isSelected ? {backgroundColor: `${getStatusColor(est)}1A`} : {backgroundColor: colors.surfaceButton}}
                             activeOpacity={0.7}
                         >
-                            <Text className="text-center text-sm font-semibold" style={isSelected? {color: getStatusColor(est)} : {color: colors.secondaryText}}>
+                            <AppText className="text-center text-sm font-semibold" style={isSelected? {color: getStatusColor(est)} : {color: colors.secondaryText}}>
                                 {getLabel(est)}
-                            </Text>
+                            </AppText>
                         </TouchableOpacity>
                     )
             })}
