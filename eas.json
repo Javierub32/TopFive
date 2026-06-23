@@ -1,13 +1,15 @@
 {
   "cli": {
     "version": ">= 16.28.0",
-    "appVersionSource": "remote",
-    "packageManager": "pnpm"
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EAS_PACKAGE_MANAGER": "pnpm"
+      }
     },
     "preview": {
       "distribution": "internal",
