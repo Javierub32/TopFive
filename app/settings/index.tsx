@@ -242,7 +242,9 @@ export default function SettingsScreen() {
                 </View>
 
                 {/* Cambiar idioma */}
-                <View>
+                <View
+                  className="border-b pb-2"
+                  style={{ borderColor: `${colors.secondaryText}4D` }}>
                   <TouchableOpacity
                     className="w-full flex-row items-center justify-between gap-4 p-2"
                     activeOpacity={0.4}
