@@ -76,7 +76,7 @@ export default function ListScreen() {
       <View className="flex-1 px-4 pt-6">
         
         <View className="mt-2 mb-4 flex-row items-end justify-between">
-            <AppText className="text-3xl font-bold" style={{ color: colors.primaryText }}>Listas</AppText>
+            <AppText className=" font-bold" style={{ color: colors.primaryText, fontSize: 28 }}>Listas</AppText>
             <TouchableOpacity activeOpacity={0.7} onPress={() => router.push("/form/list")}>
                 <AppText className="text-xl" style={{ color: colors.primary }}>+ Nueva lista</AppText>
             </TouchableOpacity>

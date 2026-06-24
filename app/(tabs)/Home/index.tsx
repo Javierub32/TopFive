@@ -97,6 +97,23 @@ export default function HomeScreen() {
 					</View>
 				</Animated.View>
 			</Animated.View>
+			<View className="px-4 pt-6">
+				<View className="mb-4 flex-row items-center justify-between">
+					<AppText className=" font-bold" style={{ color: colors.primaryText, fontSize: 28 }}>
+						Inicio
+					</AppText>
+					
+					<View className="flex-row gap-x-2">
+						<NotificationButton from="Home" />
+						<TouchableOpacity
+							onPress={() => router.push('/search')}
+							className="rounded-full p-3"
+						>
+							<SearchIcon2 size={24} color={colors.primaryText} />
+						</TouchableOpacity>
+					</View>
+				</View>
+			</View>
 
 			{loading && activities.length === 0 ? (
 				<LoadingIndicator />
