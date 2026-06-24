@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'context/ThemeContext';
 import { useNotification } from 'context/NotificationContext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useTranslation } from 'react-i18next';
 
 export default function Register() {
   const { signUp } = useAuth();
@@ -21,14 +22,15 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const handleRegister = async () => {
     setLoading(true);
     try {
       if (password !== confirmPassword) {
         showNotification({
-          title: 'Error',
-          description: 'Las contraseñas no coinciden. Por favor, inténtalo de nuevo.',
+          title: t('common.error'),
+          description: t('login.signUp.errors.passwordMismatch'),
           isChoice: false,
           delete: false,
           success: false,
@@ -39,15 +41,10 @@ export default function Register() {
       await signUp(email, password, username.trim());
       router.replace('/(auth)/login');
       showNotification({
-        title: 'Cuenta creada',
-        description: (
-          <Text>
-            Tu cuenta ha sido creada exitosamente. {'\n'}
-            Revisa tu correo y confirma tu cuenta.
-          </Text>
-        ),
+        title: t('login.signUp.success.title'),
+        description: <Text>{t('login.signUp.success.description')}</Text>,
         isChoice: true,
-        rightButtonText: 'Aceptar',
+        rightButtonText: t('common.accept'),
         onRightPress: () => {
           hideNotification();
         },
@@ -57,8 +54,8 @@ export default function Register() {
     } catch (error: any) {
       //Alert.alert('Error', error.message || 'Hubo un error al crear tu cuenta.');
       showNotification({
-        title: 'Error',
-        description: error.message || 'Hubo un error al crear tu cuenta.',
+        title: t('common.error'),
+        description: error.message || t('login.signUp.errors.general'),
         isChoice: false,
         delete: false,
         success: false,
@@ -103,7 +100,7 @@ export default function Register() {
               <MaterialCommunityIcons name="movie-open" size={40} color={colors.primaryText} />
             </View>
             <Text style={{ fontSize: 24, fontWeight: 'bold', color: colors.primaryText }}>
-              TopFive
+              {t('common.appName')}
             </Text>
           </View>
 
@@ -116,7 +113,7 @@ export default function Register() {
               opacity: 0.9,
               fontStyle: 'italic',
             }}>
-            Crea tu cuenta
+            {t('login.signUp.subtitle')}
           </Text>
 
           <View
@@ -124,7 +121,7 @@ export default function Register() {
             style={{ backgroundColor: colors.background }}>
             <View className="mb-4">
               <Text className="mb-2 ml-1 font-semibold" style={{ color: colors.primaryText }}>
-                Nombre de usuario
+                {t('login.signUp.username')}
               </Text>
               <View
                 className="mb-3 flex-row items-center rounded-xl px-4 py-3"
@@ -135,7 +132,7 @@ export default function Register() {
                   color={colors.secondaryText}
                 />
                 <TextInput
-                  placeholder="Tu nombre de usuario"
+                  placeholder={t('login.signUp.usernamePlaceholder')}
                   value={username}
                   onChangeText={setUsername}
                   autoCapitalize="none"
@@ -147,7 +144,7 @@ export default function Register() {
 
               {/* Email Input */}
               <Text className="mb-2 ml-1 font-semibold" style={{ color: colors.primaryText }}>
-                Email
+                {t('login.signUp.email')}
               </Text>
               <View
                 className="mb-3 flex-row items-center rounded-xl px-4 py-3"
@@ -158,7 +155,7 @@ export default function Register() {
                   color={colors.secondaryText}
                 />
                 <TextInput
-                  placeholder="tu@email.com"
+                  placeholder={t('login.signUp.emailPlaceholder')}
                   value={email}
                   onChangeText={setEmail}
                   autoCapitalize="none"
@@ -171,7 +168,7 @@ export default function Register() {
 
               {/* Password Input */}
               <Text className="mb-2 ml-1 font-semibold" style={{ color: colors.primaryText }}>
-                Contraseña
+                {t('login.signUp.password')}
               </Text>
               <View
                 className="mb-3 flex-row items-center rounded-xl px-4 py-3"
@@ -204,7 +201,7 @@ export default function Register() {
 
               {/* Confirm Password Input */}
               <Text className="mb-2 ml-1 font-semibold" style={{ color: colors.primaryText }}>
-                Confirmar contraseña
+                {t('login.signUp.confirmPassword')}
               </Text>
               <View
                 className="mb-3 flex-row items-center rounded-xl px-4 py-3"
@@ -243,7 +240,7 @@ export default function Register() {
                   className="items-center overflow-hidden rounded-xl py-4 shadow-lg"
                   style={{ backgroundColor: colors.accent }}>
                   <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>
-                    {loading ? 'Creando...' : 'Registrarse'}
+                    {loading ? t('common.loadingCreating') : t('login.signUp.signUpButton')}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -253,14 +250,14 @@ export default function Register() {
           {/* Enlace al Login */}
           <View style={{ marginTop: 20, alignItems: 'center' }}>
             <Text className="mb-2 text-base" style={{ color: colors.primaryText }}>
-              ¿Ya tienes cuenta?
+              {t('login.signUp.alreadyHaveAccount')}
             </Text>
             <TouchableOpacity
               onPress={() => router.push('/(auth)/login')}
               className="rounded-full px-6 py-3"
               style={{ backgroundColor: `${colors.surfaceButton}80` }}>
               <Text className="text-base font-semibold" style={{ color: colors.primaryText }}>
-                Volver al Login
+                {t('login.signUp.loginButton')}
               </Text>
             </TouchableOpacity>
           </View>

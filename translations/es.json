@@ -1,10 +1,16 @@
 {
     "common":{
+        "appName": "TopFive",
         "save": "Guardar",
         "cancel": "Cancelar",
         "loading": "Cargando...",
+        "loadingCreating": "Creando...",
         "saveChanges": "Guardar cambios",
-        "warning": "Aviso"
+        "warning": "Aviso",
+        "error": "Error",
+        "success": "Éxito",
+        "send": "Enviar",
+        "accept": "Aceptar"
     },
     "categories": {
         "books": "Libros",
@@ -116,6 +122,71 @@
             }
         }
 
+    },
+    "login":{
+        "loginSentences": {
+            "1": "  Tu butaca reservada te espera.",
+            "2": "  Tu inventario de entretenimiento, en un solo lugar.",
+            "3": "  Marca tu página. Guarda tu mundo.",
+            "4": "  Tu vida, tu ranking, tu TopFive.",
+            "5": "  Tu mixtape definitiva está aquí."
+        },
+        "loginNotification": {
+            "title": "¡Bienvenido!",
+            "description": "Sesión iniciada correctamente."
+        },
+        "email": {
+            "title": "Correo electrónico",
+            "placeholder": "tu@correo.com"
+        },
+        "password": "Contraseña",
+        "forgotPassword": {
+            "title": "¿Olvidaste tu contraseña?",
+            "subtitle": "Ingrese su correo para restablecer su contraseña.",
+            "emailNotRegistered": "El correo no está registrado. Cree una cuenta o verifique el email ingresado.",
+            "emailSent": "Recibirás un email con instrucciones para restablecer tu contraseña.",
+            "errorEmailSent": "No se pudo enviar el correo de restablecimiento. Por favor, inténtalo de nuevo."
+        },
+        "loginButton": "Iniciar sesión",
+        "loginWithGoogle": "Iniciar sesión con Google",
+        "loginWithApple": "Iniciar sesión con Apple",
+        "noAccount": "¿No tienes una cuenta?",
+        "signUpButton": "Regístrate aquí",
+        "signUp": {
+            "subtitle": "Crea tu cuenta",
+            "username": "Nombre de usuario",
+            "usernamePlaceholder": "Tu nombre de usuario",
+            "email": "Correo electrónico",
+            "emailPlaceholder": "tu@correo.com",
+            "password": "Contraseña",
+            "confirmPassword": "Confirmar contraseña",
+            "signUpButton": "Registrarse",
+            "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+            "loginButton": "Volver al inicio de sesión",
+            "success": {
+                "title": "Cuenta creada",
+                "description": "Tu cuenta ha sido creada exitosamente. \n Revisa tu correo y confirma tu cuenta."
+            },
+            "errors": {
+                "passwordMismatch": "Las contraseñas no coinciden. Por favor, inténtalo de nuevo.",
+                "general": "Hubo un error al crear tu cuenta."
+            }
+        },
+        "resetPassword": {
+            "error": {
+                "denied": "Permiso denegado",
+                "errorLink": "El enlace ha caducado o está incompleto. Por farvor, solicita uno nuevo.",
+                "passwordMismatch": "Las contraseñas no coinciden. Por favor, revísalas.",
+                "general": "No se pudo actualizar la contraseña. El enlace podría haber caducado.",
+                "differentPassword": "La nueva contraseña deber ser diferente a la que estabas usando.",
+                "rateLimit": "Has intentado cambiar la contraseña demasiadas veces. Por favor, espera unos minutos.",
+                "default": "Error al cambiar la contraseña."
+            },
+            "successDescription": "Tu contraseña ha sido actualizada correctamente. Ya puedes iniciar sesión.",
+            "newPassword": "Nueva contraseña",
+            "confirmPassword": "Confirmar contraseña",
+            "changePassword": "Cambiar contraseña"
+        }
     }
 
 }

@@ -16,18 +16,23 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'context/ThemeContext';
 import { useNotification } from 'context/NotificationContext';
 import { supabase } from 'lib/supabase';
-import { GoogleSignin, isSuccessResponse, statusCodes } from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  isSuccessResponse,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import * as Linking from 'expo-linking';
 import * as AppleAuthentication from 'expo-apple-authentication';
+import { useTranslation } from 'react-i18next';
 
 // Frases aleatorias con iconos - fuera del componente para mejor rendimiento
 const frasesConIconos = [
-  { texto: '  Tu butaca reservada te espera.', icono: 'movie-open' },
-  { texto: '  Tu inventario de entretenimiento, en un solo lugar.', icono: 'archive-star' },
-  { texto: '  Marca tu página. Guarda tu mundo.', icono: 'bookmark-check' },
-  { texto: '  Tu vida, tu ranking, tu TopFive.', icono: 'podium-gold' },
-  { texto: '  Tu mixtape definitiva está aquí.', icono: 'music-box-multiple' },
-];
+  { translationKey: 'login.loginSentences.1', icono: 'movie-open' },
+  { translationKey: 'login.loginSentences.2', icono: 'archive-star' },
+  { translationKey: 'login.loginSentences.3', icono: 'bookmark-check' },
+  { translationKey: 'login.loginSentences.4', icono: 'podium-gold' },
+  { translationKey: 'login.loginSentences.5', icono: 'music-box-multiple' },
+] as const;
 
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
@@ -45,6 +50,7 @@ export default function Login() {
   const { showNotification } = useNotification();
 
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   // Seleccionar una frase aleatoria - se ejecuta cada vez que se renderiza el componente
   const fraseAleatoria = useState(
@@ -52,7 +58,7 @@ export default function Login() {
   )[0];
 
   const handleLogin = async () => {
-    alert("ID de Web: " + process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID);
+    alert('Web ID: ' + process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID);
     setLoading(true);
     try {
       await signIn(email, password);
@@ -71,54 +77,57 @@ export default function Login() {
     }
   };
   const handleNativeGoogleLogin = async () => {
-  setLoading(true);
-  try {
-    if (Platform.OS === 'web') {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: window.location.origin, 
-        },
-      });
-      if (error) throw error;
+    setLoading(true);
+    try {
+      if (Platform.OS === 'web') {
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: window.location.origin,
+          },
+        });
+        if (error) throw error;
+      } else {
+        await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+        const response = await GoogleSignin.signIn();
 
-    } else {
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      const response = await GoogleSignin.signIn();
-      
-      let token: string | null = null;
-      if (isSuccessResponse(response)) {
-        token = response.data.idToken;
+        let token: string | null = null;
+        if (isSuccessResponse(response)) {
+          token = response.data.idToken;
+        }
+
+        if (!token) throw new Error('Google no devolvió un ID Token');
+
+        const { error } = await supabase.auth.signInWithIdToken({
+          provider: 'google',
+          token: token,
+        });
+
+        if (error) throw error;
+
+        showNotification({
+          title: t('login.loginNotification.title'),
+          description: t('login.loginNotification.description'),
+          isChoice: false,
+          delete: false,
+          success: true,
+        });
       }
-
-      if (!token) throw new Error('Google no devolvió un ID Token');
-
-      const { error } = await supabase.auth.signInWithIdToken({
-        provider: 'google',
-        token: token,
-      });
-
-      if (error) throw error;
-      
+    } catch (error: any) {
+      console.error(error);
+      console.log('statusCode:', error.code);
+      console.log('message:', error.message);
       showNotification({
-        title: '¡Bienvenido!',
-        description: 'Sesión iniciada correctamente.',
-        isChoice: false, delete: false, success: true,
+        title: 'Error',
+        description: error.message,
+        isChoice: false,
+        delete: false,
+        success: false,
       });
+    } finally {
+      setLoading(false);
     }
-  } catch (error: any) {
-    console.error(error);
-    console.log('statusCode:', error.code);
-    console.log('message:', error.message);
-    showNotification({
-      title: 'Error',
-      description: error.message,
-      isChoice: false, delete: false, success: false,
-    });
-  } finally {
-    setLoading(false);
-  }
-};
+  };
   const handleAppleLogin = async () => {
     try {
       const credential = await AppleAuthentication.signInAsync({
@@ -134,8 +143,8 @@ export default function Login() {
         });
         if (error) throw error;
         showNotification({
-          title: '¡Éxito!',
-          description: 'Sesión iniciada correctamente',
+          title: t('login.loginNotification.title'),
+          description: t('login.loginNotification.description'),
           isChoice: false,
           delete: false,
           success: true,
@@ -171,7 +180,7 @@ export default function Login() {
               />
             </View>
             <Text style={{ fontSize: 24, fontWeight: 'bold', color: colors.primaryText }}>
-              TopFive
+              {t('common.appName')}
             </Text>
           </View>
 
@@ -185,7 +194,7 @@ export default function Login() {
               opacity: 0.9,
               fontStyle: 'italic',
             }}>
-            {' ' + fraseAleatoria.texto}
+            {t(fraseAleatoria.translationKey)}
           </Text>
 
           <View
@@ -194,7 +203,7 @@ export default function Login() {
             {/* Email Input */}
             <View className="mb-4">
               <Text className="mb-1 ml-1 font-semibold" style={{ color: colors.primaryText }}>
-                Email
+                {t('login.email.title')}
               </Text>
               <View
                 className="mb-3 flex-row items-center rounded-xl px-4 py-3"
@@ -205,7 +214,7 @@ export default function Login() {
                   color={colors.secondaryText}
                 />
                 <TextInput
-                  placeholder="tu@email.com"
+                  placeholder={t('login.email.placeholder')}
                   placeholderTextColor={colors.placeholderText}
                   value={email}
                   onChangeText={setEmail}
@@ -216,7 +225,7 @@ export default function Login() {
                 />
               </View>
               <Text className="mb-1 ml-1 font-semibold" style={{ color: colors.primaryText }}>
-                Contraseña
+                {t('login.password')}
               </Text>
               <View
                 className="flex-row items-center rounded-xl px-4 py-3"
@@ -258,7 +267,7 @@ export default function Login() {
                   disabled={loading}
                   className="items-end">
                   <Text className="" style={{ color: colors.secondaryText }}>
-                    ¿Has olvidado tu contraseña?
+                    {t('login.forgotPassword.title')}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -270,7 +279,7 @@ export default function Login() {
                   className="items-center overflow-hidden rounded-xl py-3.5 shadow-lg"
                   style={{ backgroundColor: colors.accent }}>
                   <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>
-                    {loading ? 'Cargando...' : 'Iniciar Sesión'}
+                    {loading ? t('common.loading') : t('login.loginButton')}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -292,7 +301,6 @@ export default function Login() {
                 </View>
               )}
 
-               
               <View className="" style={{}}>
                 <TouchableOpacity
                   onPress={handleNativeGoogleLogin}
@@ -306,12 +314,11 @@ export default function Login() {
                       resizeMode="contain"
                     />
                     <Text className="text-lg font-bold" style={{ color: '#000000' }}>
-                      {'Continuar con Google'}
+                      {t('login.loginWithGoogle')}
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
-              
 
               {Platform.OS === 'ios' && (
                 <AppleAuthentication.AppleAuthenticationButton
@@ -328,14 +335,14 @@ export default function Login() {
 
           <View style={{ marginTop: 20, alignItems: 'center' }}>
             <Text className="mb-2 text-base" style={{ color: colors.primaryText }}>
-              ¿No tienes cuenta?
+              {t('login.noAccount')}
             </Text>
             <TouchableOpacity
               onPress={() => router.push('/(auth)/register')}
               className="rounded-full px-6 py-3"
               style={{ backgroundColor: `${colors.surfaceButton}80` }}>
               <Text className="text-base font-semibold" style={{ color: colors.primaryText }}>
-                Regístrate aquí
+                {t('login.signUpButton')}
               </Text>
             </TouchableOpacity>
           </View>
