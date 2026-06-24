@@ -1,6 +1,6 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useTheme } from 'context/ThemeContext';
-import { View, Text, Image, Pressable, ImageBackground, TouchableOpacity } from 'react-native';
+import { View, Text, Image, Pressable, ImageBackground, TouchableOpacity, useWindowDimensions} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Activity } from '../hooks/useActivity';
 import { BookIcon, FilmIcon, GameIcon, MusicIcon, ShowIcon } from 'components/Icons';
@@ -8,8 +8,13 @@ import { router } from 'expo-router';
 import { ResourceType } from 'hooks/useResource';
 import { useState } from 'react';
 import {AppText} from 'components/AppText';
+import RenderHtml from 'react-native-render-html';
+import { useFontSize } from 'context/FontSizeContext';
+
 export default function ActivityItem({ item }: { item: Activity }) {
   const { colors } = useTheme();
+  const { width } = useWindowDimensions();
+  const { fontSizeMultiplier } = useFontSize(); 
 
   const getRelativeTime = (date: string | Date) => {
     const now = new Date();
@@ -49,11 +54,26 @@ export default function ActivityItem({ item }: { item: Activity }) {
 
   const [isExpanded, setIsExpanded] = useState(false);
   const MAX_LENGTH = 120;
-  const shouldTruncate = item.comentario && item.comentario.length > MAX_LENGTH;
-  const descriptionText = item.comentario || '';
+  
+  const plainTextLength = (item.comentario || '').replace(/<[^>]*>?/gm, '').length;
+  const shouldTruncate = plainTextLength > MAX_LENGTH;
+  
+  const displayedDescription = shouldTruncate && !isExpanded 
+    ? item.comentario?.substring(0, MAX_LENGTH) + '...' 
+    : (item.comentario || '');
 
-  const displayedDescription =
-    shouldTruncate && !isExpanded ? descriptionText.slice(0, MAX_LENGTH) + '...' : descriptionText;
+  const tagsStyles = {
+    body: {
+      color: colors.secondaryText,
+      fontSize: 14 * fontSizeMultiplier,
+      lineHeight: 20  * fontSizeMultiplier
+    },
+    p: { margin: 0 },
+    b: { fontWeight: 'bold' },
+    i: { fontStyle: 'italic' },
+    ul: { marginVertical: 2 },
+    ol: { marginVertical: 2 },
+  };
 
   return (
     <View
@@ -161,17 +181,21 @@ export default function ActivityItem({ item }: { item: Activity }) {
                   </View>
                 </View>
                 {/* Reseña */}
-                <AppText style={{ color: colors.secondaryText }} className="mt-2">
-                  <AppText className="text-xs leading-relaxed ">{displayedDescription}</AppText>
+                <View className="mt-2">
+                  <RenderHtml
+                    contentWidth={width - 160} // Ajuste del ancho para tener en cuenta la imagen y los márgenes
+                    source={{ html: displayedDescription }}
+                    tagsStyles={tagsStyles as any}
+                  />
                   {shouldTruncate && (
                     <AppText
-                      className="text-xs font-bold"
+                      className="text-xs font-bold mt-1"
                       style={{ color: colors.primary }}
                       onPress={() => setIsExpanded(!isExpanded)}>
-                      {isExpanded ? ' Leer menos' : 'Leer más'}
+                      {isExpanded ? 'Leer menos' : 'Leer más'}
                     </AppText>
                   )}
-                </AppText>
+                </View>
               </View>
             </View>
           </View>
