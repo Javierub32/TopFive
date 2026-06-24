@@ -71,7 +71,7 @@ export default function ProfileScreen() {
     <Screen>
       <ThemedStatusBar />
       <View className="flex-1 px-4 pt-6">
-        <AppText className="mb-4 text-3xl font-bold" style={{ color: colors.primaryText }}>
+        <AppText className="mb-4  font-bold" style={{ color: colors.primaryText, fontSize: 28 }}>
           {userData?.username || 'Usuario'}
         </AppText>
 
