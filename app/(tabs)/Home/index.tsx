@@ -56,7 +56,7 @@ export default function HomeScreen() {
 		<Screen>
 			<View className="px-4 pt-6">
 				<View className="mb-4 flex-row items-center justify-between">
-					<AppText className="text-3xl font-bold" style={{ color: colors.primaryText }}>
+					<AppText className=" font-bold" style={{ color: colors.primaryText, fontSize: 28 }}>
 						Inicio
 					</AppText>
 					

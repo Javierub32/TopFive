@@ -3,6 +3,7 @@ import { FlatList, useWindowDimensions } from 'react-native';
 import { LoadingIndicator } from './LoadingIndicator';
 import { ResourceType } from 'hooks/useResource';
 import { CollectionType } from '@/Collection/services/listServices';
+import { useFontSize } from 'context/FontSizeContext';
 
 const categoryMap: Record<ResourceType, CollectionType> = {
   pelicula: 'PELICULA',
@@ -22,9 +23,10 @@ export const CollectionStructure = ({
   handleLongPress,
 }: any) => {
   const { width } = useWindowDimensions();
+  const { fontSizeMultiplier } = useFontSize();
   const PADDING_PANTALLA = 40;
   const GAP = 20;
-  const ANCHO_MINIMO_ITEM = 85;
+  const ANCHO_MINIMO_ITEM = 85 * fontSizeMultiplier;
 
   const anchoDisponible = width - PADDING_PANTALLA;
   const numColumns = Math.max(2, Math.floor((anchoDisponible + GAP) / (ANCHO_MINIMO_ITEM + GAP)));
