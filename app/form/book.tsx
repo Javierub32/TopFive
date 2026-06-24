@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { MaterialCommunityIcons } from "components/Icons";
@@ -289,61 +289,67 @@ export default function BookForm() {
   return (
     <Screen>
       <ThemedStatusBar />
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
-          <View className="flex-1 flex-row items-center">
-            <ReturnButton route="back" title={book.title || 'Detalle del libro'} style={' '} />
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+
+        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+          <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
+            <View className="flex-1 flex-row items-center">
+              <ReturnButton route="back" title={book.title || 'Detalle del libro'} style={' '} />
+            </View>
+            <FavoriteSetter favorite={favorito} setFavorite={setFavorito} />
           </View>
-          <FavoriteSetter favorite={favorito} setFavorite={setFavorito} />
-        </View>
 
-        <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
-          {book.imageFull || book.image ? (
-            <Image
-              source={{ uri: book.imageFull || book.image || '' }}
-              className="aspect-[2/3] h-32 rounded-lg"
-              style={{ backgroundColor: colors.surfaceButton }}
-              resizeMode="cover"
+          <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
+            {book.imageFull || book.image ? (
+              <Image
+                source={{ uri: book.imageFull || book.image || '' }}
+                className="aspect-[2/3] h-32 rounded-lg"
+                style={{ backgroundColor: colors.surfaceButton }}
+                resizeMode="cover"
+              />
+            ) : (
+              <FallbackCover
+                type="libro"
+                fullSize={false}
+                style={{ aspectRatio: 2 / 3, borderRadius: 8 }}
+              />
+            )}
+
+            <ReviewSetter review={reseña} setReview={setReseña} />
+          </View>
+
+          <View className="gap-6">
+            <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Leyendo" />
+            <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
+
+            {estado !== 'COMPLETADO' && (
+              <ProgressSetter progress={paginasLeidas} setProgress={setPaginasLeidas} type="libro" />
+            )}
+
+            <DateSetter
+              startDate={fechaInicio}
+              setStartDate={setFechaInicio}
+              endDate={fechaFin}
+              setEndDate={setFechaFin}
+              isRange={true}
             />
-          ) : (
-            <FallbackCover
-              type="libro"
-              fullSize={false}
-              style={{ aspectRatio: 2 / 3, borderRadius: 8 }}
-            />
-          )}
+          </View>
 
-          <ReviewSetter review={reseña} setReview={setReseña} />
-        </View>
-
-        <View className="gap-6">
-          <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Leyendo" />
-          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
-
-          {estado !== 'COMPLETADO' && (
-            <ProgressSetter progress={paginasLeidas} setProgress={setPaginasLeidas} type="libro" />
-          )}
-
-          <DateSetter
-            startDate={fechaInicio}
-            setStartDate={setFechaInicio}
-            endDate={fechaFin}
-            setEndDate={setFechaFin}
-            isRange={true}
-          />
-        </View>
-
-        <TouchableOpacity
-          onPress={handleSubmit}
-          disabled={loading}
-          className="mx-4 mb-14 mt-4 rounded-lg py-3"
-          style={{ backgroundColor: colors.primary }}
-          activeOpacity={0.8}>
-          <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
-            {loading ? 'Guardando...' : 'Guardar'}
-          </AppText>
-        </TouchableOpacity>
-      </ScrollView>
+          <TouchableOpacity
+            onPress={handleSubmit}
+            disabled={loading}
+            className="mx-4 mb-14 mt-4 rounded-lg py-3"
+            style={{ backgroundColor: colors.primary }}
+            activeOpacity={0.8}>
+            <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
+              {loading ? 'Guardando...' : 'Guardar'}
+            </AppText>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <AdBanner />
     </Screen>
   );

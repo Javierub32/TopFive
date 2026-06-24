@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { MaterialCommunityIcons } from "components/Icons";
@@ -286,68 +286,74 @@ export default function SeriesForm() {
   return (
     <Screen>
       <ThemedStatusBar />
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="flex-1 flex-row items-center justify-between px-4 pb-4 pt-2">
-          <View className="flex-1 flex-row items-center">
-            <ReturnButton route="back" title={series.titulo || series.title} style={' '} />
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+
+        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+          <View className="flex-1 flex-row items-center justify-between px-4 pb-4 pt-2">
+            <View className="flex-1 flex-row items-center">
+              <ReturnButton route="back" title={series.titulo || series.title} style={' '} />
+            </View>
+            <FavoriteSetter favorite={favorita} setFavorite={setFavorita} />
           </View>
-          <FavoriteSetter favorite={favorita} setFavorite={setFavorita} />
-        </View>
 
-        <View className="mb-4 flex-1 flex-row items-stretch justify-between gap-2 px-4">
-          {series.imagenUrl || series.image ? (
-            <Image
-              source={{
-                uri: series.imagenUrl || series.image,
-              }}
-              className="aspect-[2/3] h-32 rounded-lg"
-              style={{ backgroundColor: colors.surfaceButton }}
-              resizeMode="cover"
-            />
-          ) : (
-            <FallbackCover
+          <View className="mb-4 flex-1 flex-row items-stretch justify-between gap-2 px-4">
+            {series.imagenUrl || series.image ? (
+              <Image
+                source={{
+                  uri: series.imagenUrl || series.image,
+                }}
+                className="aspect-[2/3] h-32 rounded-lg"
+                style={{ backgroundColor: colors.surfaceButton }}
+                resizeMode="cover"
+              />
+            ) : (
+              <FallbackCover
+                type="serie"
+                fullSize={false}
+                style={{ aspectRatio: 2 / 3, borderRadius: 8 }}
+              />
+            )}
+
+            <ReviewSetter review={reseña} setReview={setReseña} />
+          </View>
+
+          <View className="flex-1 gap-6">
+            <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Viendo" />
+            <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
+            <ProgressSetter
+              progress={temporadaActual}
+              setProgress={setTemporadaActual}
+              progressExtra={episodioActual}
+              setProgressExtra={setEpisodioActual}
               type="serie"
-              fullSize={false}
-              style={{ aspectRatio: 2 / 3, borderRadius: 8 }}
             />
-          )}
-
-          <ReviewSetter review={reseña} setReview={setReseña} />
-        </View>
-
-        <View className="flex-1 gap-6">
-          <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Viendo" />
-          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
-          <ProgressSetter
-            progress={temporadaActual}
-            setProgress={setTemporadaActual}
-            progressExtra={episodioActual}
-            setProgressExtra={setEpisodioActual}
-            type="serie"
-          />
-          <ViewsSetter views={numVisualizaciones} setViews={setNumVisualizaciones} />
-          <DateSetter
-            startDate={fechaInicio}
-            setStartDate={setFechaInicio}
-            endDate={fechaFin}
-            setEndDate={setFechaFin}
-            isRange={true}
-          />
-        </View>
-        <TouchableOpacity
-          onPress={handleSubmit}
-          disabled={loading}
-          className="mx-4 mt-4 rounded-lg py-3"
-          style={{ backgroundColor: colors.primary }}
-          activeOpacity={0.8}>
-          <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
-            {loading ? 'Guardando...' : 'Guardar'}
-          </AppText>
-        </TouchableOpacity>
-        <View className="flex-1">
-          <AdBanner />
-        </View>
-      </ScrollView>
+            <ViewsSetter views={numVisualizaciones} setViews={setNumVisualizaciones} />
+            <DateSetter
+              startDate={fechaInicio}
+              setStartDate={setFechaInicio}
+              endDate={fechaFin}
+              setEndDate={setFechaFin}
+              isRange={true}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={handleSubmit}
+            disabled={loading}
+            className="mx-4 mt-4 rounded-lg py-3"
+            style={{ backgroundColor: colors.primary }}
+            activeOpacity={0.8}>
+            <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
+              {loading ? 'Guardando...' : 'Guardar'}
+            </AppText>
+          </TouchableOpacity>
+          <View className="flex-1">
+            <AdBanner />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Screen>
   );
 }

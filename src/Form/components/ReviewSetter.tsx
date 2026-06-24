@@ -34,7 +34,7 @@ export const ReviewSetter = ({review, setReview} : Props) => {
                 <AppTextInput 
                     value={review}
                     onChangeText={setReview}
-                    placeholder="[Modo Web] Escribe tu opinión plana..."
+                    placeholder="[Modo Web] Escribe tu opinión..."
                     placeholderTextColor={colors.placeholderText}
                     multiline
                     numberOfLines={3}
@@ -72,7 +72,7 @@ export const ReviewSetter = ({review, setReview} : Props) => {
                             color: colors.primaryText,
                             placeholderColor: colors.placeholderText,
                         }}
-                        style={{ flex: 1, marginBottom: 24 }} 
+                        style={{ flex: 1, marginBottom: 12 }} 
                     />
                 </>
             )}

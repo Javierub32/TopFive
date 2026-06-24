@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { useState } from 'react';
@@ -257,64 +257,69 @@ export default function FilmForm() {
   return (
     <Screen>
       <ThemedStatusBar />
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
-          <View className="flex-1 flex-row items-center">
-            <ReturnButton route="back" title={film.titulo || film.title} style={' '} />
-          </View>
-          <FavoriteSetter favorite={favorita} setFavorite={setFavorita} />
-        </View>
-
-        <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
-          {film.imagenUrl || film.image ? (
-            <Image
-              source={{
-                uri: film.imagenUrl || film.image || 'https://via.placeholder.com/100x150',
-              }}
-              className="aspect-[2/3] h-32 rounded-lg"
-              style={{ backgroundColor: colors.surfaceButton }}
-              resizeMode="cover"
-            />
-          ) : (
-            <FallbackCover
-              type="pelicula"
-              fullSize={false}
-              style={{ aspectRatio: 2 / 3, borderRadius: 8 }}
-            />
-          )}
-
-          <ReviewSetter review={reseña} setReview={setReseña} />
-        </View>
-
-        <View className="gap-6">
-          <StateSetter state={estado} setState={handleStatusChange} inProgressLabel='Viendo'/>
-          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
-
-          <View className="mr-4 flex-row items-start">
-            <View className="flex-1">
-              <ViewsSetter views={numVisionados} setViews={setNumVisionados} />
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <ScrollView className="flex-1" showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
+          <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
+            <View className="flex-1 flex-row items-center">
+              <ReturnButton route="back" title={film.titulo || film.title} style={' '} />
             </View>
-            <View className="flex-1">
-              <DateSetter
-                startDate={fechaVisionado}
-                setStartDate={setFechaVisionado}
-                isRange={false}
+            <FavoriteSetter favorite={favorita} setFavorite={setFavorita} />
+          </View>
+
+          <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
+            {film.imagenUrl || film.image ? (
+              <Image
+                source={{
+                  uri: film.imagenUrl || film.image || 'https://via.placeholder.com/100x150',
+                }}
+                className="aspect-[2/3] h-32 rounded-lg"
+                style={{ backgroundColor: colors.surfaceButton }}
+                resizeMode="cover"
               />
+            ) : (
+              <FallbackCover
+                type="pelicula"
+                fullSize={false}
+                style={{ aspectRatio: 2 / 3, borderRadius: 8 }}
+              />
+            )}
+
+            <ReviewSetter review={reseña} setReview={setReseña} />
+          </View>
+
+          <View className="gap-6">
+            <StateSetter state={estado} setState={handleStatusChange} inProgressLabel='Viendo'/>
+            <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
+
+            <View className="mr-4 flex-row items-start">
+              <View className="flex-1">
+                <ViewsSetter views={numVisionados} setViews={setNumVisionados} />
+              </View>
+              <View className="flex-1">
+                <DateSetter
+                  startDate={fechaVisionado}
+                  setStartDate={setFechaVisionado}
+                  isRange={false}
+                />
+              </View>
             </View>
           </View>
-        </View>
 
-        <TouchableOpacity
-          onPress={handleSubmit}
-          disabled={loading}
-          className="mx-4 mb-14 mt-4 rounded-lg py-3"
-          style={{ backgroundColor: colors.primary }}
-          activeOpacity={0.8}>
-          <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
-            {loading ? 'Guardando...' : 'Guardar'}
-          </AppText>
-        </TouchableOpacity>
-      </ScrollView>
+          <TouchableOpacity
+            onPress={handleSubmit}
+            disabled={loading}
+            className="mx-4 mb-14 mt-4 rounded-lg py-3"
+            style={{ backgroundColor: colors.primary }}
+            activeOpacity={0.8}>
+            <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
+              {loading ? 'Guardando...' : 'Guardar'}
+            </AppText>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <AdBanner />
     </Screen>
   );

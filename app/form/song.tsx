@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { useState } from 'react';
@@ -254,54 +254,60 @@ export default function SongForm() {
   return (
     <Screen>
       <ThemedStatusBar />
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
-          <View className="flex-1 flex-row items-center">
-            <ReturnButton route="back" title={song.titulo || song.title} style={' '} />
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+
+        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+          <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
+            <View className="flex-1 flex-row items-center">
+              <ReturnButton route="back" title={song.titulo || song.title} style={' '} />
+            </View>
+            <FavoriteSetter favorite={favorita} setFavorite={setFavorita} />
           </View>
-          <FavoriteSetter favorite={favorita} setFavorite={setFavorita} />
-        </View>
-        <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
-          {song.imagenUrl || song.image ? (
-            <Image
-              source={{ uri: song.imagenUrl || song.image || '' }}
-              className="aspect-square h-32 rounded-lg"
-              style={{ backgroundColor: colors.surfaceButton }}
-              resizeMode="cover"
+          <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
+            {song.imagenUrl || song.image ? (
+              <Image
+                source={{ uri: song.imagenUrl || song.image || '' }}
+                className="aspect-square h-32 rounded-lg"
+                style={{ backgroundColor: colors.surfaceButton }}
+                resizeMode="cover"
+              />
+            ) : (
+              <FallbackCover
+                type="cancion"
+                fullSize={false}
+                style={{ aspectRatio: 1, borderRadius: 8 }}
+              />
+            )}
+
+            <ReviewSetter review={reseña} setReview={setReseña} />
+          </View>
+
+          <View className="gap-6">
+            <StateSetter state={estado} setState={handleStatusChange} />
+            <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
+            <DateSetter
+              startDate={fechaEscuchado}
+              setStartDate={setFechaEscuchado}
+              isRange={false}
+              style="mx-10"
             />
-          ) : (
-            <FallbackCover
-              type="cancion"
-              fullSize={false}
-              style={{ aspectRatio: 1, borderRadius: 8 }}
-            />
-          )}
+          </View>
 
-          <ReviewSetter review={reseña} setReview={setReseña} />
-        </View>
-
-        <View className="gap-6">
-          <StateSetter state={estado} setState={handleStatusChange} />
-          <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
-          <DateSetter
-            startDate={fechaEscuchado}
-            setStartDate={setFechaEscuchado}
-            isRange={false}
-            style="mx-10"
-          />
-        </View>
-
-        <TouchableOpacity
-          onPress={handleSubmit}
-          disabled={loading}
-          className="mx-4 mb-14 mt-4 rounded-lg py-3"
-          style={{ backgroundColor: colors.primary }}
-          activeOpacity={0.8}>
-          <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
-            {loading ? 'Guardando...' : 'Guardar'}
-          </AppText>
-        </TouchableOpacity>
-      </ScrollView>
+          <TouchableOpacity
+            onPress={handleSubmit}
+            disabled={loading}
+            className="mx-4 mb-14 mt-4 rounded-lg py-3"
+            style={{ backgroundColor: colors.primary }}
+            activeOpacity={0.8}>
+            <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
+              {loading ? 'Guardando...' : 'Guardar'}
+            </AppText>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <AdBanner />
     </Screen>
   );
