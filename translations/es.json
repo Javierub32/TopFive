@@ -10,7 +10,10 @@
         "error": "Error",
         "success": "Éxito",
         "send": "Enviar",
-        "accept": "Aceptar"
+        "accept": "Aceptar",
+        "noTitle": "Sin título",
+        "unknown": "Desconocido",
+        "content": "contenido"
     },
     "categories": {
         "books": "Libros",
@@ -18,7 +21,6 @@
         "films": "Películas",
         "videogames": "Videojuegos",
         "albums": "Álbumes"
-        
     },
     "languages":{
         "es": "Español",
@@ -36,6 +38,7 @@
     },
     "tabs":{
         "home": "Inicio",
+        "users": "Usuarios",
         "lists": "Listas",
         "search": "Búsqueda",
         "library": "Mi Biblioteca"
@@ -187,6 +190,11 @@
             "confirmPassword": "Confirmar contraseña",
             "changePassword": "Cambiar contraseña"
         }
+    },
+    "search": {
+        "placeholder": "Buscar",
+        "noResults": "Sin resultados.",
+        "description": "Realiza una búsqueda para ver resultados de {{category}}."
     }
 
 }

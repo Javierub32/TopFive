@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { Screen } from 'components/Screen';
 import { useSearchContent } from 'src/Add/hooks/useSearchContent';
 
@@ -9,9 +9,8 @@ import { LoadingIndicator } from 'components/LoadingIndicator';
 import { useTheme } from 'context/ThemeContext';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { SearchPlaceholder } from '@/Add/components/SearchPlaceholder';
-import {AppText} from 'components/AppText';
-
-
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 
 export default function AddScreen() {
   const {
@@ -29,13 +28,14 @@ export default function AddScreen() {
   } = useSearchContent();
 
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Screen>
       <ThemedStatusBar />
       <View className="flex-1 px-4 pt-6">
         <AppText className="mb-4 mt-2 text-3xl font-bold" style={{ color: colors.primaryText }}>
-          Búsqueda
+          {t('tabs.search')}
         </AppText>
 
         <SearchBar

@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { searchContentService } from '../services/searchContentService';
-import { searchAdapter, SearchResult } from '../../Add/adapters/searchResultsAdapter';
+import { searchAdapter } from '../../Add/adapters/searchResultsAdapter';
 import { ResourceType } from 'hooks/useResource';
 import { useSearch } from 'context/SearchContext';
+import { useTranslation } from 'react-i18next';
 
 export const useSearchContent = () => {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const { t } = useTranslation();
 
   const {
 	setContentQuery: setBusqueda,
@@ -29,7 +31,7 @@ export const useSearchContent = () => {
 	  clearContentSearch();
     setHasSearched(false);
 	}
-  }, [params.initialCategory]);
+  }, [params.initialCategory, recursoBusqueda, setContentCategory, clearContentSearch]);
 
 
   const handleSearch = async (categoria?: ResourceType) => {
@@ -43,12 +45,13 @@ export const useSearchContent = () => {
     setMenuAbierto(false);
 
     const categoriaAUsar = categoria || recursoBusqueda;
-
+    
     try {
       const data = await searchContentService.fetchContent(busqueda, categoriaAUsar);
+      
 
       if (Array.isArray(data)) {
-        const mapped = data.map(item => searchAdapter[categoriaAUsar](item));
+        const mapped = data.map(item => searchAdapter[categoriaAUsar](item, t));
         setResultados(mapped);
       }
     } catch (error) {
