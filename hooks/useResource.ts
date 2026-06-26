@@ -88,19 +88,9 @@ export const useResource = () => {
         ` as any)
         .eq('usuarioId', userIdToQuery);
 
-	  if (recursoId !== undefined && recursoId !== null) {
-		query = supabase
-        .from(config.table)
-        .select(`
-            *, 
-            ${config.contentJoin}${joinModifier} (
-                titulo,
-                imagenUrl,
-                fechaLanzamiento
-            )
-        ` as any)
-        .eq('id', recursoId);
-	  }
+      if (recursoId !== undefined && recursoId !== null) {
+        query = query.eq('id', recursoId);
+      }
 
       // Sobrescribimos la query para traer solo el campo de fecha necesario para las estadísticas generales
       if (profile) {
