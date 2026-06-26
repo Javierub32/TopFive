@@ -1,7 +1,7 @@
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { supabase } from './supabase';
 
 // Comportamiento de la notificación cuando la app está en primer plano
@@ -43,14 +43,10 @@ export async function registerForPushNotificationsAsync(userId: string) {
     const projectId = Constants.expoConfig?.extra?.eas?.projectId ?? 
                      Constants.easConfig?.projectId ?? 
                      '7793291a-d63c-43ed-8a35-34f8cc7a863e';
-	Alert.alert('Permiso concedido para notificaciones push', projectId);
-    
     try {
       const pushTokenString = (
         await Notifications.getExpoPushTokenAsync({ projectId })
       ).data;
-	  Alert.alert('Push Token obtenido', pushTokenString);
-	  // Guardamos el token en la tabla usuario de Supabase
       if (pushTokenString && userId) {
         await supabase
           .from('usuario')
