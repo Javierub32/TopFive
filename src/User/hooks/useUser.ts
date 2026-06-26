@@ -80,7 +80,11 @@ export const useUser = (username: string) => {
     const fetchResourceInfo = async (targetUserId: string) => {
         try {
             setStatsLoading(true);
-            const resourceData = await fetchResources( selectedCategory, null, null, null, null, null, true, null, null, targetUserId );
+            const resourceData = await fetchResources({
+				type: selectedCategory,
+				profile: true,
+				targetUserId
+			});
             
             const stats = createAdaptedResourceStats(resourceData || [], selectedCategory, selectedYear);
             updateStats(stats);

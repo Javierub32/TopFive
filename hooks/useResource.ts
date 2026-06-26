@@ -33,25 +33,39 @@ export const DATE_FIELDS: Record<ResourceType, string> = {
   videojuego: 'fechaFin',
 };
 
+export interface FetchResourcesParams<K extends ResourceType> {
+  type: K;
+  term?: string | null;
+  favorito?: boolean | null;
+  estado?: StateType | null;
+  cantidad?: number | null;
+  ordenarPorFecha?: boolean | null;
+  profile?: boolean | null;
+  from?: number | null;
+  to?: number | null;
+  targetUserId?: string | null;
+  ordenarPorUltimaActividad?: boolean | null;
+  recursoId?: number | null;
+}
+
 export const useResource = () => {
   const { user } = useAuth();
 
   // Función genérica para todos los recursos
-  const fetchResources = async <K extends ResourceType>(
-    type: K,
-    term?: string | null,
-    favorito?: boolean | null,
-    estado?: StateType | null,
-    cantidad?: number | null,
-    ordenarPorFecha?: boolean | null,
-    profile?: boolean | null,
-    from?: number | null,
-    to?: number | null,
-    targetUserId?: string | null,
-    ordenarPorUltimaActividad?: boolean | null,
-	recursoId?: number | null
-
-  ): Promise<ResourceMap[K][] | null> => {
+  const fetchResources = async <K extends ResourceType>({
+    type,
+    term,
+    favorito,
+    estado,
+    cantidad,
+    ordenarPorFecha,
+    profile,
+    from,
+    to,
+    targetUserId,
+    ordenarPorUltimaActividad,
+    recursoId
+  }: FetchResourcesParams<K>): Promise<ResourceMap[K][] | null> => {
     try {
       if (!user) throw new Error('User not authenticated');
 

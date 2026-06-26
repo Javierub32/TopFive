@@ -99,7 +99,10 @@ export const useProfile = () => {
   const fetchResourceInfo = async () => {
 	try {
 		setStatsLoading(true);
-		const resourceData = await fetchResources(selectedCategory, null, null, null, null, null, true);
+		const resourceData = await fetchResources({
+			type: selectedCategory,
+			profile: true
+		});
 		
 		const stats = createAdaptedResourceStats(resourceData || [], selectedCategory, selectedYear);
 

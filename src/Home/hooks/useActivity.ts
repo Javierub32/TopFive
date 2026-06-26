@@ -90,7 +90,10 @@ export const useActivity = () => {
 		  cancion: 'song',
 		};
 		const type = resourceTypeMap[resourceType];
-		const item = await fetchResources(resourceType, null, null, null, 1, null, null, null, null, null, null, activity.recurso_id ? parseInt(activity.recurso_id) : null);
+		const item = await fetchResources({
+			type: resourceType,
+			recursoId: activity.recurso_id ? parseInt(activity.recurso_id) : null
+		});
 		router.push({
 		  pathname: `/details/${type}/${type}Resource`,
 		  params: { item: JSON.stringify(item ? item[0] : null), from: 'home' },
