@@ -80,25 +80,33 @@ export const useActivity = () => {
 	}, []);
 
 	const handleItemPress = async (activity: Activity) => {
-		console.log('Activity pressed:', activity);
-		const resourceType = activity.tipo_contenido.toLowerCase() as ResourceType;
-		const resourceTypeMap: Record<string, string> = {
-		  pelicula: 'film',
-		  serie: 'series',
-		  videojuego: 'game',
-		  libro: 'book',
-		  cancion: 'song',
-		};
-		const type = resourceTypeMap[resourceType];
-		const item = await fetchResources({
-			type: resourceType,
-			recursoId: activity.recurso_id ? parseInt(activity.recurso_id) : null
-		});
-		router.push({
-		  pathname: `/details/${type}/${type}Resource`,
-		  params: { item: JSON.stringify(item ? item[0] : null), from: 'home' },
-		});
-	  };
+		try {
+			const resourceType = activity.tipo_contenido.toLowerCase() as ResourceType;
+			const resourceTypeMap: Record<ResourceType, string> = {
+				pelicula: 'film',
+				serie: 'series',
+				videojuego: 'game',
+				libro: 'book',
+				cancion: 'song',
+			};
+
+			const type = resourceTypeMap[resourceType];
+			if (!type) return;
+
+			const item = await fetchResources({
+				type: resourceType,
+				recursoId: activity.recurso_id ? parseInt(activity.recurso_id, 10) : null,
+				targetUserId: activity.usuarioId,
+			});
+
+			router.push({
+				pathname: `/details/${type}/${type}Resource`,
+				params: { item: JSON.stringify(item ? item[0] : null), from: 'home' },
+			});
+		} catch (error) {
+			console.error('Error navigating to activity details:', error);
+		}
+	};
 
 	return {
 		activities,
