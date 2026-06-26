@@ -306,7 +306,11 @@ export default function FilmForm() {
           </View>
 
           <View className="gap-6">
-            <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Viendo" />
+            <StateSetter
+              state={estado}
+              setState={handleStatusChange}
+              inProgressLabel={t('status.watching')}
+            />
             <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
 
             <View className="mr-4 flex-row items-start">

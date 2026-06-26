@@ -314,7 +314,11 @@ export default function GameForm() {
           </View>
 
           <View className="gap-6">
-            <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Jugando" />
+            <StateSetter
+              state={estado}
+              setState={handleStatusChange}
+              inProgressLabel={t('status.playing')}
+            />
             <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
             <DifficultySetter difficulty={dificultad} setDifficulty={setDificultad} />
             <ProgressSetter

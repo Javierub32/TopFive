@@ -414,7 +414,7 @@
             "alreadyInCollection": "Este libro ya está en tu colección.",
             "savingErrorDescription": "Hubo un problema al guardar el libro. Inténtalo de nuevo.",
             "theBook": "el libro",
-            "bookDetails": "Detalles del libro"
+            "bookDetails": "Detalles del libro",
         },
         "film": {
             "updatingErrorDescription": "Hubo un problema al actualizar la película. Inténtalo de nuevo.",
@@ -454,7 +454,19 @@
             "listNamePlaceholder": "Ej: Películas imprescindibles",
             "description": "Descripción",
             "descriptionPlaceholder": "Describe el contenido de esta lista..."
-        }
+        },
+        "ready": "Listo",
+        "lastTime": "Última vez",
+        "noDate": "Sin fecha",
+        "clearDate": "Limpiar fecha",
+        "startingDate": "Fecha Inicio",
+        "endingDate": "Fecha Fin",
+        "hoursPlayedPlaceholder": "Horas jugadas...",
+        "pagesReadedPlaceholder": "Páginas leídas...",
+        "currentSeason": "Temporada Actual",
+        "currentEpisode": "Episodio Actual",
+        "reviewPlaceholder": "Escribe tu opinión...",
+        "views": "Vistas"
        
     }
 

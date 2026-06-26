@@ -336,7 +336,11 @@ export default function BookForm() {
           </View>
 
           <View className="gap-6">
-            <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Leyendo" />
+            <StateSetter
+              state={estado}
+              setState={handleStatusChange}
+              inProgressLabel={t('status.reading')}
+            />
             <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
 
             {estado !== 'COMPLETADO' && (

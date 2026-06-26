@@ -322,7 +322,11 @@ export default function SeriesForm() {
           </View>
 
           <View className="flex-1 gap-6">
-            <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Viendo" />
+            <StateSetter
+              state={estado}
+              setState={handleStatusChange}
+              inProgressLabel={t('status.watching')}
+            />
             <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
             <ProgressSetter
               progress={temporadaActual}
