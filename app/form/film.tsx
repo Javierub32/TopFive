@@ -1,4 +1,11 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { useState } from 'react';
@@ -17,9 +24,10 @@ import { DateSetter } from '@/Form/components/DateSetter';
 import { ViewsSetter } from '@/Form/components/ViewsSetter';
 import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
-import { MaterialCommunityIcons } from "components/Icons";
+import { MaterialCommunityIcons } from 'components/Icons';
 import { FallbackCover } from 'components/FallbackCover';
-import {AppText} from 'components/AppText';
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 
 export default function FilmForm() {
   const { filmData, item, from } = useLocalSearchParams();
@@ -28,6 +36,7 @@ export default function FilmForm() {
   const { refreshData } = useCollection();
 
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
@@ -87,8 +96,8 @@ export default function FilmForm() {
 
         if (updateError) {
           showNotification({
-            title: 'Error al actualizar',
-            description: 'Hubo un problema al actualizar la película. Inténtalo de nuevo.',
+            title: t('forms.updatingError'),
+            description: t('forms.film.updatingErrorDescription'),
             isChoice: false,
             delete: false,
             success: false,
@@ -119,8 +128,10 @@ export default function FilmForm() {
           });
           setTimeout(() => {
             showNotification({
-              title: '¡Éxito!',
-              description: `Has actualizado ${film.titulo || film.title} en tu colección.`,
+              title: t('common.success'),
+              description: t('forms.updatingSuccessDescription', {
+                titulo: film.title || film.titulo,
+              }),
               isChoice: false,
               delete: false,
               success: true,
@@ -179,8 +190,8 @@ export default function FilmForm() {
           router.back();
           setTimeout(() => {
             showNotification({
-              title: 'Aviso',
-              description: 'Ya tienes esta película en tu colección.',
+              title: t('common.warning'),
+              description: t('forms.film.alreadyInCollection'),
               isChoice: false,
               delete: false,
               success: false,
@@ -205,8 +216,8 @@ export default function FilmForm() {
         if (inventoryError) {
           //Alert.alert("Error", "Hubo un problema al guardar la película. Inténtalo de nuevo.");
           showNotification({
-            title: 'Error al guardar',
-            description: 'Hubo un problema al guardar la película. Inténtalo de nuevo.',
+            title: t('forms.savingError'),
+            description: t('forms.film.savingErrorDescription'),
             isChoice: false,
             delete: false,
             success: false,
@@ -221,8 +232,10 @@ export default function FilmForm() {
           router.back();
           setTimeout(() => {
             showNotification({
-              title: '¡Éxito!',
-              description: `Has añadido ${film.title} a tu colección.`,
+              title: t('common.success'),
+              description: t('forms.savingSuccessDescription', {
+                titulo: film.title || film.titulo,
+              }),
               isChoice: false,
               delete: false,
               success: true,
@@ -244,10 +257,10 @@ export default function FilmForm() {
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <AppText className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
-            Error al cargar
+            {t('details.loadingError.title')}
           </AppText>
           <AppText className="mt-2 text-center" style={{ color: colors.secondaryText }}>
-            No se pudo cargar la información de la película
+            {t('details.loadingError.films')}
           </AppText>
         </View>
       </Screen>
@@ -257,11 +270,13 @@ export default function FilmForm() {
   return (
     <Screen>
       <ThemedStatusBar />
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}
-      >
-        <ScrollView className="flex-1" showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
+        style={{ flex: 1 }}>
+        <ScrollView
+          className="flex-1"
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled">
           <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
             <View className="flex-1 flex-row items-center">
               <ReturnButton route="back" title={film.titulo || film.title} style={' '} />
@@ -291,7 +306,7 @@ export default function FilmForm() {
           </View>
 
           <View className="gap-6">
-            <StateSetter state={estado} setState={handleStatusChange} inProgressLabel='Viendo'/>
+            <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Viendo" />
             <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
 
             <View className="mr-4 flex-row items-start">
@@ -315,7 +330,7 @@ export default function FilmForm() {
             style={{ backgroundColor: colors.primary }}
             activeOpacity={0.8}>
             <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
-              {loading ? 'Guardando...' : 'Guardar'}
+              {loading ? t('common.saving') : t('common.save')}
             </AppText>
           </TouchableOpacity>
         </ScrollView>

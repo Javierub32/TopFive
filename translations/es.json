@@ -5,6 +5,7 @@
         "cancel": "Cancelar",
         "loading": "Cargando...",
         "loadingCreating": "Creando...",
+        "saving": "Guardando...",
         "saveChanges": "Guardar cambios",
         "warning": "Aviso",
         "attention": "Atención",
@@ -20,7 +21,9 @@
         "confirm": "Confirmar",
         "delete": "Eliminar",
         "readMore": "Leer más",
-        "readLess": "Leer menos"
+        "readLess": "Leer menos",
+        "icon": "Icono",
+        "colour": "Color"
     },
     "status": {
         "title": "Estado",
@@ -300,6 +303,27 @@
             "title": "Eliminar de TopFive",
             "description": "¿Estás seguro de que deseas eliminar este elemento de tu TopFive?",
             "confirmationDescription": "El elemento ha sido eliminado de tu TopFive."
+        },
+        "editProfile": {
+            "title": "Editar perfil",
+            "username": "Nombre de usuario",
+            "usernamePlaceholder": "Escribe tu nombre de usuario...",
+            "description": "Descripción",
+            "descriptionPlaceholder": "Escribe algo sobre ti..."
+        },
+        "followers": "Seguidores",
+        "following": "Seguidos",
+        "deleteFollowers": {
+            "title": "Eliminar seguidor",
+            "description": "¿Deseas eliminar a {{username}} de tus seguidores?",
+            "successDescription": "{{username}} ha sido eliminado de tus seguidores.",
+            "errorDescription": "No se pudo eliminar a {{username}} de tus seguidores. Por favor, inténtalo de nuevo."
+        },
+        "deleteFollowing": {
+            "title": "Dejar de seguir",
+            "description": "¿Deseas dejar de seguir a {{username}}?",
+            "successDescription": "Has dejado de seguir a {{username}}.",
+            "errorDescription": "No se pudo dejar de seguir a {{username}}. Por favor, inténtalo de nuevo."
         }
     },
     "aboutUs": {
@@ -348,7 +372,9 @@
             "description": "¿Estás seguro de que deseas eliminar {{titulo}} de tu colección?",
             "successTitle": "Recurso eliminado",
             "resourceDeletedDescription": "Has eliminado {{titulo}} de tu colección exitosamente.",
-            "failedToDelete": "No se pudo eliminar el recurso. Inténtalo de nuevo más tarde."
+            "failedToDelete": "No se pudo eliminar el recurso. Inténtalo de nuevo más tarde.",
+            "thisResource": "este recurso",
+            "theResource": "el recurso"
         },
         "sinopsis": "Sinopsis",
         "progress": "Progreso",
@@ -372,8 +398,64 @@
         "totalReadingTime": "Tiempo total de lectura",
         "userDetails": "Detalles del usuario",
         "user": "Usuario"
+    },
+    "forms": {
+        "updatingError": "Error al actualizar.",
+        "savingError": "Error al guardar.",
+        "updatingSuccessDescription": "Has actualizado {{titulo}} en tu colección.",
+        "savingSuccessDescription": "Has añadido {{titulo}} a tu colección.",
 
+
+        "book":{
+            "invalidPages": "Número de páginas no válido.",
+            "invalidPagesDescription": "El número de páginas no puede ser mayor a 3031. Por favor, ingresa un número válido.",
+            "updatingErrorDescription": "Hubo un problema al actualizar el libro. Inténtalo de nuevo.",
+            "thisBook": "este libro",
+            "alreadyInCollection": "Este libro ya está en tu colección.",
+            "savingErrorDescription": "Hubo un problema al guardar el libro. Inténtalo de nuevo.",
+            "theBook": "el libro",
+            "bookDetails": "Detalles del libro"
+        },
+        "film": {
+            "updatingErrorDescription": "Hubo un problema al actualizar la película. Inténtalo de nuevo.",
+            "thisFilm": "esta película",
+            "alreadyInCollection": "Esta película ya está en tu colección.",
+            "savingErrorDescription": "Hubo un problema al guardar la película. Inténtalo de nuevo.",
+            "theFilm": "la película",
+            "filmDetails": "Detalles de la película"
+        },
+        "game": {
+            "updatingErrorDescription": "Hubo un problema al actualizar el videojuego. Inténtalo de nuevo.",
+            "thisGame": "este videojuego",
+            "alreadyInCollection": "Este videojuego ya está en tu colección.",
+            "savingErrorDescription": "Hubo un problema al guardar el videojuego. Inténtalo de nuevo.",
+            "theGame": "el videojuego",
+            "gameDetails": "Detalles del videojuego"
+        },
+        "serie": {
+            "updatingErrorDescription": "Hubo un problema al actualizar la serie. Inténtalo de nuevo.",
+            "alreadyInCollection": "Esta serie ya está en tu colección.",
+            "savingErrorDescription": "Hubo un problema al guardar la serie. Inténtalo de nuevo."
+        },
+        "albums": {
+            "updatingErrorDescription": "Hubo un problema al actualizar el álbum. Inténtalo de nuevo.",
+            "alreadyInCollection": "Este álbum ya está en tu colección.",
+            "savingErrorDescription": "Hubo un problema al guardar el álbum. Inténtalo de nuevo."
+        },
+        "addToList": "Añadir a {{listName}}",
+        "list": "lista",
+        "lists": {
+            "listNameCantBeEmpty": "El nombre de la lista no puede estar vacío.",
+            "listHasBeenUpdated": "La lista {{listName}} ha sido actualizado exitosamente.",
+            "listLoadingError": "No se pudieron cargar los detalles de la lista. Por favor, inténtalo de nuevo.",
+            "updateList": "Actualiza tu lista",
+            "createList": "Crea tu lista",
+            "listName": "Nombre de la lista",
+            "listNamePlaceholder": "Ej: Películas imprescindibles",
+            "description": "Descripción",
+            "descriptionPlaceholder": "Describe el contenido de esta lista..."
+        }
+       
     }
-
 
 }

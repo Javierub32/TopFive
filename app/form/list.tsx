@@ -1,28 +1,29 @@
-import { View, Text, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons } from "components/Icons";
-import { use, useEffect, useState } from 'react';
+import { FontAwesome5, MaterialCommunityIcons } from 'components/Icons';
+import { useEffect, useState } from 'react';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
 import { useLists } from '@/Collection/hooks/useLists';
 import { ReturnButton } from 'components/ReturnButton';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ResourceType } from 'hooks/useResource';
-import { supabase } from 'lib/supabase';
 import { useNotification } from 'context/NotificationContext';
-import {AppText} from 'components/AppText';
-import {AppTextInput} from 'components/AppTextInput';
+import { AppText } from 'components/AppText';
+import { AppTextInput } from 'components/AppTextInput';
+import { useTranslation } from 'react-i18next';
 export default function ListForm() {
   const { colors } = useTheme();
   const { categoriaActual, setIsSearchVisible } = useCollection();
   const { createList, updateList } = useLists(categoriaActual);
-	const [loading, setLoading] = useState(false);
-	const { listData } = useLocalSearchParams();
-	const editando = !!listData;
-	const listToEdit = editando ? JSON.parse(listData as string) : null;
+  const [loading, setLoading] = useState(false);
+  const { listData } = useLocalSearchParams();
+  const editando = !!listData;
+  const listToEdit = editando ? JSON.parse(listData as string) : null;
+  const { t } = useTranslation();
 
-	//Colores que se pueden elegir para las listas
+  //Colores que se pueden elegir para las listas
   const iconoColors = [
     { name: 'Verde', value: '#4ADE80' },
     { name: 'Azul', value: '#60A5FA' },
@@ -34,7 +35,7 @@ export default function ListForm() {
     { name: 'Cian', value: '#22D3EE' },
   ];
 
-	//Iconos que se pueden elegir para las listas
+  //Iconos que se pueden elegir para las listas
   const icons = [
     'cloud',
     'star',
@@ -50,7 +51,7 @@ export default function ListForm() {
     'camera',
   ];
 
-	//Inicializamos el estado del formulario
+  //Inicializamos el estado del formulario
   const [formData, setFormData] = useState({
     name: listToEdit?.nombre || '',
     description: listToEdit?.descripcion || '',
@@ -61,69 +62,71 @@ export default function ListForm() {
 
   const { showNotification } = useNotification();
 
-const handleSubmit = async () => {
-	if(!formData.name.trim()) {
-		//Alert.alert('Error', 'El nombre de la lista no puede estar vacío.');
-		showNotification({
-			title: 'Error',
-			description: 'El nombre de la lista no puede estar vacío.',
-			isChoice: false,
-      delete: false,
-      success: false,
-		});
-		return;
-	}
+  const handleSubmit = async () => {
+    if (!formData.name.trim()) {
+      //Alert.alert('Error', 'El nombre de la lista no puede estar vacío.');
+      showNotification({
+        title: t('common.error'),
+        description: t('forms.lists.listNameCantBeEmpty'),
+        isChoice: false,
+        delete: false,
+        success: false,
+      });
+      return;
+    }
 
-	setLoading(true);
-		try {
-			if(editando) {
-				await updateList(
-					listToEdit.id,
-					formData.name,
-					formData.description,
-					formData.icon,
-					formData.color
-				);
-					//Alert.alert('Lista actualizada', `La lista "${formData.name}" ha sido actualizada exitosamente.`);
-					router.replace({ pathname: '/(tabs)/Lists', 
-						params: { 
-							item: JSON.stringify(formData) } });
-          setTimeout(() => {
-            showNotification({
-              title: '¡Éxito!',
-              description: `La lista "${formData.name}" ha sido actualizada exitosamente.`,
-              isChoice: false,
-              delete: false,
-              success: true,
-            });
-          }, 100);    
-			}	else {
-				await createList(
-					formData.name,
-					formData.description,
-					formData.icon,
-					formData.color,
-					categoriaActual as ResourceType
-				);
-			}
-		}catch (error) {
-				console.error('Error fetching list details:', error);
-				//Alert.alert('Error', 'No se pudieron cargar los detalles de la lista. Por favor, inténtalo de nuevo.');
-        showNotification({
-              title: 'Error',
-              description: `No se pudieron cargar los detalles de la lista. Por favor, inténtalo de nuevo.`,
-              isChoice: false,
+    setLoading(true);
+    try {
+      if (editando) {
+        await updateList(
+          listToEdit.id,
+          formData.name,
+          formData.description,
+          formData.icon,
+          formData.color
+        );
+        //Alert.alert('Lista actualizada', `La lista "${formData.name}" ha sido actualizada exitosamente.`);
+        router.replace({
+          pathname: '/(tabs)/Lists',
+          params: {
+            item: JSON.stringify(formData),
+          },
+        });
+        setTimeout(() => {
+          showNotification({
+            title: t('common.success'),
+            description: t('forms.lists.listHasBeenUpdated', { listName: formData.name }),
+            isChoice: false,
             delete: false,
-            success: false,
-            });
-      } finally {
-			setLoading(false);
-		}
-}
+            success: true,
+          });
+        }, 100);
+      } else {
+        await createList(
+          formData.name,
+          formData.description,
+          formData.icon,
+          formData.color,
+          categoriaActual as ResourceType
+        );
+      }
+    } catch (error) {
+      console.error('Error fetching list details:', error);
+      //Alert.alert('Error', 'No se pudieron cargar los detalles de la lista. Por favor, inténtalo de nuevo.');
+      showNotification({
+        title: t('common.error'),
+        description: t('forms.lists.listLoadingError'),
+        isChoice: false,
+        delete: false,
+        success: false,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-	setIsSearchVisible(false);
+    setIsSearchVisible(false);
   }, []);
-
 
   return (
     <Screen>
@@ -132,7 +135,7 @@ const handleSubmit = async () => {
         <View className="flex-1 flex-row items-center">
           <ReturnButton
             route="/(tabs)/Lists"
-            title={editando ? 'Actualiza tu lista' : 'Crea tu lista'}
+            title={editando ? t('forms.lists.updateList') : t('forms.lists.createList')}
             style={' '}
             params={{ initialResource: categoriaActual as ResourceType }}
           />
@@ -151,10 +154,10 @@ const handleSubmit = async () => {
 
         <View className="mb-5">
           <AppText className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
-            Nombre de la lista
+            {t('forms.lists.listName')}
           </AppText>
           <AppTextInput
-            placeholder="Ej: Películas favoritas"
+            placeholder={t('forms.lists.listNamePlaceholder')}
             placeholderTextColor={colors.secondaryText}
             value={formData.name}
             onChangeText={(text) => setFormData({ ...formData, name: text })}
@@ -165,10 +168,10 @@ const handleSubmit = async () => {
 
         <View className="mb-5">
           <AppText className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
-            Descripción
+            {t('forms.lists.description')}
           </AppText>
           <AppTextInput
-            placeholder="Describe el contenido de esta lista..."
+            placeholder={t('forms.lists.descriptionPlaceholder')}
             placeholderTextColor={colors.secondaryText}
             value={formData.description}
             onChangeText={(text) => setFormData({ ...formData, description: text })}
@@ -189,7 +192,7 @@ const handleSubmit = async () => {
 
         <View className="mb-5">
           <AppText className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
-            Icono
+            {t('common.icon')}
           </AppText>
           <View className="flex-row flex-wrap justify-between">
             {icons.map((iconName) => (
@@ -215,7 +218,7 @@ const handleSubmit = async () => {
 
         <View className="mb-6">
           <AppText className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
-            Color
+            {t('common.colour')}
           </AppText>
           <View className="flex-row flex-wrap gap-2">
             {iconoColors.map(({ name, value }) => (
@@ -249,7 +252,7 @@ const handleSubmit = async () => {
             style={{ marginRight: 8 }}
           />
           <AppText className=" font-bold" style={{ color: colors.primaryText }}>
-            {editando ? 'Actualizar lista' : 'Crear lista'}
+            {editando ? t('forms.lists.updateList') : t('forms.lists.createList')}
           </AppText>
         </TouchableOpacity>
       </ScrollView>

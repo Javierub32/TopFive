@@ -1,7 +1,14 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Screen } from 'components/Screen';
-import { MaterialCommunityIcons } from "components/Icons";
+import { MaterialCommunityIcons } from 'components/Icons';
 import { useState } from 'react';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
@@ -19,7 +26,8 @@ import { DateSetter } from '@/Form/components/DateSetter';
 import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
 import { FallbackCover } from 'components/FallbackCover';
-import {AppText} from 'components/AppText';
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 
 interface Book {
   id: number | null;
@@ -42,6 +50,7 @@ export default function BookForm() {
   const { refreshData } = useCollection();
   const { colors } = useTheme();
   const { showNotification } = useNotification();
+  const { t } = useTranslation();
 
   // Si es item, se edita, si no, es nuevo
   const editando = !!item;
@@ -75,11 +84,10 @@ export default function BookForm() {
 
   const handleSubmit = async () => {
     const numPaginas = parseInt(paginasLeidas) || 0;
-    if (numPaginas > 2000) {
+    if (numPaginas > 3031) {
       showNotification({
-        title: 'Número de páginas no válido',
-        description:
-          'El número de páginas no puede ser mayor a 2000. Por favor, ingresa un número válido.',
+        title: t('forms.book.invalidPages'),
+        description: t('forms.book.invalidPagesDescription'),
         isChoice: false,
         delete: false,
         success: false,
@@ -117,8 +125,8 @@ export default function BookForm() {
 
         if (updateError) {
           showNotification({
-            title: 'Error al actualizar',
-            description: 'Hubo un problema al actualizar el libro. Inténtalo de nuevo.',
+            title: t('forms.updatingError'),
+            description: t('forms.book.updatingErrorDescription'),
             isChoice: false,
             delete: false,
             success: false,
@@ -149,8 +157,10 @@ export default function BookForm() {
           // Mostrar modal después de navegar
           setTimeout(() => {
             showNotification({
-              title: '¡Éxito!',
-              description: `Has actualizado ${book.title || 'este libro'} en tu colección.`,
+              title: t('common.success'),
+              description: t('forms.updatingSuccessDescription', {
+                titulo: book.title || t('forms.book.thisBook'),
+              }),
               isChoice: false,
               delete: false,
               success: true,
@@ -209,8 +219,8 @@ export default function BookForm() {
           // Mostrar modal después de navegar
           setTimeout(() => {
             showNotification({
-              title: 'Aviso',
-              description: 'Ya tienes este libro en tu colección.',
+              title: t('common.warning'),
+              description: t('forms.book.alreadyInCollection'),
               isChoice: false,
               delete: false,
               success: false,
@@ -237,8 +247,8 @@ export default function BookForm() {
 
         if (inventoryError) {
           showNotification({
-            title: 'Error al guardar',
-            description: 'Hubo un problema al guardar el libro. Inténtalo de nuevo.',
+            title: t('forms.savingError'),
+            description: t('forms.book.savingErrorDescription'),
             isChoice: false,
             delete: false,
             success: false,
@@ -253,8 +263,10 @@ export default function BookForm() {
           // Mostrar modal después de navegar
           setTimeout(() => {
             showNotification({
-              title: '¡Éxito!',
-              description: `Has añadido ${book.title} a tu colección.`,
+              title: t('common.success'),
+              description: t('forms.savingSuccessDescription', {
+                titulo: book.title || t('forms.book.theBook'),
+              }),
               isChoice: false,
               delete: false,
               success: true,
@@ -276,10 +288,10 @@ export default function BookForm() {
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <AppText className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
-            Error al cargar
+            {t('details.loadingError.title')}
           </AppText>
           <AppText className="mt-2 text-center" style={{ color: colors.secondaryText }}>
-            No se pudo cargar la información del libro
+            {t('details.loadingError.books')}
           </AppText>
         </View>
       </Screen>
@@ -289,15 +301,17 @@ export default function BookForm() {
   return (
     <Screen>
       <ThemedStatusBar />
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}
-      >
-
+        style={{ flex: 1 }}>
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
           <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
             <View className="flex-1 flex-row items-center">
-              <ReturnButton route="back" title={book.title || 'Detalle del libro'} style={' '} />
+              <ReturnButton
+                route="back"
+                title={book.title || t('forms.book.bookDetails')}
+                style={' '}
+              />
             </View>
             <FavoriteSetter favorite={favorito} setFavorite={setFavorito} />
           </View>
@@ -326,7 +340,11 @@ export default function BookForm() {
             <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
 
             {estado !== 'COMPLETADO' && (
-              <ProgressSetter progress={paginasLeidas} setProgress={setPaginasLeidas} type="libro" />
+              <ProgressSetter
+                progress={paginasLeidas}
+                setProgress={setPaginasLeidas}
+                type="libro"
+              />
             )}
 
             <DateSetter
@@ -345,7 +363,7 @@ export default function BookForm() {
             style={{ backgroundColor: colors.primary }}
             activeOpacity={0.8}>
             <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
-              {loading ? 'Guardando...' : 'Guardar'}
+              {loading ? t('common.saving') : t('common.save')}
             </AppText>
           </TouchableOpacity>
         </ScrollView>

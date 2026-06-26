@@ -31,7 +31,7 @@ export const DeleteResourceButton = ({ resource, type }: Props) => {
       showNotification({
         title: t('details.deleteResource.title'),
         description: t('details.deleteResource.description', {
-          titulo: resource.contenido.titulo || 'este recurso',
+          titulo: resource.contenido.titulo || t('details.deleteResource.thisResource'),
         }),
         isChoice: true,
         delete: true,
@@ -52,7 +52,7 @@ export const DeleteResourceButton = ({ resource, type }: Props) => {
             showNotification({
               title: t('details.deleteResource.successTitle'),
               description: t('details.deleteResource.resourceDeletedDescription', {
-                titulo: resource.contenido.titulo || 'el recurso',
+                titulo: resource.contenido.titulo || t('details.deleteResource.theResource'),
               }),
               isChoice: false,
               delete: false,

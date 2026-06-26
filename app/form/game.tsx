@@ -1,7 +1,14 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Screen } from 'components/Screen';
-import { MaterialCommunityIcons } from "components/Icons";
+import { MaterialCommunityIcons } from 'components/Icons';
 import { useState } from 'react';
 import { supabase } from 'lib/supabase';
 import { useAuth } from 'context/AuthContext';
@@ -20,7 +27,8 @@ import { DifficultySetter } from '@/Form/components/DifficultySetter';
 import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
 import { FallbackCover } from 'components/FallbackCover';
-import {AppText} from 'components/AppText';
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 
 export default function GameForm() {
   const { gameData, item, from } = useLocalSearchParams();
@@ -29,6 +37,7 @@ export default function GameForm() {
   const { refreshData } = useCollection();
   const { showNotification } = useNotification();
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
@@ -99,8 +108,8 @@ export default function GameForm() {
         if (updateError) {
           //Alert.alert('Error', 'Hubo un problema al actualizar el videojuego. Inténtalo de nuevo.');
           showNotification({
-            title: 'Error al actualizar',
-            description: 'Hubo un problema al actualizar el juego. Inténtalo de nuevo.',
+            title: t('forms.updatingError'),
+            description: t('forms.game.updatingErrorDescription'),
             isChoice: false,
             delete: false,
             success: false,
@@ -132,8 +141,10 @@ export default function GameForm() {
           });
           setTimeout(() => {
             showNotification({
-              title: '¡Éxito!',
-              description: `Has actualizado ${game.titulo || game.title} en tu colección.`,
+              title: t('common.success'),
+              description: t('forms.updatingSuccessDescription', {
+                titulo: game.titulo || game.title,
+              }),
               isChoice: false,
               delete: false,
               success: true,
@@ -189,8 +200,8 @@ export default function GameForm() {
           router.back();
           setTimeout(() => {
             showNotification({
-              title: 'Aviso',
-              description: 'Ya tienes este juego en tu colección.',
+              title: t('common.warning'),
+              description: t('forms.game.alreadyInCollection'),
               isChoice: false,
               delete: false,
               success: false,
@@ -217,8 +228,8 @@ export default function GameForm() {
         if (inventoryError) {
           //Alert.alert('Error', 'Hubo un problema al guardar el videojuego. Inténtalo de nuevo.');
           showNotification({
-            title: 'Error al guardar',
-            description: 'Hubo un problema al guardar el juego. Inténtalo de nuevo.',
+            title: t('forms.savingError'),
+            description: t('forms.game.savingErrorDescription'),
             isChoice: false,
             delete: false,
             success: false,
@@ -233,8 +244,10 @@ export default function GameForm() {
           router.back();
           setTimeout(() => {
             showNotification({
-              title: '¡Éxito!',
-              description: `Has añadido ${game.title} a tu colección.`,
+              title: t('common.success'),
+              description: t('forms.savingSuccessDescription', {
+                titulo: game.titulo || game.title,
+              }),
               isChoice: false,
               delete: false,
               success: true,
@@ -256,10 +269,10 @@ export default function GameForm() {
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <AppText className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
-            Error al cargar
+            {t('details.loadingError.title')}
           </AppText>
           <AppText className="mt-2 text-center" style={{ color: colors.secondaryText }}>
-            No se pudo cargar la información del videojuego
+            {t('details.loadingError.videogames')}
           </AppText>
         </View>
       </Screen>
@@ -269,11 +282,9 @@ export default function GameForm() {
   return (
     <Screen>
       <ThemedStatusBar />
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}
-      >
-
+        style={{ flex: 1 }}>
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
           <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
             <View className="flex-1 flex-row items-center">
@@ -306,7 +317,11 @@ export default function GameForm() {
             <StateSetter state={estado} setState={handleStatusChange} inProgressLabel="Jugando" />
             <RatingSetter rating={calificacionPersonal} setRating={setCalificacionPersonal} />
             <DifficultySetter difficulty={dificultad} setDifficulty={setDificultad} />
-            <ProgressSetter progress={horasJugadas} setProgress={setHorasJugadas} type="videojuego" />
+            <ProgressSetter
+              progress={horasJugadas}
+              setProgress={setHorasJugadas}
+              type="videojuego"
+            />
 
             <DateSetter
               startDate={fechaInicio}
@@ -322,8 +337,10 @@ export default function GameForm() {
               className="mx-4 mb-14 rounded-lg py-3"
               style={{ backgroundColor: colors.primary }}
               activeOpacity={0.8}>
-              <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
-                {loading ? 'Guardando...' : 'Guardar'}
+              <AppText
+                className="text-center text-lg font-bold"
+                style={{ color: colors.background }}>
+                {loading ? t('common.saving') : t('common.save')}
               </AppText>
             </TouchableOpacity>
           </View>
