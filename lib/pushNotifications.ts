@@ -40,12 +40,16 @@ export async function registerForPushNotificationsAsync(userId: string) {
       console.log('Permiso denegado para notificaciones push');
       return;
     }
-    const projectId = Constants.expoConfig?.extra?.eas?.projectId ?? Constants.easConfig?.projectId;
+    const projectId = Constants.expoConfig?.extra?.eas?.projectId ?? 
+                     Constants.easConfig?.projectId ?? 
+                     '7793291a-d63c-43ed-8a35-34f8cc7a863e';
+	Alert.alert('Permiso concedido para notificaciones push', projectId);
     
     try {
       const pushTokenString = (
         await Notifications.getExpoPushTokenAsync({ projectId })
       ).data;
+	  Alert.alert('Push Token obtenido', pushTokenString);
 	  // Guardamos el token en la tabla usuario de Supabase
       if (pushTokenString && userId) {
         await supabase
