@@ -19,7 +19,7 @@ import RenderHtml from 'react-native-render-html';
 import { useFontSize } from 'context/FontSizeContext';
 import { useTranslation } from 'react-i18next';
 
-export default function ActivityItem({ item }: { item: Activity }) {
+export default function ActivityItem({ item, onPress }: { item: Activity; onPress: () => void }) {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
   const { fontSizeMultiplier } = useFontSize();
@@ -89,7 +89,8 @@ export default function ActivityItem({ item }: { item: Activity }) {
   };
 
   return (
-    <View
+    <TouchableOpacity
+	  onPress={onPress}
       className=" mb-4 overflow-hidden rounded-2xl shadow-xl"
       style={{ borderWidth: 0, borderColor: colors.borderButton }}>
       {/* Imagen de fonde */}
@@ -276,6 +277,6 @@ export default function ActivityItem({ item }: { item: Activity }) {
           </View>
         </View>
       </ImageBackground>
-    </View>
+    </TouchableOpacity>
   );
 }

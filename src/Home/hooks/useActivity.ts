@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { activityService } from "../services/activityServices";
 import { useAuth } from "context/AuthContext";
+import { router } from "expo-router";
+import { ResourceType, useResource } from "hooks/useResource";
 
 export interface Activity {
 	recurso_id: string;
@@ -16,8 +18,9 @@ export interface Activity {
 	username: string;
 	avatar_url: string | null;
 	idapi?: string | number;
-
 }
+
+
 
 export const useActivity = () => {
 	const [loading, setLoading] = useState(false);
@@ -26,6 +29,7 @@ export const useActivity = () => {
 	const [hasMore, setHasMore] = useState(true);
 	const [refreshing, setRefreshing] = useState(false);
 	const { user } = useAuth();
+	const { fetchResources } = useResource();
 
 	const pageSize = 5;
 
@@ -75,12 +79,31 @@ export const useActivity = () => {
 		fetchActivities();
 	}, []);
 
+	const handleItemPress = async (activity: Activity) => {
+		console.log('Activity pressed:', activity);
+		const resourceType = activity.tipo_contenido.toLowerCase() as ResourceType;
+		const resourceTypeMap: Record<string, string> = {
+		  pelicula: 'film',
+		  serie: 'series',
+		  videojuego: 'game',
+		  libro: 'book',
+		  cancion: 'song',
+		};
+		const type = resourceTypeMap[resourceType];
+		const item = await fetchResources(resourceType, null, null, null, 1, null, null, null, null, null, null, activity.recurso_id ? parseInt(activity.recurso_id) : null);
+		router.push({
+		  pathname: `/details/${type}/${type}Resource`,
+		  params: { item: JSON.stringify(item ? item[0] : null), from: 'home' },
+		});
+	  };
+
 	return {
 		activities,
 		refreshing,
 		loading,
 		fetchActivities,
 		refreshActivities,
+		handleItemPress,
 	};
 
 

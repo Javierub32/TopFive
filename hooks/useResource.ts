@@ -48,14 +48,14 @@ export const useResource = () => {
     from?: number | null,
     to?: number | null,
     targetUserId?: string | null,
-    ordenarPorUltimaActividad?: boolean | null
+    ordenarPorUltimaActividad?: boolean | null,
+	recursoId?: number | null
 
   ): Promise<ResourceMap[K][] | null> => {
     try {
       if (!user) throw new Error('User not authenticated');
 
       const userIdToQuery = targetUserId || user.id; 
-
 
       const config = RESOURCE_CONFIG[type];
       const isSearch = term !== undefined && term !== null && term !== '';
@@ -74,6 +74,19 @@ export const useResource = () => {
         ` as any)
         .eq('usuarioId', userIdToQuery);
 
+	  if (recursoId !== undefined && recursoId !== null) {
+		query = supabase
+        .from(config.table)
+        .select(`
+            *, 
+            ${config.contentJoin}${joinModifier} (
+                titulo,
+                imagenUrl,
+                fechaLanzamiento
+            )
+        ` as any)
+        .eq('id', recursoId);
+	  }
 
       // Sobrescribimos la query para traer solo el campo de fecha necesario para las estadísticas generales
       if (profile) {

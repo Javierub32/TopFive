@@ -25,6 +25,7 @@ export default function BookDetail() {
 
   const getPath = () => {
     if (from === 'profile') return '/(tabs)/Profile';
+	if (from === 'home') return '/(tabs)/Home';
     if (from === 'user' || from === 'list' || from === 'group') return 'back';
     return '/(tabs)/Collection';
   };

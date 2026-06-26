@@ -20,7 +20,7 @@ const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 export default function HomeScreen() {
   const { colors } = useTheme();
   const { t } = useTranslation();
-  const { activities, loading, refreshing, fetchActivities, refreshActivities } = useActivity();
+  const { activities, loading, refreshing, fetchActivities, refreshActivities, handleItemPress } = useActivity();
   const navigation = useNavigation();
   const lastBackPress = useRef(0);
   const { showNotification } = useNotification();
@@ -107,7 +107,7 @@ export default function HomeScreen() {
           keyExtractor={(item: any, index: number) => `${item.recurso_id}-${index}`} //hay que tiparlos explicitamente por el ANIMATED
           renderItem={({ item, index }: { item: any; index: number }) => (
             <>
-              <ActivityItem item={item} />
+              <ActivityItem item={item} onPress={() => handleItemPress(item)} />
               {(index + 1) % 4 === 0 && <NativeAdCard />}
             </>
           )}
