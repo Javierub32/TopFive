@@ -3,7 +3,7 @@ import '../i18n';
 import { SplashScreen, Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
-import { View, Linking, Platform } from 'react-native';
+import { View, Linking, Platform, Alert } from 'react-native';
 import * as Font from 'expo-font';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeProvider } from 'context/ThemeContext';
@@ -77,10 +77,13 @@ function InitialLayout() {
     if (appIsReady) {
       initAdsConsent();
     }
-    if (appIsReady && session) {
-      registerForPushNotificationsAsync(session.user.id);
-    }
   }, [appIsReady]);
+
+  useEffect(() => {
+	if (appIsReady && session) {
+		registerForPushNotificationsAsync(session.user.id);
+	}
+  }, [appIsReady, session]);
 
   useEffect(() => {
     const checkAppVersion = async () => {
@@ -95,7 +98,7 @@ function InitialLayout() {
         const { data, error } = await query;
 
         if (error || !data) return;
-
+ 
         const remoteVersion =
           Platform.OS === 'android' ? (data as any).version_android : (data as any).version;
         const localVersion = Constants.expoConfig?.version || Constants.nativeAppVersion || '1.0.0';
