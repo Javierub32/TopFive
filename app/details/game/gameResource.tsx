@@ -1,7 +1,7 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
-import { MaterialCommunityIcons } from "components/Icons";
+import { MaterialCommunityIcons } from 'components/Icons';
 import { GameResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
@@ -13,13 +13,14 @@ import { DateCard } from '@/Details/components/DateCard';
 import { useAuth } from 'context/AuthContext';
 import { AdBanner } from 'components/AdBanner';
 import { ResourceHeader } from '@/Details/components/ResourceHeader';
-import {AppText} from 'components/AppText';
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 
 export default function GameDetail() {
   const { item, from } = useLocalSearchParams();
   const { colors } = useTheme();
   const { user } = useAuth();
-
+  const { t } = useTranslation();
 
   const getPath = () => {
     if (from === 'profile') return '/(tabs)/Profile';
@@ -38,7 +39,6 @@ export default function GameDetail() {
 
   const isOwner = gameResource?.usuarioId === user?.id;
   const isPending = gameResource?.estado === 'PENDIENTE';
-  const isCompleted = gameResource?.estado === 'COMPLETADO';
 
   if (!gameResource) {
     return (
@@ -48,10 +48,10 @@ export default function GameDetail() {
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <AppText className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
-            Error al cargar
+            {t('details.loadingError.title')}
           </AppText>
           <AppText className="mt-2 text-center" style={{ color: colors.secondaryText }}>
-            No se pudo cargar la información del videojuego
+            {t('details.loadingError.videogames')}
           </AppText>
         </View>
       </Screen>
@@ -81,7 +81,10 @@ export default function GameDetail() {
                 {gameResource?.calificacion > 0 && (
                   <RatingCard rating={gameResource.calificacion} />
                 )}
-                <ProgressCard progress={gameResource.horasJugadas} unit="horas" />
+                <ProgressCard
+                  progress={gameResource.horasJugadas}
+                  unit={t('details.progressUnits.videogames')}
+                />
               </View>
               <ReviewCard review={gameResource.reseña} />
               <DateCard

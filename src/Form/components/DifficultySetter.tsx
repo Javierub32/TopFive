@@ -1,46 +1,71 @@
-import { useTheme } from "context/ThemeContext"
-import { useState } from "react";
-import { StateType } from "hooks/useResource";
-import { View, TouchableOpacity, Text } from "react-native";
-import {AppText} from 'components/AppText';
+import { useTheme } from 'context/ThemeContext';
+import { View, TouchableOpacity } from 'react-native';
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 interface Props {
-    difficulty: any;
-    setDifficulty: any;
+  difficulty: any;
+  setDifficulty: any;
 }
 
-export const DifficultySetter = ({difficulty, setDifficulty} : Props) => {
-    const { colors } = useTheme();
-    
-    const options = ['Fácil','Normal','Difícil','Extremo']
+export const DifficultySetter = ({ difficulty, setDifficulty }: Props) => {
+  const { colors } = useTheme();
+  const { t } = useTranslation();
 
-    const getDifficultyColor = (difficulty: string) => {
-        switch (difficulty) {
-        case 'Fácil': return colors.success;
-        case 'Normal': return colors.accent;
-        case 'Difícil': return colors.warning;
-        case 'Extremo': return colors.error;
-        default: return colors.surfaceButton;
-        }
-    };
+  const options = ['Fácil', 'Normal', 'Difícil', 'Extremo'];
 
-    return ( 
-        <View className="flex-row px-4 pt-2 rounded-lg">
-            {options.map((dif) => {
-                const isSelected = difficulty === dif;
-                    return ( 
-                        <TouchableOpacity
-                            key={dif}
-                            onPress={() => setDifficulty(dif)}
-                            className={`flex-1 py-3 ${dif == options[0] ? 'rounded-l-lg': ''} ${dif == options[options.length-1] ? 'rounded-r-lg': '' }`}
-                            style = { isSelected ? {backgroundColor: `${getDifficultyColor(dif)}1A`} : {backgroundColor: colors.surfaceButton}}
-                            activeOpacity={0.7}
-                        >
-                            <AppText className="text-center text-sm font-semibold" style={isSelected? {color: getDifficultyColor(dif)} : {color: colors.secondaryText}}>
-                                {dif}
-                            </AppText>
-                        </TouchableOpacity>
-                    )
-            })}
-        </View>
-    )
-}
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case 'Fácil':
+        return colors.success;
+      case 'Normal':
+        return colors.accent;
+      case 'Difícil':
+        return colors.warning;
+      case 'Extremo':
+        return colors.error;
+      default:
+        return colors.surfaceButton;
+    }
+  };
+
+  const getDiffLabel = (difficulty: string) => {
+    switch (difficulty) {
+      case 'Fácil':
+        return t('details.dificulty.easy');
+      case 'Normal':
+        return t('details.dificulty.medium');
+      case 'Difícil':
+        return t('details.dificulty.hard');
+      case 'Extremo':
+        return t('details.dificulty.extreme');
+    }
+  };
+
+  return (
+    <View className="flex-row rounded-lg px-4 pt-2">
+      {options.map((dif) => {
+        const isSelected = difficulty === dif;
+        return (
+          <TouchableOpacity
+            key={dif}
+            onPress={() => setDifficulty(dif)}
+            className={`flex-1 py-3 ${dif === options[0] ? 'rounded-l-lg' : ''} ${dif === options[options.length - 1] ? 'rounded-r-lg' : ''}`}
+            style={
+              isSelected
+                ? { backgroundColor: `${getDifficultyColor(dif)}1A` }
+                : { backgroundColor: colors.surfaceButton }
+            }
+            activeOpacity={0.7}>
+            <AppText
+              className="text-center text-sm font-semibold"
+              style={
+                isSelected ? { color: getDifficultyColor(dif) } : { color: colors.secondaryText }
+              }>
+              {getDiffLabel(dif)}
+            </AppText>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+};

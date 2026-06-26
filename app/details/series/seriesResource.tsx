@@ -1,8 +1,8 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { MaterialCommunityIcons } from "components/Icons";
+import { MaterialCommunityIcons } from 'components/Icons';
 import { SeriesResource } from 'app/types/Resources';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
@@ -14,12 +14,14 @@ import { ReviewCard } from '@/Details/components/ReviewCard';
 import { useAuth } from 'context/AuthContext';
 import { AdBanner } from 'components/AdBanner';
 import { ResourceHeader } from '@/Details/components/ResourceHeader';
-import {AppText} from 'components/AppText';
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 
 export default function SeriesDetail() {
   const { item, from } = useLocalSearchParams();
   const { colors } = useTheme();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const getPath = () => {
     if (from === 'profile') return '/(tabs)/Profile';
@@ -48,9 +50,11 @@ export default function SeriesDetail() {
         <ReturnButton route={path} title="Detalle de la serie" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
-          <AppText className="mt-4 text-xl font-bold text-primaryText">Error al cargar</AppText>
+          <AppText className="mt-4 text-xl font-bold text-primaryText">
+            {t('details.loadingError.title')}
+          </AppText>
           <AppText className="mt-2 text-center text-secondaryText">
-            No se pudo cargar la información de la serie
+            {t('details.loadingError.series')}
           </AppText>
         </View>
       </Screen>

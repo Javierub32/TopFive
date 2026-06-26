@@ -1,8 +1,10 @@
 import { ResourceMap, ResourceType } from "hooks/useResource";
+import { TFunction } from "i18next";
+
 
 export const collectionAdapter = {
   // Normaliza el título según la categoría
-  getTitle: (item: ResourceMap[ResourceType], category: ResourceType) => {
+  getTitle: (item: ResourceMap[ResourceType], category: ResourceType, t : TFunction) => {
     const map: Record<ResourceType, string> = {
       'pelicula': item.contenido?.titulo,
       'serie': item.contenido?.titulo,
@@ -10,7 +12,7 @@ export const collectionAdapter = {
       'libro': item.contenido?.titulo,
       'cancion': item.contenido?.titulo,
     };
-    return map[category] || 'Sin título';
+    return map[category] || t('common.noTitle');
   },
 
   // Normaliza la imagen
@@ -35,14 +37,14 @@ export const collectionAdapter = {
     }
   },
 
-  getStatusText: (status: string, category: ResourceType) => {
-    if (status === 'PENDIENTE') return 'Pendiente';
-    if (status === 'COMPLETADO') return 'Completado';
+  getStatusText: (status: string, category: ResourceType, t: TFunction) => {
+    if (status === 'PENDIENTE') return t('status.pending');
+    if (status === 'COMPLETADO') return t('status.completed');
     if (status === 'EN_CURSO') {
-      if (category === 'libro') return 'Leyendo';
-      if (category === 'videojuego') return 'Jugando';
-      if (category === 'serie') return 'Viendo';
-      return 'En curso';
+      if (category === 'libro') return t('status.reading');
+      if (category === 'videojuego') return t('status.playing');
+      if (category === 'serie') return t('status.watching');
+      return t('status.inProgress');
     }
     return '';
   }

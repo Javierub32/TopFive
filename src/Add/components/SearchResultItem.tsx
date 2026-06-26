@@ -1,11 +1,10 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome5, MaterialCommunityIcons } from 'components/Icons';
 import { SearchResult } from '../../Add/adapters/searchResultsAdapter';
 import { useTheme } from 'context/ThemeContext';
 import { ResourceType } from 'hooks/useResource';
 import { FallbackCover } from 'components/FallbackCover';
-import {AppText} from 'components/AppText';
+import { AppText } from 'components/AppText';
 interface SearchResultItemProps {
   item: SearchResult;
   onPress: () => void;
@@ -57,18 +56,27 @@ export const SearchResultItem = ({ item, onPress, type }: SearchResultItemProps)
 
         {/* Fecha/Rating */}
         {item.date && item.rating && (
-          <AppText className="mb-2 text-sm" style={{ color: colors.secondaryText }} numberOfLines={1}>
+          <AppText
+            className="mb-2 text-sm"
+            style={{ color: colors.secondaryText }}
+            numberOfLines={1}>
             {item.date} | <FontAwesome5 name="star" size={16} color={colors.rating} solid={true} />{' '}
             {item.rating}
           </AppText>
         )}
         {item.date && !item.rating && (
-          <AppText className="mb-2 text-sm" style={{ color: colors.secondaryText }} numberOfLines={1}>
+          <AppText
+            className="mb-2 text-sm"
+            style={{ color: colors.secondaryText }}
+            numberOfLines={1}>
             {item.date}
           </AppText>
         )}
         {!item.date && item.rating && (
-          <AppText className="mb-2 text-sm" style={{ color: colors.secondaryText }} numberOfLines={1}>
+          <AppText
+            className="mb-2 text-sm"
+            style={{ color: colors.secondaryText }}
+            numberOfLines={1}>
             <FontAwesome5 name="star" size={16} color={colors.rating} solid={true} /> {item.rating}
           </AppText>
         )}

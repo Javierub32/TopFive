@@ -6,25 +6,27 @@ import { ProfileData } from '@/User/components/ProfileData';
 import { UserAvatar } from '@/User/components/UserAvatar';
 import { FollowButton } from '@/User/components/FollowButton';
 import { LoadingIndicator } from 'components/LoadingIndicator';
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { TopFiveSelector } from '@/Profile/components/TopFiveSelector';
 import { StatsChart } from '@/Profile/components/StatsChart';
 import { StatsGrid } from '@/Profile/components/StatsGrid';
 import { CategorySelector } from '@/Profile/components/CategorySelector';
+import { useTranslation } from 'react-i18next';
 
 export default function UserDetailsScreen() {
   const { username, from } = useLocalSearchParams();
-    const {
-    loading, 
-    userData, 
-    handleFollow, 
+  const { t } = useTranslation();
+  const {
+    loading,
+    userData,
+    handleFollow,
     cancelRequest,
     selectedCategory,
     setSelectedCategory,
     selectedYear,
     setSelectedYear,
     currentStats,
-    statsLoading
+    statsLoading,
   } = useUser(username as string);
 
   const canViewStats = userData?.following_status === 'accepted';
@@ -33,7 +35,7 @@ export default function UserDetailsScreen() {
   if (loading) {
     return (
       <Screen>
-        <ReturnButton route={route} title='' />
+        <ReturnButton route={route} title="" />
         <LoadingIndicator />
       </Screen>
     );
@@ -41,20 +43,22 @@ export default function UserDetailsScreen() {
 
   return (
     <Screen>
-      <ReturnButton route={route} title={userData?.username || 'Detalles del Usuario'}  />
+      <ReturnButton route={route} title={userData?.username || t('details.userDetails')} />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        <View className="px-4 pb-6"> 
-          <ProfileData 
-            username={userData?.username || 'Usuario'} 
-            followersCount={userData?.followers_count || 0} 
-            followingCount={userData?.following_count || 0} 
+        <View className="px-4 pb-6">
+          <ProfileData
+            username={userData?.username || t('details.user')}
+            followersCount={userData?.followers_count || 0}
+            followingCount={userData?.following_count || 0}
             reviewsCount={userData?.reviews_count || 0}
-            description={userData?.description || ''}
-          >
-            <UserAvatar avatarUrl={userData?.avatar_url || null} frame={userData?.frame || 'none'} />
+            description={userData?.description || ''}>
+            <UserAvatar
+              avatarUrl={userData?.avatar_url || null}
+              frame={userData?.frame || 'none'}
+            />
           </ProfileData>
 
-          <FollowButton 
+          <FollowButton
             isFollowed={userData?.following_status === 'accepted' || false}
             isRequested={userData?.is_requested || false}
             handleFollow={handleFollow}
@@ -62,33 +66,30 @@ export default function UserDetailsScreen() {
           />
           {canViewStats && userData?.id && (
             <>
-                <TopFiveSelector userId={userData.id} />
-                
-                <View className="mt-4">
-                    <CategorySelector
-                        selected={selectedCategory} 
-                        onSelect={setSelectedCategory} 
-                    />
+              <TopFiveSelector userId={userData.id} />
 
-                    {statsLoading ? (
-						 <View className="mb-4 flex items-center justify-center py-10">
-                        	<LoadingIndicator />
-						</View>
-                    ) : (
-                        <>
-                            <StatsGrid
-                                title={currentStats.title}
-                                total={currentStats.total}
-                                average={currentStats.average}
-                            />
-                            <StatsChart
-                                data={currentStats.chartData}
-                                selectedYear={selectedYear}
-                                setSelectedYear={setSelectedYear}
-                            />
-                        </>
-                    )}
-                </View>
+              <View className="mt-4">
+                <CategorySelector selected={selectedCategory} onSelect={setSelectedCategory} />
+
+                {statsLoading ? (
+                  <View className="mb-4 flex items-center justify-center py-10">
+                    <LoadingIndicator />
+                  </View>
+                ) : (
+                  <>
+                    <StatsGrid
+                      title={currentStats.title}
+                      total={currentStats.total}
+                      average={currentStats.average}
+                    />
+                    <StatsChart
+                      data={currentStats.chartData}
+                      selectedYear={selectedYear}
+                      setSelectedYear={setSelectedYear}
+                    />
+                  </>
+                )}
+              </View>
             </>
           )}
         </View>

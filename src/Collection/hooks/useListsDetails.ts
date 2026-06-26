@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { CollectionType, listServices } from "../services/listServices";
 import { ResourceType } from "hooks/useResource";
-import { Alert } from "react-native";
 import { useNotification } from "context/NotificationContext";
+import { useTranslation } from "react-i18next";
 
 const categoryMap: Record<ResourceType, CollectionType> = {
 	'pelicula': 'PELICULA',
@@ -21,6 +21,7 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
 	const [page, setPage] = useState(0);
 	const [hasMore, setHasMore] = useState(true);
 	const { showNotification, hideNotification } = useNotification();
+	const { t } = useTranslation();
 
 	const fetchListDetails = async (currentPage: number) => {
 		// Evitar fetch si ya está cargando (a menos que sea la primera carga)
@@ -97,10 +98,10 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
 
 	const handleDeleteItem = async (itemId: string, type: CollectionType) => {
 		showNotification({
-			title: 'Eliminar de la lista',
-			description: '¿Estás seguro de que quieres eliminar este ítem de la lista?',
-			leftButtonText: 'Cancelar',
-			rightButtonText: 'Confirmar',
+			title: t('list.deleteItemFromListNotification.title'),
+			description: t('list.deleteItemFromListNotification.description'),
+			leftButtonText: t('common.cancel'),
+			rightButtonText: t('common.confirm'),
 			isChoice: true,
 			delete: true,
 			success: false,
@@ -110,24 +111,14 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
 				await deleteItemFromList(itemId, type);
 				await resetListDetails();
 				showNotification({
-					title: '¡Éxito!',
-					description: `El ítem ha sido eliminado de la lista`,
+					title: t('common.success'),
+					description: t('list.deleteItemFromListNotification.confirmationDescription'),
 					isChoice: false,
 					delete: false,
 					success: true,
 				});
 			}
 		})
-		/*Alert.alert('Eliminar de la lista', '¿Estás seguro de que quieres eliminar este ítem de la lista?', [
-			{ text: 'Cancelar', style: 'cancel' },
-			{ 
-				text: 'Confirmar', 
-				onPress: async () => {
-					await deleteItemFromList(itemId, type);
-					await resetListDetails();
-				}
-			}
-		]);*/
 	}
 
 	return {

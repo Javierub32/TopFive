@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { MaterialCommunityIcons } from 'components/Icons';
@@ -14,7 +14,8 @@ import { useContent } from '@/Details/hooks/useContent';
 import { ContentRating } from '@/Details/components/ContentRating';
 import { AdBanner } from 'components/AdBanner';
 import { ContentHeader } from '@/Details/components/ContentHeader';
-import {AppText} from 'components/AppText';
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 
 export default function GameDetail() {
   const { id, from } = useLocalSearchParams();
@@ -22,6 +23,7 @@ export default function GameDetail() {
   const game: Game = content as Game;
   const { colors } = useTheme();
   const path = from === 'search' ? '/Add?initialCategory=videojuego' : '/(tabs)/Home';
+  const { t } = useTranslation();
 
   if (loading) {
     return (
@@ -39,10 +41,10 @@ export default function GameDetail() {
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <AppText className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
-            Error al cargar
+            {t('details.loadingError.title')}
           </AppText>
           <AppText className="mt-2 text-center" style={{ color: colors.secondaryText }}>
-            No se pudo cargar la información del videojuego
+            {t('details.loadingError.videogames')}
           </AppText>
         </View>
       </Screen>

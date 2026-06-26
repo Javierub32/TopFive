@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useWindowDimensions, Text, View } from 'react-native';
+import { useState } from 'react';
+import { useWindowDimensions } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { useLocalSearchParams } from 'expo-router/build/hooks';
 
@@ -8,7 +8,8 @@ import { ReturnButton } from 'components/ReturnButton';
 import FollowersList from '@/Followers/components/FollowersList';
 import FollowingList from '@/Followers/components/FollowingList';
 import { useTheme } from 'context/ThemeContext';
-import {AppText} from 'components/AppText';
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 
 // Definimos las escenas (componentes a renderizar)
 const renderScene = SceneMap({
@@ -20,13 +21,14 @@ export default function FollowersScreen() {
   const layout = useWindowDimensions();
   const { username, page } = useLocalSearchParams<{ username?: string; page?: string }>();
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   // Índice: 0 para followers, 1 para following
   const [index, setIndex] = useState(page === 'following' ? 1 : 0);
-  
+
   const [routes] = useState([
-    { key: 'followers', title: 'Seguidores' },
-    { key: 'following', title: 'Seguidos' },
+    { key: 'followers', title: t('profile.followers') },
+    { key: 'following', title: t('profile.following') },
   ]);
 
   // Personalización de la barra superior
@@ -34,11 +36,18 @@ export default function FollowersScreen() {
     <TabBar
       {...props}
       activeColor={colors.primaryText} // O usa tu color primaryText
-      inactiveColor={colors.placeholderText}// O usa tu color secondaryText
+      inactiveColor={colors.placeholderText} // O usa tu color secondaryText
       indicatorStyle={{ backgroundColor: colors.secondaryText, height: 2 }} // La barra animada
-      style={{ backgroundColor: 'transparent', elevation: 0, shadowOpacity: 0, borderBottomWidth: 1, borderBottomColor: '#e5e7eb' }}
+      style={{
+        backgroundColor: 'transparent',
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 1,
+        borderBottomColor: '#e5e7eb',
+      }}
       renderLabel={({ route, focused }: any) => (
-        <AppText className={`text-base font-semibold ${focused ? 'text-primaryText' : 'text-secondaryText'}`}>
+        <AppText
+          className={`text-base font-semibold ${focused ? 'text-primaryText' : 'text-secondaryText'}`}>
           {route.title}
         </AppText>
       )}
@@ -47,8 +56,8 @@ export default function FollowersScreen() {
 
   return (
     <Screen>
-      <ReturnButton route='/(tabs)/Profile' title={username || ''} />
-      
+      <ReturnButton route="/(tabs)/Profile" title={username || ''} />
+
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}

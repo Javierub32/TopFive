@@ -1,4 +1,11 @@
-import { View, Text, Image, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { useState } from 'react';
@@ -17,8 +24,9 @@ import { DateSetter } from '@/Form/components/DateSetter';
 import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
 import { FallbackCover } from 'components/FallbackCover';
-import { MaterialCommunityIcons } from "components/Icons";
-import {AppText} from 'components/AppText';
+import { MaterialCommunityIcons } from 'components/Icons';
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 
 export default function SongForm() {
   const { songData, item, from } = useLocalSearchParams();
@@ -27,6 +35,7 @@ export default function SongForm() {
   const { refreshData } = useCollection();
 
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const editando = !!item;
   const resource = editando ? JSON.parse(item as string) : null;
@@ -83,8 +92,8 @@ export default function SongForm() {
         if (updateError) {
           //Alert.alert('Error', 'Hubo un problema al actualizar la canción. Inténtalo de nuevo.');
           showNotification({
-            title: 'Error al actualizar',
-            description: 'Hubo un problema al actualizar la canción. Inténtalo de nuevo.',
+            title: t('forms.updatingError'),
+            description: t('forms.albums.updatingErrorDescription'),
             isChoice: false,
             delete: false,
             success: false,
@@ -116,8 +125,10 @@ export default function SongForm() {
           });
           setTimeout(() => {
             showNotification({
-              title: '¡Éxito!',
-              description: `Has actualizado ${song.titulo || song.title} en tu colección.`,
+              title: t('common.success'),
+              description: t('forms.updatingSuccessDescription', {
+                titulo: song.titulo || song.title,
+              }),
               isChoice: false,
               delete: false,
               success: true,
@@ -176,8 +187,8 @@ export default function SongForm() {
           router.back();
           setTimeout(() => {
             showNotification({
-              title: 'Aviso',
-              description: 'Ya tienes esta canción en tu colección.',
+              title: t('common.warning'),
+              description: t('forms.albums.alreadyInCollection'),
               isChoice: false,
               delete: false,
               success: false,
@@ -202,8 +213,8 @@ export default function SongForm() {
         if (inventoryError) {
           //Alert.alert('Error', 'Hubo un problema al guardar la canción. Inténtalo de nuevo.');
           showNotification({
-            title: 'Error al guardar',
-            description: 'Hubo un problema al guardar la canción. Inténtalo de nuevo.',
+            title: t('forms.savingError'),
+            description: t('forms.albums.savingErrorDescription'),
             isChoice: false,
             delete: false,
             success: false,
@@ -218,8 +229,10 @@ export default function SongForm() {
           router.back();
           setTimeout(() => {
             showNotification({
-              title: '¡Éxito!',
-              description: `Has añadido ${song.title} a tu colección.`,
+              title: t('common.success'),
+              description: t('forms.updatingSuccessDescription', {
+                titulo: song.titulo || song.title,
+              }),
               isChoice: false,
               delete: false,
               success: true,
@@ -241,10 +254,10 @@ export default function SongForm() {
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <AppText className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
-            Error al cargar
+            {t('details.loadingError.title')}
           </AppText>
           <AppText className="mt-2 text-center" style={{ color: colors.secondaryText }}>
-            No se pudo cargar la información de la cancion
+            {t('details.loadingError.albums')}
           </AppText>
         </View>
       </Screen>
@@ -254,11 +267,9 @@ export default function SongForm() {
   return (
     <Screen>
       <ThemedStatusBar />
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}
-      >
-
+        style={{ flex: 1 }}>
         <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
           <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
             <View className="flex-1 flex-row items-center">
@@ -303,7 +314,7 @@ export default function SongForm() {
             style={{ backgroundColor: colors.primary }}
             activeOpacity={0.8}>
             <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
-              {loading ? 'Guardando...' : 'Guardar'}
+              {loading ? t('common.saving') : t('common.save')}
             </AppText>
           </TouchableOpacity>
         </ScrollView>
