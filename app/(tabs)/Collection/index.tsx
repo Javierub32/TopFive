@@ -1,7 +1,7 @@
 // app/(tabs)/Collection/index.tsx
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, useWindowDimensions } from 'react-native';
-import { SceneMap, TabView } from 'react-native-tab-view';
+import { useState } from 'react';
+import { View, TouchableOpacity, useWindowDimensions } from 'react-native';
+import { TabView } from 'react-native-tab-view';
 import { Screen } from 'components/Screen';
 import { SearchBar } from 'src/Collection/components/SearchBar';
 import ResourceList from '@/Collection/components/ResourceList';
@@ -12,15 +12,15 @@ import { useCollection } from 'context/CollectionContext';
 import Animated, { FadeInUp, LinearTransition } from 'react-native-reanimated';
 import { ResourceType } from 'hooks/useResource';
 import { CategoryTabBar } from 'components/CategoryTarBar';
-import {AppText} from 'components/AppText';
-
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 
 export default function CollectionScreen() {
   const layout = useWindowDimensions();
   const { colors } = useTheme();
   const { categoriaActual, setCategoriaActual, isSearchVisible, toggleSearch } = useCollection();
   const [isChanging, setIsChanging] = useState(false);
-
+  const { t } = useTranslation();
 
   const routes = [
     { key: 'libro', title: 'Libros' },
@@ -30,13 +30,13 @@ export default function CollectionScreen() {
     { key: 'cancion', title: 'Música' },
   ];
 
-  const index = routes.findIndex(r => r.key === categoriaActual);
+  const index = routes.findIndex((r) => r.key === categoriaActual);
   const safeIndex = index === -1 ? 0 : index;
 
   const handleIndexChange = (i: number) => {
     setIsChanging(true);
     setCategoriaActual(routes[i].key as ResourceType);
-    
+
     // Pequeño timeout para que la animación del TabView fluya antes de cargar los datos
     setTimeout(() => setIsChanging(false), 300);
   };
@@ -45,7 +45,7 @@ export default function CollectionScreen() {
     // Si la pestaña no coincide con el contexto global o está cambiando, mostramos loader
     if (isChanging || route.key !== categoriaActual) {
       return (
-        <View className="flex-1 justify-center items-center">
+        <View className="flex-1 items-center justify-center">
           <LoadingIndicator />
         </View>
       );
@@ -58,7 +58,7 @@ export default function CollectionScreen() {
       <View className="flex-1 px-4 pt-6">
         <View className="mb-4 flex-row items-center justify-between">
           <AppText className=" font-bold" style={{ color: colors.primaryText, fontSize: 28 }}>
-            Mi Biblioteca
+            {t('tabs.library')}
           </AppText>
 
           <TouchableOpacity onPress={toggleSearch} className="rounded-full p-3">
@@ -71,10 +71,7 @@ export default function CollectionScreen() {
         </View>
 
         {isSearchVisible && (
-          <Animated.View 
-            entering={FadeInUp.duration(300).springify()} 
-            style={{ zIndex: 1 }}
-          >
+          <Animated.View entering={FadeInUp.duration(300).springify()} style={{ zIndex: 1 }}>
             <SearchBar />
           </Animated.View>
         )}

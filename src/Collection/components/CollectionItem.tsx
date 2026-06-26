@@ -1,31 +1,49 @@
-import { TouchableOpacity, Image, View, Text } from 'react-native';
+//
+
+import { TouchableOpacity, Image, View } from 'react-native';
 import { MaterialCommunityIcons } from 'components/Icons';
 import { collectionAdapter } from '../adapters/collectionAdapter';
-import {AppText} from 'components/AppText';
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from 'context/ThemeContext';
 export const CollectionItem = ({ item, category, onPress }: any) => {
-  const title = collectionAdapter.getTitle(item, category);
+  const { t } = useTranslation();
+  const { colors } = useTheme();
+  const title = collectionAdapter.getTitle(item, category, t);
   const image = collectionAdapter.getImage(item, category);
   const statusColor = collectionAdapter.getStatusColor(item.estado);
-  const statusText = collectionAdapter.getStatusText(item.estado, category);
+  const statusText = collectionAdapter.getStatusText(item.estado, category, t);
 
   return (
-    <TouchableOpacity className="mb-3 flex-row overflow-hidden rounded-xl border border-borderButton bg-surfaceButton p-0 shadow-sm active:bg-borderButton" onPress={onPress}>
+    <TouchableOpacity
+      className="mb-3 flex-row overflow-hidden rounded-xl border border-borderButton bg-surfaceButton p-0 shadow-sm active:bg-borderButton"
+      onPress={onPress}>
       <Image source={{ uri: image }} className="h-28 w-20 bg-background" resizeMode="cover" />
-      <View className="flex-1 p-3 justify-between">
+      <View className="flex-1 justify-between p-3">
         <View>
-          <View className="flex-row justify-between items-start">
-            <AppText className="text-primaryText font-bold text-lg flex-1 mr-2" numberOfLines={1}>{title}</AppText>
-            {item.favorito && <MaterialCommunityIcons name="heart" size={16} color="#ef4444" />}
+          <View className="flex-row items-start justify-between">
+            <AppText className="mr-2 flex-1 text-lg font-bold text-primaryText" numberOfLines={1}>
+              {title}
+            </AppText>
+            {item.favorito && (
+              <MaterialCommunityIcons name="heart" size={16} color={colors.error} />
+            )}
           </View>
-          <AppText className="text-secondaryText text-sm">{new Date(item.fechacreacion).toLocaleDateString()}</AppText>
+          <AppText className="text-sm text-secondaryText">
+            {new Date(item.fechacreacion).toLocaleDateString()}
+          </AppText>
         </View>
-        <View className="flex-row items-center justify-between mt-2">
-          <View className="flex-row items-center bg-marker px-2 py-1 rounded border border-primary/20">
+        <View className="mt-2 flex-row items-center justify-between">
+          <View className="border-primary/20 flex-row items-center rounded border bg-marker px-2 py-1">
             <MaterialCommunityIcons name="star" size={12} color="#fbbf24" />
-            <AppText className="text-markerText text-xs font-bold ml-1">{item.calificacion || 0}</AppText>
+            <AppText className="ml-1 text-xs font-bold text-markerText">
+              {item.calificacion || 0}
+            </AppText>
           </View>
-          <View className={`px-2 py-1 rounded ${statusColor}`}>
-            <AppText className="text-[10px] text-primaryText font-bold uppercase">{statusText}</AppText>
+          <View className={`rounded px-2 py-1 ${statusColor}`}>
+            <AppText className="text-[10px] font-bold uppercase text-primaryText">
+              {statusText}
+            </AppText>
           </View>
         </View>
       </View>

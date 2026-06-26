@@ -12,8 +12,22 @@
         "send": "Enviar",
         "accept": "Aceptar",
         "noTitle": "Sin título",
+        "noDescription": "Sin descripción",
         "unknown": "Desconocido",
-        "content": "contenido"
+        "content": "Contenido",
+        "all": "Todos",
+        "confirm": "Confirmar",
+        "delete": "Eliminar"
+    },
+    "status": {
+        "title": "Estado",
+        "pending": "Pendiente",
+        "inProgress": "En curso",
+        "completed": "Completado",
+        "reading": "Leyendo",
+        "watching": "Viendo",
+        "listening": "Escuchando",
+        "playing": "Jugando"
     },
     "categories": {
         "books": "Libros",
@@ -195,6 +209,31 @@
         "placeholder": "Buscar",
         "noResults": "Sin resultados.",
         "description": "Realiza una búsqueda para ver resultados de {{category}}."
+    },
+    "collection": {
+        "saveIn": "Guardar en...",
+        "noLists": "No tienes listas de {{category}} creadas.",
+        "orderBy": "Ordenar por",
+        "recentsFirst": "Más recientes",
+        "oldestFirst": "Más antiguos",
+        "status": "Estado",
+        "onlyFavorites": "Solo favoritos",
+        "noContent": "No hay contenido disponible",
+        "searchInPlaceholder": "Buscar en {{category}}..."
+    },
+    "list": {
+        "deleteListNotification": {
+            "title": "Eliminar lista",
+            "description": "¿Estás seguro de que deseas eliminar esta lista de su colección?",
+            "confirmationTitle": "Lista eliminada",
+            "confirmationDescription": "La lista {{listName}} ha sido eliminada exitosamente."
+        },
+        "elements": "elementos", 
+        "editList": "Editar lista",
+        "addToList": "Añadir a lista",
+        "deleteList": "Eliminar lista",
+        "noLists": "No tienes listas de {{category}}."
     }
+
 
 }

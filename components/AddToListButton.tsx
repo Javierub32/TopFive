@@ -1,7 +1,7 @@
 // components/AddToListButton.tsx
 
 import React, { useState } from 'react';
-import { TouchableOpacity, Alert } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTheme } from 'context/ThemeContext';
 import { AddToListModal } from '@/Collection/components/AddToListModal';
@@ -16,8 +16,8 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
     setModalVisible(false);
     setLoading(true);
     try {
-    const message = await listServices.addItemToList(listId, resourceId, listType);
-	  const header = message.includes('ya está') ? 'Atención' : 'Éxito';
+      const message = await listServices.addItemToList(listId, resourceId, listType);
+      const header = message.includes('ya está') ? 'Atención' : 'Éxito';
       //Alert.alert(header, message);
       showNotification({
         title: header,
@@ -47,7 +47,7 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
         onPress={() => setModalVisible(true)}
         disabled={loading}
         className="mr-2 h-10 w-10 items-center justify-center rounded-full"
-        style={{ backgroundColor: `${colors.accent}99`}}
+        style={{ backgroundColor: `${colors.accent}99` }}
         activeOpacity={0.7}>
         <MaterialCommunityIcons name="playlist-plus" size={20} color={colors.primaryText} />
       </TouchableOpacity>

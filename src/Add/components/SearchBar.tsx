@@ -36,7 +36,8 @@ export const SearchBar = ({
 }: SearchBarProps) => {
   const { colors } = useTheme();
   const { t } = useTranslation();
-  const categoryLabel = t(CATEGORY_LABELS[selectedCategory] as any) || t('common.content');
+  const categoryLabel =
+    t(CATEGORY_LABELS[selectedCategory] as any) || t('common.content').toLowerCase();
 
   return (
     <View className="relative z-50">
