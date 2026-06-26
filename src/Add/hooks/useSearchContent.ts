@@ -31,7 +31,7 @@ export const useSearchContent = () => {
 	  clearContentSearch();
     setHasSearched(false);
 	}
-  }, [params.initialCategory, recursoBusqueda, setContentCategory, clearContentSearch]);
+  }, [params.initialCategory]);
 
 
   const handleSearch = async (categoria?: ResourceType) => {
