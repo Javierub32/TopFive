@@ -18,7 +18,9 @@
         "content": "Contenido",
         "all": "Todos",
         "confirm": "Confirmar",
-        "delete": "Eliminar"
+        "delete": "Eliminar",
+        "readMore": "Leer más",
+        "readLess": "Leer menos"
     },
     "status": {
         "title": "Estado",
@@ -243,6 +245,17 @@
             "title": "Eliminar de la lista",
             "description": "¿Estás seguro de que deseas eliminar este elemento de la lista?",
             "confirmationDescription": "El elemento ha sido eliminado exitosamente de la lista."
+        }
+    },
+    "home": {
+        "pressAgainToExit": "Vuelve a tocar para salir.",
+        "noCompletedReviewsFromFriends": "No tienes ningún amigo con reseñas completadas.",
+        "addFriendsToSeeReviews": "Agrega amigos para poder ver sus reseñas.",
+        "searchFriends": "Buscar amigos",
+        "renderResource": {
+            "today": "Hoy",
+            "oneDayAgo": "Hace 1 día",
+            "daysAgo": "Hace {{days}} días"
         }
     }
 

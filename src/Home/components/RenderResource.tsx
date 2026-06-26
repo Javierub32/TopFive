@@ -1,34 +1,46 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useTheme } from 'context/ThemeContext';
-import { View, Text, Image, Pressable, ImageBackground, TouchableOpacity, useWindowDimensions} from 'react-native';
+import {
+  View,
+  Image,
+  Pressable,
+  ImageBackground,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Activity } from '../hooks/useActivity';
 import { BookIcon, FilmIcon, GameIcon, MusicIcon, ShowIcon } from 'components/Icons';
 import { router } from 'expo-router';
 import { ResourceType } from 'hooks/useResource';
 import { useState } from 'react';
-import {AppText} from 'components/AppText';
+import { AppText } from 'components/AppText';
 import RenderHtml from 'react-native-render-html';
 import { useFontSize } from 'context/FontSizeContext';
+import { useTranslation } from 'react-i18next';
 
 export default function ActivityItem({ item }: { item: Activity }) {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
-  const { fontSizeMultiplier } = useFontSize(); 
+  const { fontSizeMultiplier } = useFontSize();
+  const { t } = useTranslation();
 
   const getRelativeTime = (date: string | Date) => {
     const now = new Date();
     const then = new Date(date);
     const diffInSeconds = Math.floor((now.getTime() - then.getTime()) / 1000);
 
-    //if (diffInSeconds < 60) return 'Ahora mismo';             
+    //if (diffInSeconds < 60) return 'Ahora mismo';
     const minutes = Math.floor(diffInSeconds / 60);
     //if (minutes < 60) return minutes === 1 ? `Hace 1 minuto` : `Hace ${minutes} minutos`;
     const hours = Math.floor(minutes / 60);
     //if (hours < 24) return hours === 1 ? `Hace 1 hora` : `Hace ${hours} horas`;
-    if(hours < 24) return "Hoy";                                                //CUANDO FUNCIONE BIEN DESCOMENTAR LAS DE ARRIBA Y BORRAR ESTA LINEA
+    if (hours < 24) return t('home.renderResource.today'); //CUANDO FUNCIONE BIEN DESCOMENTAR LAS DE ARRIBA Y BORRAR ESTA LINEA
     const days = Math.floor(hours / 24);
-    if (days < 7) return days === 1 ? `Hace 1 día` : `Hace ${days} días`;
+    if (days < 7)
+      return days === 1
+        ? t('home.renderResource.oneDayAgo')
+        : t('home.renderResource.daysAgo', { days });
     return then.toLocaleDateString(); // Si es más de una semana, mostrar fecha completa
   };
 
@@ -54,19 +66,20 @@ export default function ActivityItem({ item }: { item: Activity }) {
 
   const [isExpanded, setIsExpanded] = useState(false);
   const MAX_LENGTH = 120;
-  
+
   const plainTextLength = (item.comentario || '').replace(/<[^>]*>?/gm, '').length;
   const shouldTruncate = plainTextLength > MAX_LENGTH;
-  
-  const displayedDescription = shouldTruncate && !isExpanded 
-    ? item.comentario?.substring(0, MAX_LENGTH) + '...' 
-    : (item.comentario || '');
+
+  const displayedDescription =
+    shouldTruncate && !isExpanded
+      ? item.comentario?.substring(0, MAX_LENGTH) + '...'
+      : item.comentario || '';
 
   const tagsStyles = {
     body: {
       color: colors.secondaryText,
       fontSize: 14 * fontSizeMultiplier,
-      lineHeight: 20  * fontSizeMultiplier
+      lineHeight: 20 * fontSizeMultiplier,
     },
     p: { margin: 0 },
     b: { fontWeight: 'bold' },
@@ -189,10 +202,10 @@ export default function ActivityItem({ item }: { item: Activity }) {
                   />
                   {shouldTruncate && (
                     <AppText
-                      className="text-xs font-bold mt-1"
+                      className="mt-1 text-xs font-bold"
                       style={{ color: colors.primary }}
                       onPress={() => setIsExpanded(!isExpanded)}>
-                      {isExpanded ? 'Leer menos' : 'Leer más'}
+                      {isExpanded ? t('common.readLess') : t('common.readMore')}
                     </AppText>
                   )}
                 </View>
