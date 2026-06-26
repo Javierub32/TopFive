@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { CollectionType, ListInfo, listServices } from "../services/listServices";
 import { useAuth } from "context/AuthContext";
-import { Alert } from "react-native";
 import { router } from "expo-router";
 import { ResourceType } from "hooks/useResource";
 import { useNotification } from "context/NotificationContext";
+import { useTranslation } from "react-i18next";
 
 const categoryMap: Record<ResourceType, CollectionType> = {
 	'pelicula': 'PELICULA',
@@ -21,6 +21,7 @@ export const useLists = (categoriaActual: ResourceType) => {
 	const [lists, setLists] = useState<ListInfo[]>([]);
 	const [data, setData] = useState<any[]>([]);
 	const { showNotification } = useNotification();
+	const { t } = useTranslation();
 	useEffect(() => {
 		setLists([]);
 		fetchListInfo();
@@ -33,8 +34,8 @@ export const useLists = (categoriaActual: ResourceType) => {
 			router.push({ pathname: '/Lists'});
 			setTimeout(() => {
 				showNotification({
-					title: 'Lista creada',
-					description: `La lista "${nombre}" ha sido creada exitosamente.`,
+					title: t('list.listCreatedNotification.title'),
+					description: t('list.listCreatedNotification.description', { listName: nombre }),
 					isChoice: false,
 					delete: false,
 					success: true,
@@ -49,8 +50,8 @@ export const useLists = (categoriaActual: ResourceType) => {
 		catch (error) {
 			console.error("Error creating list:", error);
 			showNotification({
-				title: 'Error',
-				description: 'No se pudo crear la lista. Por favor, inténtalo de nuevo.',
+				title: t('common.error'),
+				description: t('list.couldntCreateError'),
 				isChoice: false,
 				delete: false,
 				success: false,

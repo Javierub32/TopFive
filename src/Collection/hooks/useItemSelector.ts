@@ -3,7 +3,7 @@ import { useResource, ResourceType } from 'hooks/useResource';
 import { listServices, CollectionType } from '../services/listServices';
 import { useNotification } from 'context/NotificationContext';
 import { router } from 'expo-router';
-
+import { useTranslation } from 'react-i18next';
 const typeMapping: Record<string, ResourceType> = {
     'LIBRO': 'libro',
     'PELICULA': 'pelicula',
@@ -17,6 +17,7 @@ export const useItemSelector = (category: string | undefined, listId: string | u
     const [data, setData] = useState<any[]>([]);
     const { fetchResources } = useResource();
     const { showNotification } = useNotification();
+    const { t } = useTranslation();
 
     const resourceType = category ? typeMapping[category] : 'pelicula';
 
@@ -34,7 +35,7 @@ export const useItemSelector = (category: string | undefined, listId: string | u
             }
         };
         loadItems();
-    }, [category]);
+    }, [category, resourceType, fetchResources]);
 
     const addItem = async (itemId: number) => {
         try {
@@ -43,7 +44,7 @@ export const useItemSelector = (category: string | undefined, listId: string | u
             const isSuccess = !message.includes('ya está'); // Viene del mensaje Este contenido ya está en la lista
 
             showNotification({
-                title: isSuccess ? '¡Éxito!' : 'Atención',
+                title: isSuccess ? t('common.success') : t('common.attention'),
                 description: message,
                 isChoice: false, 
                 delete: false, 

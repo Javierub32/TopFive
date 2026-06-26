@@ -7,8 +7,9 @@
         "loadingCreating": "Creando...",
         "saveChanges": "Guardar cambios",
         "warning": "Aviso",
+        "attention": "Atención",
         "error": "Error",
-        "success": "Éxito",
+        "success": "¡Éxito!",
         "send": "Enviar",
         "accept": "Aceptar",
         "noTitle": "Sin título",
@@ -232,7 +233,17 @@
         "editList": "Editar lista",
         "addToList": "Añadir a lista",
         "deleteList": "Eliminar lista",
-        "noLists": "No tienes listas de {{category}}."
+        "noLists": "No tienes listas de {{category}}.",
+        "listCreatedNotification": {
+            "title": "Lista creada",
+            "description": "La lista {{listName}} ha sido creada exitosamente."
+        },
+        "couldntCreateError": "No se pudo crear la lista. Por favor, inténtalo de nuevo.",
+        "deleteItemFromListNotification": {
+            "title": "Eliminar de la lista",
+            "description": "¿Estás seguro de que deseas eliminar este elemento de la lista?",
+            "confirmationDescription": "El elemento ha sido eliminado exitosamente de la lista."
+        }
     }
 
 
