@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { MaterialCommunityIcons } from 'components/Icons';
@@ -12,14 +12,15 @@ import { useContent } from '@/Details/hooks/useContent';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { ContentHeader } from '@/Details/components/ContentHeader';
 import { AdBanner } from 'components/AdBanner';
-import {AppText} from 'components/AppText';
-
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 
 export default function BookDetail() {
   const { id, from } = useLocalSearchParams();
   const { content, loading } = useContent(id as string | number, 'libro');
   const book: Book = content as Book;
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const path = from === 'search' ? '/Add?initialCategory=libro' : '/(tabs)/Home';
 
   if (loading) {
@@ -38,10 +39,10 @@ export default function BookDetail() {
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <AppText className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
-            Error al cargar
+            {t('details.loadingError.title')}
           </AppText>
           <AppText className="mt-2 text-center" style={{ color: colors.secondaryText }}>
-            No se pudo cargar la información del libro
+            {t('details.loadingError.books')}
           </AppText>
         </View>
       </Screen>

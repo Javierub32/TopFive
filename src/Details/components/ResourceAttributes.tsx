@@ -7,10 +7,11 @@ import {
 } from 'app/types/Resources';
 import { DificultyIcon, FavoriteIcon, TimesWatchedIcon } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { AddToListButton } from 'components/AddToListButton';
 import { useLocalSearchParams } from 'expo-router';
 import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 interface Props {
   resource: BookResource | FilmResource | SeriesResource | SongResource | GameResource;
   isOwner?: boolean;
@@ -23,15 +24,16 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
   const releaseYear = contenido.fechaLanzamiento
     ? new Date(contenido.fechaLanzamiento).getFullYear()
     : 'N/A';
+  const { t } = useTranslation();
 
   const getStatusText = (status: string) => {
     switch (status) {
       case 'PENDIENTE':
-        return 'Pendiente';
+        return t('status.pending');
       case 'EN_CURSO':
-        return 'En curso';
+        return t('status.inProgress');
       case 'COMPLETADO':
-        return 'Completado';
+        return t('status.completed');
       default:
         return status;
     }
@@ -87,11 +89,24 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
     return null;
   };
 
+  const getDificultyText = (dificultad: string) => {
+    switch (dificultad) {
+      case 'Fácil':
+        return t('details.dificulty.easy');
+      case 'Normal':
+        return t('details.dificulty.medium');
+      case 'Difícil':
+        return t('details.dificulty.hard');
+      case 'Extremo':
+        return t('details.dificulty.extreme');
+    }
+  };
+
   return (
     <View className="mb-4">
       <View className="flex-1 flex-row items-center justify-between">
         <AppText className="flex-1 text-3xl font-bold" style={{ color: colors.primaryText }}>
-          {contenido.titulo || 'Sin título'}
+          {contenido.titulo || t('common.noTitle')}
         </AppText>
         {isOwner && (
           <AddToListButton resourceCategory={resource.tiporecurso} resourceId={resource.id} />
@@ -138,7 +153,7 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
             <AppText
               className="text-semibold ml-1 text-xs"
               style={{ color: getDificultyColor(getDificulty(resource)) }}>
-              {getDificulty(resource)}
+              {getDificultyText(getDificulty(resource))}
             </AppText>
           </View>
         )}

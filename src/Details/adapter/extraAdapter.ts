@@ -1,5 +1,4 @@
 import { GameModeIcon, AlbumIcon } from 'components/Icons';
-
 export const extraAdapter = {
     getIcon : (category: string) => {
         const map: Record<string, any> = {
@@ -12,7 +11,7 @@ export const extraAdapter = {
     getTitle : (category: string) => {
         const map: Record<string, string> = {
             'cancion': "Álbum",
-            'videojuego': "Modos de Juego",
+            'videojuego': 'details.gameModes',
         };
         return map[category]
     }

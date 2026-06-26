@@ -38,18 +38,18 @@ export const StatsChart = ({
 
   useEffect(() => {
     const months = [
-      t('profile.monthsAbreviation.january'),
-      t('profile.monthsAbreviation.february'),
-      t('profile.monthsAbreviation.march'),
-      t('profile.monthsAbreviation.april'),
-      t('profile.monthsAbreviation.may'),
-      t('profile.monthsAbreviation.june'),
-      t('profile.monthsAbreviation.july'),
-      t('profile.monthsAbreviation.august'),
-      t('profile.monthsAbreviation.september'),
-      t('profile.monthsAbreviation.october'),
-      t('profile.monthsAbreviation.november'),
-      t('profile.monthsAbreviation.december'),
+      t('profile.monthsAbbreviation.january'),
+      t('profile.monthsAbbreviation.february'),
+      t('profile.monthsAbbreviation.march'),
+      t('profile.monthsAbbreviation.april'),
+      t('profile.monthsAbbreviation.may'),
+      t('profile.monthsAbbreviation.june'),
+      t('profile.monthsAbbreviation.july'),
+      t('profile.monthsAbbreviation.august'),
+      t('profile.monthsAbbreviation.september'),
+      t('profile.monthsAbbreviation.october'),
+      t('profile.monthsAbbreviation.november'),
+      t('profile.monthsAbbreviation.december'),
     ];
 
     const formattedData = data.map((value, index) => ({

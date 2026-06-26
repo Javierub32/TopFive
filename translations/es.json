@@ -263,7 +263,7 @@
         "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}",
         "user": "Usuario",
         "selectYear": "Seleccionar año",
-        "monthsAbreviation": {
+        "monthsAbbreviation": {
             "january": "Ene",
             "february": "Feb",
             "march": "Mar",
@@ -301,6 +301,78 @@
             "description": "¿Estás seguro de que deseas eliminar este elemento de tu TopFive?",
             "confirmationDescription": "El elemento ha sido eliminado de tu TopFive."
         }
+    },
+    "aboutUs": {
+        "creditsAndLicenses": "Créditos y Licencias",
+        "creditsDescription": "Esta aplicación utiliza datos de las siguientes fuentes:",
+        "filmsCard":{
+            "description": "Este producto utiliza la API de TMDB pero no está certificada por TMDB.",
+            "link": "Visitar TMDB"
+        },
+        "seriesCard": {
+            "description": "Datos proporcionados por TVMaze. Licenciado bajo CC BY-SA 4.0.",
+            "link": "Visitar TVMaze"
+        },
+        "videogamesCard": {
+            "description": "Información de videojuegos provista por IGDB.",
+            "link": "Visitar IGDB"
+        },
+        "albumsCard":{
+            "description": "Datos proporcionados por Discogs. Este producto utiliza la API de Discogs pero no está certificada por Discogs.",
+            "link": "Visitar Discogs"
+        },
+        "booksCard":{
+            "description": "Datos proporcionados por OpenLibrary.",
+            "link": "Visitar OpenLibrary"
+        }
+    },
+    "details": {
+        "loadingError": {
+            "title": "Error al cargar",
+            "books": "No se pudo cargar la información del libro.",
+            "series": "No se pudo cargar la información de la serie.",
+            "films": "No se pudo cargar la información de la película.",
+            "videogames": "No se pudo cargar la información del videojuego.",
+            "albums": "No se pudo cargar la información del álbum."
+        },
+        "gameModes": "Modos de juego",
+        "addToCollection": "Añadir a colección",
+        "author": "Autor",
+        "released": "Publicado",
+        "generalRating": "Calificación general",
+        "lastTime": "Última vez",
+        "start": "Inicio",
+        "end": "Fin",
+        "deleteResource": {
+            "title": "Confirmar eliminación",
+            "description": "¿Estás seguro de que deseas eliminar {{titulo}} de tu colección?",
+            "successTitle": "Recurso eliminado",
+            "resourceDeletedDescription": "Has eliminado {{titulo}} de tu colección exitosamente.",
+            "failedToDelete": "No se pudo eliminar el recurso. Inténtalo de nuevo más tarde."
+        },
+        "sinopsis": "Sinopsis",
+        "progress": "Progreso",
+        "seasonAbbreviation": "T",
+        "episodeAbbreviation": "E",
+        "progressUnits": {
+            "books": "págs",
+            "videogames": "horas"
+        },
+        "rating": "Calificación",
+        "dificulty": {
+            "easy": "Fácil",
+            "medium": "Normal",
+            "hard": "Difícil",
+            "extreme": "Extremo"
+        },
+        "review": "Reseña",
+        "zeroDays": "0 días",
+        "oneDay": "1 día",
+        "days": "{{days}} días",
+        "totalReadingTime": "Tiempo total de lectura",
+        "userDetails": "Detalles del usuario",
+        "user": "Usuario"
+
     }
 
 

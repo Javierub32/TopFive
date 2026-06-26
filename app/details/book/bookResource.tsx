@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { MaterialCommunityIcons } from 'components/Icons';
@@ -14,12 +14,14 @@ import { TimeCard } from '@/Details/components/TimeCard';
 import { useAuth } from 'context/AuthContext';
 import { AdBanner } from 'components/AdBanner';
 import { ResourceHeader } from '@/Details/components/ResourceHeader';
-import {AppText} from 'components/AppText';
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 
 export default function BookDetail() {
   const { item, from } = useLocalSearchParams();
   const { colors } = useTheme();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const getPath = () => {
     if (from === 'profile') return '/(tabs)/Profile';
@@ -49,10 +51,10 @@ export default function BookDetail() {
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <AppText className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
-            Error al cargar
+            {t('details.loadingError.title')}
           </AppText>
           <AppText className="mt-2 text-center" style={{ color: colors.secondaryText }}>
-            No se pudo cargar la información del libro
+            {t('details.loadingError.books')}
           </AppText>
         </View>
       </Screen>
@@ -80,7 +82,12 @@ export default function BookDetail() {
                 {bookResource?.calificacion > 0 && (
                   <RatingCard rating={bookResource.calificacion} />
                 )}
-                {!isCompleted && <ProgressCard progress={bookResource.paginasLeidas} unit="pags" />}
+                {!isCompleted && (
+                  <ProgressCard
+                    progress={bookResource.paginasLeidas}
+                    unit={t('details.progressUnits.books')}
+                  />
+                )}
               </View>
               <ReviewCard review={bookResource.reseña} />
               <DateCard
