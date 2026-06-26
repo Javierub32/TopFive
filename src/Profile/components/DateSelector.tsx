@@ -1,8 +1,9 @@
 import { useTheme } from 'context/ThemeContext';
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, TextInput, Pressable } from 'react-native';
-import {AppText} from 'components/AppText';
-import {AppTextInput} from 'components/AppTextInput';
+import { useState } from 'react';
+import { View, TouchableOpacity, Modal, Pressable } from 'react-native';
+import { AppText } from 'components/AppText';
+import { AppTextInput } from 'components/AppTextInput';
+import { useTranslation } from 'react-i18next';
 interface DateSelectorProps {
   selectedYear: number;
   onYearChange: (year: number) => void;
@@ -13,6 +14,7 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
   const [inputYear, setInputYear] = useState(selectedYear.toString());
 
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const handleYearSubmit = () => {
     const year = parseInt(inputYear, 10);
@@ -23,7 +25,7 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
   };
 
   const handleYearChange = (year: number) => {
-	if (year <= new Date().getFullYear() && year >= 1900) {
+    if (year <= new Date().getFullYear() && year >= 1900) {
       onYearChange(year);
     }
   };
@@ -37,24 +39,30 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
   return (
     <View className="flex-row space-x-8">
       {/* Botón Izquierdo */}
-      <TouchableOpacity activeOpacity={0.6} onPressOut={() => handleYearChange(selectedYear - 1)} disabled={selectedYear <= minYear}>
-        <AppText className="px-2 text-xl font-bold" style={{color: leftColor}}>{'<'}</AppText>
+      <TouchableOpacity
+        activeOpacity={0.6}
+        onPressOut={() => handleYearChange(selectedYear - 1)}
+        disabled={selectedYear <= minYear}>
+        <AppText className="px-2 text-xl font-bold" style={{ color: leftColor }}>
+          {'<'}
+        </AppText>
       </TouchableOpacity>
 
       {/* Contenedor Relativo del Año - Ahora es clicable */}
-      <TouchableOpacity 
+      <TouchableOpacity
         activeOpacity={0.6}
         onPress={() => {
           setInputYear(selectedYear.toString());
           setShowYearPicker(true);
         }}
-        className="relative"
-      >
-        <AppText className="text-xl font-bold tracking-widest" style={{color: colors.title}}>{selectedYear}</AppText>
+        className="relative">
+        <AppText className="text-xl font-bold tracking-widest" style={{ color: colors.title }}>
+          {selectedYear}
+        </AppText>
 
         {/* Línea Absoluta: se expande solo lo que mide el texto de arriba */}
         <View
-          className="absolute left-0 right-0 bg-secondaryText/50"
+          className="bg-secondaryText/50 absolute left-0 right-0"
           style={{
             height: 1, // Grosor de la línea
             bottom: 8, // Ajusta este número para acercar o alejar la línea del número
@@ -63,8 +71,13 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
       </TouchableOpacity>
 
       {/* Botón Derecho */}
-      <TouchableOpacity activeOpacity={0.6} onPressOut={() => handleYearChange(selectedYear + 1)} disabled={selectedYear >= maxYear}>
-        <AppText className="px-2 text-xl font-bold" style={{color: rightColor}}>{'>'}</AppText>
+      <TouchableOpacity
+        activeOpacity={0.6}
+        onPressOut={() => handleYearChange(selectedYear + 1)}
+        disabled={selectedYear >= maxYear}>
+        <AppText className="px-2 text-xl font-bold" style={{ color: rightColor }}>
+          {'>'}
+        </AppText>
       </TouchableOpacity>
 
       {/* Modal para seleccionar año manualmente */}
@@ -72,28 +85,29 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
         visible={showYearPicker}
         transparent
         animationType="fade"
-        onRequestClose={() => setShowYearPicker(false)}
-      >
-        <Pressable 
-          className="flex-1 bg-black/50 items-center justify-center"
-          onPress={() => setShowYearPicker(false)}
-        >
-          <Pressable 
-            className="rounded-lg p-6 w-64"
-            style={{backgroundColor: colors.background}}
-            onPress={(e) => e.stopPropagation()}
-          >
-            <AppText className="text-lg font-bold mb-4 text-center" style={{color: colors.title}}>
-              Seleccionar Año
+        onRequestClose={() => setShowYearPicker(false)}>
+        <Pressable
+          className="flex-1 items-center justify-center bg-black/50"
+          onPress={() => setShowYearPicker(false)}>
+          <Pressable
+            className="w-64 rounded-lg p-6"
+            style={{ backgroundColor: colors.background }}
+            onPress={(e) => e.stopPropagation()}>
+            <AppText className="mb-4 text-center text-lg font-bold" style={{ color: colors.title }}>
+              {t('profile.selectYear')}
             </AppText>
-            
+
             <AppTextInput
               value={inputYear}
               onChangeText={setInputYear}
               keyboardType="numeric"
               maxLength={4}
-              className="border rounded-lg px-4 py-3 text-center text-xl mb-4"
-              style={{backgroundColor: colors.surfaceButton, borderColor: colors.borderButton, color: colors.title}}
+              className="mb-4 rounded-lg border px-4 py-3 text-center text-xl"
+              style={{
+                backgroundColor: colors.surfaceButton,
+                borderColor: colors.borderButton,
+                color: colors.title,
+              }}
               placeholderTextColor={colors.placeholderText}
               autoFocus
               onSubmitEditing={handleYearSubmit}
@@ -102,17 +116,19 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
             <View className="flex-row space-x-2">
               <TouchableOpacity
                 onPress={() => setShowYearPicker(false)}
-                className="flex-1 rounded-lg py-3 items-center"
-              >
-                <AppText className="font-semibold" style={{color: colors.secondaryText}}>Cancelar</AppText>
+                className="flex-1 items-center rounded-lg py-3">
+                <AppText className="font-semibold" style={{ color: colors.secondaryText }}>
+                  {t('common.cancel')}
+                </AppText>
               </TouchableOpacity>
 
               <TouchableOpacity
                 onPress={handleYearSubmit}
-                className="flex-1 rounded-lg py-3 items-center"
-                style={{backgroundColor: colors.primary}}
-              >
-                <AppText className="font-semibold" style={{color: colors.background}}>Aceptar</AppText>
+                className="flex-1 items-center rounded-lg py-3"
+                style={{ backgroundColor: colors.primary }}>
+                <AppText className="font-semibold" style={{ color: colors.background }}>
+                  {t('common.accept')}
+                </AppText>
               </TouchableOpacity>
             </View>
           </Pressable>

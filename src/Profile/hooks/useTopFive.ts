@@ -1,11 +1,10 @@
 import { useAuth } from 'context/AuthContext';
 import { useEffect, useState } from 'react';
 import { TopFiveItem, topFiveService } from '../services/topFiveServices';
-import { ResourceType } from 'hooks/useResource';
 import { router } from 'expo-router';
 import { useCollection } from 'context/CollectionContext';
-import { Alert } from 'react-native';
 import { useNotification } from 'context/NotificationContext';
+import { useTranslation } from 'react-i18next';
 
 export const useTopFive = (userId: string) => {
   const { user } = useAuth();
@@ -15,6 +14,7 @@ export const useTopFive = (userId: string) => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState<number | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchTopFive();
@@ -49,10 +49,10 @@ export const useTopFive = (userId: string) => {
   const handleLongPress = (position: number, item: TopFiveItem | undefined) => {
 	if (item) {
     showNotification({
-      title: 'Eliminar de Top 5',
-      description: '¿Deseas eliminar este item de tu Top 5?',
-      leftButtonText: 'Cancelar',
-      rightButtonText: 'Eliminar',
+      title: t('profile.removeFromTopFiveNotification.title'),
+      description: t('profile.removeFromTopFiveNotification.description'),
+      leftButtonText: t('common.cancel'),
+      rightButtonText: t('common.delete'),
       isChoice: true,
       delete: true,
 	  success: false,
@@ -63,8 +63,8 @@ export const useTopFive = (userId: string) => {
           await topFiveService.removeFromTopFive(userId, position);
           fetchTopFive();
           showNotification({
-            title: '¡Éxito!',
-            description: `El item ha sido eliminado de tu Top 5`,
+            title: t('common.success'),
+            description: t('profile.removeFromTopFiveNotification.confirmationDescription'),
             isChoice: false,
 			delete: false,
 			success: true,
@@ -74,26 +74,6 @@ export const useTopFive = (userId: string) => {
         }
 	    }
     });
-		/*Alert.alert(
-			'Eliminar de Top 5',
-			'¿Deseas eliminar este item de tu Top 5?',
-			[
-				{ text: 'Cancelar', style: 'cancel' },
-				{
-					text: 'Eliminar',
-					style: 'destructive',
-					onPress: async () => {
-						try {
-							await topFiveService.removeFromTopFive(userId, position);
-							fetchTopFive();
-						} catch (error) {
-							console.error('Error al eliminar item del Top 5:', error);
-						}
-					},
-				},
-			],
-			{ cancelable: true }
-		);*/
 	}
   }
 

@@ -258,6 +258,49 @@
             "oneDayAgo": "Hace 1 día",
             "daysAgo": "Hace {{days}} días"
         }
+    }, 
+    "profile": {
+        "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}",
+        "user": "Usuario",
+        "selectYear": "Seleccionar año",
+        "monthsAbreviation": {
+            "january": "Ene",
+            "february": "Feb",
+            "march": "Mar",
+            "april": "Abr",
+            "may": "May",
+            "june": "Jun",
+            "july": "Jul",
+            "august": "Ago",
+            "september": "Sep",
+            "october": "Oct",
+            "november": "Nov",
+            "december": "Dic"
+        },
+        "activity" : "Actividad",
+        "total": "Total",
+        "average": "Media",
+        "monthly": "Mensual",
+        "myTopFive": "Mi TopFive",
+        "categoriesConsumed": {
+            "books": "Libros leídos",
+            "films": "Películas vistas",
+            "series": "Series vistas",
+            "videogames": "Videojuegos jugados",
+            "albums": "Álbumes escuchados"
+        },
+        "loadingStatsError": "No se pudieron cargar las estadísticas. Inténtalo de nuevo más tarde.",
+        "noPermissionError": {
+            "title": "Permiso denegado",
+            "description": "Necesitamos acceso a tu galería."
+        },
+        "profilePhotoUpdated": "Foto de perfil actualizada",
+        "noProfilePhoto": "No se pudo actualizar la foto de perfil.",
+        "removeFromTopFiveNotification": {
+            "title": "Eliminar de TopFive",
+            "description": "¿Estás seguro de que deseas eliminar este elemento de tu TopFive?",
+            "confirmationDescription": "El elemento ha sido eliminado de tu TopFive."
+        }
     }
 
 

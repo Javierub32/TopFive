@@ -1,7 +1,8 @@
 import { useTheme } from 'context/ThemeContext';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from 'components/Icons';
-import {AppText} from 'components/AppText';
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 interface Props {
   title: string;
   total: number;
@@ -11,60 +12,59 @@ interface Props {
 
 export const StatsGrid = ({ title, total, average, onPress }: Props) => {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const TotalContainer = onPress ? TouchableOpacity : View;
 
   return (
     <View className="mb-6 flex-row gap-3 px-1">
       {/* Tarjeta de TOTAL */}
-      <TotalContainer 
+      <TotalContainer
         className="flex-1 rounded-2xl p-4 shadow-sm "
-        style={{ 
-            backgroundColor: colors.surfaceButton, 
-            borderColor: colors.borderButton 
+        style={{
+          backgroundColor: colors.surfaceButton,
+          borderColor: colors.borderButton,
         }}
         onPress={onPress}
-        activeOpacity={onPress ? 0.7 : 1}
-      >
-        <View className="flex-row items-center justify-between mb-2">
-            <View className="p-2 rounded-full" style={{ backgroundColor: `${colors.primary}20` }}>
-                <MaterialCommunityIcons name="chart-bar" size={20} color={colors.primary} />
-            </View>
-            <AppText className="text-xs font-bold uppercase" style={{ color: colors.secondaryText }}>
-                Total
-            </AppText>
+        activeOpacity={onPress ? 0.7 : 1}>
+        <View className="mb-2 flex-row items-center justify-between">
+          <View className="rounded-full p-2" style={{ backgroundColor: `${colors.primary}20` }}>
+            <MaterialCommunityIcons name="chart-bar" size={20} color={colors.primary} />
+          </View>
+          <AppText className="text-xs font-bold uppercase" style={{ color: colors.secondaryText }}>
+            {t('profile.total')}
+          </AppText>
         </View>
-        
-        <AppText className="text-3xl font-bold mt-1" style={{ color: colors.primaryText }}>
-            {total}
+
+        <AppText className="mt-1 text-3xl font-bold" style={{ color: colors.primaryText }}>
+          {total}
         </AppText>
-        <AppText className="text-xs mt-1" style={{ color: colors.secondaryText }} numberOfLines={1}>
-            {title}
+        <AppText className="mt-1 text-xs" style={{ color: colors.secondaryText }} numberOfLines={1}>
+          {title}
         </AppText>
       </TotalContainer>
 
       {/* Tarjeta de PROMEDIO */}
-      <View 
+      <View
         className="flex-1 rounded-2xl p-4 shadow-sm "
-        style={{ 
-            backgroundColor: colors.surfaceButton, 
-            borderColor: colors.borderButton 
-        }}
-      >
-        <View className="flex-row items-center justify-between mb-2">
-            <View className="p-2 rounded-full" style={{ backgroundColor: `${colors.accent}20` }}>
-                <MaterialCommunityIcons name="chart-timeline-variant" size={20} color={colors.accent} />
-            </View>
-            <AppText className="text-xs font-bold uppercase" style={{ color: colors.secondaryText }}>
-                Media
-            </AppText>
+        style={{
+          backgroundColor: colors.surfaceButton,
+          borderColor: colors.borderButton,
+        }}>
+        <View className="mb-2 flex-row items-center justify-between">
+          <View className="rounded-full p-2" style={{ backgroundColor: `${colors.accent}20` }}>
+            <MaterialCommunityIcons name="chart-timeline-variant" size={20} color={colors.accent} />
+          </View>
+          <AppText className="text-xs font-bold uppercase" style={{ color: colors.secondaryText }}>
+            {t('profile.average')}
+          </AppText>
         </View>
 
-        <AppText className="text-3xl font-bold mt-1" style={{ color: colors.primaryText }}>
-            {average}
+        <AppText className="mt-1 text-3xl font-bold" style={{ color: colors.primaryText }}>
+          {average}
         </AppText>
-        <AppText className="text-xs mt-1" style={{ color: colors.secondaryText }}>
-            Mensual
+        <AppText className="mt-1 text-xs" style={{ color: colors.secondaryText }}>
+          {t('profile.monthly')}
         </AppText>
       </View>
     </View>

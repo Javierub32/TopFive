@@ -1,5 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from 'context/AuthContext';
 import { userService } from '../services/profileService';
@@ -7,27 +6,28 @@ import { createAdaptedResourceStats } from '../adapters/statsAdapter';
 import { ResourceType, useResource } from 'hooks/useResource';
 import { useNotification } from 'context/NotificationContext';
 import { useFocusEffect } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
 export type CategoryKey = 'libros' | 'películas' | 'series' | 'canciones' | 'videojuegos';
 
 // Initial structure for category statistics
 const INITIAL_CATEGORY_DATA = {
-  libro: { title: 'Libros Leídos', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
+  libro: { titleKey: 'profile.categoriesConsumed.books', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
   pelicula: {
-    title: 'Películas Vistas',
+    titleKey: 'profile.categoriesConsumed.films',
     total: 0,
     average: 0.0,
     chartData: new Array(12).fill(0),
   },
-  serie: { title: 'Series Vistas', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
+  serie: { titleKey: 'profile.categoriesConsumed.series', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
   cancion: {
-    title: 'Álbumes Escuchados',
+    titleKey: 'profile.categoriesConsumed.albums',
     total: 0,
     average: 0.0,
     chartData: new Array(12).fill(0),
   },
   videojuego: {
-    title: 'Videojuegos Jugados',
+    titleKey: 'profile.categoriesConsumed.videogames',
     total: 0,
     average: 0.0,
     chartData: new Array(12).fill(0),
@@ -51,6 +51,7 @@ export const useProfile = () => {
   const { showNotification } = useNotification();
   const [loading, setLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(false);
+  const { t } = useTranslation();
 
 
   const [selectedCategory, setSelectedCategory] = useState<ResourceType>('pelicula');
@@ -83,7 +84,7 @@ export const useProfile = () => {
       return () => {
         isActive = false;
       };
-    }, [user?.id])
+    }, [user])
   );
 
   // Fetch stats when category or year changes
@@ -93,7 +94,7 @@ export const useProfile = () => {
       setPreviousYear(selectedYear);
 	  fetchResourceInfo();
 	  return;
-  }, [selectedCategory, selectedYear, previousYear]);
+  }, [selectedCategory, selectedYear, previousYear,]);
 
   const fetchResourceInfo = async () => {
 	try {
@@ -107,8 +108,8 @@ export const useProfile = () => {
 		console.error('[useProfile] Error al cargar estadísticas:', error);
 		//Alert.alert('Error', 'No se pudieron cargar las estadísticas. Intenta de nuevo más tarde.');
     showNotification({
-      title: 'Error',
-      description: 'No se pudieron cargar las estadísticas. Intenta de nuevo más tarde.',
+      title: t('common.error'),
+      description: t('profile.loadingStatsError'),
       isChoice: false,
 	  delete: false,
 	  success: false,
@@ -139,8 +140,8 @@ export const useProfile = () => {
       if (status !== 'granted') {
         //Alert.alert('Permiso denegado', 'Necesitamos acceso a tu galería');
         showNotification({
-          title: 'Permiso denegado',
-          description: 'Necesitamos acceso a tu galería',
+          title: t('profile.noPermissionError.title'),
+          description: t('profile.noPermissionError.description'),
           isChoice: false,
 		  delete: false,
 		  success: false,
@@ -148,7 +149,6 @@ export const useProfile = () => {
         return;
       }
 
-       ('[pickImage] Abriendo galería...');
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
@@ -157,15 +157,13 @@ export const useProfile = () => {
       });
 
       if (!result.canceled && result.assets[0] && user) {
-         ('[pickImage] Eliminando avatar anterior...');
         await userService.deletePreviousAvatar(userData?.avatar_url || null);
-         ('[pickImage] Subiendo nuevo avatar...');
         const newUrl = await userService.uploadAvatar(user.id, result.assets[0].uri);
         setUserData({ ...userData, avatar_url: newUrl, frame: userData?.frame || 'none' } as User);
         //Alert.alert('¡Éxito!', 'Foto de perfil actualizada');
         showNotification({
-          title: '¡Éxito!',
-          description: 'Foto de perfil actualizada',
+          title: t('common.success'),
+          description: t('profile.profilePhotoUpdated'),
           isChoice: false,
 		  delete: false,
 		  success: true,
@@ -175,14 +173,13 @@ export const useProfile = () => {
       console.error('[pickImage] Error:', error);
       //Alert.alert('Error', 'No se pudo actualizar la foto');
       showNotification({
-        title: 'Error',
-        description: 'No se pudo actualizar la foto',
+        title: t('common.error'),
+        description: t('profile.noProfilePhoto'),
         isChoice: false,
   		delete: false,
   		success: false,
       });
     } finally {
-       ('[pickImage] Finalizando');
       setLoading(false);
     }
   };

@@ -1,13 +1,15 @@
 import { useTheme } from 'context/ThemeContext';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import { useTopFive } from '../hooks/useTopFive';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { CategorySelectorModal } from 'components/CategorySelectorModal';
 import { useAuth } from 'context/AuthContext';
-import {AppText} from 'components/AppText';
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
 export const TopFiveSelector = ({ userId }: { userId: string }) => {
   const slots = Array.from({ length: 5 });
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const {
     topFiveItems,
@@ -16,7 +18,7 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
     handleCategorySelect,
     modalVisible,
     setModalVisible,
-	handleLongPress,
+    handleLongPress,
   } = useTopFive(userId);
 
   const isOwnProfile = user?.id === userId;
@@ -32,7 +34,7 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
   return (
     <View className="mb-4 mt-4">
       <AppText className="mb-2 text-lg font-bold" style={{ color: colors.primaryText }}>
-        Mi Top 5
+        {t('profile.myTopFive')}
       </AppText>
 
       {/* Grid de Slots */}
@@ -53,7 +55,6 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
                   onPress={() => isOwnProfile && handlePress(position, item)}
                   onLongPress={() => isOwnProfile && handleLongPress(position, item)}
                   activeOpacity={0.7}>
-				  
                   <View
                     className="aspect-[2/3] w-full items-center justify-center overflow-hidden rounded-lg border"
                     style={{
@@ -84,7 +85,11 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
                     backgroundColor: colors.surfaceButton,
                   }}>
                   {imageUrl ? (
-                    <Image source={{ uri: imageUrl }} className="h-full w-full" resizeMode="cover" />
+                    <Image
+                      source={{ uri: imageUrl }}
+                      className="h-full w-full"
+                      resizeMode="cover"
+                    />
                   ) : (
                     <AppText style={{ color: colors.secondaryText }}>Sin imagen</AppText>
                   )}
