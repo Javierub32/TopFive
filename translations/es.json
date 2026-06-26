@@ -245,7 +245,8 @@
             "title": "Eliminar de la lista",
             "description": "¿Estás seguro de que deseas eliminar este elemento de la lista?",
             "confirmationDescription": "El elemento ha sido eliminado exitosamente de la lista."
-        }
+        },
+        "createNewList": "+ Nueva lista"
     },
     "home": {
         "pressAgainToExit": "Vuelve a tocar para salir.",
