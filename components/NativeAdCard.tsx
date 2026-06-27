@@ -97,7 +97,7 @@ export const NativeAdCard = () => {
                       
                       {/* Título del anuncio */}
                       <NativeAsset assetType={NativeAssetType.HEADLINE}>
-                        <AppText className="font-bold text-base leading-tight mr-2 mb-2" style={{ color: colors.primaryText }}>
+                        <AppText className="font-bold text-base leading-tight mr-2 mb-2" style={{ color: colors.primaryText, fontSize: 14 }}>
                           {nativeAd.headline}
                         </AppText>
                       </NativeAsset>
@@ -134,7 +134,7 @@ export const NativeAdCard = () => {
 
                   {/* Descripción del anuncio */}
                   <NativeAsset assetType={NativeAssetType.BODY}>
-                    <AppText style={{ color: colors.secondaryText, lineHeight: 20 }}>
+                    <AppText style={{ color: colors.secondaryText, lineHeight: 20, fontSize: 14 }}>
                       {displayedDescription}
                     </AppText>
                   </NativeAsset>
@@ -172,11 +172,11 @@ export const NativeAdCard = () => {
 
               <View className="flex-col flex-1">
                 <NativeAsset assetType={NativeAssetType.ADVERTISER}>
-                  <AppText className="font-bold text-base" style={{ color: colors.primaryText }} numberOfLines={1}>
+                  <AppText className="font-bold text-base" style={{ color: colors.primaryText, fontSize: 14}} numberOfLines={1}>
                     {nativeAd.advertiser || 'Anunciante Externo'}
                   </AppText>
                 </NativeAsset>
-                <AppText className="text-xs" style={{ color: colors.secondaryText }}>Recomendado para ti</AppText>
+                <AppText style={{ color: colors.secondaryText, fontSize: 12 }}>Recomendado para ti</AppText>
               </View>
             </View>
           </View>
