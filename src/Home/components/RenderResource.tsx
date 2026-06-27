@@ -78,7 +78,7 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
   const tagsStyles = {
     body: {
       color: colors.secondaryText,
-      fontSize: 14 * fontSizeMultiplier,
+      fontSize: 12 * fontSizeMultiplier,
       lineHeight: 20 * fontSizeMultiplier,
     },
     p: { margin: 0 },
@@ -204,7 +204,7 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
                   {shouldTruncate && (
                     <AppText
                       className="mt-1 text-xs font-bold"
-                      style={{ color: colors.primary, fontSize: 14 }}
+                      style={{ color: colors.primary, fontSize: 10 }}
                       onPress={() => setIsExpanded(!isExpanded)}>
                       {isExpanded ? t('common.readLess') : t('common.readMore')}
                     </AppText>
