@@ -158,7 +158,7 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
                   <View className="flex-1">
                     <AppText
                       className="mb-2 mr-2 text-base font-bold leading-tight"
-                      style={{ color: colors.primaryText }}>
+                      style={{ color: colors.primaryText, fontSize: 18 }}>
                       {item.titulo}
                     </AppText>
                     {/* Calificación */}
@@ -204,7 +204,7 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
                   {shouldTruncate && (
                     <AppText
                       className="mt-1 text-xs font-bold"
-                      style={{ color: colors.primary }}
+                      style={{ color: colors.primary, fontSize: 14 }}
                       onPress={() => setIsExpanded(!isExpanded)}>
                       {isExpanded ? t('common.readLess') : t('common.readMore')}
                     </AppText>
@@ -250,7 +250,7 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
                     })
                   }
                   className="text-xl font-bold"
-                  style={{ color: colors.primaryText }}>
+                  style={{ color: colors.primaryText, fontSize: 14 }}>
                   {item.username.charAt(0).toUpperCase()}
                 </AppText>
               </View>
@@ -266,10 +266,10 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
                     })
                   }
                   className="text-base font-bold"
-                  style={{ color: colors.primaryText }}>
+                  style={{ color: colors.primaryText, fontSize: 14 }}>
                   {item.username}{' '}
                 </AppText>
-                <AppText className="text-xs" style={{ color: colors.secondaryText }}>
+                <AppText style={{ color: colors.secondaryText, fontSize: 12 }}>
                   {getRelativeTime(item.fecha_actividad)}
                 </AppText>
               </AppText>

@@ -31,15 +31,15 @@ export const StatsGrid = ({ title, total, average, onPress }: Props) => {
           <View className="rounded-full p-2" style={{ backgroundColor: `${colors.primary}20` }}>
             <MaterialCommunityIcons name="chart-bar" size={20} color={colors.primary} />
           </View>
-          <AppText className="text-xs font-bold uppercase" style={{ color: colors.secondaryText }}>
+          <AppText className="font-bold uppercase" style={{ color: colors.secondaryText, fontSize: 18 }}>
             {t('profile.total')}
           </AppText>
         </View>
 
-        <AppText className="mt-1 text-3xl font-bold" style={{ color: colors.primaryText }}>
+        <AppText className="mt-1 font-bold" style={{ color: colors.primaryText, fontSize: 24 }}>
           {total}
         </AppText>
-        <AppText className="mt-1 text-xs" style={{ color: colors.secondaryText }} numberOfLines={1}>
+        <AppText className="mt-1 " style={{ color: colors.secondaryText, fontSize: 14}} numberOfLines={1}>
           {title}
         </AppText>
       </TotalContainer>
@@ -55,15 +55,15 @@ export const StatsGrid = ({ title, total, average, onPress }: Props) => {
           <View className="rounded-full p-2" style={{ backgroundColor: `${colors.accent}20` }}>
             <MaterialCommunityIcons name="chart-timeline-variant" size={20} color={colors.accent} />
           </View>
-          <AppText className="text-xs font-bold uppercase" style={{ color: colors.secondaryText }}>
+          <AppText className="font-bold uppercase" style={{ color: colors.secondaryText, fontSize: 18 }}>
             {t('profile.average')}
           </AppText>
         </View>
 
-        <AppText className="mt-1 text-3xl font-bold" style={{ color: colors.primaryText }}>
+        <AppText className="mt-1 font-bold" style={{ color: colors.primaryText, fontSize: 24 }}>
           {average}
         </AppText>
-        <AppText className="mt-1 text-xs" style={{ color: colors.secondaryText }}>
+        <AppText className="mt-1 text-xs" style={{ color: colors.secondaryText, fontSize: 14 }}>
           {t('profile.monthly')}
         </AppText>
       </View>

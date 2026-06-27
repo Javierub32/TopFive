@@ -65,7 +65,7 @@ const PlatformDatePicker = ({
                 }
                 setShow(false);
               }}>
-              <AppText className="text-lg font-bold" style={{ color: colors.primary }}>
+              <AppText className="font-bold" style={{ color: colors.primary, fontSize: 16 }}>
                 {t('forms.ready')}
               </AppText>
             </TouchableOpacity>
@@ -114,13 +114,13 @@ export const DateSetter = ({
           <View className="flex-row items-center gap-2 p-1">
             <CalendarIcon />
             <AppText
-              className="text-sm font-bold uppercase tracking-widest"
-              style={{ color: colors.markerText }}>
+              className="font-bold uppercase tracking-widest"
+              style={{ color: colors.markerText, fontSize: 14 }}>
               {t('forms.lastTime')}
             </AppText>
           </View>
           <View className="flex-row justify-center">
-            <AppText className="p-3 text-sm font-bold" style={{ color: colors.primaryText }}>
+            <AppText className="p-3 font-bold" style={{ color: colors.primaryText, fontSize: 14 }}>
               {startDate
                 ? startDate.toLocaleDateString(i18n.language, {
                     day: '2-digit',
@@ -133,7 +133,7 @@ export const DateSetter = ({
         </TouchableOpacity>
         {startDate && (
           <TouchableOpacity onPress={() => setStartDate(null)} className="mt-1 items-center">
-            <AppText className="text-xs" style={{ color: colors.error }}>
+            <AppText className="text-xs" style={{ color: colors.error, fontSize: 14 }}>
               {t('forms.clearDate')}
             </AppText>
           </TouchableOpacity>
@@ -160,12 +160,12 @@ export const DateSetter = ({
             <CalendarStartIcon />
             <AppText
               className="text-sm font-bold uppercase tracking-widest"
-              style={{ color: colors.markerText }}>
+              style={{ color: colors.markerText, fontSize: 14 }}>
               {t('forms.startingDate')}
             </AppText>
           </View>
           <View className="flex-row justify-center">
-            <AppText className="text-sm font-bold text-primaryText">
+            <AppText className="font-bold text-primaryText" style={{ fontSize: 14 }}>
               {startDate
                 ? startDate.toLocaleDateString(i18n.language, {
                     day: '2-digit',
@@ -181,8 +181,7 @@ export const DateSetter = ({
           disabled={!startDate}
           className="mt-1 items-center">
           <AppText
-            className="text-xs"
-            style={startDate ? { color: colors.error } : { color: colors.background }}>
+            style={startDate ? { color: colors.error, fontSize: 14} : { color: colors.background, fontSize: 14 }}>
             {t('forms.clearDate')}
           </AppText>
         </TouchableOpacity>
@@ -196,13 +195,13 @@ export const DateSetter = ({
           <View className="flex-row items-center gap-2">
             <CalendarEndIcon />
             <AppText
-              className="text-sm font-bold uppercase tracking-widest"
-              style={{ color: colors.markerText }}>
+              className="font-bold uppercase tracking-widest"
+              style={{ color: colors.markerText, fontSize: 14 }}>
               Fecha Fin
             </AppText>
           </View>
           <View className="flex-row justify-center">
-            <AppText className="text-sm font-bold text-primaryText">
+            <AppText className="font-bold text-primaryText" style={{ fontSize: 14 }}>
               {endDate
                 ? endDate.toLocaleDateString(i18n.language, {
                     day: '2-digit',
@@ -219,7 +218,7 @@ export const DateSetter = ({
           className="mt-1 items-center">
           <AppText
             className="text-xs"
-            style={endDate ? { color: colors.error } : { color: colors.background }}>
+            style={endDate ? { color: colors.error, fontSize: 14 } : { color: colors.background, fontSize: 14 }}>
             {t('forms.clearDate')}
           </AppText>
         </TouchableOpacity>

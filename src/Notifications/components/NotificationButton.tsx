@@ -36,7 +36,7 @@ export const NotificationButton = (props: NotificationProps ) => {
     onPress={() => router.push({ pathname: '/notifications', params: { from: props.from } })}>
     <MaterialIcons name="notifications-none" size={24} color={colors.primaryText} />
 	<View className="absolute top-[0.67rem] left-[1.6rem] px-1 rounded-full flex-1  " style={{backgroundColor: colors.error, display: visibility ? 'flex' : 'none'}}>
-		<AppText className="text-[0.6rem] mb-[0.05rem]" style={{color: colors.primaryText}}>{displayCount}</AppText>
+		<AppText className="mb-[0.05rem]" style={{color: colors.primaryText, fontSize: 12}}>{displayCount}</AppText>
 	</View>
   </Pressable>
   );

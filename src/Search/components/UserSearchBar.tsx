@@ -34,7 +34,7 @@ export function UserSearchBar({
         {/* Input de texto */}
         <AppTextInput
           className="h-full flex-1 px-3 text-base overflow-hidden"
-          style={{ color: colors.primaryText, lineHeight: 17, maxHeight:17 }}
+          style={{ color: colors.primaryText, lineHeight: 17, maxHeight:17, fontSize: 14 }}
           placeholder={`Busca un usuario...`}
           placeholderTextColor={colors.placeholderText}
           value={value}

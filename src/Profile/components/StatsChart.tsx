@@ -62,7 +62,7 @@ export const StatsChart = ({
             style={{
               color: colors.primaryText,
               fontSize: fontSizeValue,
-              marginBottom: 4,
+              marginBottom: 1,
               fontWeight: 'bold',
               width: segmentWidth,
               textAlign: 'center',
@@ -93,7 +93,7 @@ export const StatsChart = ({
           borderColor: colors.borderButton,
         }}>
         <View className="mb-6 flex-row items-center justify-between px-2">
-          <AppText className="text-lg font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
             {t('profile.activity')}
           </AppText>
           <DateSelector selectedYear={selectedYear} onYearChange={setSelectedYear} />
