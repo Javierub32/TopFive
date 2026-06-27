@@ -41,19 +41,19 @@ export const SearchPlaceholder = ({ category, loading }: SearchPlaceholderProps)
         <View
           className="h-28 w-28 items-center justify-center rounded-full"
           style={{ backgroundColor: colors.secondary }}>
-          <IconComponent size={64} color={colors.primaryText} />
+          <IconComponent size={60} color={colors.primaryText} />
         </View>
       </View>
 
       {/* Texto Principal (Nombre de la categoría) */}
       <AppText
-        className="mb-3 text-center text-3xl font-bold"
-        style={{ color: colors.primaryText }}>
+        className="mb-3 text-center font-bold"
+        style={{ color: colors.primaryText, fontSize: 28 }}>
         {t(categoryLabel as any)}
       </AppText>
 
       {/* Texto Secundario (Instrucciones) */}
-      <AppText className="px-4 text-center" style={{ color: colors.secondaryText }}>
+      <AppText className="px-4 text-center" style={{ color: colors.secondaryText, fontSize: 14 }}>
         {t('search.description', { category: t(categoryLabel as any).toLowerCase() })}
       </AppText>
     </View>

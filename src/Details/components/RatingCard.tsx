@@ -19,8 +19,8 @@ export const RatingCard = ({ rating }: Props) => {
       <View className="flex-row items-center gap-2">
         <RatingIcon />
         <AppText
-          className="text-sm font-bold uppercase tracking-widest"
-          style={{ color: colors.markerText }}>
+          className="font-bold uppercase tracking-widest"
+          style={{ color: colors.markerText, fontSize: 14 }}>
           {t('details.rating')}
         </AppText>
       </View>

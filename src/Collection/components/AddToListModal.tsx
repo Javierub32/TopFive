@@ -18,18 +18,18 @@ const ModalListItem = ({ list, onSelect, colors, t }: any) => (
         style={{ backgroundColor: list.color || colors.primary }}>
         <MaterialCommunityIcons
           name={(list.icono as any) || 'folder-outline'}
-          size={24}
+          size={28}
           color={colors.primaryText}
         />
       </View>
       <View className="flex-1">
         <AppText
           className="text-base font-semibold"
-          style={{ color: colors.primaryText }}
+          style={{ color: colors.primaryText, fontSize: 16 }}
           numberOfLines={1}>
           {list.nombre}
         </AppText>
-        <AppText className="text-xs" style={{ color: colors.secondaryText }} numberOfLines={1}>
+        <AppText className="text-xs" style={{ color: colors.secondaryText, fontSize: 14 }} numberOfLines={1}>
           {list.descripcion || t('common.noDescription')}
         </AppText>
       </View>
@@ -76,7 +76,7 @@ export function AddToListModal({ visible, onClose, resourceCategory, onSelect }:
           className="max-h-[60%] w-full rounded-t-3xl p-6 shadow-2xl"
           style={{ backgroundColor: colors.surfaceButton }}
           onPress={(e) => e.stopPropagation()}>
-          <AppText className="mb-4 text-2xl font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mb-4 font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
             {t('collection.saveIn')}
           </AppText>
 
@@ -94,7 +94,7 @@ export function AddToListModal({ visible, onClose, resourceCategory, onSelect }:
               contentContainerStyle={{ paddingBottom: 20 }}
               ListEmptyComponent={() => (
                 <View className="items-center p-4">
-                  <AppText style={{ color: colors.secondaryText }}>
+                  <AppText style={{ color: colors.secondaryText, fontSize: 14 }}>
                     {t('collection.noLists', {
                       category: getCategoryName(resourceCategory).toLowerCase(),
                     })}
@@ -105,7 +105,7 @@ export function AddToListModal({ visible, onClose, resourceCategory, onSelect }:
                       onClose();
                       router.push('/form/list');
                     }}>
-                    <AppText style={{ color: colors.primary }}>Crear nueva lista</AppText>
+                    <AppText style={{ color: colors.primary, fontSize: 14}}>Crear nueva lista</AppText>
                   </TouchableOpacity>
                 </View>
               )}

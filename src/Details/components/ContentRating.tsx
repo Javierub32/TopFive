@@ -43,8 +43,8 @@ export const ContentRating = ({ content, type }: Props) => {
           <View className="flex-row items-center gap-2">
             <RatingIcon />
             <AppText
-              className="text-sm font-bold uppercase tracking-widest"
-              style={{ color: colors.markerText }}>
+              className="font-bold uppercase tracking-widest"
+              style={{ color: colors.markerText, fontSize: 12 }}>
               {t('details.generalRating')}
             </AppText>
           </View>
@@ -79,7 +79,7 @@ export const ContentRating = ({ content, type }: Props) => {
                 );
               })}
             </View>
-            <AppText className="text-lg font-semibold" style={{ color: colors.secondaryText }}>
+            <AppText className="text-lg font-semibold" style={{ color: colors.secondaryText, fontSize: 14 }}>
               {rating}
             </AppText>
           </View>

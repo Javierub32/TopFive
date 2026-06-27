@@ -28,7 +28,7 @@ export default function Lists({
           : { paddingBottom: 100, paddingHorizontal: 0 }
       }
       ListEmptyComponent={
-        <AppText className="italic" style={{ color: colors.secondaryText }}>
+        <AppText className="italic" style={{ color: colors.secondaryText, fontSize: 14 }}>
           {t('list.noLists', { category: placeholder })}
         </AppText>
       }

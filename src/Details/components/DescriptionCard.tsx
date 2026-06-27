@@ -56,17 +56,17 @@ export const DescriptionCard = ({ description }: Props) => {
       <View className="flex-row items-center gap-2">
         <MaterialCommunityIcons name="book-open-page-variant" size={20} color={colors.primary} />
         <AppText
-          className="text-sm font-bold uppercase tracking-widest"
-          style={{ color: colors.markerText }}>
+          className="font-bold uppercase tracking-widest"
+          style={{ color: colors.markerText, fontSize: 14 }}>
           {t('details.sinopsis')}
         </AppText>
       </View>
-      <AppText style={{ color: colors.secondaryText }}>
-        <AppText className="italic leading-relaxed">{displayedDescription}</AppText>
+      <AppText style={{ color: colors.secondaryText, fontSize: 12 }}>
+        <AppText className="italic leading-relaxed" style={{ fontSize: 14 }}>{displayedDescription}</AppText>
         {shouldTruncate && (
           <AppText
             className="font-bold"
-            style={{ color: colors.primary }}
+            style={{ color: colors.primary, fontSize: 14 }}
             onPress={() => setIsExpanded(!isExpanded)}>
             {isExpanded ? t('common.readLess') : t('common.readMore')}
           </AppText>
