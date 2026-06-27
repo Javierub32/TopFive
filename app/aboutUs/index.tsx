@@ -23,21 +23,21 @@ export default function AboutUsScreen() {
         contentContainerStyle={{ paddingBottom: 40 }}
         showsVerticalScrollIndicator={false}>
         <AppText
-          className="mb-8 text-center text-3xl font-bold"
-          style={{ color: colors.primaryText }}>
+          className="mb-8 text-center font-bold"
+          style={{ color: colors.primaryText, fontSize: 28 }}>
           {t('aboutUs.creditsAndLicenses')}
         </AppText>
 
-        <AppText className="mb-8 text-center text-base" style={{ color: colors.secondaryText }}>
+        <AppText className="mb-8 text-center text-base" style={{ color: colors.secondaryText, fontSize: 14 }}>
           {t('aboutUs.creditsDescription')}
         </AppText>
 
         {/* --- OpenLibrary (Libros) --- */}
         <View className="mb-6 rounded-xl p-4" style={{ backgroundColor: colors.surfaceButton }}>
-          <AppText className="mb-2 text-xl font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mb-2 font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
             {t('categories.books')}
           </AppText>
-          <AppText className="mb-3 text-sm" style={{ color: colors.secondaryText }}>
+          <AppText className="mb-3 text-sm" style={{ color: colors.secondaryText, fontSize: 14 }}>
             {t('aboutUs.booksCard.description')}
           </AppText>
           <TouchableOpacity onPress={() => openLink('https://openlibrary.org/')}>
@@ -49,14 +49,14 @@ export default function AboutUsScreen() {
 
         {/* --- TVMaze (Series) --- */}
         <View className="mb-6 rounded-xl p-4" style={{ backgroundColor: colors.surfaceButton }}>
-          <AppText className="mb-2 text-xl font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mb-2 font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
             {t('categories.series')}
           </AppText>
-          <AppText className="mb-3 text-sm" style={{ color: colors.secondaryText }}>
+          <AppText className="mb-3" style={{ color: colors.secondaryText, fontSize: 14 }}>
             {t('aboutUs.seriesCard.description')}
           </AppText>
           <TouchableOpacity onPress={() => openLink('https://www.tvmaze.com/')}>
-            <AppText className="underline" style={{ color: colors.accent }}>
+            <AppText className="underline" style={{ color: colors.accent, fontSize: 14 }}>
               {t('aboutUs.seriesCard.link')}
             </AppText>
           </TouchableOpacity>
@@ -64,10 +64,10 @@ export default function AboutUsScreen() {
 
         {/* --- TMDB (Películas) --- */}
         <View className="mb-6 rounded-xl p-4" style={{ backgroundColor: colors.surfaceButton }}>
-          <AppText className="mb-2 text-xl font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mb-2 font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
             {t('categories.films')}
           </AppText>
-          <AppText className="text-sm" style={{ color: colors.secondaryText }}>
+          <AppText style={{ color: colors.secondaryText, fontSize: 14 }}>
             {t('aboutUs.filmsCard.description')}
           </AppText>
 
@@ -84,7 +84,7 @@ export default function AboutUsScreen() {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => openLink('https://www.themoviedb.org/')}>
-            <AppText className="underline" style={{ color: colors.accent }}>
+            <AppText className="underline" style={{ color: colors.accent, fontSize: 14 }}>
               {t('aboutUs.filmsCard.link')}
             </AppText>
           </TouchableOpacity>
@@ -92,14 +92,14 @@ export default function AboutUsScreen() {
 
         {/* --- IGDB (Videojuegos) --- */}
         <View className="mb-6 rounded-xl p-4" style={{ backgroundColor: colors.surfaceButton }}>
-          <AppText className="mb-2 text-xl font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mb-2 font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
             {t('categories.videogames')}
           </AppText>
-          <AppText className="mb-3 text-sm" style={{ color: colors.secondaryText }}>
+          <AppText className="mb-3" style={{ color: colors.secondaryText, fontSize: 14 }}>
             {t('aboutUs.videogamesCard.description')}
           </AppText>
           <TouchableOpacity onPress={() => openLink('https://www.igdb.com/')}>
-            <AppText className="underline" style={{ color: colors.accent }}>
+            <AppText className="underline" style={{ color: colors.accent, fontSize: 14 }}>
               {t('aboutUs.videogamesCard.link')}
             </AppText>
           </TouchableOpacity>
@@ -107,10 +107,10 @@ export default function AboutUsScreen() {
 
         {/* --- Discogs (Música) --- */}
         <View className="mb-6 rounded-xl p-4" style={{ backgroundColor: colors.surfaceButton }}>
-          <AppText className="mb-2 text-xl font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mb-2 font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
             {t('categories.albums')}
           </AppText>
-          <AppText className="mb-3 text-sm" style={{ color: colors.secondaryText }}>
+          <AppText className="mb-3" style={{ color: colors.secondaryText, fontSize: 14 }}>
             {t('aboutUs.albumsCard.description')}
           </AppText>
           <TouchableOpacity
@@ -119,7 +119,7 @@ export default function AboutUsScreen() {
                 'https://www.discogs.com/es/?srsltid=AfmBOooV22Qg4h2z4-2zH1I8OTeYsmyeMaNwryyQYaBrslWh8dDZK5fa'
               )
             }>
-            <AppText className="underline" style={{ color: colors.accent }}>
+            <AppText className="underline" style={{ color: colors.accent, fontSize: 14 }}>
               {t('aboutUs.albumsCard.link')}
             </AppText>
           </TouchableOpacity>

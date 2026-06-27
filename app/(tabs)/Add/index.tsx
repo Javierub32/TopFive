@@ -34,7 +34,7 @@ export default function AddScreen() {
     <Screen>
       <ThemedStatusBar />
       <View className="flex-1 px-4 pt-6">
-        <AppText className="mb-4 mt-2 text-3xl font-bold" style={{ color: colors.primaryText }}>
+        <AppText className="mb-4 mt-2 font-bold" style={{ fontSize: 28, color: colors.primaryText }}>
           {t('tabs.search')}
         </AppText>
 

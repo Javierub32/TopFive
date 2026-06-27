@@ -76,7 +76,7 @@ export default function ListScreen() {
             {t('tabs.lists')}
           </AppText>
           <TouchableOpacity activeOpacity={0.7} onPress={() => router.push('/form/list')}>
-            <AppText className="text-xl" style={{ color: colors.primary }}>
+            <AppText  style={{ color: colors.primary, fontSize: 14 }}>
               {t('list.createNewList')}
             </AppText>
           </TouchableOpacity>
