@@ -43,7 +43,7 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
         activeOpacity={0.6}
         onPressOut={() => handleYearChange(selectedYear - 1)}
         disabled={selectedYear <= minYear}>
-        <AppText className="px-2 text-xl font-bold" style={{ color: leftColor }}>
+        <AppText className="px-2 font-bold" style={{ color: leftColor, fontSize: 18 }}>
           {'<'}
         </AppText>
       </TouchableOpacity>
@@ -56,7 +56,7 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
           setShowYearPicker(true);
         }}
         className="relative">
-        <AppText className="text-xl font-bold tracking-widest" style={{ color: colors.title }}>
+        <AppText className="font-bold tracking-widest" style={{ color: colors.title, fontSize: 18 }}>
           {selectedYear}
         </AppText>
 
@@ -75,7 +75,7 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
         activeOpacity={0.6}
         onPressOut={() => handleYearChange(selectedYear + 1)}
         disabled={selectedYear >= maxYear}>
-        <AppText className="px-2 text-xl font-bold" style={{ color: rightColor }}>
+        <AppText className="px-2 font-bold" style={{ color: rightColor, fontSize: 18 }}>
           {'>'}
         </AppText>
       </TouchableOpacity>
@@ -93,7 +93,7 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
             className="w-64 rounded-lg p-6"
             style={{ backgroundColor: colors.background }}
             onPress={(e) => e.stopPropagation()}>
-            <AppText className="mb-4 text-center text-lg font-bold" style={{ color: colors.title }}>
+            <AppText className="mb-4 text-center font-bold" style={{ color: colors.title, fontSize: 18 }}>
               {t('profile.selectYear')}
             </AppText>
 
@@ -102,11 +102,12 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
               onChangeText={setInputYear}
               keyboardType="numeric"
               maxLength={4}
-              className="mb-4 rounded-lg border px-4 py-3 text-center text-xl"
+              className="mb-4 rounded-lg border px-4 py-3 text-center"
               style={{
                 backgroundColor: colors.surfaceButton,
                 borderColor: colors.borderButton,
                 color: colors.title,
+                fontSize: 18,
               }}
               placeholderTextColor={colors.placeholderText}
               autoFocus
@@ -117,7 +118,7 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
               <TouchableOpacity
                 onPress={() => setShowYearPicker(false)}
                 className="flex-1 items-center rounded-lg py-3">
-                <AppText className="font-semibold" style={{ color: colors.secondaryText }}>
+                <AppText className="font-semibold" style={{ color: colors.secondaryText, fontSize: 14 }}>
                   {t('common.cancel')}
                 </AppText>
               </TouchableOpacity>
@@ -126,7 +127,7 @@ export const DateSelector = ({ selectedYear, onYearChange }: DateSelectorProps) 
                 onPress={handleYearSubmit}
                 className="flex-1 items-center rounded-lg py-3"
                 style={{ backgroundColor: colors.primary }}>
-                <AppText className="font-semibold" style={{ color: colors.background }}>
+                <AppText className="font-semibold" style={{ color: colors.background, fontSize: 14 }}>
                   {t('common.accept')}
                 </AppText>
               </TouchableOpacity>

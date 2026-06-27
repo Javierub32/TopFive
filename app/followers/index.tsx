@@ -49,6 +49,7 @@ export default function FollowersScreen() {
         <AppText
           className={`text-base font-semibold ${focused ? 'text-primaryText' : 'text-secondaryText'}`}>
           {route.title}
+          style={{fontSize: 18 }}
         </AppText>
       )}
     />

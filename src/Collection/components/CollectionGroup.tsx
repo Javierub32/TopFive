@@ -103,9 +103,9 @@ export const CollectionGroup = ({
       {/* Título */}
       <View className="mt-2 pl-1">
         <AppText
-          className="text-sm font-semibold leading-4"
+          className=" font-semibold leading-4"
           numberOfLines={2}
-          style={{ color: colors.primaryText }}>
+          style={{ color: colors.primaryText, fontSize: 14 }}>
           {title}
         </AppText>
       </View>

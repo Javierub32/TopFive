@@ -26,12 +26,12 @@ export const TopFivePlaceholder = ({category, loading} : Props) => {
         <View className={`absolute top-0 right-0 bottom-0 left-0 flex-1 items-center justify-center px-2 ${loading ? 'hidden' : ''}`}>
     
             {/* Texto Principal (Nombre de la categoría) */}
-            <AppText className="mb-3 text-center text-3xl font-bold" style={{color: colors.primaryText}}>
+            <AppText className="mb-3 text-center font-bold" style={{color: colors.primaryText, fontSize: 24}}>
             No hay {categoryLabel.toLowerCase()}
             </AppText>
     
             {/* Texto Secundario (Instrucciones) */}
-            <AppText className="mb-3 px-4 text-center" style={{color: colors.secondaryText}}>
+            <AppText className="mb-3 px-4 text-center" style={{color: colors.secondaryText, fontSize: 14}}>
                 Primero añade a tu colección para que formen parte de tu TopFive.
             </AppText>
             <TouchableOpacity
@@ -39,7 +39,7 @@ export const TopFivePlaceholder = ({category, loading} : Props) => {
                 className="px-6 py-3 rounded-3xl"
                 style={{backgroundColor: `${colors.primary}CC`}}
             >
-                <AppText className="text-base font-bold" style={{color: colors.primaryText}}>Buscar</AppText>
+                <AppText className="text-base font-bold" style={{color: colors.primaryText, fontSize: 14}}>Buscar</AppText>
                 
             </TouchableOpacity>
         </View>

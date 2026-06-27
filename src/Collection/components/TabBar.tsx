@@ -32,6 +32,7 @@ export default function renderTabBar(props: TabBarProps<any>, colors: any) {
                 fontWeight: '600',
                 textAlign: 'center',
                 width: '100%',
+                fontSize: 14,
               }}>
               {route.title}
             </AppText>

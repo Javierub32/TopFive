@@ -29,8 +29,8 @@ export const FoundPlaceholder = ({ category, loading }: SearchPlaceholderProps) 
 
       {/* Texto Principal (Nombre de la categoría) */}
       <AppText
-        className="mb-3 text-center text-3xl font-bold"
-        style={{ color: colors.primaryText }}>
+        className="mb-3 text-center font-bold"
+        style={{ color: colors.primaryText, fontSize: 28 }}>
         {t('search.noResults')}
       </AppText>
     </View>

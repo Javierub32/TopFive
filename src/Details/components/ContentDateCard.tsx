@@ -32,12 +32,12 @@ export const ContentDateCard = ({ releaseDate }: Props) => {
         <CalendarIcon />
         <AppText
           className="text-sm font-bold uppercase tracking-widest"
-          style={{ color: colors.markerText }}>
+          style={{ color: colors.markerText, fontSize: 12 }}>
           {t('details.released')}
         </AppText>
       </View>
       <View className="flex-1 items-center justify-center">
-        <AppText className="text-semibold text-base" style={{ color: colors.secondaryText }}>
+        <AppText className="text-semibold text-base" style={{ color: colors.secondaryText, fontSize: 14 }}>
           {newDate}
         </AppText>
       </View>

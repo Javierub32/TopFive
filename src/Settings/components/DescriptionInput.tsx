@@ -25,7 +25,7 @@ export const FormInput = ({
 
   return (
     <View>
-      <AppText className="mb-3 text-lg font-semibold text-primaryText">{title}</AppText>
+      <AppText className="mb-3 font-semibold text-primaryText" style={{ fontSize: 16 }}>{title}</AppText>
       <AppTextInput
         value={description}
         onChangeText={onChange}
@@ -39,14 +39,17 @@ export const FormInput = ({
         style={{
           borderColor:  hasError ? colors.error : null,
           borderWidth: hasError ? 1 : 0,
+          fontSize: 14,
         }}
       />
       <View className="flex-row justify-between">
-        <AppText className="mt-1 text-left text-sm text-secondaryText"
-            style={{ color: colors.error }}>
+        <AppText className="mt-1 text-left text-secondaryText"
+            style={{ color: colors.error, fontSize: 14 }}>
             {hasError ? 'El nombre de usuario ya está en uso.' : null}
         </AppText>
-        <AppText className="mt-1 text-right text-xs text-secondaryText">{description.length}/{maxLength}</AppText>
+        <AppText className="mt-1 text-right text-xs text-secondaryText" style={{ fontSize: 14 }}>
+          {description.length}/{maxLength}
+        </AppText>
       </View>
       
       

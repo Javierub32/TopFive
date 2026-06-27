@@ -256,10 +256,10 @@ export default function FilmForm() {
         <ThemedStatusBar />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
-          <AppText className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mt-4 font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
             {t('details.loadingError.title')}
           </AppText>
-          <AppText className="mt-2 text-center" style={{ color: colors.secondaryText }}>
+          <AppText className="mt-2 text-center" style={{ color: colors.secondaryText, fontSize: 16 }}>
             {t('details.loadingError.films')}
           </AppText>
         </View>
@@ -333,7 +333,7 @@ export default function FilmForm() {
             className="mx-4 mb-14 mt-4 rounded-lg py-3"
             style={{ backgroundColor: colors.primary }}
             activeOpacity={0.8}>
-            <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
+            <AppText className="text-center font-bold" style={{ color: colors.background, fontSize: 18 }}>
               {loading ? t('common.saving') : t('common.save')}
             </AppText>
           </TouchableOpacity>

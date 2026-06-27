@@ -42,10 +42,10 @@ export default function BookDetail() {
         <ReturnButton route={path} title="Detalle del libro" />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
-          <AppText className="mt-4 text-xl font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mt-4 font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
             {t('details.loadingError.title')}
           </AppText>
-          <AppText className="mt-2 text-center" style={{ color: colors.secondaryText }}>
+          <AppText className="mt-2 text-center" style={{ color: colors.secondaryText, fontSize: 16 }}>
             {t('details.loadingError.books')}
           </AppText>
         </View>

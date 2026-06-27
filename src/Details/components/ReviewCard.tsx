@@ -37,8 +37,8 @@ export const ReviewCard = ({ review }: Props) => {
       <View className="flex-row items-center gap-2">
         <ReviewIcon />
         <AppText
-          className="text-sm font-bold uppercase tracking-widest"
-          style={{ color: colors.markerText }}>
+          className="font-bold uppercase tracking-widest"
+          style={{ color: colors.markerText, fontSize: 14 }}>
           {t('details.review')}
         </AppText>
       </View>
@@ -52,7 +52,7 @@ export const ReviewCard = ({ review }: Props) => {
           tagsStyles={tagsStyles as any}
         />
       ) : (
-        <AppText className="italic leading-relaxed" style={{ color: colors.primaryText }}>
+        <AppText className="italic leading-relaxed" style={{ color: colors.primaryText, fontSize: 14 }}>
           -
         </AppText>
       )}

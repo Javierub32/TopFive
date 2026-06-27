@@ -20,8 +20,10 @@ export const RenderCollection = ({
     <View className="mb-4">
       <TouchableOpacity activeOpacity={0.7} onPress={onPressTitle} className="mb-3 px-1">
         <View className="mb-1 px-0">
-          <AppText className="text-xl font-bold text-primaryText">
-            {title} <AppText className="text-sm font-normal text-secondaryText">({total})</AppText>
+          <AppText className="font-bold text-primaryText" style={{ fontSize: 16 }}>
+            {title} <AppText className=" font-normal text-secondaryText" style={{ fontSize: 12 }}>
+              ({total})
+            </AppText>
             <MaterialCommunityIcons name="chevron-right" size={14} color={colors.secondaryText} />
           </AppText>
         </View>
@@ -37,7 +39,7 @@ export const RenderCollection = ({
           <CollectionGroup item={item} category={category} onPress={() => onPressItem(item)} />
         )}
         ListEmptyComponent={
-          <AppText className="ml-2 text-sm italic text-secondaryText">
+          <AppText className="ml-2 italic text-secondaryText" style={{ fontSize: 14}}>
             {t('collection.noContent')}
           </AppText>
         }

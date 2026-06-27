@@ -60,8 +60,8 @@ export const StateSetter = ({ state, setState, inProgressLabel }: Props) => {
             }
             activeOpacity={0.7}>
             <AppText
-              className="text-center text-sm font-semibold"
-              style={isSelected ? { color: getStatusColor(est) } : { color: colors.secondaryText }}>
+              className="text-center font-semibold"
+              style={isSelected ? { color: getStatusColor(est), fontSize: 14 } : { color: colors.secondaryText, fontSize: 14 }}>
               {getLabel(est)}
             </AppText>
           </TouchableOpacity>

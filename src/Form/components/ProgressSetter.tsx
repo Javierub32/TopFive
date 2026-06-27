@@ -39,14 +39,14 @@ export const ProgressSetter = ({
         <View className="flex-row items-center gap-2">
           <TimerIcon color={colors.primary} />
           <AppText
-            className="text-sm font-bold uppercase tracking-widest"
-            style={{ color: colors.markerText }}>
+            className="font-bold uppercase tracking-widest"
+            style={{ color: colors.markerText, fontSize: 14 }}>
             {t('details.progress')}
           </AppText>
         </View>
         <View className="flex-row justify-between gap-6 pb-4">
           <View className="flex-1 gap-1" style={{ borderColor: colors.placeholderText }}>
-            <AppText className="text-center font-semibold" style={{ color: colors.secondaryText }}>
+            <AppText className="text-center font-semibold" style={{ color: colors.secondaryText, fontSize: 14 }}>
               {t('forms.currentSeason')}
             </AppText>
             <View className="flex-row items-center justify-center gap-3">
@@ -68,7 +68,7 @@ export const ProgressSetter = ({
                 keyboardType="numeric"
                 maxLength={4}
                 className="w-12 border-b pb-0 text-center text-lg font-bold"
-                style={{ color: colors.primaryText, borderBottomColor: colors.placeholderText }}
+                style={{ color: colors.primaryText, borderBottomColor: colors.placeholderText, fontSize: 14 }}
                 selectTextOnFocus={true}
               />
 
@@ -80,7 +80,7 @@ export const ProgressSetter = ({
             </View>
           </View>
           <View className="flex-1 gap-1">
-            <AppText className="text-center font-semibold" style={{ color: colors.secondaryText }}>
+            <AppText className="text-center font-semibold" style={{ color: colors.secondaryText, fontSize: 14 }}>
               {t('forms.currentEpisode')}
             </AppText>
             <View className="flex-row items-center justify-center gap-3">
@@ -102,7 +102,7 @@ export const ProgressSetter = ({
                 keyboardType="numeric"
                 maxLength={4}
                 className="w-12 border-b pb-0 text-center text-lg font-bold"
-                style={{ color: colors.primaryText, borderBottomColor: colors.placeholderText }}
+                style={{ color: colors.primaryText, borderBottomColor: colors.placeholderText, fontSize: 14 }}
                 selectTextOnFocus={true}
               />
 
@@ -140,6 +140,7 @@ export const ProgressSetter = ({
             backgroundColor: colors.surfaceButton,
             color: colors.primaryText,
             lineHeight: 17,
+            fontSize: 14,
           }}
         />
       </View>

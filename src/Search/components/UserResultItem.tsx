@@ -30,7 +30,7 @@ export function UserResultItem({ item, onPress }: UserResultItemProps) {
           />
         ) : (
           <View className="h-20 w-20 items-center justify-center rounded-full" style={{ backgroundColor: colors.surfaceButton }}>
-            <AppText className="text-xl font-bold" style={{ color: colors.secondaryText }}>
+            <AppText className="font-bold" style={{ color: colors.secondaryText, fontSize: 14 }}>
               {item.username.charAt(0).toUpperCase()}
             </AppText>
           </View>
@@ -39,11 +39,11 @@ export function UserResultItem({ item, onPress }: UserResultItemProps) {
 
       {/* Información del usuario */}
       <View className="flex-1">
-        <AppText className="text-base font-semibold" style={{ color: colors.primaryText }}>
+        <AppText className="text-base font-semibold" style={{ color: colors.primaryText, fontSize: 16 }}>
           {item.username}
         </AppText>
         {item.description && (
-          <AppText className="text-sm" style={{ color: colors.secondaryText }} numberOfLines={3}>
+          <AppText style={{ color: colors.secondaryText, fontSize: 14 }} numberOfLines={3}>
             {item.description}
           </AppText>
         )}

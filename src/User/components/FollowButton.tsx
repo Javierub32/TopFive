@@ -23,7 +23,7 @@ export function FollowButton({
           className="items-center px-4 flex w-2/3 rounded-md py-2"
           style={{ backgroundColor: colors.accent }}
           onPress={handleFollow}>
-          <AppText className="font-semibold" style={{ color: colors.primaryText }}>Seguir</AppText>
+          <AppText className="font-semibold" style={{ color: colors.primaryText, fontSize: 14}}>Seguir</AppText>
         </TouchableOpacity>
       </View>
     );
@@ -35,7 +35,7 @@ export function FollowButton({
           className="items-center px-4 flex w-2/3 rounded-md py-2"
           style={{ backgroundColor: colors.surfaceButton }}
           onPress={cancelRequest}>
-          <AppText className="font-semibold" style={{ color: colors.primaryText }}>Solicitud enviada</AppText>
+          <AppText className="font-semibold" style={{ color: colors.primaryText, fontSize: 14 }}>Solicitud enviada</AppText>
         </TouchableOpacity>
       </View>
     );

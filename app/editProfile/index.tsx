@@ -64,7 +64,7 @@ export default function EditProfileScreen() {
           }}>
           <AppText
             className="mb-3 mt-3 text-base font-bold"
-            style={{ color: colors.primaryText, textAlign: 'center' }}>
+            style={{ color: colors.primaryText, textAlign: 'center', fontSize: 18 }}>
             {t('settings.personalization.editPhoto')}
           </AppText>
         </TouchableOpacity>
@@ -90,7 +90,7 @@ export default function EditProfileScreen() {
           className="mt-4 w-full items-center rounded-xl py-3"
           style={{ backgroundColor: colors.primary }}
           onPress={() => handleSubmit(uname.trim(), udesc.trim())}>
-          <AppText className="text-lg font-bold" style={{ color: colors.background }}>
+          <AppText className="font-bold" style={{ color: colors.background, fontSize: 18 }}>
             {t('common.saveChanges')}
           </AppText>
         </TouchableOpacity>

@@ -56,7 +56,7 @@ export const SearchBar = ({
         {/* Input de texto */}
         <AppTextInput
           className="h-full flex-1 overflow-hidden px-3 text-base"
-          style={{ color: colors.primaryText, lineHeight: 17, maxHeight: 17 }}
+          style={{ color: colors.primaryText, lineHeight: 17, maxHeight: 17, fontSize: 14 }}
           placeholder={`${t('search.placeholder')} ${categoryLabel}...`}
           placeholderTextColor={colors.placeholderText}
           value={value}
@@ -76,7 +76,7 @@ export const SearchBar = ({
           <View className="max-w-[80px]">
             <AppText
               className="mr-1 font-medium"
-              style={{ color: colors.secondaryText }}
+              style={{ color: colors.secondaryText, fontSize: 14 }}
               numberOfLines={1}>
               {t(CATEGORY_LABELS[selectedCategory] as any)}
             </AppText>
@@ -109,6 +109,7 @@ export const SearchBar = ({
                 style={{
                   fontWeight: selectedCategory === opcion ? 'bold' : 'normal',
                   color: selectedCategory === opcion ? colors.primaryText : colors.secondaryText,
+                  fontSize: 14,
                 }}>
                 {t(CATEGORY_LABELS[opcion] as any)}
               </AppText>

@@ -34,13 +34,13 @@ export const ExtraCard = ({ extra, type }: Props) => {
       <View className="flex-row items-center gap-2">
         <Icono color={colors.accent} />
         <AppText
-          className="text-sm font-bold uppercase tracking-widest"
-          style={{ color: colors.markerText }}>
+          className="font-bold uppercase tracking-widest"
+          style={{ color: colors.markerText, fontSize: 14 }}>
           {extraTitle}
         </AppText>
       </View>
       <View className="flex-1 items-center justify-center">
-        <AppText className="text-base font-semibold" style={{ color: colors.secondaryText }}>
+        <AppText className="text-base font-semibold" style={{ color: colors.secondaryText, fontSize: 14 }}>
           {extraText}
         </AppText>
       </View>

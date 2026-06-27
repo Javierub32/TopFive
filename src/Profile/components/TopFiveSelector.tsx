@@ -33,7 +33,7 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
 
   return (
     <View className="mb-4 mt-4">
-      <AppText className="mb-2 text-lg font-bold" style={{ color: colors.primaryText }}>
+      <AppText className="mb-2 font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
         {t('profile.myTopFive')}
       </AppText>
 
@@ -61,7 +61,7 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
                       backgroundColor: colors.surfaceButton,
                       borderColor: colors.borderButton,
                     }}>
-                    <AppText className="text-xl" style={{ color: colors.secondaryText }}>
+                    <AppText  style={{ color: colors.secondaryText, fontSize: 14 }}>
                       +
                     </AppText>
                   </View>
@@ -91,7 +91,7 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
                       resizeMode="cover"
                     />
                   ) : (
-                    <AppText style={{ color: colors.secondaryText }}>Sin imagen</AppText>
+                    <AppText style={{ color: colors.secondaryText, fontSize: 14}}>Sin imagen</AppText>
                   )}
                 </View>
               </TouchableOpacity>

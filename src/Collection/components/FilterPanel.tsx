@@ -26,7 +26,7 @@ export const FilterPanel = ({
     <View className="bg-surfaceButton/80 mb-4 rounded-xl border border-borderButton p-4">
       {/* Sección Orden */}
       <View className="mb-4">
-        <AppText className="mb-2 text-xs font-bold uppercase text-secondaryText">
+        <AppText className="mb-2 font-bold uppercase text-secondaryText" style={{ fontSize: 12 }}>
           {t('collection.orderBy')}
         </AppText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
@@ -39,7 +39,7 @@ export const FilterPanel = ({
               onPress={() => setOrden(opt.id as SortType)}
               className={`mr-2 rounded-full border px-3 py-1.5 ${orden === opt.id ? 'border-primary bg-primary' : 'border-borderButton bg-transparent'}`}>
               <AppText
-                className={`text-xs ${orden === opt.id ? 'font-bold text-primaryText' : 'text-secondaryText'}`}>
+                className={` ${orden === opt.id ? 'font-bold text-primaryText' : 'text-secondaryText'}`} style={{ fontSize: 12 }}>
                 {opt.label}
               </AppText>
             </TouchableOpacity>
@@ -49,7 +49,7 @@ export const FilterPanel = ({
 
       {/* Sección Estado */}
       <View className="mb-4">
-        <AppText className="mb-2 text-xs font-bold uppercase text-secondaryText">
+        <AppText className="mb-2 font-bold uppercase text-secondaryText" style={{ fontSize: 12 }}>
           {t('status.title')}
         </AppText>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
@@ -64,7 +64,7 @@ export const FilterPanel = ({
               onPress={() => setFiltroEstado(opt.id as StatusType)}
               className={`mr-2 rounded-full border px-3 py-1.5 ${filtroEstado === opt.id ? 'border-white bg-surfaceButton' : 'border-borderButton bg-transparent'}`}>
               <AppText
-                className={`text-xs ${filtroEstado === opt.id ? 'font-bold text-background' : 'text-secondaryText'}`}>
+                className={` ${filtroEstado === opt.id ? 'font-bold text-background' : 'text-secondaryText'}`} style={{ fontSize: 12 }}>
                 {opt.label}
               </AppText>
             </TouchableOpacity>
@@ -74,7 +74,9 @@ export const FilterPanel = ({
 
       {/* Switch Favoritos */}
       <View className="flex-row items-center justify-between border-t border-borderButton pt-2">
-        <AppText className="text-sm text-primaryText">{t('collection.onlyFavorites')}</AppText>
+        <AppText className="text-sm text-primaryText" style={{ fontSize: 14 }}>
+          {t('collection.onlyFavorites')}
+        </AppText>
         <TouchableOpacity
           onPress={() => setSoloFavoritos(!soloFavoritos)}
           activeOpacity={0.8}

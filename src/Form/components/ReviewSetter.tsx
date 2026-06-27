@@ -40,7 +40,7 @@ export const ReviewSetter = ({ review, setReview }: Props) => {
           numberOfLines={3}
           maxLength={1000}
           className="flex-1 p-3 text-base"
-          style={{ color: colors.primaryText }}
+          style={{ color: colors.primaryText, fontSize: 14 }}
           textAlignVertical="top"
         />
       ) : (
@@ -80,7 +80,7 @@ export const ReviewSetter = ({ review, setReview }: Props) => {
       {/* El contador de caracteres es igual para ambos */}
       <AppText
         className="absolute bottom-0 right-0 m-2 text-right text-xs"
-        style={{ color: plainTextLength > 1000 ? 'red' : colors.placeholderText }}>
+        style={{ color: plainTextLength > 1000 ? 'red' : colors.placeholderText, fontSize: 14 }}>
         {plainTextLength}/1000
       </AppText>
     </View>

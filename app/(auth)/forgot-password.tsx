@@ -1,24 +1,20 @@
 import React, { useState } from 'react';
 import {
   View,
-  TextInput,
-  Button,
-  Text,
   StyleSheet,
-  Alert,
   TouchableOpacity,
-  Platform,
 } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
-import { router, useRouter } from 'expo-router';
+import { router } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'context/ThemeContext';
 import { useNotification } from 'context/NotificationContext';
 import { ReturnButton } from 'components/ReturnButton';
-import { supabase } from 'lib/supabase';
 import { userService } from '@/User/services/userService';
 import { useTranslation } from 'react-i18next';
+import { AppText } from 'components/AppText';
+import { AppTextInput } from 'components/AppTextInput';
 
 // Las frases no se imprimen.
 const frasesConIconos = [
@@ -100,13 +96,13 @@ export default function ForgotPasswordScreen() {
                 color={colors.primaryText}
               />
             </View>
-            <Text style={{ fontSize: 24, fontWeight: 'bold', color: colors.primaryText }}>
+            <AppText style={{ fontSize: 24, fontWeight: 'bold', color: colors.primaryText }}>
               {t('common.appName')}
-            </Text>
+            </AppText>
           </View>
 
           {/* Frase aleatoria */}
-          <Text
+          <AppText
             style={{
               fontSize: 14,
               marginBottom: 20,
@@ -116,16 +112,16 @@ export default function ForgotPasswordScreen() {
               fontStyle: 'italic',
             }}>
             {t('login.forgotPassword.subtitle')}
-          </Text>
+          </AppText>
 
           <View
             className="rounded-3xl p-6 shadow-2xl"
             style={{ backgroundColor: colors.background }}>
             {/* Email Input */}
             <View className="mb-4">
-              <Text className="mb-1 ml-1 font-semibold" style={{ color: colors.primaryText }}>
+              <AppText className="mb-1 ml-1 font-semibold" style={{ color: colors.primaryText }}>
                 {t('login.email.title')}
-              </Text>
+              </AppText>
               <View
                 className="mb-3 flex-row items-center rounded-xl px-4 py-3"
                 style={{ backgroundColor: colors.surfaceButton }}>
@@ -134,7 +130,7 @@ export default function ForgotPasswordScreen() {
                   size={24}
                   color={colors.secondaryText}
                 />
-                <TextInput
+                <AppTextInput
                   placeholder={t('login.email.placeholder')}
                   placeholderTextColor={colors.placeholderText}
                   value={email}
@@ -142,7 +138,7 @@ export default function ForgotPasswordScreen() {
                   autoCapitalize="none"
                   keyboardType="email-address"
                   className="ml-3 flex-1 text-base"
-                  style={{ color: colors.primaryText, lineHeight: 17 }}
+                  style={{ color: colors.primaryText, lineHeight: 17, fontSize: 14 }}
                 />
               </View>
               <View className="mt-4" style={{}}>
@@ -151,9 +147,9 @@ export default function ForgotPasswordScreen() {
                   disabled={loading}
                   className="items-center overflow-hidden rounded-xl py-4 shadow-lg"
                   style={{ backgroundColor: colors.accent }}>
-                  <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>
+                  <AppText className="text-lg font-bold" style={{ fontSize: 14, color: colors.primaryText }}>
                     {loading ? t('common.loading') : t('common.send')}
-                  </Text>
+                  </AppText>
                 </TouchableOpacity>
               </View>
             </View>

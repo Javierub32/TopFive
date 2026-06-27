@@ -41,12 +41,12 @@ export const SearchBar = () => {
           onPress={handleSearch}
           activeOpacity={0.7}
           hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}>
-          <SearchIcon color={colors.secondaryText} />
+          <SearchIcon color={colors.secondaryText} size={24} />
         </TouchableOpacity>
 
         <AppTextInput
           className="h-full flex-1 overflow-hidden px-3 text-base text-primaryText"
-          style={{ color: colors.primaryText, lineHeight: 17, maxHeight: 17 }}
+          style={{ color: colors.primaryText, lineHeight: 17, maxHeight: 17, fontSize: 14 }}
           placeholder={`${t('collection.searchInPlaceholder', { category: t(resourceTypeMap[categoriaActual as ResourceType] as any) })}`}
           placeholderTextColor={colors.placeholderText}
           value={inputBusqueda}

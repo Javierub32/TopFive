@@ -230,7 +230,7 @@ export default function FrameSelectorScreen() {
             />
           )}
 
-          <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
+          <AppText className="text-center font-bold" style={{ color: colors.background, fontSize: 18 }}>
             {saving || isWatchingAd ? 'Cargando...' : userOwnsFrame ? 'Guardar cambios' : 'Obtener'}
           </AppText>
         </TouchableOpacity>
