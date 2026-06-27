@@ -81,7 +81,7 @@ export const CategorySelectorModal = ({
                     style={{ backgroundColor: `${colors[`ground${categories.indexOf(cat) + 1}`]}26`, borderWidth: 0 }}>
                     <Icon size={24} color={`${colors[`ground${categories.indexOf(cat) + 1}`]}FF`} />
                   </View>
-                  <AppText className="text-center mb-10" style={{ color: colors.primaryText, fontSize: 14 }}>
+                  <AppText className="text-center mb-10" style={{ color: colors.primaryText, fontSize: 12 }}>
                     {cat.label}
                   </AppText>
                 </TouchableOpacity>

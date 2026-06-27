@@ -90,7 +90,7 @@ export default function HomeScreen() {
             <View className="flex-row gap-x-2">
               <NotificationButton from="Home" />
               <TouchableOpacity onPress={() => router.push('/search')} className="rounded-full p-3">
-                <SearchIcon2 size={24} color={colors.primaryText} />
+                <SearchIcon2 size={22} color={colors.primaryText} />
               </TouchableOpacity>
             </View>
           </View>

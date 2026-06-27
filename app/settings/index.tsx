@@ -158,7 +158,7 @@ export default function SettingsScreen() {
                     }>
                     <View className="flex-row items-center justify-start gap-2">
                       <AntDesign name="edit" size={24} color={colors.primaryText} />
-                      <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
+                      <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.personalization.editProfile.title')}
                       </AppText>
                     </View>
@@ -181,7 +181,7 @@ export default function SettingsScreen() {
                     onPress={() => setShowThemeOptions(!showThemeOptions)}>
                     <View className="flex-row items-center justify-start gap-2">
                       <FontAwesome5 name="palette" size={24} color={colors.primaryText} />
-                      <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
+                      <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.personalization.changeTheme.title')}
                       </AppText>
                     </View>
@@ -251,7 +251,7 @@ export default function SettingsScreen() {
                     onPress={() => setShowLangOptions(!showLangOptions)}>
                     <View className="flex-row items-center justify-start gap-2">
                       <MaterialIcons name="language" size={24} color={colors.primaryText} />
-                      <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
+                      <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.personalization.changeLanguage')}
                       </AppText>
                     </View>
@@ -303,7 +303,7 @@ export default function SettingsScreen() {
                     onPress={() => setShowFontSizeOptions(!showFontSizeOptions)}>
                     <View className="flex-row items-center justify-start gap-2">
                       <Ionicons name="text" size={24} color={colors.primaryText} />
-                      <AppText className={'font-bold'} style={{ color: colors.primaryText, fontSize: 16 }}>
+                      <AppText style={{ color: colors.primaryText, fontSize: 16 }}>
                         {t('settings.personalization.changeFontSize')}
                       </AppText>
                     </View>
