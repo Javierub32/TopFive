@@ -158,7 +158,7 @@ export default function SettingsScreen() {
                     }>
                     <View className="flex-row items-center justify-start gap-2">
                       <AntDesign name="edit" size={24} color={colors.primaryText} />
-                      <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
+                      <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.personalization.editProfile.title')}
                       </AppText>
                     </View>
@@ -232,7 +232,7 @@ export default function SettingsScreen() {
                           color={colors.primaryText}
                         />
                         <AppText
-                          className="text-center text-sm"
+                          className="text-center"
                           style={{ color: colors.primaryText, fontSize: 16 }}>
                           {t('settings.personalization.changeTheme.systemMode')}
                         </AppText>
@@ -303,7 +303,7 @@ export default function SettingsScreen() {
                     onPress={() => setShowFontSizeOptions(!showFontSizeOptions)}>
                     <View className="flex-row items-center justify-start gap-2">
                       <Ionicons name="text" size={24} color={colors.primaryText} />
-                      <AppText style={{ color: colors.primaryText, fontSize: 16 }}>
+                      <AppText className={'font-bold'} style={{ color: colors.primaryText, fontSize: 16 }}>
                         {t('settings.personalization.changeFontSize')}
                       </AppText>
                     </View>
