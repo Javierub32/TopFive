@@ -43,7 +43,7 @@ export const useSearchContent = () => {
     setHasSearched(true);
     setLoading(true);
     setMenuAbierto(false);
-
+    setResultados([]);
     const categoriaAUsar = categoria || recursoBusqueda;
     
     try {
