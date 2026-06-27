@@ -22,8 +22,12 @@ export default function GameDetail() {
   const { content, loading } = useContent(id as string | number, 'videojuego');
   const game: Game = content as Game;
   const { colors } = useTheme();
-  const path = from === 'search' ? '/Add?initialCategory=videojuego' : '/(tabs)/Home';
   const { t } = useTranslation();
+  const getPath = () => {
+    if (from === 'home') return 'back';
+    return '/Add?initialCategory=videojuego';
+  };
+  const path = getPath(); 
 
   if (loading) {
     return (

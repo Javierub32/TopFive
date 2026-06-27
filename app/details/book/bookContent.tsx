@@ -21,7 +21,11 @@ export default function BookDetail() {
   const book: Book = content as Book;
   const { colors } = useTheme();
   const { t } = useTranslation();
-  const path = from === 'search' ? '/Add?initialCategory=libro' : '/(tabs)/Home';
+  const getPath = () => {
+    if (from === 'home') return 'back';
+    return '/Add?initialCategory=libro';
+  };
+  const path = getPath(); 
 
   if (loading) {
     return (

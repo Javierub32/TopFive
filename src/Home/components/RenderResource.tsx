@@ -221,11 +221,11 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
         <View className="p-4" style={{ backgroundColor: colors.surfaceButton }}>
           <View className="flex-row items-center gap-3">
             {item.avatar_url ? (
-              <Pressable
+              <TouchableOpacity
                 onPress={() =>
                   router.push({
                     pathname: 'details/user/',
-                    params: { username: item.username },
+                    params: { username: item.username, from: 'home' },
                   })
                 }>
                 <Image
@@ -233,7 +233,7 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
                   className="h-10 w-10 rounded-full"
                   style={{ borderWidth: 0, borderColor: colors.borderButton }}
                 />
-              </Pressable>
+              </TouchableOpacity>
             ) : (
               <View
                 className="h-10 w-10 items-center justify-center rounded-full"
@@ -246,7 +246,7 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
                   onPress={() =>
                     router.push({
                       pathname: 'details/user/',
-                      params: { username: item.username },
+                      params: { username: item.username, from: 'home' },
                     })
                   }
                   className="text-xl font-bold"
@@ -262,7 +262,7 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
                   onPress={() =>
                     router.push({
                       pathname: 'details/user/',
-                      params: { username: item.username },
+                      params: { username: item.username, from: 'home' },
                     })
                   }
                   className="text-base font-bold"
