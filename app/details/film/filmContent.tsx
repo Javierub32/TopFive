@@ -21,8 +21,12 @@ export default function FilmDetail() {
   const { content, loading } = useContent(id as string | number, 'pelicula');
   const film: Film = content as Film;
   const { colors } = useTheme();
-  const path = from === 'search' ? '/Add?initialCategory=pelicula' : '/(tabs)/Home';
   const { t } = useTranslation();
+  const getPath = () => {
+    if (from === 'home') return 'back';
+    return '/Add?initialCategory=pelicula';
+  };
+  const path = getPath(); 
 
   if (loading) {
     return (

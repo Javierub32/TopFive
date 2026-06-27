@@ -22,19 +22,15 @@ export const useGroupData = (category: ResourceType, state: StateType) => {
 			const to = from + PAGE_SIZE - 1;
 			const ordenarPorUltimaActividad = state === 'COMPLETADO';
 
-			const newItems = await fetchResources(
-				category,
-				null,
-				null,
-				state,
-				PAGE_SIZE,
-				true,
-				null,
+			const newItems = await fetchResources({
+				type: category,
+				estado: state,
+				cantidad: PAGE_SIZE,
+				ordenarPorFecha: true,
 				from,
 				to,
-				null,
 				ordenarPorUltimaActividad
-			);
+			});
 
 			if (currentPage === 0) {
 				setData(newItems || []);

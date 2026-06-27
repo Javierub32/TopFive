@@ -21,7 +21,11 @@ export default function SongDetail() {
   const song: Song = content as Song;
   const { colors } = useTheme();
   const { t } = useTranslation();
-  const path = from === 'search' ? '/Add?initialCategory=cancion' : '/(tabs)/Home';
+  const getPath = () => {
+    if (from === 'home') return 'back';
+    return '/Add?initialCategory=cancion';
+  };
+  const path = getPath();
 
   if (loading) {
     return (

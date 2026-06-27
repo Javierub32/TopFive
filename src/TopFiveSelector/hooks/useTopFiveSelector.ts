@@ -20,7 +20,11 @@ export const useTopFiveSelector = () => {
     try {
       const from = page * PAGE_SIZE;
       const to = from + PAGE_SIZE - 1;
-      const newItems = await fetchResources(category, null, null, null, null, null, null, from, to);
+      const newItems = await fetchResources({
+		type: category,
+		from,
+		to
+	  });
       if (newItems && newItems.length > 0) {
         setData((prevData) => [...prevData, ...newItems] as ResourceMap[]);
         setPage((prevPage) => prevPage + 1);
