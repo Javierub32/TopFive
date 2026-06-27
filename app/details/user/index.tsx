@@ -30,7 +30,12 @@ export default function UserDetailsScreen() {
   } = useUser(username as string);
 
   const canViewStats = userData?.following_status === 'accepted';
-  const route = from === 'link' ? '/Home' : 'back';
+  const getPath = () => {
+    if (from === 'home') return 'back';
+	if (from === 'link') return '/Home';
+    return '/Home';
+  };
+  const route = getPath();
 
   if (loading) {
     return (

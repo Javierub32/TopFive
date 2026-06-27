@@ -26,7 +26,10 @@ export const useItemSelector = (category: string | undefined, listId: string | u
             if (!category) return;
             setLoading(true);
             try {
-                const items = await fetchResources(resourceType, null, null, null, null, true); //
+                const items = await fetchResources({
+					type: resourceType,
+					ordenarPorFecha: true
+				});
                 setData(items || []);
             } catch (error) {
                 console.error(error);

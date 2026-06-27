@@ -23,7 +23,11 @@ export default function SeriesDetail() {
   const series: Series = content as Series;
   const { colors } = useTheme();
   const { t } = useTranslation();
-  const path = from === 'search' ? '/Add?initialCategory=serie' : '/(tabs)/Home';
+  const getPath = () => {
+    if (from === 'home') return 'back';
+    return '/Add?initialCategory=serie';
+  };
+  const path = getPath(); 
 
   if (loading) {
     return (

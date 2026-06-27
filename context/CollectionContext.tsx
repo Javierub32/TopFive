@@ -46,7 +46,11 @@ export const CollectionProvider = ({ children }: any) => {
     setBusqueda(inputBusqueda);
 	try {
 		setLoading(true);
-		const resultado = await fetchResources(categoriaActual, inputBusqueda, null, null, pageSize);
+		const resultado = await fetchResources({
+			type: categoriaActual,
+			term: inputBusqueda,
+			cantidad: pageSize
+		});
 		setData(resultado || []);
 		setPage(1);
 		setHasMore(true);
@@ -70,7 +74,13 @@ export const CollectionProvider = ({ children }: any) => {
 	const to = from + pageSize - 1;
 	try {
 		setLoading(true);
-		const resultado = await fetchResources(categoriaActual, inputBusqueda, null, null, pageSize, null, null, from, to);
+		const resultado = await fetchResources({ 
+			type: categoriaActual,
+			term: inputBusqueda,
+			cantidad: pageSize,
+			from,
+			to
+		});
 		setData((prevData: any[]) => [...prevData, ...(resultado || [])]);
 		setPage((prevPage) => prevPage + 1);
 		if (!resultado || resultado.length < pageSize) {
@@ -108,9 +118,9 @@ export const CollectionProvider = ({ children }: any) => {
         totalEnCurso, 
         totalCompletados
       ] = await Promise.all([
-		fetchResources(categoriaActual, null, null, 'PENDIENTE', 5, true),
-        fetchResources(categoriaActual, null, null, 'EN_CURSO', 5, true),
-		fetchResources(categoriaActual, null, null, 'COMPLETADO', 5, null, null, null, null, null, true),
+		fetchResources({ type: categoriaActual, estado: 'PENDIENTE', cantidad: 5, ordenarPorFecha: true }),
+		fetchResources({ type: categoriaActual, estado: 'EN_CURSO', cantidad: 5, ordenarPorFecha: true }),
+		fetchResources({ type: categoriaActual, estado: 'COMPLETADO', cantidad: 5, ordenarPorUltimaActividad: true }),
         calcularTotal(categoriaActual, 'PENDIENTE'),
         calcularTotal(categoriaActual, 'EN_CURSO'),
         calcularTotal(categoriaActual, 'COMPLETADO')
