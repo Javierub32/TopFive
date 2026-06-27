@@ -140,7 +140,7 @@ export default function SettingsScreen() {
         <View className="mb-14 flex-1 p-4">
           <View className="flex-1 gap-4">
             <View>
-              <AppText className="mb-1 p-1 text-xl font-bold" style={{ color: colors.primaryText }}>
+              <AppText className="mb-1 p-1 font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
                 {t('settings.personalization.title')}
               </AppText>
               <View
@@ -158,7 +158,7 @@ export default function SettingsScreen() {
                     }>
                     <View className="flex-row items-center justify-start gap-2">
                       <AntDesign name="edit" size={24} color={colors.primaryText} />
-                      <AppText className="text-lg" style={{ color: colors.primaryText }}>
+                      <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.personalization.editProfile.title')}
                       </AppText>
                     </View>
@@ -181,7 +181,7 @@ export default function SettingsScreen() {
                     onPress={() => setShowThemeOptions(!showThemeOptions)}>
                     <View className="flex-row items-center justify-start gap-2">
                       <FontAwesome5 name="palette" size={24} color={colors.primaryText} />
-                      <AppText className="text-lg" style={{ color: colors.primaryText }}>
+                      <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.personalization.changeTheme.title')}
                       </AppText>
                     </View>
@@ -199,7 +199,7 @@ export default function SettingsScreen() {
                         <MaterialIcons name="dark-mode" size={24} color={colors.primaryText} />
                         <AppText
                           className="text-center text-sm"
-                          style={{ color: colors.primaryText }}>
+                          style={{ color: colors.primaryText, fontSize: 16 }}>
                           {t('settings.personalization.changeTheme.darkMode')}
                         </AppText>
                       </TouchableOpacity>
@@ -214,7 +214,7 @@ export default function SettingsScreen() {
                         <MaterialIcons name="light-mode" size={24} color={colors.primaryText} />
                         <AppText
                           className="text-center text-sm"
-                          style={{ color: colors.primaryText }}>
+                          style={{ color: colors.primaryText, fontSize: 16 }}>
                           {t('settings.personalization.changeTheme.lightMode')}
                         </AppText>
                       </TouchableOpacity>
@@ -233,7 +233,7 @@ export default function SettingsScreen() {
                         />
                         <AppText
                           className="text-center text-sm"
-                          style={{ color: colors.primaryText }}>
+                          style={{ color: colors.primaryText, fontSize: 16 }}>
                           {t('settings.personalization.changeTheme.systemMode')}
                         </AppText>
                       </TouchableOpacity>
@@ -251,7 +251,7 @@ export default function SettingsScreen() {
                     onPress={() => setShowLangOptions(!showLangOptions)}>
                     <View className="flex-row items-center justify-start gap-2">
                       <MaterialIcons name="language" size={24} color={colors.primaryText} />
-                      <AppText className="text-lg" style={{ color: colors.primaryText }}>
+                      <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.personalization.changeLanguage')}
                       </AppText>
                     </View>
@@ -268,10 +268,10 @@ export default function SettingsScreen() {
                         onPress={() => changeLanguage('es')}>
                         <AppText
                           className="font-sans text-base font-bold uppercase tracking-wider"
-                          style={{ color: colors.primaryText }}>
+                          style={{ color: colors.primaryText, fontSize: 16 }}>
                           ES
                         </AppText>
-                        <AppText className="text-sm" style={{ color: colors.primaryText }}>
+                        <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
                           {t('languages.es')}
                         </AppText>
                       </TouchableOpacity>
@@ -285,10 +285,10 @@ export default function SettingsScreen() {
                         onPress={() => changeLanguage('en')}>
                         <AppText
                           className="font-sans text-base font-bold uppercase tracking-wider"
-                          style={{ color: colors.primaryText }}>
+                          style={{ color: colors.primaryText, fontSize: 16 }}>
                           EN
                         </AppText>
-                        <AppText className="text-sm" style={{ color: colors.primaryText }}>
+                        <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
                           {t('languages.en')}
                         </AppText>
                       </TouchableOpacity>
@@ -303,7 +303,7 @@ export default function SettingsScreen() {
                     onPress={() => setShowFontSizeOptions(!showFontSizeOptions)}>
                     <View className="flex-row items-center justify-start gap-2">
                       <Ionicons name="text" size={24} color={colors.primaryText} />
-                      <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
+                      <AppText style={{ color: colors.primaryText, fontSize: 16 }}>
                         {t('settings.personalization.changeFontSize')}
                       </AppText>
                     </View>
@@ -330,14 +330,14 @@ export default function SettingsScreen() {
                           <AppText
                             style={{
                               color: colors.primaryText,
-                              fontSize: 20,
+                              fontSize: 18,
                               fontWeight: 'bold',
                             }}>
                             {item.label}
                           </AppText>
                           <AppText
                             style={{
-                              color: colors.secondaryText,
+                              color: colors.primaryText,
                               fontSize: 14,
                             }}>
                             {item.title}
@@ -351,7 +351,7 @@ export default function SettingsScreen() {
             </View>
 
             <View>
-              <AppText className="mb-1 p-1 text-xl font-bold" style={{ color: colors.primaryText }}>
+                <AppText className="mb-1 p-1 font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
                 {t('settings.account.title')}
               </AppText>
               <View
@@ -364,7 +364,7 @@ export default function SettingsScreen() {
                     onPress={handleShare}>
                     <View className="flex-row items-center justify-start gap-2">
                       <Ionicons name="share-outline" size={24} color={colors.primaryText} />
-                      <AppText className="text-lg" style={{ color: colors.primaryText }}>
+                      <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.account.share.title')}
                       </AppText>
                     </View>
@@ -378,7 +378,7 @@ export default function SettingsScreen() {
                     onPress={handleCloseSession}>
                     <View className="flex-row items-center justify-start gap-2">
                       <Ionicons name="log-out-outline" size={24} color={colors.primaryText} />
-                      <AppText className="text-lg" style={{ color: colors.primaryText }}>
+                      <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.account.logOut.title')}
                       </AppText>
                     </View>
@@ -391,7 +391,7 @@ export default function SettingsScreen() {
                   onPress={handleDeleteAccount}>
                   <View className="flex-row items-center justify-start gap-2">
                     <Ionicons name="trash-outline" size={24} color={colors.error} />
-                    <AppText className="text-lg font-bold" style={{ color: colors.error }}>
+                    <AppText className="font-bold" style={{ color: colors.error, fontSize: 18 }}>
                       {t('settings.account.deleteAccount.title')}
                     </AppText>
                   </View>
@@ -400,7 +400,7 @@ export default function SettingsScreen() {
             </View>
 
             <View>
-              <AppText className="mb-1 p-1 text-xl font-bold" style={{ color: colors.primaryText }}>
+              <AppText className="mb-1 p-1 font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
                 {t('settings.legal.title')}
               </AppText>
               <View
@@ -413,7 +413,7 @@ export default function SettingsScreen() {
                     onPress={() => Linking.openURL('https://forms.gle/2FCL2eyicn4yLuTw8')}>
                     <View className="flex-row items-center justify-start gap-2">
                       <MaterialIcons name="feedback" size={24} color={colors.primaryText} />
-                      <AppText className="text-lg" style={{ color: colors.primaryText }}>
+                      <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.legal.sendFeed')}
                       </AppText>
                     </View>
@@ -437,7 +437,7 @@ export default function SettingsScreen() {
                         size={24}
                         color={colors.primaryText}
                       />
-                      <AppText className="text-lg" style={{ color: colors.primaryText }}>
+                      <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.legal.aboutUs.title')}
                       </AppText>
                     </View>
@@ -459,7 +459,7 @@ export default function SettingsScreen() {
                   }>
                   <View className="flex-row items-center justify-start gap-2">
                     <FontAwesome name="check-circle-o" size={24} color={colors.primaryText} />
-                    <AppText className="text-lg" style={{ color: colors.primaryText }}>
+                    <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                       {t('settings.legal.privacy')}
                     </AppText>
                   </View>
@@ -481,7 +481,7 @@ export default function SettingsScreen() {
                       onPress={handleRevokeConsent}>
                       <View className="flex-row items-center justify-start gap-2">
                         <MaterialIcons name="security" size={24} color={colors.primaryText} />
-                        <AppText className="text-lg" style={{ color: colors.primaryText }}>
+                        <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
                           {t('settings.legal.adsPriv')}
                         </AppText>
                       </View>

@@ -91,14 +91,14 @@ export default function NotificationsScreen() {
             
           
           <AppText
-            className="mb-3 text-center text-2xl font-bold"
-            style={{color: colors.primaryText}}
+            className="mb-3 text-center font-bold"
+            style={{color: colors.primaryText, fontSize: 24}}
           >
             Sin Notificaciones
           </AppText>
           <AppText
             className="text-center text-base px-12"
-            style={{color: colors.secondaryText}}
+            style={{color: colors.secondaryText, fontSize: 16}}
           >
             No tienes notifiaciones pendientes en este momento. ¡Vuelve más tarde!
           </AppText>
