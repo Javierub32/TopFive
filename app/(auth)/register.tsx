@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { useState } from 'react';
+import { View, TouchableOpacity, Dimensions } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -8,6 +8,9 @@ import { useTheme } from 'context/ThemeContext';
 import { useNotification } from 'context/NotificationContext';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useTranslation } from 'react-i18next';
+import { AppText } from 'components/AppText';
+import { AppTextInput } from 'components/AppTextInput';
+
 
 export default function Register() {
   const { signUp } = useAuth();
@@ -42,7 +45,7 @@ export default function Register() {
       router.replace('/(auth)/login');
       showNotification({
         title: t('login.signUp.success.title'),
-        description: <Text>{t('login.signUp.success.description')}</Text>,
+        description: <AppText>{t('login.signUp.success.description')}</AppText>,
         isChoice: true,
         rightButtonText: t('common.accept'),
         onRightPress: () => {
@@ -99,12 +102,12 @@ export default function Register() {
               style={{ backgroundColor: `${colors.primaryText}20` }}>
               <MaterialCommunityIcons name="movie-open" size={40} color={colors.primaryText} />
             </View>
-            <Text style={{ fontSize: 24, fontWeight: 'bold', color: colors.primaryText }}>
+            <AppText style={{ fontSize: 24, fontWeight: 'bold', color: colors.primaryText }}>
               {t('common.appName')}
-            </Text>
+            </AppText>
           </View>
 
-          <Text
+          <AppText
             style={{
               fontSize: 14,
               marginBottom: 20,
@@ -114,15 +117,15 @@ export default function Register() {
               fontStyle: 'italic',
             }}>
             {t('login.signUp.subtitle')}
-          </Text>
+          </AppText>
 
           <View
             className="rounded-3xl p-6 shadow-2xl"
             style={{ backgroundColor: colors.background }}>
             <View className="mb-4">
-              <Text className="mb-2 ml-1 font-semibold" style={{ color: colors.primaryText }}>
+              <AppText className="mb-2 ml-1 font-semibold" style={{fontSize: 14, color: colors.primaryText }}>
                 {t('login.signUp.username')}
-              </Text>
+              </AppText>
               <View
                 className="mb-3 flex-row items-center rounded-xl px-4 py-3"
                 style={{ backgroundColor: colors.surfaceButton }}>
@@ -131,21 +134,21 @@ export default function Register() {
                   size={24}
                   color={colors.secondaryText}
                 />
-                <TextInput
+                <AppTextInput
                   placeholder={t('login.signUp.usernamePlaceholder')}
                   value={username}
                   onChangeText={setUsername}
                   autoCapitalize="none"
                   className="ml-3 flex-1 text-base"
                   placeholderTextColor={colors.placeholderText}
-                  style={{ color: colors.primaryText, lineHeight: 17 }}
+                  style={{ color: colors.primaryText, lineHeight: 17, fontSize: 14 }}
                 />
               </View>
 
               {/* Email Input */}
-              <Text className="mb-2 ml-1 font-semibold" style={{ color: colors.primaryText }}>
+              <AppText className="mb-2 ml-1 font-semibold" style={{ fontSize: 14, color: colors.primaryText }}>
                 {t('login.signUp.email')}
-              </Text>
+              </AppText>
               <View
                 className="mb-3 flex-row items-center rounded-xl px-4 py-3"
                 style={{ backgroundColor: colors.surfaceButton }}>
@@ -154,7 +157,7 @@ export default function Register() {
                   size={24}
                   color={colors.secondaryText}
                 />
-                <TextInput
+                <AppTextInput
                   placeholder={t('login.signUp.emailPlaceholder')}
                   value={email}
                   onChangeText={setEmail}
@@ -162,14 +165,14 @@ export default function Register() {
                   keyboardType="email-address"
                   className="ml-3 flex-1 text-base"
                   placeholderTextColor={colors.placeholderText}
-                  style={{ color: colors.primaryText, lineHeight: 17 }}
+                  style={{ color: colors.primaryText, lineHeight: 17, fontSize: 14 }}
                 />
               </View>
 
               {/* Password Input */}
-              <Text className="mb-2 ml-1 font-semibold" style={{ color: colors.primaryText }}>
+              <AppText className="mb-2 ml-1 font-semibold" style={{ fontSize: 14, color: colors.primaryText }}>
                 {t('login.signUp.password')}
-              </Text>
+              </AppText>
               <View
                 className="mb-3 flex-row items-center rounded-xl px-4 py-3"
                 style={{ backgroundColor: colors.surfaceButton }}>
@@ -178,7 +181,7 @@ export default function Register() {
                   size={24}
                   color={colors.secondaryText}
                 />
-                <TextInput
+                <AppTextInput
                   placeholder="••••••••"
                   value={password}
                   onChangeText={setPassword}
@@ -200,9 +203,9 @@ export default function Register() {
               </View>
 
               {/* Confirm Password Input */}
-              <Text className="mb-2 ml-1 font-semibold" style={{ color: colors.primaryText }}>
+              <AppText className="mb-2 ml-1 font-semibold" style={{ fontSize: 14, color: colors.primaryText }}>
                 {t('login.signUp.confirmPassword')}
-              </Text>
+              </AppText>
               <View
                 className="mb-3 flex-row items-center rounded-xl px-4 py-3"
                 style={{ backgroundColor: colors.surfaceButton }}>
@@ -211,7 +214,7 @@ export default function Register() {
                   size={24}
                   color={colors.secondaryText}
                 />
-                <TextInput
+                <AppTextInput
                   placeholder="••••••••"
                   value={confirmPassword}
                   onChangeText={setConfirmPassword}
@@ -221,6 +224,7 @@ export default function Register() {
                   style={{
                     color: colors.primaryText,
                     lineHeight: 17,
+                    fontSize: 14,
                   }}
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="ml-2">
@@ -239,9 +243,9 @@ export default function Register() {
                   disabled={loading}
                   className="items-center overflow-hidden rounded-xl py-4 shadow-lg"
                   style={{ backgroundColor: colors.accent }}>
-                  <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>
+                  <AppText className="text-lg font-bold" style={{ fontSize: 14, color: colors.primaryText }}>
                     {loading ? t('common.loadingCreating') : t('login.signUp.signUpButton')}
-                  </Text>
+                  </AppText>
                 </TouchableOpacity>
               </View>
             </View>
@@ -249,16 +253,16 @@ export default function Register() {
 
           {/* Enlace al Login */}
           <View style={{ marginTop: 20, alignItems: 'center' }}>
-            <Text className="mb-2 text-base" style={{ color: colors.primaryText }}>
+            <AppText className="mb-2 text-base" style={{ fontSize: 14, color: colors.primaryText }}>
               {t('login.signUp.alreadyHaveAccount')}
-            </Text>
+            </AppText>
             <TouchableOpacity
               onPress={() => router.push('/(auth)/login')}
               className="rounded-full px-6 py-3"
               style={{ backgroundColor: `${colors.surfaceButton}80` }}>
-              <Text className="text-base font-semibold" style={{ color: colors.primaryText }}>
+              <AppText className="text-base font-semibold" style={{ fontSize: 14, color: colors.primaryText }}>
                 {t('login.signUp.loginButton')}
-              </Text>
+              </AppText>
             </TouchableOpacity>
           </View>
         </View>

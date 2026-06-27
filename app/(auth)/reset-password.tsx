@@ -1,11 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   View,
-  TextInput,
-  Button,
-  Text,
-  StyleSheet,
-  Alert,
   TouchableOpacity,
   Platform,
 } from 'react-native';
@@ -18,6 +13,8 @@ import { useNotification } from 'context/NotificationContext';
 import { supabase } from 'lib/supabase'; // Añadido Supabase
 import * as Linking from 'expo-linking';
 import { useTranslation } from 'react-i18next';
+import { AppText } from 'components/AppText';
+import { AppTextInput } from 'components/AppTextInput';
 
 // Frases aleatorias con iconos - fuera del componente para mejor rendimiento
 const frasesConIconos = [
@@ -179,13 +176,13 @@ export default function ResetPasswordScreen() {
                 color={colors.primaryText}
               />
             </View>
-            <Text style={{ fontSize: 24, fontWeight: 'bold', color: colors.primaryText }}>
+            <AppText style={{ fontSize: 24, fontWeight: 'bold', color: colors.primaryText }}>
               {t('common.appName')}
-            </Text>
+            </AppText>
           </View>
 
           {/* Frase aleatoria */}
-          <Text
+          <AppText
             style={{
               fontSize: 14,
               marginBottom: 20,
@@ -195,16 +192,16 @@ export default function ResetPasswordScreen() {
               fontStyle: 'italic',
             }}>
             {' ' + t(fraseAleatoria.translationKey)}
-          </Text>
+          </AppText>
 
           <View
             className="rounded-3xl p-6 shadow-2xl"
             style={{ backgroundColor: colors.background }}>
             {/* Email Input */}
             <View className="mb-4">
-              <Text className="my-3 ml-1 font-semibold " style={{ color: colors.primaryText }}>
+              <AppText className="my-3 ml-1 font-semibold " style={{ fontSize: 14, color: colors.primaryText }}>
                 {t('login.resetPassword.newPassword')}
-              </Text>
+              </AppText>
               <View
                 className="flex-row items-center rounded-xl px-4 py-3"
                 style={{ backgroundColor: colors.surfaceButton }}>
@@ -213,14 +210,14 @@ export default function ResetPasswordScreen() {
                   size={24}
                   color={colors.secondaryText}
                 />
-                <TextInput
+                <AppTextInput
                   placeholder="••••••••"
                   value={password}
                   onChangeText={setPassword}
                   className="ml-3 flex-1 text-base"
                   placeholderTextColor={colors.placeholderText}
                   secureTextEntry={!showPassword}
-                  style={{ color: colors.primaryText }}
+                  style={{ color: colors.primaryText, fontSize: 14 }}
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="ml-2">
                   <MaterialCommunityIcons
@@ -231,9 +228,9 @@ export default function ResetPasswordScreen() {
                 </TouchableOpacity>
               </View>
 
-              <Text className="my-3 ml-1 font-semibold " style={{ color: colors.primaryText }}>
+              <AppText className="my-3 ml-1 font-semibold " style={{ color: colors.primaryText, fontSize: 14 }}>
                 {t('login.resetPassword.confirmPassword')}
-              </Text>
+              </AppText>
               <View
                 className="flex-row items-center rounded-xl px-4 py-3"
                 style={{ backgroundColor: colors.surfaceButton }}>
@@ -242,14 +239,14 @@ export default function ResetPasswordScreen() {
                   size={24}
                   color={colors.secondaryText}
                 />
-                <TextInput
+                <AppTextInput
                   placeholder="••••••••"
                   value={confirmPassword}
                   onChangeText={setConfirmPassword}
                   className="ml-3 flex-1 text-base"
                   placeholderTextColor={colors.placeholderText}
                   secureTextEntry={!showPassword}
-                  style={{ color: colors.primaryText }}
+                  style={{ color: colors.primaryText, fontSize: 14 }}
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="ml-2">
                   <MaterialCommunityIcons
@@ -266,9 +263,9 @@ export default function ResetPasswordScreen() {
                   disabled={loading}
                   className="items-center overflow-hidden rounded-xl py-4 shadow-lg"
                   style={{ backgroundColor: colors.accent }}>
-                  <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>
+                  <AppText className="text-lg font-bold" style={{ fontSize: 14, color: colors.primaryText }}>
                     {loading ? t('common.loading') : t('login.resetPassword.changePassword')}
-                  </Text>
+                  </AppText>
                 </TouchableOpacity>
               </View>
             </View>
