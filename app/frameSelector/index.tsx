@@ -166,7 +166,6 @@ export default function FrameSelectorScreen() {
           </TouchableOpacity>
         </View>
 
-        <View />
         
         <ScrollView className="flex-1 px-4 pt-4"
         contentContainerStyle={{
