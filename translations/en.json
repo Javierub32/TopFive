@@ -32,7 +32,7 @@
             "changeTheme": "Change theme",
             "changeLang": "Change language",
             "changeFontSize": "Change font size",
-            "editPhoto" : "Edit photo"
+            "editPhoto" : "Edit photo and frame"
         },
         "account": {
             "title": "Account",
