@@ -47,9 +47,11 @@ export default function FollowersScreen() {
       }}
       renderLabel={({ route, focused }: any) => (
         <AppText
-          className={`text-base font-semibold ${focused ? 'text-primaryText' : 'text-secondaryText'}`}>
-          {route.title}
+          className={`text-base font-semibold ${focused ? 'text-primaryText' : 'text-secondaryText'}`}
           style={{fontSize: 18 }}
+          >
+          {route.title}
+          
         </AppText>
       )}
     />

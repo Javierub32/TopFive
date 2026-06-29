@@ -22,7 +22,7 @@ export function RenderContent({ item, variant }: MediaItemProps) {
           resizeMode="cover"
         />
       </View>
-      <AppText className="mt-2 text-primaryText" style={{ fontSize: 18 }}numberOfLines={isVertical ? 2 : undefined}>
+      <AppText className="mt-2 text-primaryText" style={{ fontSize: 18 }} numberOfLines={isVertical ? 2 : undefined}>
         {item.title} {!isVertical && item.type ? ` (${item.type})` : ''}
       </AppText>
     </View>
