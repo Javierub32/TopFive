@@ -10,7 +10,10 @@ export const frameAdapter = {
 			'lazoRosa': require('../../../assets/frames/lazoRosa.png'),
 			'coronaDorada': require('../../../assets/frames/coronaDorada.png'),
 			'cowboy': require('../../../assets/frames/cowboy.png'),
-			'mugiwara': require('../../../assets/frames/mugiwara.png')
+			'mugiwara': require('../../../assets/frames/mugiwara.png'),
+			'lgtb' : require('../../../assets/frames/lgtb2.png'),
+			'spain' : require('../../../assets/frames/spain.png'),
+
 		};
 		return map[frame];
 	},
@@ -26,7 +29,9 @@ export const frameAdapter = {
 			'lazoRosa': {top: 25, left: 80, width: 95, rotate: '20deg'},
 			'coronaDorada': {top: 10, left: 85 , width: 70, rotate: '40deg'},
 			'cowboy': {top: 10, left: 80 , width: 70, rotate: '40deg'},
-			'mugiwara': {top: 14, left: 85 , width: 70, rotate: '40deg'}
+			'mugiwara': {top: 14, left: 85 , width: 70, rotate: '40deg'},
+			'lgtb' : {top: 50, left: 50 , width: 100, rotate: '0deg'},
+			'spain' : {top: 50, left: 50 , width: 110, rotate: '0deg'}
 		};
 		return map[frame];
 	}

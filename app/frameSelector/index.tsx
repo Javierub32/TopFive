@@ -13,7 +13,7 @@ import { RewardedAd, RewardedAdEventType, AdEventType,TestIds } from 'lib/reward
 import { UserAvatar } from '@/User/components/UserAvatar';
 import { useProfile } from '@/Profile/hooks/useProfile';
 const availableFrames = ['none', 'libro', 'pelicula', 'cancion', 'videojuego', 'love', 'lazoRosa', 'coronaDorada',
-  'cowboy', 'mugiwara'
+  'cowboy', 'mugiwara', 'lgtb', 'spain'
 ];
 
 const adUnitId = __DEV__
@@ -142,13 +142,7 @@ export default function FrameSelectorScreen() {
   return (
     <Screen>
       <ReturnButton route="back" title="Selecciona un marco" />
-      <ScrollView
-        className="flex-1 px-4 pt-4"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingBottom: 20,
-        }}>
+      
         <View className="items-center justify-center py-10">
           <TouchableOpacity onPress={pickImage} activeOpacity={0.7} style={{ position: 'relative' }}>
             {/* Avatar con el Marco */}
@@ -172,48 +166,75 @@ export default function FrameSelectorScreen() {
           </TouchableOpacity>
         </View>
 
-        <View />
+        
+        <ScrollView className="flex-1 px-4 pt-4"
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: 20,
+        }}>
+            <View className="flex-row flex-wrap justify-between">
+              {availableFrames.map((frame) => {
+                const isSelected = selectedFrame === frame;
 
-        <View className="flex-row flex-wrap justify-between">
-          {availableFrames.map((frame) => {
-            const isSelected = selectedFrame === frame;
+                const isOwned = userFrames.includes(frame);
 
-            const isOwned = userFrames.includes(frame);
+                return (
+                  <TouchableOpacity
+                    key={frame}
+                    onPress={() => setSelectedFrame(frame)}
+                    className="mb-4 items-center justify-center overflow-hidden rounded-2xl"
+                    style={{
+                      width: '30%',
+                      aspectRatio: 1,
+                      backgroundColor: isSelected ? `${colors.primary}33` : colors.surfaceButton,
+                      borderWidth: 2,
+                      borderColor: isSelected ? colors.primary : 'transparent',
+                      opacity: !isOwned && !isSelected ? 0.7 : 1,
+                    }}
+                    activeOpacity={0.7}>
+                    {frame === 'none' ? (
+                      <View className="items-center justify-center">
+                        <FontAwesome5 name="ban" size={32} color={colors.error} />
+                      </View>
+                    ) : (
+                      <View className="items-center justify-center">
+                        {renderAvatar(null, frame, 0.6)}
+                      </View>
+                    )}
 
-            return (
-              <TouchableOpacity
-                key={frame}
-                onPress={() => setSelectedFrame(frame)}
-                className="mb-4 items-center justify-center overflow-hidden rounded-2xl"
-                style={{
-                  width: '30%',
-                  aspectRatio: 1,
-                  backgroundColor: isSelected ? `${colors.primary}33` : colors.surfaceButton,
-                  borderWidth: 2,
-                  borderColor: isSelected ? colors.primary : 'transparent',
-                  opacity: !isOwned && !isSelected ? 0.7 : 1,
-                }}
-                activeOpacity={0.7}>
-                {frame === 'none' ? (
-                  <View className="items-center justify-center">
-                    <FontAwesome5 name="ban" size={32} color={colors.error} />
-                  </View>
-                ) : (
-                  <View className="items-center justify-center">
-                    {renderAvatar(null, frame, 0.6)}
-                  </View>
-                )}
+                    {!isOwned && (
+                      <View
+                        className="absolute right-2 top-2 rounded-full p-1"
+                        style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                        <FontAwesome5 name="lock" size={10} color="white" />
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+        </ScrollView>
+        
+        
+        <View className="absolute bottom-6 left-4 right-4 bg-transparent">
+          <TouchableOpacity
+            onPress={handleActionButton}
+            disabled={saving || loading || isWatchingAd}
+            className="mt-[-20px] flex-row items-center justify-center gap-2 rounded-xl py-4 shadow-lg"
+            style={{ backgroundColor: colors.primary }}
+            activeOpacity={0.8}>
+            {!userOwnsFrame && !loading && (
+              <MaterialCommunityIcons
+                name="play-circle-outline"
+                size={24}
+                color={colors.background}
+              />
+            )}
 
-                {!isOwned && (
-                  <View
-                    className="absolute right-2 top-2 rounded-full p-1"
-                    style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                    <FontAwesome5 name="lock" size={10} color="white" />
-                  </View>
-                )}
-              </TouchableOpacity>
-            );
-          })}
+            <AppText className="text-center text-lg font-bold" style={{ color: colors.background }}>
+              {saving || isWatchingAd ? 'Cargando...' : userOwnsFrame ? 'Guardar cambios' : 'Obtener'}
+            </AppText>
+          </TouchableOpacity>
         </View>
 
         <TouchableOpacity
@@ -236,7 +257,6 @@ export default function FrameSelectorScreen() {
         </TouchableOpacity>
 
         <View />
-      </ScrollView>
     </Screen>
   );
 }
