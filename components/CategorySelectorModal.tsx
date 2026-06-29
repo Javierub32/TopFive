@@ -63,8 +63,8 @@ export const CategorySelectorModal = ({
           activeOpacity={1}
           onPress={(e) => e.stopPropagation()}>
           <AppText
-            className="mb-4 text-center text-xl font-bold"
-            style={{ color: colors.primaryText }}>
+            className="mb-4 text-center font-bold"
+            style={{ color: colors.primaryText, fontSize: 20 }}>
             {'¿Qué quieres añadir?'}
           </AppText>
 
@@ -81,7 +81,7 @@ export const CategorySelectorModal = ({
                     style={{ backgroundColor: `${colors[`ground${categories.indexOf(cat) + 1}`]}26`, borderWidth: 0 }}>
                     <Icon size={24} color={`${colors[`ground${categories.indexOf(cat) + 1}`]}FF`} />
                   </View>
-                  <AppText className="text-xs text-center mb-10" style={{ color: colors.primaryText }}>
+                  <AppText className="text-center mb-10" style={{ color: colors.primaryText, fontSize: 12 }}>
                     {cat.label}
                   </AppText>
                 </TouchableOpacity>

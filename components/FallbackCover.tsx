@@ -45,8 +45,8 @@ export const FallbackCover = ({ type, style, fullSize }: FallbackCoverProps) => 
       <Icon size={40} color={colors.primaryText} />
       {fullSize && (
         <AppText
-          className="mt-2 text-center text-xs font-semibold"
-          style={{ color: colors.primaryText }}>
+          className="mt-2 text-center font-semibold"
+          style={{ color: colors.primaryText, fontSize: 14 }}>
           {text}
         </AppText>
       )}

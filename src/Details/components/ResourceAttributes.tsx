@@ -105,7 +105,7 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
   return (
     <View className="mb-4">
       <View className="flex-1 flex-row items-center justify-between">
-        <AppText className="flex-1 text-3xl font-bold" style={{ color: colors.primaryText }}>
+        <AppText className="flex-1 font-bold" style={{ color: colors.primaryText, fontSize: 24}}>
           {contenido.titulo || t('common.noTitle')}
         </AppText>
         {isOwner && (
@@ -118,7 +118,7 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
         <View
           className="justify-center rounded-lg px-3 py-1.5"
           style={{ backgroundColor: colors.surfaceButton }}>
-          <AppText className="text-sm font-semibold" style={{ color: colors.markerText }}>
+          <AppText className="font-semibold" style={{ color: colors.markerText, fontSize: 14 }}>
             {releaseYear}
           </AppText>
         </View>
@@ -128,8 +128,8 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
           className="justify-center rounded-lg px-3 py-1.5"
           style={{ backgroundColor: `${getStatusColor(resource.estado)}33` }}>
           <AppText
-            className="text-sm font-semibold uppercase"
-            style={{ color: getStatusColor(resource.estado) }}>
+            className="font-semibold uppercase"
+            style={{ color: getStatusColor(resource.estado), fontSize: 14 }}>
             {getStatusText(resource.estado)}
           </AppText>
         </View>
@@ -139,7 +139,7 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
             className="flex-row items-center rounded-lg px-3 py-1.5"
             style={{ backgroundColor: `${colors.accent}33` }}>
             <TimesWatchedIcon />
-            <AppText className="ml-1 text-xs font-bold" style={{ color: colors.markerText }}>
+            <AppText className="ml-1 font-bold" style={{ color: colors.markerText, fontSize: 14 }}>
               {getConsumptionCount(resource)}x
             </AppText>
           </View>
@@ -151,8 +151,8 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
             style={{ backgroundColor: `${getDificultyColor(getDificulty(resource))}33` }}>
             <DificultyIcon color={getDificultyColor(getDificulty(resource))} />
             <AppText
-              className="text-semibold ml-1 text-xs"
-              style={{ color: getDificultyColor(getDificulty(resource)) }}>
+              className="text-semibold ml-1"
+              style={{ color: getDificultyColor(getDificulty(resource)), fontSize: 14 }}>
               {getDificultyText(getDificulty(resource))}
             </AppText>
           </View>

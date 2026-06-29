@@ -65,7 +65,7 @@ export const ReturnButton = ({ route, title, style, params, deleteSearchResults,
         activeOpacity={0.7}>
         <LeftArrowIcon color={colors.primaryText} />
       </TouchableOpacity>
-      <AppText className="flex-1 text-xl font-bold" style={{ color: colors.primaryText }} numberOfLines={1}>
+      <AppText className="flex-1 font-bold" style={{ color: colors.primaryText, fontSize: 20}} numberOfLines={1}>
         {title}
       </AppText>
     </View>

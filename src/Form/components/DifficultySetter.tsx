@@ -57,9 +57,9 @@ export const DifficultySetter = ({ difficulty, setDifficulty }: Props) => {
             }
             activeOpacity={0.7}>
             <AppText
-              className="text-center text-sm font-semibold"
+              className="text-center  font-semibold"
               style={
-                isSelected ? { color: getDifficultyColor(dif) } : { color: colors.secondaryText }
+                isSelected ? { color: getDifficultyColor(dif), fontSize: 14} : { color: colors.secondaryText, fontSize: 14}
               }>
               {getDiffLabel(dif)}
             </AppText>

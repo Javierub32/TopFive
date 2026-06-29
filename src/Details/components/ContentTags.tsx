@@ -56,11 +56,11 @@ export const ContentTags = ({ content, type, autor }: Props) => {
   return (
     <View className="mb-4 gap-1">
       <View>
-        <AppText className="text-3xl font-bold" style={{ color: colors.primaryText }}>
+        <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 24}}>
           {content.title || t('common.noTitle')}
         </AppText>
         {autor && (
-          <AppText className="text-base" style={{ color: colors.secondaryText }}>
+          <AppText className="text-base" style={{ color: colors.secondaryText, fontSize: 14 }}>
             {autor}
           </AppText>
         )}
@@ -71,7 +71,7 @@ export const ContentTags = ({ content, type, autor }: Props) => {
           <View
             className="justify-center rounded-lg px-3 py-1.5"
             style={{ backgroundColor: colors.surfaceButton }}>
-            <AppText className="text-sm font-semibold" style={{ color: colors.markerText }}>
+            <AppText className="text-sm font-semibold" style={{ color: colors.markerText, fontSize: 14 }}>
               {endedYear ? `${releaseYear} - ${endedYear}` : releaseYear}
             </AppText>
           </View>
@@ -81,7 +81,7 @@ export const ContentTags = ({ content, type, autor }: Props) => {
           <View
             className="flex-shrink rounded-lg px-3 py-1.5"
             style={{ backgroundColor: colors.surfaceButton }}>
-            <AppText className="text-sm" numberOfLines={1} style={{ color: colors.markerText }}>
+            <AppText className="text-sm" numberOfLines={1} style={{ color: colors.markerText, fontSize: 14 }}>
               {formatedGenres}
             </AppText>
           </View>
@@ -91,7 +91,7 @@ export const ContentTags = ({ content, type, autor }: Props) => {
           <View
             className="rounded-lg px-3 py-1.5"
             style={{ backgroundColor: `${colors.accent}1A` }}>
-            <AppText className="text-sm" style={{ color: colors.accent }}>
+            <AppText className="text-sm" style={{ color: colors.accent, fontSize: 14 }}>
               {formatedPlatforms}
             </AppText>
           </View>

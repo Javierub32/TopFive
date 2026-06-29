@@ -19,12 +19,12 @@ export const AuthorCard = ({ autor }: Props) => {
         <AuthorIcon />
         <AppText
           className="text-sm font-bold uppercase tracking-widest"
-          style={{ color: colors.markerText }}>
+          style={{ color: colors.markerText, fontSize: 12 }}>
           {t('details.author')}
         </AppText>
       </View>
       <View className="flex-1 items-center justify-center">
-        <AppText className="text-base font-semibold" style={{ color: colors.secondaryText }}>
+        <AppText className="text-base font-semibold" style={{ color: colors.secondaryText, fontSize: 14 }}>
           {autor}
         </AppText>
       </View>

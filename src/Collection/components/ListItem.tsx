@@ -91,12 +91,12 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
         {/* Título y contador */}
         <View className="flex-1">
           <AppText
-            className="text-lg font-bold leading-tight"
-            style={{ color: colors.primaryText }}
+            className=" font-bold leading-tight"
+            style={{ color: colors.primaryText, fontSize: 14 }}
             numberOfLines={1}>
             {list.nombre}
           </AppText>
-          <AppText className="text-sm" style={{ color: colors.secondaryText }}>
+          <AppText style={{ color: colors.secondaryText, fontSize: 12 }}>
             {list.totalElementos} {t('list.elements')}
           </AppText>
         </View>
@@ -129,7 +129,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
               setMenuListasAbierto(false);
             }}>
             <EditIcon style={{ marginRight: 8 }} color={colors.primaryText} />
-            <AppText className="text-m" style={{ color: colors.primaryText }}>
+            <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
               {t('list.editList')}
             </AppText>
           </TouchableOpacity>
@@ -142,7 +142,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
               handleAdd();
             }}>
             <PlusIcon style={{ marginRight: 8 }} color={colors.primaryText} />
-            <AppText className="text-m" style={{ color: colors.primaryText }}>
+            <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
               {t('list.addToList')}
             </AppText>
           </TouchableOpacity>
@@ -155,7 +155,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
               handleDelete();
             }}>
             <TrashIcon style={{ marginRight: 8 }} color={colors.error} />
-            <AppText className="text-m" style={{ color: colors.error }}>
+            <AppText style={{ color: colors.error, fontSize: 14 }}>
               {t('list.deleteList')}
             </AppText>
           </TouchableOpacity>
@@ -179,7 +179,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
           <View
             className="aspect-[2/3] w-[18%] items-center justify-center rounded-lg"
             style={{ backgroundColor: `${colors.placeholderText}20` }}>
-            <AppText className="text-sm font-bold" style={{ color: colors.secondaryText }}>
+            <AppText className="font-bold" style={{ color: colors.secondaryText, fontSize: 12 }}>
               +{list.totalElementos - 4}
             </AppText>
           </View>

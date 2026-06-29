@@ -115,7 +115,7 @@ export default function ProfileScreen() {
                   },
                 })
               }>
-              <AppText className="text-base font-semibold" style={{ color: colors.primaryText }}>
+              <AppText className="text-base font-semibold" style={{ fontSize: 14, color: colors.primaryText }}>
                 {t('settings.personalization.editProfile.title')}
               </AppText>
             </TouchableOpacity>
@@ -126,7 +126,7 @@ export default function ProfileScreen() {
               style={{ backgroundColor: `${colors.accent}33` }}
               activeOpacity={0.4}
               onPress={handleShare}>
-              <AppText className="text-base font-semibold" style={{ color: colors.primaryText }}>
+              <AppText className="text-base font-semibold" style={{ fontSize: 14, color: colors.primaryText }}>
                 {t('settings.account.share.title')}
               </AppText>
             </TouchableOpacity>

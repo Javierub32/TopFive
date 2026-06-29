@@ -67,7 +67,7 @@ export function NotificationItem({ user, status, myFollowStatus = 'none', handle
 					backgroundColor: isPendingFollow ? `${colors.secondary}20` : colors.accent,
 				}}
 				activeOpacity={0.7}>
-				<AppText className="text-sm font-medium" style={{ color: isPendingFollow ? colors.secondaryText : 'white' }}>
+				<AppText className="font-medium" style={{ color: isPendingFollow ? colors.secondaryText : 'white', fontSize: 12 }}>
 					{isPendingFollow ? 'Pendiente' : 'Seguir de vuelta'}
 				</AppText>
 			</TouchableOpacity>

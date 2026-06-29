@@ -22,7 +22,7 @@ export function RenderContent({ item, variant }: MediaItemProps) {
           resizeMode="cover"
         />
       </View>
-      <AppText className="mt-2 text-primaryText" numberOfLines={isVertical ? 2 : undefined}>
+      <AppText className="mt-2 text-primaryText" style={{ fontSize: 18 }} numberOfLines={isVertical ? 2 : undefined}>
         {item.title} {!isVertical && item.type ? ` (${item.type})` : ''}
       </AppText>
     </View>
@@ -42,10 +42,12 @@ export function RenderSong({ song }: { song: { id: string; title: string; artist
         />
       </View>
       <View className="flex-1 justify-center p-3">
-        <AppText className="text-base font-bold text-primaryText" numberOfLines={2}>
+        <AppText className="text-base font-bold text-primaryText" style={{ fontSize: 18 }} numberOfLines={2}>
           {song.title}
         </AppText>
-        <AppText className="mt-1 text-xs text-secondaryText">{song.artist}</AppText>
+        <AppText className="mt-1 text-xs text-secondaryText" style={{ fontSize: 12 }}>
+          {song.artist}
+        </AppText>
       </View>
     </View>
   );

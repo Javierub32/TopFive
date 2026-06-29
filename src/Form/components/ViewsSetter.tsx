@@ -21,8 +21,8 @@ export const ViewsSetter = ({ views, setViews }: Props) => {
       <View className="flex-row items-center gap-2">
         <TimesWatchedIcon color={colors.accent} />
         <AppText
-          className="text-sm font-bold uppercase tracking-widest"
-          style={{ color: colors.markerText }}>
+          className="font-bold uppercase tracking-widest"
+          style={{ color: colors.markerText, fontSize: 14 }}>
           {t('forms.views')}
         </AppText>
       </View>
@@ -45,8 +45,8 @@ export const ViewsSetter = ({ views, setViews }: Props) => {
           }}
           keyboardType="numeric"
           maxLength={4}
-          className="w-12 border-b pb-0 text-center text-lg font-bold"
-          style={{ color: colors.primaryText, borderBottomColor: colors.placeholderText }}
+          className="w-12 border-b pb-0 text-center font-bold"
+          style={{ color: colors.primaryText, borderBottomColor: colors.placeholderText, fontSize: 16 }}
           selectTextOnFocus={true}
         />
 

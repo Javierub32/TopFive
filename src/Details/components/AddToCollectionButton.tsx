@@ -38,7 +38,7 @@ export const AddToCollectionButton = ({ content, type }: Props) => {
       className="mt-4 flex-1 flex-row items-center justify-center rounded-xl py-4"
       style={{ backgroundColor: colors.primary }}>
       <UploadIcon className="mr-4" />
-      <AppText className="font-bold" style={{ color: colors.background }}>
+      <AppText className="font-bold" style={{ color: colors.background, fontSize: 14 }}>
         {t('details.addToCollection')}
       </AppText>
     </TouchableOpacity>

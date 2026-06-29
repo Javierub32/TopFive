@@ -51,11 +51,11 @@ export const TimeCard = ({ resource }: Props) => {
           style={{ backgroundColor: `${colors.accent}BF` }}>
           <View>
             <AppText
-              className="mb-1 text-sm font-medium uppercase tracking-widest"
-              style={{ color: colors.primaryText }}>
+              className="mb-1 font-medium uppercase tracking-widest"
+              style={{ color: colors.primaryText, fontSize: 14 }}>
               {t('details.totalReadingTime')}
             </AppText>
-            <AppText className="text-2xl font-bold" style={{ color: colors.primaryText }}>
+            <AppText className="text-2xl font-bold" style={{ color: colors.primaryText, fontSize: 14 }}>
               {readingTime}
             </AppText>
           </View>

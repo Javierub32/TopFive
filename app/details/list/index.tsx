@@ -64,20 +64,20 @@ export default function ListDetails() {
             {/* Textos */}
             <View className="flex-1 justify-center">
                 <AppText 
-                    className="text-2xl font-bold leading-tight mb-1" 
-                    style={{ color: colors.primaryText }}
+                    className=" font-bold leading-tight mb-1" 
+                    style={{ color: colors.primaryText, fontSize: 24 }}
                 >
                     {parsedListData?.nombre}
                 </AppText>
                 {parsedListData?.descripcion ? (
                     <AppText 
-                        className="text-sm leading-5" 
-                        style={{ color: colors.secondaryText }}
+                        className="leading-5" 
+                        style={{ color: colors.secondaryText, fontSize: 14 }}
                     >
                         {parsedListData?.descripcion}
                     </AppText>
                 ) : (
-                    <AppText className="text-xs italic" style={{ color: colors.placeholderText }}>
+                    <AppText className="italic" style={{ color: colors.placeholderText, fontSize: 14 }}>
                         Sin descripción
                     </AppText>
                 )}

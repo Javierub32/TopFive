@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import {
   View,
-  TextInput,
-  Text,
   Alert,
   TouchableOpacity,
   Platform,
@@ -18,12 +16,12 @@ import { useNotification } from 'context/NotificationContext';
 import { supabase } from 'lib/supabase';
 import {
   GoogleSignin,
-  isSuccessResponse,
-  statusCodes,
+  isSuccessResponse
 } from '@react-native-google-signin/google-signin';
-import * as Linking from 'expo-linking';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { useTranslation } from 'react-i18next';
+import { AppText } from 'components/AppText';
+import { AppTextInput } from 'components/AppTextInput';
 
 // Frases aleatorias con iconos - fuera del componente para mejor rendimiento
 const frasesConIconos = [
@@ -179,13 +177,13 @@ export default function Login() {
                 color={colors.primaryText}
               />
             </View>
-            <Text style={{ fontSize: 24, fontWeight: 'bold', color: colors.primaryText }}>
+            <AppText style={{ fontSize: 24, fontWeight: 'bold', color: colors.primaryText }}>
               {t('common.appName')}
-            </Text>
+            </AppText>
           </View>
 
           {/* Frase aleatoria */}
-          <Text
+          <AppText
             style={{
               fontSize: 14,
               marginBottom: 20,
@@ -195,16 +193,16 @@ export default function Login() {
               fontStyle: 'italic',
             }}>
             {t(fraseAleatoria.translationKey)}
-          </Text>
+          </AppText>
 
           <View
             className="rounded-3xl p-6 shadow-2xl"
             style={{ backgroundColor: colors.background }}>
             {/* Email Input */}
             <View className="mb-4">
-              <Text className="mb-1 ml-1 font-semibold" style={{ color: colors.primaryText }}>
+              <AppText className="mb-1 ml-1 font-semibold" style={{ fontSize: 14, color: colors.primaryText }}>
                 {t('login.email.title')}
-              </Text>
+              </AppText>
               <View
                 className="mb-3 flex-row items-center rounded-xl px-4 py-3"
                 style={{ backgroundColor: colors.surfaceButton }}>
@@ -213,7 +211,7 @@ export default function Login() {
                   size={24}
                   color={colors.secondaryText}
                 />
-                <TextInput
+                <AppTextInput
                   placeholder={t('login.email.placeholder')}
                   placeholderTextColor={colors.placeholderText}
                   value={email}
@@ -224,9 +222,9 @@ export default function Login() {
                   style={{ color: colors.primaryText, lineHeight: 17 }}
                 />
               </View>
-              <Text className="mb-1 ml-1 font-semibold" style={{ color: colors.primaryText }}>
+              <AppText className="mb-1 ml-1 font-semibold" style={{ fontSize: 14, color: colors.primaryText }}>
                 {t('login.password')}
-              </Text>
+              </AppText>
               <View
                 className="flex-row items-center rounded-xl px-4 py-3"
                 style={{ backgroundColor: colors.surfaceButton }}>
@@ -235,7 +233,7 @@ export default function Login() {
                   size={24}
                   color={colors.secondaryText}
                 />
-                <TextInput
+                <AppTextInput
                   placeholder="••••••••"
                   value={password}
                   onChangeText={setPassword}
@@ -243,6 +241,7 @@ export default function Login() {
                   placeholderTextColor={colors.placeholderText}
                   secureTextEntry={!showPassword}
                   style={{
+                    fontSize: 14,
                     flex: 1,
                     marginLeft: 12,
                     marginRight: 8,
@@ -266,9 +265,9 @@ export default function Login() {
                   onPress={() => router.push('/(auth)/forgot-password')}
                   disabled={loading}
                   className="items-end">
-                  <Text className="" style={{ color: colors.secondaryText }}>
+                  <AppText className="" style={{ fontSize: 14, color: colors.secondaryText }}>
                     {t('login.forgotPassword.title')}
-                  </Text>
+                  </AppText>
                 </TouchableOpacity>
               </View>
 
@@ -278,9 +277,9 @@ export default function Login() {
                   disabled={loading}
                   className="items-center overflow-hidden rounded-xl py-3.5 shadow-lg"
                   style={{ backgroundColor: colors.accent }}>
-                  <Text className="text-lg font-bold" style={{ color: colors.primaryText }}>
+                  <AppText className="text-lg font-bold" style={{ fontSize: 14, color: colors.primaryText }}>
                     {loading ? t('common.loading') : t('login.loginButton')}
-                  </Text>
+                  </AppText>
                 </TouchableOpacity>
               </View>
 
@@ -290,11 +289,11 @@ export default function Login() {
                     className="h-[1px] flex-1"
                     style={{ backgroundColor: colors.secondaryText, opacity: 0.3 }}></View>
 
-                  <Text
+                  <AppText
                     className="mx-4 text-sm font-medium"
-                    style={{ color: colors.secondaryText }}>
+                    style={{ fontSize: 14, color: colors.secondaryText }}>
                     o
-                  </Text>
+                  </AppText>
                   <View
                     className="h-[1px] flex-1"
                     style={{ backgroundColor: colors.secondaryText, opacity: 0.3 }}></View>
@@ -313,9 +312,9 @@ export default function Login() {
                       style={{ width: 24, height: 24, marginRight: 10 }}
                       resizeMode="contain"
                     />
-                    <Text className="text-lg font-bold" style={{ color: '#000000' }}>
+                    <AppText className="text-lg font-bold" style={{ fontSize: 14, color: '#000000' }}>
                       {t('login.loginWithGoogle')}
-                    </Text>
+                    </AppText>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -334,16 +333,16 @@ export default function Login() {
           </View>
 
           <View style={{ marginTop: 20, alignItems: 'center' }}>
-            <Text className="mb-2 text-base" style={{ color: colors.primaryText }}>
+            <AppText className="mb-2 text-base" style={{ fontSize: 14, color: colors.primaryText }}>
               {t('login.noAccount')}
-            </Text>
+            </AppText>
             <TouchableOpacity
               onPress={() => router.push('/(auth)/register')}
               className="rounded-full px-6 py-3"
               style={{ backgroundColor: `${colors.surfaceButton}80` }}>
-              <Text className="text-base font-semibold" style={{ color: colors.primaryText }}>
+              <AppText className="text-base font-semibold" style={{ fontSize: 14, color: colors.primaryText }}>
                 {t('login.signUpButton')}
-              </Text>
+              </AppText>
             </TouchableOpacity>
           </View>
         </View>

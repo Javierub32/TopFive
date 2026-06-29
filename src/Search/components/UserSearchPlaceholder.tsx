@@ -18,13 +18,13 @@ export const UserSearchPlaceholder = ({ loading }: UserSearchPlaceholderProps) =
 			</View>
 
 			{/* Texto Principal */}
-			<AppText className="mb-3 text-center text-3xl font-bold" style={{ color: colors.primaryText }}>
+			<AppText className="mb-3 text-center font-bold" style={{ color: colors.primaryText, fontSize: 28 }}>
 				Usuarios
 			</AppText>
 
 			{/* Texto Secundario (Instrucciones) */}
-			<AppText className="px-4 text-center" style={{ color: colors.secondaryText }}>
-				Realiza una búsqueda para buscar usuarios.
+			<AppText className="px-4 text-center" style={{ color: colors.secondaryText, fontSize: 14 }}>
+				Realiza una búsqueda para encontrar usuarios.
 			</AppText>
 		</View>
 	);

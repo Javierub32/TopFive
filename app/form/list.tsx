@@ -153,7 +153,7 @@ export default function ListForm() {
         </View>
 
         <View className="mb-5">
-          <AppText className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mb-2 ml-1 font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
             {t('forms.lists.listName')}
           </AppText>
           <AppTextInput
@@ -162,12 +162,11 @@ export default function ListForm() {
             value={formData.name}
             onChangeText={(text) => setFormData({ ...formData, name: text })}
             className="rounded-xl px-4 py-4"
-            style={{ color: colors.secondaryText, backgroundColor: colors.tabBarBackgroundColor }}
-          />
+            style={{ color: colors.secondaryText, backgroundColor: colors.tabBarBackgroundColor, fontSize: 16 }} />
         </View>
 
         <View className="mb-5">
-          <AppText className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mb-2 ml-1 font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
             {t('forms.lists.description')}
           </AppText>
           <AppTextInput
@@ -184,6 +183,7 @@ export default function ListForm() {
               paddingBottom: 12,
               paddingHorizontal: 12,
               minHeight: 120,
+              fontSize: 16,
             }}
             multiline
             numberOfLines={6}
@@ -191,7 +191,7 @@ export default function ListForm() {
         </View>
 
         <View className="mb-5">
-          <AppText className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mb-2 ml-1 font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
             {t('common.icon')}
           </AppText>
           <View className="flex-row flex-wrap justify-between">
@@ -217,7 +217,7 @@ export default function ListForm() {
         </View>
 
         <View className="mb-6">
-          <AppText className="mb-2 ml-1 text-lg font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="mb-2 ml-1 font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
             {t('common.colour')}
           </AppText>
           <View className="flex-row flex-wrap gap-2">

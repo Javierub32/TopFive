@@ -22,26 +22,26 @@ export const CollectionItem = ({ item, category, onPress }: any) => {
       <View className="flex-1 justify-between p-3">
         <View>
           <View className="flex-row items-start justify-between">
-            <AppText className="mr-2 flex-1 text-lg font-bold text-primaryText" numberOfLines={1}>
+            <AppText className="mr-2 flex-1 font-bold text-primaryText" style={{ fontSize: 14 }} numberOfLines={1}>
               {title}
             </AppText>
             {item.favorito && (
               <MaterialCommunityIcons name="heart" size={16} color={colors.error} />
             )}
           </View>
-          <AppText className="text-sm text-secondaryText">
+          <AppText className="text-sm text-secondaryText" style={{ fontSize: 14 }}>
             {new Date(item.fechacreacion).toLocaleDateString()}
           </AppText>
         </View>
         <View className="mt-2 flex-row items-center justify-between">
           <View className="border-primary/20 flex-row items-center rounded border bg-marker px-2 py-1">
             <MaterialCommunityIcons name="star" size={12} color="#fbbf24" />
-            <AppText className="ml-1 text-xs font-bold text-markerText">
+            <AppText className="ml-1 font-bold text-markerText" style={{ fontSize: 12 }}>
               {item.calificacion || 0}
             </AppText>
           </View>
           <View className={`rounded px-2 py-1 ${statusColor}`}>
-            <AppText className="text-[10px] font-bold uppercase text-primaryText">
+            <AppText className="font-bold uppercase text-primaryText" style={{ fontSize: 12 }}>
               {statusText}
             </AppText>
           </View>

@@ -75,15 +75,15 @@ export const NotificationModal = ({
           style={{ backgroundColor: colors.surfaceButton, zIndex: 1001 }}>
           {/* Título */}
           <AppText
-            className="mb-4 text-center text-2xl font-bold"
-            style={{ color: info ? colors.primaryText : success ? colors.success : colors.error }}>
+            className="mb-4 text-center font-bold"
+            style={{ color: info ? colors.primaryText : success ? colors.success : colors.error, fontSize: 20 }}>
             {title}
           </AppText>
 
           {/* Descripción */}
           <AppText
             className="mb-6 text-center text-base leading-6"
-            style={{ color: colors.secondaryText }}>
+            style={{ color: colors.secondaryText, fontSize: 16 }}>
             {description}
           </AppText>
 
@@ -100,7 +100,7 @@ export const NotificationModal = ({
                 activeOpacity={0.7}>
                 <AppText
                   className="text-center text-base font-semibold"
-                  style={{ color: colors.primaryText }}>
+                  style={{ color: colors.primaryText, fontSize: 16 }}>
                   {leftButtonText}
                 </AppText>
               </TouchableOpacity>
@@ -117,7 +117,7 @@ export const NotificationModal = ({
                 activeOpacity={0.7}>
                 <AppText
                   className="text-center text-base font-semibold"
-                  style={{ color: colors.primaryText }}>
+                  style={{ color: colors.primaryText, fontSize: 16 }}>
                   {rightButtonText}
                 </AppText>
               </TouchableOpacity>
@@ -138,7 +138,7 @@ export const NotificationModal = ({
           className="mx-4 rounded-2xl p-4 shadow-lg"
           style={{
             backgroundColor: colors.surfaceButton,
-            marginBottom: Math.max(insets.bottom + 16, 24),
+            marginBottom: Math.max(insets.bottom + 16, 60),
             shadowColor: colors.backgroundColor,
             shadowOpacity: 0.5,
             shadowRadius: 10,
@@ -146,7 +146,7 @@ export const NotificationModal = ({
               width: 0,
               height: 0,
             },
-            elevation: 10,
+            elevation: 100,
             borderTopWidth: Platform.OS === 'ios' ? 0 : 3.5,
             borderLeftWidth: Platform.OS === 'ios' ? 0 : 0.5,
             borderRightWidth: Platform.OS === 'ios' ? 0 : 0.5,
@@ -160,12 +160,13 @@ export const NotificationModal = ({
                 className="mb-2 text-lg font-bold"
                 style={{
                   color: info ? colors.primaryText : success ? colors.success : colors.error,
+                  fontSize: 16,
                 }}>
                 {title}
               </AppText>
 
               {/* Descripción */}
-              <AppText className="text-sm leading-5" style={{ color: colors.secondaryText }}>
+              <AppText className="leading-5" style={{ color: colors.secondaryText, fontSize: 14 }}>
                 {description}
               </AppText>
 
@@ -183,8 +184,8 @@ export const NotificationModal = ({
                       onPress={onLeftPress}
                       activeOpacity={0.7}>
                       <AppText
-                        className="text-center text-sm font-semibold"
-                        style={{ color: !highlightRight ? colors.background : colors.primaryText }}>
+                        className="text-center font-semibold"
+                        style={{ color: !highlightRight ? colors.background : colors.primaryText, fontSize: 14 }}>
                         {leftButtonText}
                       </AppText>
                     </TouchableOpacity>
@@ -201,8 +202,8 @@ export const NotificationModal = ({
                       onPress={onRightPress}
                       activeOpacity={0.7}>
                       <AppText
-                        className="text-center text-sm font-semibold"
-                        style={{ color: highlightRight ? colors.background : colors.primaryText }}>
+                        className="text-center font-semibold"
+                        style={{ color: highlightRight ? colors.background : colors.primaryText, fontSize: 14 }}>
                         {rightButtonText}
                       </AppText>
                     </TouchableOpacity>

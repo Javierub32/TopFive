@@ -44,21 +44,21 @@ export const SearchResultItem = ({ item, onPress, type }: SearchResultItemProps)
       {/* Información del Recurso */}
       <View className="flex-1 justify-center p-3 ">
         <AppText
-          className="mb-1 text-lg font-bold leading-tight"
-          style={{ color: colors.primaryText }}
+          className="mb-1 font-bold leading-tight"
+          style={{ color: colors.primaryText, fontSize: 16 }}
           numberOfLines={2}>
           {item.title}
         </AppText>
 
-        <AppText className="mb-2 text-sm" style={{ color: colors.secondaryText }} numberOfLines={1}>
+        <AppText className="mb-2 text-sm" style={{ color: colors.secondaryText, fontSize: 14 }} numberOfLines={1}>
           {item.artist}
         </AppText>
 
         {/* Fecha/Rating */}
         {item.date && item.rating && (
           <AppText
-            className="mb-2 text-sm"
-            style={{ color: colors.secondaryText }}
+            className="mb-2 "
+            style={{ color: colors.secondaryText, fontSize: 12 }}
             numberOfLines={1}>
             {item.date} | <FontAwesome5 name="star" size={16} color={colors.rating} solid={true} />{' '}
             {item.rating}
@@ -66,18 +66,18 @@ export const SearchResultItem = ({ item, onPress, type }: SearchResultItemProps)
         )}
         {item.date && !item.rating && (
           <AppText
-            className="mb-2 text-sm"
-            style={{ color: colors.secondaryText }}
+            className="mb-2 "
+            style={{ color: colors.secondaryText, fontSize: 12 }}
             numberOfLines={1}>
             {item.date}
           </AppText>
         )}
         {!item.date && item.rating && (
           <AppText
-            className="mb-2 text-sm"
-            style={{ color: colors.secondaryText }}
+            className="mb-2"
+            style={{ color: colors.secondaryText, fontSize: 12 }}
             numberOfLines={1}>
-            <FontAwesome5 name="star" size={16} color={colors.rating} solid={true} /> {item.rating}
+            <FontAwesome5 name="star" size={12} color={colors.rating} solid={true} /> {item.rating}
           </AppText>
         )}
 

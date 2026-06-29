@@ -27,16 +27,16 @@ export const ProgressCard = ({ progress, unit }: Props) => {
         <View className="flex-row items-center gap-2">
           <ProgressIcon />
           <AppText
-            className="text-sm font-bold uppercase tracking-widest"
-            style={{ color: colors.markerText }}>
+            className="font-bold uppercase tracking-widest"
+            style={{ color: colors.markerText, fontSize: 14 }}>
             {t('details.progress')}
           </AppText>
         </View>
         <View className="flex-row items-baseline">
-          <AppText className="text-xl font-bold" style={{ color: colors.primaryText }}>
+          <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 14 }}>
             {progress || 0}
           </AppText>
-          <AppText className="ml-1 text-xs" style={{ color: colors.markerText }}>
+          <AppText className="ml-1" style={{ color: colors.markerText, fontSize: 14 }}>
             {unit}
           </AppText>
         </View>

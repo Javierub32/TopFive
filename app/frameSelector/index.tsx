@@ -237,6 +237,25 @@ export default function FrameSelectorScreen() {
           </TouchableOpacity>
         </View>
 
+        <TouchableOpacity
+          onPress={handleActionButton}
+          disabled={saving || loading || isWatchingAd}
+          className="mt-[-20px] flex-row items-center justify-center gap-2 rounded-xl py-4 shadow-lg"
+          style={{ backgroundColor: colors.primary }}
+          activeOpacity={0.8}>
+          {!userOwnsFrame && !loading && (
+            <MaterialCommunityIcons
+              name="play-circle-outline"
+              size={24}
+              color={colors.background}
+            />
+          )}
+
+          <AppText className="text-center font-bold" style={{ color: colors.background, fontSize: 18 }}>
+            {saving || isWatchingAd ? 'Cargando...' : userOwnsFrame ? 'Guardar cambios' : 'Obtener'}
+          </AppText>
+        </TouchableOpacity>
+
         <View />
     </Screen>
   );
