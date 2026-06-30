@@ -1,5 +1,5 @@
 // app/details/list/index.tsx
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useCollection } from 'context/CollectionContext';
 import { useLocalSearchParams } from 'expo-router';
 import { useListsDetails } from '@/Collection/hooks/useListsDetails';
