@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, TextInput, TouchableOpacity, Text } from 'react-native';    
+import { View, TouchableOpacity } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
 import { SearchIcon } from 'components/Icons';
-import {AppTextInput} from 'components/AppTextInput';
+import { AppTextInput } from 'components/AppTextInput';
+import { useTranslation } from 'react-i18next';
 
 interface SearchBarProps {
   value: string;
@@ -10,32 +10,31 @@ interface SearchBarProps {
   onSearch: () => void;
 }
 
-export function UserSearchBar({
-  value,
-  onChangeText,
-  onSearch,
-}: SearchBarProps) {
-
+export function UserSearchBar({ value, onChangeText, onSearch }: SearchBarProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <View className="relative z-50">
-      <View className="h-14 flex-row items-center rounded-lg border shadow-lg" style={{ borderColor: colors.accent, backgroundColor: colors.surfaceButton }} >
+      <View
+        className="h-14 flex-row items-center rounded-lg border shadow-lg"
+        style={{ borderColor: colors.accent, backgroundColor: colors.surfaceButton }}>
         {/* Icono Lupa */}
-        {<TouchableOpacity 
-          className="justify-center pl-3 py-2"
-          onPress={onSearch}
-          activeOpacity={0.7}
-          hitSlop={{top: 6, bottom: 6, left: 6, right: 6}}
-        >
-          <SearchIcon color={colors.secondaryText}/>
-        </TouchableOpacity>}
+        {
+          <TouchableOpacity
+            className="justify-center py-2 pl-3"
+            onPress={onSearch}
+            activeOpacity={0.7}
+            hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}>
+            <SearchIcon color={colors.secondaryText} />
+          </TouchableOpacity>
+        }
 
         {/* Input de texto */}
         <AppTextInput
-          className="h-full flex-1 px-3 text-base overflow-hidden"
-          style={{ color: colors.primaryText, lineHeight: 17, maxHeight:17, fontSize: 14 }}
-          placeholder={`Busca un usuario...`}
+          className="h-full flex-1 overflow-hidden px-3 text-base"
+          style={{ color: colors.primaryText, lineHeight: 17, maxHeight: 17, fontSize: 14 }}
+          placeholder={t('search.userSearchBarPlaceholder')}
           placeholderTextColor={colors.placeholderText}
           value={value}
           onChangeText={onChangeText}

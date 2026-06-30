@@ -3,6 +3,7 @@ import { useNotification } from 'context/NotificationContext';
 import { router } from 'expo-router';
 import { supabase } from 'lib/supabase';
 import { useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
 
 export const useFrame = () => {
   const { user } = useAuth();
@@ -10,6 +11,7 @@ export const useFrame = () => {
   const [saving, setSaving] = useState(false);
   const [userFrames, setUserFrames] = useState<string[]>([]);
   const { showNotification } = useNotification();
+  const { t } = useTranslation();
 
   const handleSaveFrame = async (selectedFrameCode: string) => {
     if (!user) return;
@@ -31,8 +33,8 @@ export const useFrame = () => {
       if (error) throw error;
 
       showNotification({
-        title: '¡Éxito!',
-        description: 'Tu marco de perfil ha sido actualizado.',
+        title: t('common.success'),
+        description: t('frameSelector.updatedNotification'),
         isChoice: false,
         delete: false,
         success: true,
@@ -42,8 +44,8 @@ export const useFrame = () => {
     } catch (error) {
       console.error('Error al guardar el marco:', error);
       showNotification({
-        title: 'Error',
-        description: 'No se pudo actualizar el marco. Por favor, inténtalo de nuevo.',
+        title: t('common.error'),
+        description: t('frameSelector.errorUpdatingNotification'),
         isChoice: false,
         delete: false,
         success: false,
@@ -80,8 +82,8 @@ export const useFrame = () => {
     } catch (error) {
       console.error('Error al cargar los marcos:', error);
       showNotification({
-        title: 'Error',
-        description: 'No se pudieron cargar los marcos del usuario. Por favor, inténtalo de nuevo.',
+        title: t('common.error'),
+        description: t('frameSelector.errorLoadingNotification'),
         isChoice: false,
         delete: false,
         success: false,
@@ -118,8 +120,8 @@ export const useFrame = () => {
       setUserFrames(prev => [...prev, frameCode]);
 
       showNotification({
-        title: '¡Marco desbloqueado!',
-        description: 'Has obtenido un nuevo marco para tu perfil.',
+        title: t('frameSelector.unlockedNotificationTitle'),
+        description: t('frameSelector.unlockedNotificationDescription'),
         isChoice: false,
         delete: false,
         success: true,
@@ -128,8 +130,8 @@ export const useFrame = () => {
     } catch (error) {
       console.error('Error al desbloquear el marco:', error);
       showNotification({
-        title: 'Error',
-        description: 'No se pudo desbloquear el marco. Inténtalo de nuevo.',
+        title: t('common.error'),
+        description: t('frameSelector.errorUnlockingNotification'),
         isChoice: false,
         delete: false,
         success: false,
