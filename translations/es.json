@@ -417,8 +417,6 @@
         "savingError": "Error al guardar.",
         "updatingSuccessDescription": "Has actualizado {{titulo}} en tu colección.",
         "savingSuccessDescription": "Has añadido {{titulo}} a tu colección.",
-
-
         "book":{
             "invalidPages": "Número de páginas no válido.",
             "invalidPagesDescription": "El número de páginas no puede ser mayor a 3031. Por favor, ingresa un número válido.",
@@ -448,12 +446,14 @@
         "serie": {
             "updatingErrorDescription": "Hubo un problema al actualizar la serie. Inténtalo de nuevo.",
             "alreadyInCollection": "Esta serie ya está en tu colección.",
-            "savingErrorDescription": "Hubo un problema al guardar la serie. Inténtalo de nuevo."
+            "savingErrorDescription": "Hubo un problema al guardar la serie. Inténtalo de nuevo.",
+            "serieDetails": "Detalles de la serie"
         },
         "albums": {
             "updatingErrorDescription": "Hubo un problema al actualizar el álbum. Inténtalo de nuevo.",
             "alreadyInCollection": "Este álbum ya está en tu colección.",
-            "savingErrorDescription": "Hubo un problema al guardar el álbum. Inténtalo de nuevo."
+            "savingErrorDescription": "Hubo un problema al guardar el álbum. Inténtalo de nuevo.",
+            "albumDetails": "Detalles del álbum"
         },
         "addToList": "Añadir a {{listName}}",
         "list": "lista",
@@ -466,7 +466,8 @@
             "listName": "Nombre de la lista",
             "listNamePlaceholder": "Ej: Películas imprescindibles",
             "description": "Descripción",
-            "descriptionPlaceholder": "Describe el contenido de esta lista..."
+            "descriptionPlaceholder": "Describe el contenido de esta lista...",
+            "listDetails": "Detalles de la lista"
         },
         "ready": "Listo",
         "lastTime": "Última vez",
