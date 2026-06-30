@@ -30,7 +30,7 @@ export const TopFivePlaceholder = ({ category, loading }: Props) => {
       <AppText
         className="mb-3 text-center font-bold"
         style={{ color: colors.primaryText, fontSize: 24 }}>
-        {t('topFiveSelector.noContentDescription', { category: categoryLabel.toLowerCase() })}
+        {t('topFiveSelector.noContentTitle', { category: categoryLabel.toLowerCase() })}
       </AppText>
 
       {/* Texto Secundario (Instrucciones) */}
