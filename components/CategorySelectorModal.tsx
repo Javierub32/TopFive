@@ -67,8 +67,9 @@ export const CategorySelectorModal = ({
           </AppText>
 
           <View className="flex-row items-center justify-around">
-            {categories.map((cat) => {
+            {categories.map((cat, index) => {
               const Icon = cat.icon;
+              const colorFondo = colors[`ground${index + 1}`];
               return (
                 <TouchableOpacity
                   key={cat.type}
@@ -77,10 +78,10 @@ export const CategorySelectorModal = ({
                   <View
                     className="mb-2 h-14 w-14 items-center justify-center rounded-full "
                     style={{
-                      backgroundColor: `${colors[`ground${categories.indexOf(cat) + 1}`]}26`,
+                      backgroundColor: `${colorFondo}26`,
                       borderWidth: 0,
                     }}>
-                    <Icon size={24} color={`${colors[`ground${categories.indexOf(cat) + 1}`]}FF`} />
+                    <Icon size={24} color={`${colorFondo}FF`} />
                   </View>
                   <AppText
                     className="mb-10 text-center"
