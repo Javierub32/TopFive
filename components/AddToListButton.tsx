@@ -32,7 +32,7 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
       console.error(error);
       //Alert.alert('Error', error.message || 'No se pudo añadir a la lista.');
       showNotification({
-        title: 'Error',
+        title: t('common.error'),
         description: error.message || t('components.errorAddToList'),
         isChoice: false,
         delete: false,
