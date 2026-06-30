@@ -1,4 +1,4 @@
-import { View, FlatList, Pressable } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { Screen } from 'components/Screen';
 import { UserSearchBar } from '@/Search/components/UserSearchBar';
 import { useSearchUser } from '@/Search/hooks/useSearchUser';
@@ -8,71 +8,69 @@ import { router } from 'expo-router';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { ReturnButton } from 'components/ReturnButton';
-import { useSearch } from 'context/SearchContext';
+import { useTranslation } from 'react-i18next';
 
 export default function SearchhScreen() {
-  const { busqueda, setBusqueda, resultados, loading, handleSearch, handleLoadMore } = useSearchUser();
-
-  const { clearUserSearch} = useSearch();
-  
+  const { busqueda, setBusqueda, resultados, loading, handleSearch, handleLoadMore } =
+    useSearchUser();
+  const { t } = useTranslation();
 
   // Loading inicial (pantalla completa solo si es la primera búsqueda)
   if (loading && resultados.length === 0) {
-	return (
-	  <Screen>
-		<ThemedStatusBar />
-		<View className="flex-1 px-4 pt-6">
-			<ReturnButton route='back' title='Usuarios' style='mb-8'/>
-			<UserSearchBar value={busqueda} onChangeText={setBusqueda} onSearch={handleSearch} />
-			<View className="flex-1 justify-center items-center">
-				 <LoadingIndicator />
-			</View>
-		</View>
-	  </Screen>
-	);
+    return (
+      <Screen>
+        <ThemedStatusBar />
+        <View className="flex-1 px-4 pt-6">
+          <ReturnButton route="back" title={t('search.usersTitle')} style="mb-8" />
+          <UserSearchBar value={busqueda} onChangeText={setBusqueda} onSearch={handleSearch} />
+          <View className="flex-1 items-center justify-center">
+            <LoadingIndicator />
+          </View>
+        </View>
+      </Screen>
+    );
   }
-  
-  return (
-	<Screen>
-	  <ThemedStatusBar/>
-	  <View className="flex-1 px-4 pt-6">
-		<ReturnButton route='back' title='Usuarios' style='mb-6' deleteSearchResults={true}/>
-		<UserSearchBar 
-			value={busqueda} 
-			onChangeText={setBusqueda} 
-			onSearch={handleSearch} 
-		/>
 
-		{resultados.length > 0 ? (
-		  <FlatList
-			className="-z-10 flex-1" 
-			data={resultados}
-			keyExtractor={(item) => item.id}
-			renderItem={({ item }) => (
-			  <UserResultItem
-				item={item}
-				onPress={() =>
-				  router.push({
-					pathname: 'details/user/',
-					params: { username: item.username },
-				  })
-				}
-			  />
-			)}
-			// Umbral para cargar más antes de llegar al final
-			onEndReachedThreshold={0.5} 
-			onEndReached={handleLoadMore}
-			contentContainerStyle={{ paddingBottom: 40, paddingTop: 10 }}
-			// Loader inferior pequeño para paginación
-			ListFooterComponent={() => 
-				loading ? <LoadingIndicator /> : null
-			}
-			showsVerticalScrollIndicator={false}
-		  />
-		) : (
-		  <UserSearchPlaceholder loading={loading} />
-		)}
-	  </View>
-	</Screen>
+  return (
+    <Screen>
+      <ThemedStatusBar />
+      <View className="flex-1 px-4 pt-6">
+        <ReturnButton
+          route="back"
+          title={t('search.usersTitle')}
+          style="mb-6"
+          deleteSearchResults={true}
+        />
+        <UserSearchBar value={busqueda} onChangeText={setBusqueda} onSearch={handleSearch} />
+
+        {resultados.length > 0 ? (
+          <FlatList
+            className="-z-10 flex-1"
+            data={resultados}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <UserResultItem
+                item={item}
+                onPress={() =>
+                  router.push({
+                    pathname: 'details/user/',
+                    params: { username: item.username },
+                  })
+                }
+              />
+            )}
+            // Umbral para cargar más antes de llegar al final
+            onEndReachedThreshold={0.5}
+            onEndReached={handleLoadMore}
+            contentContainerStyle={{ paddingBottom: 40, paddingTop: 10 }}
+            // Loader inferior pequeño para paginación
+            ListFooterComponent={() => (loading ? <LoadingIndicator /> : null)}
+            showsVerticalScrollIndicator={false}
+          />
+        ) : (
+          <UserSearchPlaceholder loading={loading} />
+        )}
+      </View>
+    </Screen>
   );
 }

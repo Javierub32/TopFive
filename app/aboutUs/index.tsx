@@ -16,7 +16,7 @@ export default function AboutUsScreen() {
 
   return (
     <Screen>
-      <ReturnButton route="back" title="Sobre nosotros" />
+      <ReturnButton route="back" title={t('settings.legal.aboutUs.title')} />
 
       <ScrollView
         className="flex-1 px-6 pt-4"
@@ -28,7 +28,9 @@ export default function AboutUsScreen() {
           {t('aboutUs.creditsAndLicenses')}
         </AppText>
 
-        <AppText className="mb-8 text-center text-base" style={{ color: colors.secondaryText, fontSize: 14 }}>
+        <AppText
+          className="mb-8 text-center text-base"
+          style={{ color: colors.secondaryText, fontSize: 14 }}>
           {t('aboutUs.creditsDescription')}
         </AppText>
 

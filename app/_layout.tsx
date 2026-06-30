@@ -16,6 +16,7 @@ import { NotificationModal } from 'components/NotificationModal';
 import { AdsConsent, AdsConsentStatus } from 'lib/adsConsent';
 import { registerForPushNotificationsAsync } from 'lib/pushNotifications';
 import { FontSizeProvider } from 'context/FontSizeContext';
+import { useTranslation } from 'react-i18next';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,6 +26,7 @@ function InitialLayout() {
   const router = useRouter();
   const [appIsReady, setAppIsReady] = useState(false);
   const { showNotification, hideNotification, visible, config } = useNotification();
+  const { t } = useTranslation();
 
   useEffect(() => {
     async function prepare() {
@@ -80,9 +82,9 @@ function InitialLayout() {
   }, [appIsReady]);
 
   useEffect(() => {
-	if (appIsReady && session) {
-		registerForPushNotificationsAsync(session.user.id);
-	}
+    if (appIsReady && session) {
+      registerForPushNotificationsAsync(session.user.id);
+    }
   }, [appIsReady, session]);
 
   useEffect(() => {
@@ -98,7 +100,7 @@ function InitialLayout() {
         const { data, error } = await query;
 
         if (error || !data) return;
- 
+
         const remoteVersion =
           Platform.OS === 'android' ? (data as any).version_android : (data as any).version;
         const localVersion = Constants.expoConfig?.version || Constants.nativeAppVersion || '1.0.0';
@@ -118,11 +120,10 @@ function InitialLayout() {
 
         if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'android') {
           showNotification({
-            title: 'Actualización disponible',
-            description:
-              'Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades.',
+            title: t('layout.updateAvailableTitle'),
+            description: t('layout.updateAvailableDescription'),
             isChoice: true,
-            rightButtonText: 'Actualizar',
+            rightButtonText: t('common.update'),
             onRightPress: () => {
               hideNotification();
               Linking.openURL(
@@ -136,11 +137,10 @@ function InitialLayout() {
         }
         if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'ios') {
           showNotification({
-            title: 'Actualización disponible',
-            description:
-              'Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades.',
+            title: t('layout.updateAvailableTitle'),
+            description: t('layout.updateAvailableDescription'),
             isChoice: true,
-            rightButtonText: 'Actualizar',
+            rightButtonText: t('common.update'),
             onRightPress: () => {
               hideNotification();
               Linking.openURL('https://apps.apple.com/es/app/topfive/id6761102319');
