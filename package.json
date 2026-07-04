@@ -18,7 +18,7 @@
     "@supabase/supabase-js": "^2.86.0",
     "base64-arraybuffer": "^1.0.2",
     "dayjs": "^1.11.20",
-    "expo": "~54.0.33",
+    "expo": "~54.0.35",
     "expo-apple-authentication": "~8.0.8",
     "expo-build-properties": "~1.0.10",
     "expo-camera": "~17.0.9",
