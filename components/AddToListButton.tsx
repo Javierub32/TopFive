@@ -12,13 +12,17 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const { showNotification } = useNotification();
+  
   const handleListSelect = async (listId: string, listType: CollectionType) => {
     setModalVisible(false);
     setLoading(true);
     try {
+      let exactType = listType;
+      if (listType === 'AUDIOVISUAL') {
+        exactType = resourceCategory === 'serie' ? 'SERIE' : 'PELICULA';
+      }
       const message = await listServices.addItemToList(listId, resourceId, listType);
       const header = message.includes('ya está') ? 'Atención' : 'Éxito';
-      //Alert.alert(header, message);
       showNotification({
         title: header,
         description: message,
@@ -28,7 +32,6 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
       });
     } catch (error: any) {
       console.error(error);
-      //Alert.alert('Error', error.message || 'No se pudo añadir a la lista.');
       showNotification({
         title: 'Error',
         description: error.message || 'No se pudo añadir a la lista.',
@@ -56,6 +59,7 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         resourceCategory={resourceCategory}
+        resourceId={resourceId}
         onSelect={handleListSelect}
       />
     </>
