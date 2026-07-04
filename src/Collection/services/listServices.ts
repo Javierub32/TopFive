@@ -116,7 +116,14 @@ export const listServices = {
       .single();
 
     if (existingCheck.data) {
-      return 'El ítem ya está en la lista.';
+      const { error } = await supabase
+        .from(tableName)
+        .delete()
+        .eq('coleccionid', listId)
+        .eq(resourceColumn, itemId);
+
+      if (error) throw error;
+      return 'Se ha eliminado correctamente de la lista.';
     }
 
     const { error } = await supabase

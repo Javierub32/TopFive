@@ -22,13 +22,12 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
         exactType = resourceCategory === 'serie' ? 'SERIE' : 'PELICULA';
       }
       const message = await listServices.addItemToList(listId, resourceId, listType);
-      const header = message.includes('ya está') ? 'Atención' : 'Éxito';
       showNotification({
-        title: header,
+        title: 'Éxito',
         description: message,
         isChoice: false,
         delete: false,
-        success: !message.includes('ya está'),
+        success: true,
       });
     } catch (error: any) {
       console.error(error);
