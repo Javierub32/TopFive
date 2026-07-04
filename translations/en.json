@@ -28,180 +28,180 @@
         "update": "Update"
     },
     "status": {
-        "title": "Estado",
-        "pending": "Pendiente",
-        "inProgress": "En curso",
-        "completed": "Completado",
-        "reading": "Leyendo",
-        "watching": "Viendo",
-        "listening": "Escuchando",
-        "playing": "Jugando"
+        "title": "Status",
+        "pending": "Pending",
+        "inProgress": "In Progress",
+        "completed": "Completed",
+        "reading": "Reading",
+        "watching": "Watching",
+        "listening": "Listening",
+        "playing": "Playing"
     },
     "categories": {
-        "books": "Libros",
+        "books": "Books",
         "series": "Series",
-        "films": "Películas",
-        "videogames": "Videojuegos",
-        "albums": "Álbumes"
+        "films": "Films",
+        "videogames": "Video Games",
+        "albums": "Albums"
     },
     "category": {
-        "book": "Libro",
-        "serie": "Serie",
-        "film": "Película",
-        "videogame": "Videojuego",
-        "album": "Álbum"
+        "book": "Book",
+        "serie": "Series",
+        "film": "Film",
+        "videogame": "Video Game",
+        "album": "Album"
     },
     "languages":{
-        "es": "Español",
-        "en": "Inglés"
+        "es": "Spanish",
+        "en": "English"
     },
     "fontsizes":{
-        "small": "Pequeño",
-        "medium": "Mediano",
-        "large": "Grande"
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large"
     },
     "themes":{
-        "dark": "Oscuro",
-        "light": "Claro",
-        "system": "Sistema"
+        "dark": "Dark",
+        "light": "Light",
+        "system": "System"
     },
     "tabs":{
-        "home": "Inicio",
-        "users": "Usuarios",
-        "lists": "Listas",
-        "search": "Búsqueda",
-        "library": "Mi Biblioteca"
+        "home": "Home",
+        "users": "Users",
+        "lists": "Lists",
+        "search": "Search",
+        "library": "My Library"
     },
     "settings":{
-        "title": "Configuración",
+        "title": "Settings",
         "personalization": {
-            "title":"Personalización",
+            "title":"Customize",
             "editProfile": {
-                "title": "Editar perfil",
-                "username": "Nombre de usuario",
-                "description": "Descripción"
+                "title": "Edit profile",
+                "username": "Username",
+                "description": "Description"
             },
             "changeTheme": {
-                "title": "Cambiar tema",
-                "darkMode": "Oscuro",
-                "lightMode": "Claro",
-                "systemMode": "Sistema"
+                "title": "Change theme",
+                "darkMode": "Dark",
+                "lightMode": "Light",
+                "systemMode": "System"
             },
-            "changeLanguage": "Cambiar idioma",
-            "changeFontSize": "Cambiar tamaño de fuente",
-            "editPhoto" : "Editar foto y avatar"
+            "changeLanguage": "Change language",
+            "changeFontSize": "Change font size",
+            "editPhoto" : "Edit photo and avatar"
         },
         "account": {
-            "title": "Cuenta",
+            "title": "Account",
             "share": {
-                "title": "Compartir perfil",
-                "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}"
+                "title": "Share profile",
+                "shareMessage": "Check out my profile on TopFive!\n{{url}}"
             },
             "logOut": {
-                "title": "Cerrar sesión",
-                "alertTitle": "Confirmar cierre de sesión",
-                "alertDescription": "¿Estás seguro de que deseas cerrar sesión",
-                "alertConfirmation": "Cerrar sesión"
+                "title": "Log out",
+                "alertTitle": "Confirm logout",
+                "alertDescription": "Are you sure you want to log out?",
+                "alertConfirmation": "Log out"
             },
             "deleteAccount": {
-                "title": "Eliminar cuenta",
+                "title": "Delete account",
                 "firstAlert":{
-                    "alertTitle": "Confirmar eliminación",
-                    "alertDescription": "¿Estás seguro de que deseas eliminar la cuenta? Esta acción no se puede deshacer",
-                    "alertConfirmation": "Eliminar" 
+                    "alertTitle": "Confirm deletion",
+                    "alertDescription": "Are you sure you want to delete your account? This action cannot be undone.",
+                    "alertConfirmation": "Delete"
                 },
                 "secondAlert":{
-                    "alertTitle": "Última confirmación",
-                    "alertDescription": "Esta es tu última oportunidad para cancelar. ¿Realmente deseas eliminar tu cuenta?",
-                    "alertConfirmation": "Eliminar"
+                    "alertTitle": "Last confirmation",
+                    "alertDescription": "This is your last chance to cancel. Do you really want to delete your account?",
+                    "alertConfirmation": "Delete"
                 } 
             }
         }, 
         "legal": {
-            "title": "Soporte y legal",
-            "sendFeed": "Enviar feedback",
+            "title": "Support and legal",
+            "sendFeed": "Send feedback",
             "aboutUs": {
-                "title": "Sobre nosotros",
-                "creditsTitle": "Créditos y Licencias",
-                "creditsDescription": "Esta aplicación utiliza datos de las siguientes fuentes",
+                "title": "About us",
+                "creditsTitle": "Credits and Licenses",
+                "creditsDescription": "This application uses data from the following sources",
                 "filmsCard":{
-                    "description": "Este producto utiliza la API de TMDB pero no está certificada por TMDB.",
-                    "link": "Visitar TMDB"
+                    "description": "This product uses the TMDB API but is not endorsed or certified by TMDB.",
+                    "link": "Visit TMDB"
                 },
                 "seriesCard": {
-                    "description": "Datos proporcionados por TVMaze. Licenciado bajo CC BY-SA 4.0.",
-                    "link": "Visitar TVMaze"
+                    "description": "Data provided by TVMaze. Licensed under CC BY-SA 4.0.",
+                    "link": "Visit TVMaze"
                 },
                 "videogamesCard": {
-                    "description": "Información de videojuegos provista por IGDB.",
-                    "link": "Visitar IGDB"
+                    "description": "Video game information provided by IGDB.",
+                    "link": "Visit IGDB"
                 }, 
                 "albumsCard":{
-                    "description": "Datos proporcionados por Discogs. Este producto utiliza la API de Discogs pero no está certificada por Discogs.",
-                    "link": "Visitar Discogs"
+                    "description": "Data provided by Discogs. This product uses the Discogs API but is not endorsed or certified by Discogs.",
+                    "link": "Visit Discogs"
                 },
                 "booksCard":{
-                    "description": "Datos proporcionados por OpenLibrary.",
-                    "link": "Visitar OpenLibrary"
+                    "description": "Data provided by OpenLibrary.",
+                    "link": "Visit OpenLibrary"
                 }
             },
-            "privacy": "Política de privacidad",
-            "adsPriv": "Privacidad de anuncios"
+            "privacy": "Privacy policy",
+            "adsPriv": "Advertisement privacy"
         },
         "errors": {
             "privacyError":{
-                "description": "El formulario de privacidad no está disponible en tu región."
+                "description": "The privacy form is not available in your region."
             }
         }
 
     },
     "login":{
         "loginSentences": {
-            "1": "  Tu butaca reservada te espera.",
-            "2": "  Tu inventario de entretenimiento, en un solo lugar.",
-            "3": "  Marca tu página. Guarda tu mundo.",
-            "4": "  Tu vida, tu ranking, tu TopFive.",
-            "5": "  Tu mixtape definitiva está aquí."
+            "1": "  There's a seat waiting for you.",
+            "2": "  Your entertainment inventory, in one place.",
+            "3": "  Mark your page. Save your world.",
+            "4": "  Your life, your ranking, your TopFive.",
+            "5": "  Your definitive mixtape is here."
         },
         "loginNotification": {
-            "title": "¡Bienvenido!",
-            "description": "Sesión iniciada correctamente."
+            "title": "Welcome!",
+            "description": "You have been logged in successfully."
         },
         "email": {
-            "title": "Correo electrónico",
-            "placeholder": "tu@correo.com"
+            "title": "Email",
+            "placeholder": "you@email.com"
         },
-        "password": "Contraseña",
+        "password": "Password",
         "forgotPassword": {
-            "title": "¿Olvidaste tu contraseña?",
-            "subtitle": "Ingrese su correo para restablecer su contraseña.",
-            "emailNotRegistered": "El correo no está registrado. Cree una cuenta o verifique el email ingresado.",
-            "emailSent": "Recibirás un email con instrucciones para restablecer tu contraseña.",
-            "errorEmailSent": "No se pudo enviar el correo de restablecimiento. Por favor, inténtalo de nuevo."
+            "title": "Forgot your password?",
+            "subtitle": "Enter your email to reset your password.",
+            "emailNotRegistered": "The email is not registered. Create an account or verify the email entered.",
+            "emailSent": "You will receive an email with instructions to reset your password.",
+            "errorEmailSent": "Could not send the reset email. Please try again."
         },
-        "loginButton": "Iniciar sesión",
-        "loginWithGoogle": "Iniciar sesión con Google",
-        "loginWithApple": "Iniciar sesión con Apple",
-        "noAccount": "¿No tienes una cuenta?",
-        "signUpButton": "Regístrate aquí",
+        "loginButton": "Sign in",
+        "loginWithGoogle": "Sign in with Google",
+        "loginWithApple": "Sign in with Apple",
+        "noAccount": "Don't have an account?",
+        "signUpButton": "Sign up here",
         "signUp": {
-            "subtitle": "Crea tu cuenta",
-            "username": "Nombre de usuario",
-            "usernamePlaceholder": "Tu nombre de usuario",
-            "email": "Correo electrónico",
-            "emailPlaceholder": "tu@correo.com",
-            "password": "Contraseña",
-            "confirmPassword": "Confirmar contraseña",
-            "signUpButton": "Registrarse",
-            "alreadyHaveAccount": "¿Ya tienes una cuenta?",
-            "loginButton": "Volver al inicio de sesión",
+            "subtitle": "Create your account",
+            "username": "Username",
+            "usernamePlaceholder": "Your username",
+            "email": "Email",
+            "emailPlaceholder": "you@email.com",
+            "password": "Password",
+            "confirmPassword": "Confirm Password",
+            "signUpButton": "Sign up",
+            "alreadyHaveAccount": "Already have an account?",
+            "loginButton": "Back to login",
             "success": {
-                "title": "Cuenta creada",
-                "description": "Tu cuenta ha sido creada exitosamente. \n Revisa tu correo y confirma tu cuenta."
+                "title": "Account created",
+                "description": "Your account has been created successfully. \n Check your email and confirm your account."
             },
             "errors": {
-                "passwordMismatch": "Las contraseñas no coinciden. Por favor, inténtalo de nuevo.",
-                "general": "Hubo un error al crear tu cuenta."
+                "passwordMismatch": "The passwords do not match. Please try again.",
+                "general": "There was an error creating your account."
             }
         },
         "resetPassword": {
