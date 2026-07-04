@@ -7,12 +7,14 @@ import { useTheme } from 'context/ThemeContext';
 import { AddToListModal } from '@/Collection/components/AddToListModal';
 import { CollectionType, listServices } from '@/Collection/services/listServices';
 import { useNotification } from 'context/NotificationContext';
+import { useTranslation } from 'react-i18next';
 export function AddToListButton({ resourceCategory, resourceId }: any) {
   const { colors } = useTheme();
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const { showNotification } = useNotification();
   
+  const { t } = useTranslation();
   const handleListSelect = async (listId: string, listType: CollectionType) => {
     setModalVisible(false);
     setLoading(true);
@@ -22,6 +24,8 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
         exactType = resourceCategory === 'serie' ? 'SERIE' : 'PELICULA';
       }
       const message = await listServices.addItemToList(listId, resourceId, listType);
+      const header = message.includes('ya está') ? t('common.attention') : t('common.success');
+      //Alert.alert(header, message);
       showNotification({
         title: 'Éxito',
         description: message,
@@ -32,8 +36,8 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
     } catch (error: any) {
       console.error(error);
       showNotification({
-        title: 'Error',
-        description: error.message || 'No se pudo añadir a la lista.',
+        title: t('common.error'),
+        description: error.message || t('components.errorAddToList'),
         isChoice: false,
         delete: false,
         success: false,

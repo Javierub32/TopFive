@@ -45,7 +45,7 @@ export default function SongDetail() {
     return (
       <Screen>
         <StatusBar style="light" />
-        <ReturnButton route={path} title="Detalle de la canción" />
+        <ReturnButton route={path} title={t('forms.albums.albumDetails')} />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <AppText className="mt-4 font-bold text-primaryText" style={{ fontSize: 18 }}>

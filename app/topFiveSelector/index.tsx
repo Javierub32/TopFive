@@ -1,33 +1,29 @@
-import { CollectionGroup } from '@/Collection/components/CollectionGroup';
-import { useTopFive } from '@/Profile/hooks/useTopFive';
 import { useTopFiveSelector } from '@/TopFiveSelector/hooks/useTopFiveSelector';
 import { CollectionStructure } from 'components/CollectionStructure';
 import { ReturnButton } from 'components/ReturnButton';
 import { Screen } from 'components/Screen';
-import { useAuth } from 'context/AuthContext';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ResourceMap, ResourceType } from 'hooks/useResource';
-import { useEffect } from 'react';
-import { Alert, View } from 'react-native';
-import {useNotification} from "context/NotificationContext";
-import { hide } from 'expo-router/build/utils/splash';
-import { TopFivePlaceholder } from "@/TopFiveSelector/components/TopFivePlaceholder";
-import { LoadingIndicator } from "components/LoadingIndicator";
-
+import { View } from 'react-native';
+import { useNotification } from 'context/NotificationContext';
+import { TopFivePlaceholder } from '@/TopFiveSelector/components/TopFivePlaceholder';
+import { useTranslation } from 'react-i18next';
 export default function TopFiveSelectorScreen() {
   const { data, loading, fetchTopFiveSelector, insertToTopFive } = useTopFiveSelector();
-  const ContentTitle : Record<ResourceType, string> = {
-    'serie': 'Series',
-    'cancion': 'Canciones',
-    'libro' : 'Libros',
-    'videojuego' : 'Videojuegos',
-    'pelicula' : 'Películas'
-  }
+  const { t } = useTranslation();
+
+  const ContentTitle: Record<ResourceType, string> = {
+    serie: t('categories.series'),
+    cancion: t('categories.albums'),
+    libro: t('categories.books'),
+    videojuego: t('categories.videogames'),
+    pelicula: t('categories.films'),
+  };
   const { resourceType, position } = useLocalSearchParams<{
     resourceType: ResourceType;
     position: string;
   }>();
-    const { showNotification, hideNotification } = useNotification();
+  const { showNotification, hideNotification } = useNotification();
 
   const handleLoadMore = () => {
     if (resourceType) {
@@ -38,10 +34,12 @@ export default function TopFiveSelectorScreen() {
   const handleItemPress = async (item: ResourceMap[typeof resourceType]) => {
     if (resourceType && position) {
       showNotification({
-        title: 'Confirmar selección',
-        description: `¿Deseas agregar ${item.contenido.titulo} a tu Top 5?`,
-        leftButtonText: 'Cancelar',
-        rightButtonText: 'Confirmar',
+        title: t('topFiveSelector.confirmSelection'),
+        description: t('topFiveSelector.confirmSelectionDescription', {
+          title: item.contenido.titulo,
+        }),
+        leftButtonText: t('common.cancel'),
+        rightButtonText: t('common.confirm'),
         isChoice: true,
         delete: false,
         success: true,
@@ -50,22 +48,27 @@ export default function TopFiveSelectorScreen() {
           hideNotification();
           const posicion = parseInt(position);
           await insertToTopFive(posicion, resourceType, item.id);
-          router.replace('/Profile'); 
+          router.replace('/Profile');
           showNotification({
-            title: '¡Éxito!',
-            description: `${item.contenido.titulo} ha sido agregado a tu Top 5`,
+            title: t('common.success'),
+            description: t('topFiveSelector.addedToTopFive', { title: item.contenido.titulo }),
             isChoice: false,
             delete: false,
             success: true,
           });
-        }
-      })
+        },
+      });
     }
   };
 
   return (
     <Screen>
-      <ReturnButton route="/Profile" title={`${ContentTitle[resourceType]} de tu colección`} />
+      <ReturnButton
+        route="/Profile"
+        title={t('topFiveSelector.categoryOfYourCollectionTitle', {
+          category: ContentTitle[resourceType],
+        })}
+      />
       <View className="flex-1 px-4">
         <CollectionStructure
           data={data}
@@ -75,9 +78,7 @@ export default function TopFiveSelectorScreen() {
           showStatus={false}
           loading={loading}
         />
-        {data.length == 0 && (
-          <TopFivePlaceholder category={resourceType} loading={loading}/>
-        )}
+        {data.length === 0 && <TopFivePlaceholder category={resourceType} loading={loading} />}
       </View>
     </Screen>
   );
