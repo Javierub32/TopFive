@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import { supabase } from "lib/supabase"
 
 export const notificationServices = {
@@ -62,8 +63,8 @@ export const notificationServices = {
 					body: JSON.stringify({
 						to: pushToken,
 						sound: 'default',
-						title: '¡Solicitud aceptada!',
-						body: `${myUsername} ha aceptado tu solicitud de seguimiento.`,
+						title: t('notifications.requestAccepted'),
+						body: t('notifications.requestAcceptedDescription', {username: myUsername}),
 						data: { type: 'follow_accepted', userId: followingId },
 					}),
 				});

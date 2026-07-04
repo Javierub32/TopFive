@@ -23,7 +23,9 @@
         "readMore": "Leer más",
         "readLess": "Leer menos",
         "icon": "Icono",
-        "colour": "Color"
+        "colour": "Color",
+        "obtain": "Obtener",
+        "update": "Actualizar"
     },
     "status": {
         "title": "Estado",
@@ -41,6 +43,13 @@
         "films": "Películas",
         "videogames": "Videojuegos",
         "albums": "Álbumes"
+    },
+    "category": {
+        "book": "Libro",
+        "serie": "Serie",
+        "film": "Película",
+        "videogame": "Videojuego",
+        "album": "Álbum"
     },
     "languages":{
         "es": "Español",
@@ -212,9 +221,13 @@
         }
     },
     "search": {
+        "usersTitle": "Usuarios",
         "placeholder": "Buscar",
         "noResults": "Sin resultados.",
-        "description": "Realiza una búsqueda para ver resultados de {{category}}."
+        "description": "Realiza una búsqueda para ver resultados de {{category}}.",
+        "userSearchBarPlaceholder": "Busca un usuario...",
+        "usersScreenTitle": "Usuarios",
+        "usersScreenDescription": "Realiza una búsqueda para encontrar usuarios."
     },
     "collection": {
         "saveIn": "Guardar en...",
@@ -404,8 +417,6 @@
         "savingError": "Error al guardar.",
         "updatingSuccessDescription": "Has actualizado {{titulo}} en tu colección.",
         "savingSuccessDescription": "Has añadido {{titulo}} a tu colección.",
-
-
         "book":{
             "invalidPages": "Número de páginas no válido.",
             "invalidPagesDescription": "El número de páginas no puede ser mayor a 3031. Por favor, ingresa un número válido.",
@@ -414,7 +425,7 @@
             "alreadyInCollection": "Este libro ya está en tu colección.",
             "savingErrorDescription": "Hubo un problema al guardar el libro. Inténtalo de nuevo.",
             "theBook": "el libro",
-            "bookDetails": "Detalles del libro",
+            "bookDetails": "Detalles del libro"
         },
         "film": {
             "updatingErrorDescription": "Hubo un problema al actualizar la película. Inténtalo de nuevo.",
@@ -435,12 +446,14 @@
         "serie": {
             "updatingErrorDescription": "Hubo un problema al actualizar la serie. Inténtalo de nuevo.",
             "alreadyInCollection": "Esta serie ya está en tu colección.",
-            "savingErrorDescription": "Hubo un problema al guardar la serie. Inténtalo de nuevo."
+            "savingErrorDescription": "Hubo un problema al guardar la serie. Inténtalo de nuevo.",
+            "serieDetails": "Detalles de la serie"
         },
         "albums": {
             "updatingErrorDescription": "Hubo un problema al actualizar el álbum. Inténtalo de nuevo.",
             "alreadyInCollection": "Este álbum ya está en tu colección.",
-            "savingErrorDescription": "Hubo un problema al guardar el álbum. Inténtalo de nuevo."
+            "savingErrorDescription": "Hubo un problema al guardar el álbum. Inténtalo de nuevo.",
+            "albumDetails": "Detalles del álbum"
         },
         "addToList": "Añadir a {{listName}}",
         "list": "lista",
@@ -453,7 +466,8 @@
             "listName": "Nombre de la lista",
             "listNamePlaceholder": "Ej: Películas imprescindibles",
             "description": "Descripción",
-            "descriptionPlaceholder": "Describe el contenido de esta lista..."
+            "descriptionPlaceholder": "Describe el contenido de esta lista...",
+            "listDetails": "Detalles de la lista"
         },
         "ready": "Listo",
         "lastTime": "Última vez",
@@ -468,6 +482,55 @@
         "reviewPlaceholder": "Escribe tu opinión...",
         "views": "Vistas"
        
+    },
+    "frameSelector": {
+        "title": "Selecciona un marco",
+        "loadingAd": "Cargando anuncio...",
+        "adNotReady": "El anuncio aún no está listo. Por favor, espera unos segundos e inténtalo de nuevo.",
+        "updatedNotification": "Tu marco de perfil ha sido actualizado.",
+        "errorUpdatingNotification": "No se pudo actualizar el marco. Por favor, inténtalo de nuevo.",
+        "errorLoadingNotification": "No se pudieron cargar los marcos del usuario. Por favor, inténtalo de nuevo.",
+        "unlockedNotificationTitle": "¡Marco desbloqueado!",
+        "unlockedNotificationDescription": "Has obtenido un nuevo marco para tu perfil.",
+        "errorUnlockingNotification": "No se pudo desbloquear el marco. Inténtalo de nuevo."
+    },
+    "notifications": {
+        "title": "Notificaciones del Usuario",
+        "noNotifications": "Sin Notificaciones",
+        "noNotificationsDescription": "No tienes notificaciones pendientes en este momento. ¡Vuelve más tarde!",
+        "followingRequest": "ha solicitado seguirte",
+        "followingConfirmation": "ha empezado a seguirte",
+        "pending": "Pendiente",
+        "followBack": "Seguir de vuelta",
+        "requestAccepted": "¡Solicitud aceptada!",
+        "requestAcceptedDescription": "{{username}} ha aceptado tu solicitud de seguimiento"
+    },
+    "topFiveSelector": {
+        "confirmSelection": "Confirmar selección",
+        "confirmSelectionDescription": "¿Deseas agregar {{title}} a tu TopFive?",
+        "addedToTopFive": "{{title}} ha sido agregado a tu TopFive",
+        "categoryOfYourCollectionTitle": "{{category}} de tu colección",
+        "noContentTitle": "No hay {{category}}",
+        "noContentDescription": "Primero añade a tu colección para que formen parte de tu TopFive",
+        "searchButton": "Buscar"
+    },
+    "layout": {
+        "updateAvailableTitle": "Actualización disponible",
+        "updateAvailableDescription": "Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades."
+    },
+    "components": {
+        "errorAddToList": "No se pudo añadir a la lista.",
+        "whatToAdd": "¿Qué quieres añadir?",
+        "noImage": {
+            "title": "Sin imagen",
+            "book":"Este libro no tiene imagen",
+            "serie": "Esta serie no tiene imagen",
+            "film": "Esta película no tiene imagen",
+            "videogame": "Este juego no tiene imagen",
+            "album": "Este álbum no tiene imagen"
+        },
+        "thirdPartyAd": "Anunciante Externo",
+        "sponsored": "PATROCINADO",
+        "recommendedForYou": "Recomendado para ti"
     }
-
 }

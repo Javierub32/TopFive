@@ -47,7 +47,7 @@ export default function SeriesDetail() {
     return (
       <Screen>
         <StatusBar style="light" />
-        <ReturnButton route={path} title="Detalle de la serie" />
+        <ReturnButton route={path} title={t('forms.serie.serieDetails')} />
         <View className="flex-1 items-center justify-center px-4">
           <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <AppText className="mt-4 font-bold text-primaryText" style={{ fontSize: 18 }}>
