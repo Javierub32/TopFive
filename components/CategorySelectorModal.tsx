@@ -1,15 +1,16 @@
 import { useTheme } from 'context/ThemeContext';
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
+import { View, TouchableOpacity, Modal } from 'react-native';
 import { BookIcon, FilmIcon, GameIcon, MusicIcon, ShowIcon } from 'components/Icons';
 import { ResourceType } from 'hooks/useResource';
 import { useRouter } from 'expo-router';
-import {AppText} from 'components/AppText';
-const categories: { type: ResourceType; label: string; icon: any }[] = [
-  { type: 'libro', label: 'Libro', icon: BookIcon },
-  { type: 'serie', label: 'Serie', icon: ShowIcon },
-  { type: 'pelicula', label: 'Película', icon: FilmIcon },
-  { type: 'videojuego', label: 'Videojuego', icon: GameIcon },
-  { type: 'cancion', label: 'Álbum', icon: MusicIcon },
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
+const categories: { type: ResourceType; labelKey: string; icon: any }[] = [
+  { type: 'libro', labelKey: 'category.book', icon: BookIcon },
+  { type: 'serie', labelKey: 'category.serie', icon: ShowIcon },
+  { type: 'pelicula', labelKey: 'category.film', icon: FilmIcon },
+  { type: 'videojuego', labelKey: 'category.videogame', icon: GameIcon },
+  { type: 'cancion', labelKey: 'category.album', icon: MusicIcon },
 ];
 
 interface CategorySelectorModalProps {
@@ -29,6 +30,7 @@ export const CategorySelectorModal = ({
 }: CategorySelectorModalProps) => {
   const { colors } = useTheme();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleCategoryPress = (categoryType: ResourceType) => {
     if (onSelectCategory) {
@@ -43,11 +45,7 @@ export const CategorySelectorModal = ({
   };
 
   return (
-    <Modal
-      visible={visible}
-      transparent={true}
-      animationType="fade"
-      onRequestClose={onClose}>
+    <Modal visible={visible} transparent={true} animationType="fade" onRequestClose={onClose}>
       <TouchableOpacity
         style={{
           flex: 1,
@@ -65,24 +63,30 @@ export const CategorySelectorModal = ({
           <AppText
             className="mb-4 text-center font-bold"
             style={{ color: colors.primaryText, fontSize: 20 }}>
-            {'¿Qué quieres añadir?'}
+            {t('components.whatToAdd')}
           </AppText>
 
-          <View className="flex-row justify-around items-center">
-            {categories.map((cat) => {
+          <View className="flex-row items-center justify-around">
+            {categories.map((cat, index) => {
               const Icon = cat.icon;
+              const colorFondo = colors[`ground${index + 1}`];
               return (
                 <TouchableOpacity
                   key={cat.type}
                   className="items-center"
                   onPress={() => handleCategoryPress(cat.type)}>
-                  <View 
-                    className="w-14 h-14 rounded-full items-center justify-center mb-2 "
-                    style={{ backgroundColor: `${colors[`ground${categories.indexOf(cat) + 1}`]}26`, borderWidth: 0 }}>
-                    <Icon size={24} color={`${colors[`ground${categories.indexOf(cat) + 1}`]}FF`} />
+                  <View
+                    className="mb-2 h-14 w-14 items-center justify-center rounded-full "
+                    style={{
+                      backgroundColor: `${colorFondo}26`,
+                      borderWidth: 0,
+                    }}>
+                    <Icon size={24} color={`${colorFondo}FF`} />
                   </View>
-                  <AppText className="text-center mb-10" style={{ color: colors.primaryText, fontSize: 12 }}>
-                    {cat.label}
+                  <AppText
+                    className="mb-10 text-center"
+                    style={{ color: colors.primaryText, fontSize: 12 }}>
+                    {t(cat.labelKey as any)}
                   </AppText>
                 </TouchableOpacity>
               );

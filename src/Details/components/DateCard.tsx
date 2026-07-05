@@ -11,11 +11,11 @@ interface Props {
 
 export const DateCard = ({ startDate, endDate, isRange }: Props) => {
   const { colors } = useTheme();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const formatDate = (fecha: string | Date | null | undefined) => {
     if (!fecha) return '-';
 
-    return new Date(fecha).toLocaleDateString('es-ES', {
+    return new Date(fecha).toLocaleDateString(i18n.language, {
       day: 'numeric',
       month: 'long',
       year: 'numeric',

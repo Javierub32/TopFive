@@ -9,13 +9,13 @@ interface Props {
 }
 
 export const ContentDateCard = ({ releaseDate }: Props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { colors } = useTheme();
 
   const formateDate = () => {
     if (!releaseDate) return null;
 
-    return new Date(releaseDate).toLocaleDateString('es-ES', {
+    return new Date(releaseDate).toLocaleDateString(i18n.language, {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -37,7 +37,9 @@ export const ContentDateCard = ({ releaseDate }: Props) => {
         </AppText>
       </View>
       <View className="flex-1 items-center justify-center">
-        <AppText className="text-semibold text-base" style={{ color: colors.secondaryText, fontSize: 14 }}>
+        <AppText
+          className="text-semibold text-base"
+          style={{ color: colors.secondaryText, fontSize: 14 }}>
           {newDate}
         </AppText>
       </View>
