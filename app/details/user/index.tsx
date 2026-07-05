@@ -6,16 +6,23 @@ import { ProfileData } from '@/User/components/ProfileData';
 import { UserAvatar } from '@/User/components/UserAvatar';
 import { FollowButton } from '@/User/components/FollowButton';
 import { LoadingIndicator } from 'components/LoadingIndicator';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, useWindowDimensions } from 'react-native';
 import { TopFiveSelector } from '@/Profile/components/TopFiveSelector';
 import { StatsChart } from '@/Profile/components/StatsChart';
 import { StatsGrid } from '@/Profile/components/StatsGrid';
 import { CategorySelector } from '@/Profile/components/CategorySelector';
 import { useTranslation } from 'react-i18next';
+import { TabView } from 'react-native-tab-view';
+import { ResourceType } from 'hooks/useResource';
+import { useState } from 'react';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 export default function UserDetailsScreen() {
   const { username, from } = useLocalSearchParams();
   const { t } = useTranslation();
+  const layout = useWindowDimensions();
+  const [isChanging, setIsChanging] = useState(false);
+
   const {
     loading,
     userData,
@@ -32,10 +39,62 @@ export default function UserDetailsScreen() {
   const canViewStats = userData?.following_status === 'accepted';
   const getPath = () => {
     if (from === 'home') return 'back';
-	if (from === 'link') return '/Home';
+    if (from === 'link') return '/Home';
     return '/Home';
   };
   const route = getPath();
+
+  const routes = [
+    { key: 'libro', title: 'Libros' },
+    { key: 'serie', title: 'Series' },
+    { key: 'pelicula', title: 'Películas' },
+    { key: 'videojuego', title: 'Juegos' },
+    { key: 'cancion', title: 'Música' },
+  ];
+
+  const index = routes.findIndex((r) => r.key === selectedCategory);
+  const safeIndex = index === -1 ? 0 : index;
+
+  const handleIndexChange = (i: number) => {
+    setIsChanging(true);
+    setSelectedCategory(routes[i].key as ResourceType);
+    setTimeout(() => {
+      setIsChanging(false);
+    }, 350);
+  };
+
+  const renderScene = ({ route: tabRoute }: any) => {
+    if (isChanging || tabRoute.key !== selectedCategory) {
+      return (
+        <View className="flex-1 items-center justify-center py-10">
+          <LoadingIndicator />
+        </View>
+      );
+    }
+
+    return (
+      <Animated.View entering={FadeIn.duration(300)} style={{ flex: 1, paddingTop: 16 }}>
+        {statsLoading ? (
+          <View className="flex-1 items-center justify-center py-10">
+            <LoadingIndicator />
+          </View>
+        ) : (
+          <>
+            <StatsGrid
+              title={currentStats.title}
+              total={currentStats.total}
+              average={currentStats.average}
+            />
+            <StatsChart
+              data={currentStats.chartData}
+              selectedYear={selectedYear}
+              setSelectedYear={setSelectedYear}
+            />
+          </>
+        )}
+      </Animated.View>
+    );
+  };
 
   if (loading) {
     return (
@@ -74,26 +133,23 @@ export default function UserDetailsScreen() {
               <TopFiveSelector userId={userData.id} />
 
               <View className="mt-4">
-                <CategorySelector selected={selectedCategory} onSelect={setSelectedCategory} />
-
-                {statsLoading ? (
-                  <View className="mb-4 flex items-center justify-center py-10">
-                    <LoadingIndicator />
-                  </View>
-                ) : (
-                  <>
-                    <StatsGrid
-                      title={currentStats.title}
-                      total={currentStats.total}
-                      average={currentStats.average}
+                <TabView
+                  navigationState={{ index: safeIndex, routes }}
+                  renderScene={renderScene}
+                  renderTabBar={() => (
+                    <CategorySelector
+                      selected={selectedCategory}
+                      onSelect={(cat) => {
+                        const newIndex = routes.findIndex(r => r.key === cat);
+                        handleIndexChange(newIndex);
+                      }}
                     />
-                    <StatsChart
-                      data={currentStats.chartData}
-                      selectedYear={selectedYear}
-                      setSelectedYear={setSelectedYear}
-                    />
-                  </>
-                )}
+                  )}
+                  onIndexChange={handleIndexChange}
+                  initialLayout={{ width: layout.width }}
+                  swipeEnabled={true}
+                  style={{ height: 480 }}
+                />
               </View>
             </>
           )}
