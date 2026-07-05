@@ -113,17 +113,20 @@ export const listServices = {
       .select('id')
       .eq('coleccionid', listId)
       .eq(resourceColumn, itemId)
-      .single();
+      .maybeSingle();
 
     if (existingCheck.data) {
-      const { error } = await supabase
+      const { error, count } = await supabase
         .from(tableName)
-        .delete()
-        .eq('coleccionid', listId)
-        .eq(resourceColumn, itemId);
+        .delete({ count: 'exact' })
+        .match({
+          coleccionid: listId,
+          [resourceColumn]: itemId,
+        });
 
       if (error) throw error;
-      return 'Se ha eliminado correctamente de la lista.';
+      if (count === 0) throw new Error('No se encontró el ítem o no tienes permisos');
+      return 'Recurso eliminado de la lista exitosamente.';
     }
 
     const { error } = await supabase

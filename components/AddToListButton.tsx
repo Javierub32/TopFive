@@ -1,5 +1,3 @@
-// components/AddToListButton.tsx
-
 import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -20,8 +18,10 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
       let exactType = listType;
       if (listType === 'AUDIOVISUAL') {
         exactType = resourceCategory === 'serie' ? 'SERIE' : 'PELICULA';
+      } else if (listType === 'MUSICA') {
+         exactType = 'CANCION';
       }
-      const message = await listServices.addItemToList(listId, resourceId, listType);
+      const message = await listServices.addItemToList(listId, resourceId, exactType);
       showNotification({
         title: 'Éxito',
         description: message,
