@@ -56,8 +56,8 @@ export const SearchBar = ({
         {/* Input de texto */}
         <AppTextInput
           className="h-full flex-1 overflow-hidden px-3 text-base"
-          style={{ color: colors.primaryText, lineHeight: 17, maxHeight: 17, fontSize: 14 }}
-          placeholder={`${t('search.placeholder')} ${categoryLabel}...`}
+          style={{ color: colors.primaryText, lineHeight: 17, fontSize: 14 }}
+          placeholder={t('search.placeholder', { category: categoryLabel })}
           placeholderTextColor={colors.placeholderText}
           value={value}
           onChangeText={onChangeText}

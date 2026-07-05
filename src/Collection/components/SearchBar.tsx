@@ -46,7 +46,7 @@ export const SearchBar = () => {
 
         <AppTextInput
           className="h-full flex-1 overflow-hidden px-3 text-base text-primaryText"
-          style={{ color: colors.primaryText, lineHeight: 17, maxHeight: 17, fontSize: 14 }}
+          style={{ color: colors.primaryText, lineHeight: 17, fontSize: 14 }}
           placeholder={`${t('collection.searchInPlaceholder', { category: t(resourceTypeMap[categoriaActual as ResourceType] as any) })}`}
           placeholderTextColor={colors.placeholderText}
           value={inputBusqueda}

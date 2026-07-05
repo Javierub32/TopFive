@@ -101,7 +101,7 @@
             "logOut": {
                 "title": "Cerrar sesión",
                 "alertTitle": "Confirmar cierre de sesión",
-                "alertDescription": "¿Estás seguro de que deseas cerrar sesión",
+                "alertDescription": "¿Estás seguro de que deseas cerrar sesión?",
                 "alertConfirmation": "Cerrar sesión"
             },
             "deleteAccount": {
@@ -223,7 +223,7 @@
     },
     "search": {
         "usersTitle": "Usuarios",
-        "placeholder": "Buscar",
+        "placeholder": "Buscar {{category}}...",
         "noResults": "Sin resultados.",
         "description": "Realiza una búsqueda para ver resultados de {{category}}.",
         "userSearchBarPlaceholder": "Busca un usuario...",
