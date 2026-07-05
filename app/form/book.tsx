@@ -151,7 +151,7 @@ export default function BookForm() {
             router.back();
           } else {
             router.replace({
-              pathname: 'details/book/bookResource',
+              pathname: '/details/book/bookResource',
               params: {
                 item: JSON.stringify(bookResource),
                 from: from,
