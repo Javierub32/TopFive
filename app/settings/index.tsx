@@ -259,7 +259,7 @@ export default function SettingsScreen() {
                   {showLangOptions && (
                     <View className="mt-2 flex-row flex-wrap justify-between gap-2">
                       {[
-                        { id: 'es', label: 'ES', region: 'Español' },
+                        { id: 'es', label: 'ES', region: 'ES' },
                         { id: 'en', label: 'EN', region: 'US' },
                         { id: 'en-GB', label: 'EN', region: 'UK' },
                       ].map((lang) => (
@@ -269,7 +269,10 @@ export default function SettingsScreen() {
                           style={{
                             backgroundColor: colors.background,
                             borderWidth: 2,
-                            borderColor: i18n.language.startsWith(lang.id) ? colors.accent : 'transparent',
+                            borderColor: 
+                              i18n.language === lang.id || (i18n.language.startsWith(lang.id) && !(i18n.language === 'en-GB' && lang.id === 'en')) 
+                                ? colors.accent 
+                                : 'transparent',
                           }}
                           onPress={() => changeLanguage(lang.id)}>
                           <AppText
