@@ -240,7 +240,7 @@ export const useResource = () => {
       console.error(`Error al comprobar si existe el recurso ${type}: `, error);
       return null;
     }
-  }
+  };
 
   return {
     fetchResources,
