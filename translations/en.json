@@ -23,7 +23,7 @@
         "readMore": "Read more",
         "readLess": "Read less",
         "icon": "Icon",
-        "colour": "Color",
+        "colour": "Colour",
         "obtain": "Obtain",
         "update": "Update",
         "edit": "Edit"
@@ -147,7 +147,7 @@
                 }
             },
             "privacy": "Privacy policy",
-            "adsPriv": "Advertisement privacy"
+            "adsPriv": "Advert privacy"
         },
         "errors": {
             "privacyError":{
@@ -457,7 +457,7 @@
             "savingErrorDescription": "There was a problem saving the album. Please try again.",
             "albumDetails": "Album details"
         },
-        "addToList": "Addo to {{listName}}",
+        "addToList": "Add to {{listName}}",
         "list": "list",
         "lists": {
             "listNameCantBeEmpty": "The list name cannot be empty.",
@@ -466,7 +466,7 @@
             "updateList": "Update your list",
             "createList": "Create your list",
             "listName": "List name",
-            "listNamePlaceholder": "Ej: Películas imprescindibles",
+            "listNamePlaceholder": "E.g.: Essential films",
             "description": "Description",
             "descriptionPlaceholder": "Describe the content of this list...",
             "listDetails": "List details"
@@ -527,7 +527,7 @@
             "title": "No image available",
             "book": "This book has no image",
             "serie": "This series has no image",
-            "film": "This movie has no image",
+            "film": "This film has no image",
             "videogame": "This game has no image",
             "album": "This album has no image"
         },
