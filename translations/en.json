@@ -25,7 +25,8 @@
         "icon": "Icon",
         "colour": "Color",
         "obtain": "Obtain",
-        "update": "Update"
+        "update": "Update",
+        "edit": "Edit"
     },
     "status": {
         "title": "Status",
@@ -206,331 +207,332 @@
         },
         "resetPassword": {
             "error": {
-                "denied": "Permiso denegado",
-                "errorLink": "El enlace ha caducado o está incompleto. Por farvor, solicita uno nuevo.",
-                "passwordMismatch": "Las contraseñas no coinciden. Por favor, revísalas.",
-                "general": "No se pudo actualizar la contraseña. El enlace podría haber caducado.",
-                "differentPassword": "La nueva contraseña deber ser diferente a la que estabas usando.",
-                "rateLimit": "Has intentado cambiar la contraseña demasiadas veces. Por favor, espera unos minutos.",
-                "default": "Error al cambiar la contraseña."
+                "denied": "Permission denied",
+                "errorLink": "The link has expired or is incomplete. Please, request a new one.",
+                "passwordMismatch": "The passwords do not match. Please try again.",
+                "general": "The password could not be updated. The link might have expired.",
+                "differentPassword": "The new password must be different from the previous one.",
+                "rateLimit": "You have exceeded the limit for password change. Please, wait a couple of minutes.",
+                "default": "Error changing the password."
             },
-            "successDescription": "Tu contraseña ha sido actualizada correctamente. Ya puedes iniciar sesión.",
-            "newPassword": "Nueva contraseña",
-            "confirmPassword": "Confirmar contraseña",
-            "changePassword": "Cambiar contraseña"
+            "successDescription": "The password was changed successfully. You can sign in now.",
+            "newPassword": "New password",
+            "confirmPassword": "Confirm password",
+            "changePassword": "Change password"
         }
     },
     "search": {
-        "usersTitle": "Usuarios",
-        "placeholder": "Buscar",
-        "noResults": "Sin resultados.",
-        "description": "Realiza una búsqueda para ver resultados de {{category}}.",
-        "userSearchBarPlaceholder": "Busca un usuario...",
-        "usersScreenTitle": "Usuarios",
-        "usersScreenDescription": "Realiza una búsqueda para encontrar usuarios."
+        "usersTitle": "Users",
+        "placeholder": "Search {{category}}...",
+        "noResults": "No results.",
+        "description": "Perform a search to see results for {{category}}.",
+        "userSearchBarPlaceholder": "Search for a user...",
+        "usersScreenTitle": "Users",
+        "usersScreenDescription": "Perform a search to find users."
     },
     "collection": {
-        "saveIn": "Guardar en...",
-        "noLists": "No tienes listas de {{category}} creadas.",
-        "orderBy": "Ordenar por",
-        "recentsFirst": "Más recientes",
-        "oldestFirst": "Más antiguos",
-        "status": "Estado",
-        "onlyFavorites": "Solo favoritos",
-        "noContent": "No hay contenido disponible",
-        "searchInPlaceholder": "Buscar en {{category}}..."
+        "saveIn": "Save in...",
+        "noLists": "You don't have any {{category}} lists created.",
+        "orderBy": "Order by",
+        "recentsFirst": "Most recent",
+        "oldestFirst": "Oldest first",
+        "status": "Status",
+        "onlyFavorites": "Only favorites",
+        "noContent": "No content available",
+        "searchInPlaceholder": "Search in {{category}}..."
     },
     "list": {
         "deleteListNotification": {
-            "title": "Eliminar lista",
-            "description": "¿Estás seguro de que deseas eliminar esta lista de su colección?",
-            "confirmationTitle": "Lista eliminada",
-            "confirmationDescription": "La lista {{listName}} ha sido eliminada exitosamente."
+            "title": "Delete list",
+            "description": "Are you sure you want to remove this list from your collection?",
+            "confirmationTitle": "List deleted",
+            "confirmationDescription": "The list {{listName}} has been deleted successfully."
         },
-        "elements": "elementos", 
-        "editList": "Editar lista",
-        "addToList": "Añadir a lista",
-        "deleteList": "Eliminar lista",
-        "noLists": "No tienes listas de {{category}}.",
+        "elements": "elements", 
+        "editList": "Edit list",
+        "addToList": "Add to list",
+        "deleteList": "Delete list",
+        "noLists": "You don't have any {{category}} lists.",
         "listCreatedNotification": {
-            "title": "Lista creada",
-            "description": "La lista {{listName}} ha sido creada exitosamente."
+            "title": "List created",
+            "description": "The list {{listName}} has been created successfully."
         },
-        "couldntCreateError": "No se pudo crear la lista. Por favor, inténtalo de nuevo.",
+        "couldntCreateError": "Could not create the list. Please try again.",
         "deleteItemFromListNotification": {
-            "title": "Eliminar de la lista",
-            "description": "¿Estás seguro de que deseas eliminar este elemento de la lista?",
-            "confirmationDescription": "El elemento ha sido eliminado exitosamente de la lista."
+            "title": "Delete from list",
+            "description": "Are you sure you want to remove this item from the list?",
+            "confirmationDescription": "The item has been deleted from the list."
         },
-        "createNewList": "+ Nueva lista"
+        "createNewList": "+ Create new list"
     },
     "home": {
-        "pressAgainToExit": "Vuelve a tocar para salir.",
-        "noCompletedReviewsFromFriends": "No tienes ningún amigo con reseñas completadas.",
-        "addFriendsToSeeReviews": "Agrega amigos para poder ver sus reseñas.",
-        "searchFriends": "Buscar amigos",
+        "pressAgainToExit": "Press again to exit.",
+        "noCompletedReviewsFromFriends": "You don't have any friends with reviews.",
+        "addFriendsToSeeReviews": "Add friends to read their reviews.",
+        "searchFriends": "Search for friends",
         "renderResource": {
-            "today": "Hoy",
-            "oneDayAgo": "Hace 1 día",
-            "daysAgo": "Hace {{days}} días"
+            "today": "Today",
+            "oneDayAgo": "One day ago",
+            "daysAgo": "{{days}} days ago"
         }
     }, 
     "profile": {
-        "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}",
-        "user": "Usuario",
-        "selectYear": "Seleccionar año",
+        "shareMessage": "Check out my profile on TopFive!\n{{url}}",
+        "user": "User",
+        "selectYear": "Select year",
         "monthsAbbreviation": {
-            "january": "Ene",
+            "january": "Jan",
             "february": "Feb",
             "march": "Mar",
-            "april": "Abr",
+            "april": "Apr",
             "may": "May",
             "june": "Jun",
             "july": "Jul",
-            "august": "Ago",
+            "august": "Aug",
             "september": "Sep",
             "october": "Oct",
             "november": "Nov",
-            "december": "Dic"
+            "december": "Dec"
         },
-        "activity" : "Actividad",
+        "activity" : "Activity",
         "total": "Total",
-        "average": "Media",
-        "monthly": "Mensual",
-        "myTopFive": "Mi TopFive",
+        "average": "Average",
+        "monthly": "Monthly",
+        "myTopFive": "My TopFive",
         "categoriesConsumed": {
-            "books": "Libros leídos",
-            "films": "Películas vistas",
-            "series": "Series vistas",
-            "videogames": "Videojuegos jugados",
-            "albums": "Álbumes escuchados"
+            "books": "Books read",
+            "films": "Films watched",
+            "series": "Series watched",
+            "videogames": "Video games played",
+            "albums": "Albums listened"
         },
-        "loadingStatsError": "No se pudieron cargar las estadísticas. Inténtalo de nuevo más tarde.",
+        "loadingStatsError": "Could not load the stats. Try again later.",
         "noPermissionError": {
-            "title": "Permiso denegado",
-            "description": "Necesitamos acceso a tu galería."
+            "title": "Permission denied",
+            "description": "We need access to your gallery."
         },
-        "profilePhotoUpdated": "Foto de perfil actualizada",
-        "noProfilePhoto": "No se pudo actualizar la foto de perfil.",
+        "profilePhotoUpdated": "Profile picture updated",
+        "noProfilePhoto": "Could not update your profile picture.",
         "removeFromTopFiveNotification": {
-            "title": "Eliminar de TopFive",
-            "description": "¿Estás seguro de que deseas eliminar este elemento de tu TopFive?",
-            "confirmationDescription": "El elemento ha sido eliminado de tu TopFive."
+            "title": "Delete from TopFive",
+            "description": "Are you sure you want to remove this item from your TopFive?",
+            "confirmationDescription": "The item has been deleted from your TopFive."
         },
         "editProfile": {
-            "title": "Editar perfil",
-            "username": "Nombre de usuario",
-            "usernamePlaceholder": "Escribe tu nombre de usuario...",
-            "description": "Descripción",
-            "descriptionPlaceholder": "Escribe algo sobre ti..."
+            "title": "Edit profile",
+            "username": "Username",
+            "usernamePlaceholder": "Write your username...",
+            "description": "Description",
+            "descriptionPlaceholder": "Tell us about yourself..."
         },
-        "followers": "Seguidores",
-        "following": "Seguidos",
+        "followers": "Followers",
+        "following": "Following",
         "deleteFollowers": {
-            "title": "Eliminar seguidor",
-            "description": "¿Deseas eliminar a {{username}} de tus seguidores?",
-            "successDescription": "{{username}} ha sido eliminado de tus seguidores.",
-            "errorDescription": "No se pudo eliminar a {{username}} de tus seguidores. Por favor, inténtalo de nuevo."
+            "title": "Remove follower",
+            "description": "Do you want to remove {{username}} from your followers?",
+            "successDescription": "{{username}} has been removed from your followers.",
+            "errorDescription": "Could not delete {{username}} from your followers. Please, try again."
         },
         "deleteFollowing": {
-            "title": "Dejar de seguir",
-            "description": "¿Deseas dejar de seguir a {{username}}?",
-            "successDescription": "Has dejado de seguir a {{username}}.",
-            "errorDescription": "No se pudo dejar de seguir a {{username}}. Por favor, inténtalo de nuevo."
+            "title": "Unfollow",
+            "description": "Do you want to unfollow {{username}}?",
+            "successDescription": "You've unfollowed {{username}}.",
+            "errorDescription": "Could not unfollow {{username}}. Please, try again."
         }
     },
     "aboutUs": {
-        "creditsAndLicenses": "Créditos y Licencias",
-        "creditsDescription": "Esta aplicación utiliza datos de las siguientes fuentes:",
+        "creditsAndLicenses": "Credits and Licenses",
+        "creditsDescription": "This application uses data from the following sources",
         "filmsCard":{
-            "description": "Este producto utiliza la API de TMDB pero no está certificada por TMDB.",
-            "link": "Visitar TMDB"
+            "description": "This product uses the TMDB API but is not endorsed or certified by TMDB.",
+            "link": "Visit TMDB"
         },
         "seriesCard": {
-            "description": "Datos proporcionados por TVMaze. Licenciado bajo CC BY-SA 4.0.",
-            "link": "Visitar TVMaze"
+            "description": "Data provided by TVMaze. Licensed under CC BY-SA 4.0.",
+            "link": "Visit TVMaze"
         },
         "videogamesCard": {
-            "description": "Información de videojuegos provista por IGDB.",
-            "link": "Visitar IGDB"
-        },
+            "description": "Video game information provided by IGDB.",
+            "link": "Visit IGDB"
+        }, 
         "albumsCard":{
-            "description": "Datos proporcionados por Discogs. Este producto utiliza la API de Discogs pero no está certificada por Discogs.",
-            "link": "Visitar Discogs"
+            "description": "Data provided by Discogs. This product uses the Discogs API but is not endorsed or certified by Discogs.",
+            "link": "Visit Discogs"
         },
         "booksCard":{
-            "description": "Datos proporcionados por OpenLibrary.",
-            "link": "Visitar OpenLibrary"
+            "description": "Data provided by OpenLibrary.",
+            "link": "Visit OpenLibrary"
         }
     },
     "details": {
         "loadingError": {
-            "title": "Error al cargar",
-            "books": "No se pudo cargar la información del libro.",
-            "series": "No se pudo cargar la información de la serie.",
-            "films": "No se pudo cargar la información de la película.",
-            "videogames": "No se pudo cargar la información del videojuego.",
-            "albums": "No se pudo cargar la información del álbum."
+            "title": "Error",
+            "books": "Could not load the book information.",
+            "series": "Could not load the series information.",
+            "films": "Could not load the film information.",
+            "videogames": "Could not load the video game information.",
+            "albums": "Could not load the album information."
         },
-        "gameModes": "Modos de juego",
-        "addToCollection": "Añadir a colección",
-        "author": "Autor",
-        "released": "Publicado",
-        "generalRating": "Calificación general",
-        "lastTime": "Última vez",
-        "start": "Inicio",
-        "end": "Fin",
+        "gameModes": "Game modes",
+        "addToCollection": "Add to collection",
+        "author": "Author",
+        "released": "Released",
+        "generalRating": "General rating",
+        "lastTime": "Last time",
+        "start": "Start",
+        "end": "End",
         "deleteResource": {
-            "title": "Confirmar eliminación",
-            "description": "¿Estás seguro de que deseas eliminar {{titulo}} de tu colección?",
-            "successTitle": "Recurso eliminado",
-            "resourceDeletedDescription": "Has eliminado {{titulo}} de tu colección exitosamente.",
-            "failedToDelete": "No se pudo eliminar el recurso. Inténtalo de nuevo más tarde.",
-            "thisResource": "este recurso",
-            "theResource": "el recurso"
+            "title": "Confirm deletion",
+            "description": "Are you sure you want to delete {{titulo}} from your collection?",
+            "successTitle": "Resource deleted",
+            "resourceDeletedDescription": "You have successfully deleted {{titulo}} from your collection.",
+            "failedToDelete": "Could not delete the resource. Please try again later.",
+            "thisResource": "this resource",
+            "theResource": "the resource"
         },
-        "sinopsis": "Sinopsis",
-        "progress": "Progreso",
-        "seasonAbbreviation": "T",
+        "sinopsis": "Synopsis",
+        "progress": "Progress",
+        "seasonAbbreviation": "S",
         "episodeAbbreviation": "E",
         "progressUnits": {
-            "books": "págs",
-            "videogames": "horas"
+            "books": "pages",
+            "videogames": "hours"
         },
-        "rating": "Calificación",
+        "rating": "Rating",
         "dificulty": {
-            "easy": "Fácil",
+            "easy": "Easy",
             "medium": "Normal",
-            "hard": "Difícil",
-            "extreme": "Extremo"
+            "hard": "Difficult",
+            "extreme": "Extreme"
         },
-        "review": "Reseña",
-        "zeroDays": "0 días",
-        "oneDay": "1 día",
-        "days": "{{days}} días",
-        "totalReadingTime": "Tiempo total de lectura",
-        "userDetails": "Detalles del usuario",
-        "user": "Usuario"
+        "review": "Review",
+        "zeroDays": "0 days",
+        "oneDay": "1 day",
+        "days": "{{days}} days",
+        "totalReadingTime": "Total reading time",
+        "userDetails": "User details",
+        "user": "User",
+        "resourceAlreadyInCollection": "This content is already in your collection. Do you want to edit it?"
     },
     "forms": {
-        "updatingError": "Error al actualizar.",
-        "savingError": "Error al guardar.",
-        "updatingSuccessDescription": "Has actualizado {{titulo}} en tu colección.",
-        "savingSuccessDescription": "Has añadido {{titulo}} a tu colección.",
+        "updatingError": "Error updating.",
+        "savingError": "Error saving.",
+        "updatingSuccessDescription": "You have updated {{titulo}} in your collection.",
+        "savingSuccessDescription": "You have added {{titulo}} to your collection.",
         "book":{
-            "invalidPages": "Número de páginas no válido.",
-            "invalidPagesDescription": "El número de páginas no puede ser mayor a 3031. Por favor, ingresa un número válido.",
-            "updatingErrorDescription": "Hubo un problema al actualizar el libro. Inténtalo de nuevo.",
-            "thisBook": "este libro",
-            "alreadyInCollection": "Este libro ya está en tu colección.",
-            "savingErrorDescription": "Hubo un problema al guardar el libro. Inténtalo de nuevo.",
-            "theBook": "el libro",
-            "bookDetails": "Detalles del libro"
+            "invalidPages": "Invalid number of pages.",
+            "invalidPagesDescription": "The number of pages cannot be greater than 3031. Please enter a valid number.",
+            "updatingErrorDescription": "There was a problem updating the book. Please try again.",
+            "thisBook": "this book",
+            "alreadyInCollection": "This book is already in your collection.",
+            "savingErrorDescription": "There was a problem saving the book. Please try again.",
+            "theBook": "the book",
+            "bookDetails": "Book details"
         },
         "film": {
-            "updatingErrorDescription": "Hubo un problema al actualizar la película. Inténtalo de nuevo.",
-            "thisFilm": "esta película",
-            "alreadyInCollection": "Esta película ya está en tu colección.",
-            "savingErrorDescription": "Hubo un problema al guardar la película. Inténtalo de nuevo.",
-            "theFilm": "la película",
-            "filmDetails": "Detalles de la película"
+            "updatingErrorDescription": "There was a problem updating the film. Please try again.",
+            "thisFilm": "this film",
+            "alreadyInCollection": "This film is already in your collection.",
+            "savingErrorDescription": "There was a problem saving the film. Please try again.",
+            "theFilm": "the film",
+            "filmDetails": "Film details"
         },
         "game": {
-            "updatingErrorDescription": "Hubo un problema al actualizar el videojuego. Inténtalo de nuevo.",
-            "thisGame": "este videojuego",
-            "alreadyInCollection": "Este videojuego ya está en tu colección.",
-            "savingErrorDescription": "Hubo un problema al guardar el videojuego. Inténtalo de nuevo.",
-            "theGame": "el videojuego",
-            "gameDetails": "Detalles del videojuego"
+            "updatingErrorDescription": "There was a problem updating the game. Please try again.",
+            "thisGame": "this game",
+            "alreadyInCollection": "This game is already in your collection.",
+            "savingErrorDescription": "There was a problem saving the game. Please try again.",
+            "theGame": "the game",
+            "gameDetails": "Game details"
         },
         "serie": {
-            "updatingErrorDescription": "Hubo un problema al actualizar la serie. Inténtalo de nuevo.",
-            "alreadyInCollection": "Esta serie ya está en tu colección.",
-            "savingErrorDescription": "Hubo un problema al guardar la serie. Inténtalo de nuevo.",
-            "serieDetails": "Detalles de la serie"
+            "updatingErrorDescription": "There was a problem updating the series. Please try again.",
+            "alreadyInCollection": "This series is already in your collection.",
+            "savingErrorDescription": "There was a problem saving the series. Please try again.",
+            "serieDetails": "Series details"
         },
         "albums": {
-            "updatingErrorDescription": "Hubo un problema al actualizar el álbum. Inténtalo de nuevo.",
-            "alreadyInCollection": "Este álbum ya está en tu colección.",
-            "savingErrorDescription": "Hubo un problema al guardar el álbum. Inténtalo de nuevo.",
-            "albumDetails": "Detalles del álbum"
+            "updatingErrorDescription": "There was a problem updating the album. Please try again.",
+            "alreadyInCollection": "This album is already in your collection.",
+            "savingErrorDescription": "There was a problem saving the album. Please try again.",
+            "albumDetails": "Album details"
         },
-        "addToList": "Añadir a {{listName}}",
-        "list": "lista",
+        "addToList": "Addo to {{listName}}",
+        "list": "list",
         "lists": {
-            "listNameCantBeEmpty": "El nombre de la lista no puede estar vacío.",
-            "listHasBeenUpdated": "La lista {{listName}} ha sido actualizado exitosamente.",
-            "listLoadingError": "No se pudieron cargar los detalles de la lista. Por favor, inténtalo de nuevo.",
-            "updateList": "Actualiza tu lista",
-            "createList": "Crea tu lista",
-            "listName": "Nombre de la lista",
+            "listNameCantBeEmpty": "The list name cannot be empty.",
+            "listHasBeenUpdated": "The list {{listName}} has been updated successfully.",
+            "listLoadingError": "Could not load the list details. Please try again.",
+            "updateList": "Update your list",
+            "createList": "Create your list",
+            "listName": "List name",
             "listNamePlaceholder": "Ej: Películas imprescindibles",
-            "description": "Descripción",
-            "descriptionPlaceholder": "Describe el contenido de esta lista...",
-            "listDetails": "Detalles de la lista"
+            "description": "Description",
+            "descriptionPlaceholder": "Describe the content of this list...",
+            "listDetails": "List details"
         },
-        "ready": "Listo",
-        "lastTime": "Última vez",
-        "noDate": "Sin fecha",
-        "clearDate": "Limpiar fecha",
-        "startingDate": "Fecha Inicio",
-        "endingDate": "Fecha Fin",
-        "hoursPlayedPlaceholder": "Horas jugadas...",
-        "pagesReadedPlaceholder": "Páginas leídas...",
-        "currentSeason": "Temporada Actual",
-        "currentEpisode": "Episodio Actual",
-        "reviewPlaceholder": "Escribe tu opinión...",
-        "views": "Vistas"
+        "ready": "Ready",
+        "lastTime": "Last time",
+        "noDate": "No date",
+        "clearDate": "Clear date",
+        "startingDate": "Starting date",
+        "endingDate": "Ending date",
+        "hoursPlayedPlaceholder": "Hours played...",
+        "pagesReadedPlaceholder": "Pages read...",
+        "currentSeason": "Current season",
+        "currentEpisode": "Current episode",
+        "reviewPlaceholder": "Write your opinion...",
+        "views": "Views"
        
     },
     "frameSelector": {
-        "title": "Selecciona un marco",
-        "loadingAd": "Cargando anuncio...",
-        "adNotReady": "El anuncio aún no está listo. Por favor, espera unos segundos e inténtalo de nuevo.",
-        "updatedNotification": "Tu marco de perfil ha sido actualizado.",
-        "errorUpdatingNotification": "No se pudo actualizar el marco. Por favor, inténtalo de nuevo.",
-        "errorLoadingNotification": "No se pudieron cargar los marcos del usuario. Por favor, inténtalo de nuevo.",
-        "unlockedNotificationTitle": "¡Marco desbloqueado!",
-        "unlockedNotificationDescription": "Has obtenido un nuevo marco para tu perfil.",
-        "errorUnlockingNotification": "No se pudo desbloquear el marco. Inténtalo de nuevo."
+        "title": "Choose a frame",
+        "loadingAd": "Loading ad...",
+        "adNotReady": "The ad is not ready yet. Please wait a few seconds and try again.",
+        "updatedNotification": "Your profile frame has been updated.",
+        "errorUpdatingNotification": "Could not update the frame. Please try again.",
+        "errorLoadingNotification": "Could not load the user's frames. Please try again.",
+        "unlockedNotificationTitle": "Frame unlocked!",
+        "unlockedNotificationDescription": "You have obtained a new frame for your profile.",
+        "errorUnlockingNotification": "Could not unlock the frame. Please try again."
     },
     "notifications": {
-        "title": "Notificaciones del Usuario",
-        "noNotifications": "Sin Notificaciones",
-        "noNotificationsDescription": "No tienes notificaciones pendientes en este momento. ¡Vuelve más tarde!",
-        "followingRequest": "ha solicitado seguirte",
-        "followingConfirmation": "ha empezado a seguirte",
-        "pending": "Pendiente",
-        "followBack": "Seguir de vuelta",
-        "requestAccepted": "¡Solicitud aceptada!",
-        "requestAcceptedDescription": "{{username}} ha aceptado tu solicitud de seguimiento"
+        "title": "User Notifications",
+        "noNotifications": "No Notifications",
+        "noNotificationsDescription": "You have no pending notifications at this moment. Come back later!",
+        "followingRequest": "has requested to follow you",
+        "followingConfirmation": "has started following you",
+        "pending": "Pending",
+        "followBack": "Follow back",
+        "requestAccepted": "Request accepted!",
+        "requestAcceptedDescription": "{{username}} has accepted your follow request"
     },
     "topFiveSelector": {
-        "confirmSelection": "Confirmar selección",
-        "confirmSelectionDescription": "¿Deseas agregar {{title}} a tu TopFive?",
-        "addedToTopFive": "{{title}} ha sido agregado a tu TopFive",
-        "categoryOfYourCollectionTitle": "{{category}} de tu colección",
-        "noContentTitle": "No hay {{category}}",
-        "noContentDescription": "Primero añade a tu colección para que formen parte de tu TopFive",
-        "searchButton": "Buscar"
+        "confirmSelection": "Confirm selection",
+        "confirmSelectionDescription": "Do you want to add {{title}} to your TopFive?",
+        "addedToTopFive": "{{title}} has been added to your TopFive",
+        "categoryOfYourCollectionTitle": "{{category}} of your collection",
+        "noContentTitle": "No {{category}}",
+        "noContentDescription": "First add to your collection for them to be part of your TopFive",
+        "searchButton": "Search"
     },
     "layout": {
-        "updateAvailableTitle": "Actualización disponible",
-        "updateAvailableDescription": "Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades."
+        "updateAvailableTitle": "Update available",
+        "updateAvailableDescription": "There is a new version of the application available. Please update it to continue enjoying all the latest features."
     },
     "components": {
-        "errorAddToList": "No se pudo añadir a la lista.",
-        "whatToAdd": "¿Qué quieres añadir?",
+        "errorAddToList": "Could not add to list.",
+        "whatToAdd": "What do you want to add?",
         "noImage": {
-            "title": "Sin imagen",
-            "book":"Este libro no tiene imagen",
-            "serie": "Esta serie no tiene imagen",
-            "film": "Esta película no tiene imagen",
-            "videogame": "Este juego no tiene imagen",
-            "album": "Este álbum no tiene imagen"
+            "title": "No image available",
+            "book": "This book has no image",
+            "serie": "This series has no image",
+            "film": "This movie has no image",
+            "videogame": "This game has no image",
+            "album": "This album has no image"
         },
-        "thirdPartyAd": "Anunciante Externo",
-        "sponsored": "PATROCINADO",
-        "recommendedForYou": "Recomendado para ti"
+        "thirdPartyAd": "External Ad",
+        "sponsored": "SPONSORED",
+        "recommendedForYou": "Recommended for you"
     }
 }
