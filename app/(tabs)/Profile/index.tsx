@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { AppText } from 'components/AppText';
 import { ResourceType } from 'hooks/useResource';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { useAuth } from 'context/AuthContext';
 
 export default function ProfileScreen() {
   const { colors } = useTheme();

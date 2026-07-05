@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { userService } from "../services/userService";
 import { useAuth } from "context/AuthContext";
 import { ResourceType, useResource } from "hooks/useResource";
-import { createAdaptedResourceStats } from "@/Profile/adapters/statsAdapter";
-import { Alert } from "react-native";
 
 export interface User {
 	id: string;
@@ -29,7 +27,7 @@ const INITIAL_CATEGORY_DATA = {
 
 export const useUser = (username: string) => {
 	const {user} = useAuth();
-    const { fetchResources } = useResource();
+    const { fetchMonthlyStats } = useResource();
 
 	const [userData, setUserData] = useState<User | null>(null);
 	const [loading, setLoading] = useState(false);
@@ -80,13 +78,7 @@ export const useUser = (username: string) => {
     const fetchResourceInfo = async (targetUserId: string) => {
         try {
             setStatsLoading(true);
-            const resourceData = await fetchResources({
-				type: selectedCategory,
-				profile: true,
-				targetUserId
-			});
-            
-            const stats = createAdaptedResourceStats(resourceData?.data || [], selectedCategory, selectedYear);
+            const stats = await fetchMonthlyStats(selectedCategory, selectedYear, targetUserId);
             updateStats(stats);
         } catch (error) {
             console.error('[useUser] Error al cargar estadísticas:', error);
@@ -95,11 +87,16 @@ export const useUser = (username: string) => {
         }
     };
 
-    const updateStats = (newStats: any) => {
+	const updateStats = (chartData: number[]) => {
+        const total = chartData.reduce((acc, curr) => acc + curr, 0);
+        const average = Number((total / 12).toFixed(1));
+
         const newData = { ...fullCategoryData };
         newData[selectedCategory] = {
             ...newData[selectedCategory],
-            ...newStats,
+            chartData: chartData,
+            total: total,
+            average: average,
         };
         setFullCategoryData(newData);
     };

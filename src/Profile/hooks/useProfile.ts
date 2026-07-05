@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from 'context/AuthContext';
 import { userService } from '../services/profileService';
-import { createAdaptedResourceStats } from '../adapters/statsAdapter';
 import { ResourceType, useResource } from 'hooks/useResource';
 import { useNotification } from 'context/NotificationContext';
 import { useFocusEffect } from 'expo-router';
@@ -47,7 +46,7 @@ interface User {
 
 export const useProfile = () => {
   const { user } = useAuth();
-  const { fetchResources } = useResource()
+  const { fetchMonthlyStats } = useResource()
   const { showNotification } = useNotification();
   const [loading, setLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(false);
@@ -99,17 +98,10 @@ export const useProfile = () => {
   const fetchResourceInfo = async () => {
 	try {
 		setStatsLoading(true);
-		const resourceData = await fetchResources({
-			type: selectedCategory,
-			profile: true
-		});
-		
-		const stats = createAdaptedResourceStats(resourceData?.data || [], selectedCategory, selectedYear);
-
+		const stats = await fetchMonthlyStats(selectedCategory, selectedYear, user?.id || '');
 		updateStats(stats);
 	} catch (error) {
 		console.error('[useProfile] Error al cargar estadísticas:', error);
-		//Alert.alert('Error', 'No se pudieron cargar las estadísticas. Intenta de nuevo más tarde.');
     showNotification({
       title: t('common.error'),
       description: t('profile.loadingStatsError'),
@@ -122,17 +114,20 @@ export const useProfile = () => {
 	}
   };
 
-  const updateStats = (newStats: any) => {
-    // 1. Creamos una copia superficial de todo el objeto
+const updateStats = (chartData: number[]) => {
+    const total = chartData.reduce((acc, curr) => acc + curr, 0);
+    const average = Number((total / 12).toFixed(1));
+
     const newData = { ...fullCategoryData };
 
-    // 2. Modificamos solo la parte que nos interesa de la copia
     newData[selectedCategory] = {
       ...newData[selectedCategory],
-      ...newStats,
+      chartData: chartData,
+      total: total,
+      average: average,
     };
 
-    // 3. Guardamos la copia completa
+    // 4. Guardamos la copia completa
     setFullCategoryData(newData);
   };
 

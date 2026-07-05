@@ -192,6 +192,43 @@ export const useResource = () => {
     }
   };
 
+	const fetchMonthlyStats = async (
+		tipoRecurso: ResourceType, 
+		year: number, 
+		targetUserId?: string
+	): Promise<number[]> => {
+	try {
+		if (!user) throw new Error('User not authenticated');
+		
+		const userIdToQuery = targetUserId || user.id;
+		const config = RESOURCE_CONFIG[tipoRecurso];
+		const dateField = DATE_FIELDS[tipoRecurso];
+
+		const { data, error } = await supabase.rpc('get_monthly_resource_stats', {
+			p_user_id: userIdToQuery,
+			p_table_name: config.table,
+			p_date_field: dateField,
+			p_year: year
+		});
+
+		if (error) throw error;
+
+		const chartData = new Array(12).fill(0);
+
+		// Mapeamos los resultados a nuestro array de 12 meses. Ej. [0, 5, 2, 0, 10, 0, 0, 0, 0, 0, 0, 0]
+		if (data) {
+			data.forEach((row: { month: number; count: number }) => {
+				chartData[row.month - 1] = Number(row.count);
+			});
+		}
+
+		return chartData; 
+	} catch (error) {
+		console.error(`Error al obtener stats de ${tipoRecurso}:`, error);
+		return new Array(12).fill(0); // Devuelve datos vacíos para no romper la UI
+	}
+	};
+
   const checkIfResourceExists = async (apiId: string | number | null, type: ResourceType) => {
     if (!apiId) return null;
     try {
@@ -231,5 +268,6 @@ export const useResource = () => {
     fetchResources,
     borrarRecurso,
     checkIfResourceExists,
+	fetchMonthlyStats,
   };
 };
