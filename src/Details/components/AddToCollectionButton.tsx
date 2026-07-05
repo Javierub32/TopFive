@@ -84,6 +84,7 @@ export const AddToCollectionButton = ({ content, type }: Props) => {
   return (
     <TouchableOpacity
       onPress={handlePress}
+      disabled={loading}
       className="mt-4 flex-1 flex-row items-center justify-center rounded-xl py-4"
       style={{ backgroundColor: colors.primary }}>
       <UploadIcon className="mr-4" />
