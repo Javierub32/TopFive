@@ -207,9 +207,45 @@ export const useResource = () => {
     }
   };
 
+  const checkIfResourceExists = async (apiId: string | number | null, type: ResourceType) => {
+    if (!apiId) return null;
+    try {
+      if (!user) throw new Error('User not authenticated');
+
+      const config = RESOURCE_CONFIG[type];
+      const { data, error } = await supabase
+        .from(config.table)
+        .select(`
+          *,
+          ${config.contentJoin}!inner(*)
+          `)
+        .eq('usuarioId', user.id)
+        .eq(`${config.contentJoin}.idApi`, apiId)
+        .maybeSingle();
+      
+      if (error) throw error;
+      if (!data) return null;
+
+      const dataObj = data as Record<string, any>;
+      const normalizedData = { ...dataObj };
+      if (normalizedData[config.contentJoin]) {
+        normalizedData.contenido = normalizedData[config.contentJoin];
+        delete normalizedData[config.contentJoin];
+      }
+
+      return normalizedData;
+
+
+    } catch (error) {
+      console.error(`Error al comprobar si existe el recurso ${type}: `, error);
+      return null;
+    }
+  };
+
   return {
     fetchResources,
     borrarRecurso,
     calcularTotal,
+    checkIfResourceExists,
   };
 };

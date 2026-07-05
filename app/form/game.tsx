@@ -132,13 +132,17 @@ export default function GameForm() {
           } else if (estadoAnterior === 'COMPLETADO' && estado !== 'COMPLETADO') {
             await supabase.rpc('decrement_review_count', { user_id: user.id });
           }
-          router.replace({
-            pathname: '/details/game/gameResource',
-            params: {
-              item: JSON.stringify(gameResource),
-              from: from,
-            },
-          });
+          if (from === 'contentDetails') {
+            router.back();
+          } else {
+            router.replace({
+              pathname: '/details/game/gameResource',
+              params: {
+                item: JSON.stringify(gameResource),
+                from: from,
+              },
+            });
+          }
           setTimeout(() => {
             showNotification({
               title: t('common.success'),
@@ -271,7 +275,9 @@ export default function GameForm() {
           <AppText className="mt-4 font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
             {t('details.loadingError.title')}
           </AppText>
-          <AppText className="mt-2 text-center" style={{ color: colors.secondaryText, fontSize: 16 }}>
+          <AppText
+            className="mt-2 text-center"
+            style={{ color: colors.secondaryText, fontSize: 16 }}>
             {t('details.loadingError.videogames')}
           </AppText>
         </View>
