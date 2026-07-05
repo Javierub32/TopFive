@@ -55,9 +55,12 @@ export const AddToCollectionButton = ({ content, type }: Props) => {
 
     setLoading(true);
 
-    const existingResource = await checkIfResourceExists(content.id, type);
-    setLoading(false);
-
+    let existingResource = null;
+    try {
+      existingResource = await checkIfResourceExists(content.id, type);
+    } finally {
+      setLoading(false);
+    }
     if (!existingResource) {
       openForm(content);
     } else {
