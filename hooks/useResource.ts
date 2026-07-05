@@ -223,8 +223,8 @@ export const useResource = () => {
         .eq(`${config.contentJoin}.idApi`, apiId)
         .maybeSingle();
       
-      if (error) throw error
-      if (!data) return null
+      if (error) throw error;
+      if (!data) return null;
 
       const dataObj = data as Record<string, any>;
       const normalizedData = { ...dataObj };
