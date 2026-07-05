@@ -5,13 +5,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import es from './translations/es.json';
 import en from './translations/en.json';
+import enGB from './translations/en-GB.json';
 
 const LANGUAGE_KEY = 'user_language_preference';
 
 // Configuramos los recursos
 const resources = {
-  es: { translation: es },
-  en: { translation: en },
+  'es': { translation: es },
+  'en': { translation: en },
+  'en-GB': { translation: enGB },
 };
 
 const initI18n = async () => {
@@ -20,7 +22,7 @@ const initI18n = async () => {
 
   // 2. Si no ha elegido nada, cogemos el idioma de su móvil
   if (!savedLanguage) {
-    savedLanguage = Localization.getLocales()[0].languageCode;
+    savedLanguage = Localization.getLocales()[0].languageTag;
   }
 
   // 3. Inicializamos i18next
@@ -29,7 +31,13 @@ const initI18n = async () => {
     .init({
       resources,
       lng: savedLanguage || 'es', // Idioma por defecto
-      fallbackLng: 'es', // Si falta una traducción en inglés, muestra español
+      fallbackLng: {
+        'en-GB': ['en'],
+        'es-ES': ['es'],
+        'es-US': ['es'],
+        'es-419': ['es'], // Código estándar para español latinoamericano
+        'default': ['en']  
+      },
       interpolation: {
         escapeValue: false, // React ya protege contra XSS
       },

@@ -41,14 +41,14 @@
     "categories": {
         "books": "Books",
         "series": "Series",
-        "films": "Movies",
+        "films": "Films",
         "videogames": "Video Games",
         "albums": "Albums"
     },
     "category": {
         "book": "Book",
         "serie": "Series",
-        "film": "Movie",
+        "film": "Film",
         "videogame": "Video Game",
         "album": "Album"
     },
@@ -147,7 +147,7 @@
                 }
             },
             "privacy": "Privacy policy",
-            "adsPriv": "Advertisement privacy"
+            "adsPriv": "Advert privacy"
         },
         "errors": {
             "privacyError":{
@@ -301,7 +301,7 @@
         "myTopFive": "My TopFive",
         "categoriesConsumed": {
             "books": "Books read",
-            "films": "Movies watched",
+            "films": "Films watched",
             "series": "Series watched",
             "videogames": "Video games played",
             "albums": "Albums listened"
@@ -369,7 +369,7 @@
             "title": "Error",
             "books": "Could not load the book information.",
             "series": "Could not load the series information.",
-            "films": "Could not load the movie information.",
+            "films": "Could not load the film information.",
             "videogames": "Could not load the video game information.",
             "albums": "Could not load the album information."
         },
@@ -430,12 +430,12 @@
             "bookDetails": "Book details"
         },
         "film": {
-            "updatingErrorDescription": "There was a problem updating the movie. Please try again.",
-            "thisFilm": "this movie",
-            "alreadyInCollection": "This movie is already in your collection.",
-            "savingErrorDescription": "There was a problem saving the movie. Please try again.",
-            "theFilm": "the movie",
-            "filmDetails": "Movie details"
+            "updatingErrorDescription": "There was a problem updating the film. Please try again.",
+            "thisFilm": "this film",
+            "alreadyInCollection": "This film is already in your collection.",
+            "savingErrorDescription": "There was a problem saving the film. Please try again.",
+            "theFilm": "the film",
+            "filmDetails": "Film details"
         },
         "game": {
             "updatingErrorDescription": "There was a problem updating the game. Please try again.",
@@ -466,7 +466,7 @@
             "updateList": "Update your list",
             "createList": "Create your list",
             "listName": "List name",
-            "listNamePlaceholder": "E.g.: Essential movies",
+            "listNamePlaceholder": "E.g.: Essential films",
             "description": "Description",
             "descriptionPlaceholder": "Describe the content of this list...",
             "listDetails": "List details"
@@ -527,7 +527,7 @@
             "title": "No image available",
             "book": "This book has no image",
             "serie": "This series has no image",
-            "film": "This movie has no image",
+            "film": "This film has no image",
             "videogame": "This game has no image",
             "album": "This album has no image"
         },
