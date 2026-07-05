@@ -16,7 +16,7 @@ interface Props {
 export const AddToCollectionButton = ({ content, type }: Props) => {
   const { colors } = useTheme();
   const { t } = useTranslation();
-  const { fetchResources, checkIfResourceExists } = useResource();
+  const { checkIfResourceExists } = useResource();
   const [loading, setLoading] = useState(false);
   const { showNotification, hideNotification } = useNotification();
 
