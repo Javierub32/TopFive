@@ -25,7 +25,7 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
       }
       const message = await listServices.addItemToList(listId, resourceId, exactType);
       showNotification({
-        title: 'Éxito',
+        title: t('common.success'),
         description: message,
         isChoice: false,
         delete: false,
