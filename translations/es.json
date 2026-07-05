@@ -25,7 +25,8 @@
         "icon": "Icono",
         "colour": "Color",
         "obtain": "Obtener",
-        "update": "Actualizar"
+        "update": "Actualizar",
+        "edit": "Editar"
     },
     "status": {
         "title": "Estado",
@@ -100,7 +101,7 @@
             "logOut": {
                 "title": "Cerrar sesión",
                 "alertTitle": "Confirmar cierre de sesión",
-                "alertDescription": "¿Estás seguro de que deseas cerrar sesión",
+                "alertDescription": "¿Estás seguro de que deseas cerrar sesión?",
                 "alertConfirmation": "Cerrar sesión"
             },
             "deleteAccount": {
@@ -222,7 +223,7 @@
     },
     "search": {
         "usersTitle": "Usuarios",
-        "placeholder": "Buscar",
+        "placeholder": "Buscar {{category}}...",
         "noResults": "Sin resultados.",
         "description": "Realiza una búsqueda para ver resultados de {{category}}.",
         "userSearchBarPlaceholder": "Busca un usuario...",
@@ -410,7 +411,8 @@
         "days": "{{days}} días",
         "totalReadingTime": "Tiempo total de lectura",
         "userDetails": "Detalles del usuario",
-        "user": "Usuario"
+        "user": "Usuario",
+        "resourceAlreadyInCollection": "Este contenido ya está en tu colección. ¿Quieres editarlo?"
     },
     "forms": {
         "updatingError": "Error al actualizar.",
