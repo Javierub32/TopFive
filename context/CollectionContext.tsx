@@ -11,7 +11,7 @@ export type CategoryType = 'Libros' | 'Películas' | 'Series' | 'Videojuegos' | 
 export const CollectionProvider = ({ children }: any) => {
   const { user } = useAuth();
 
-  const { fetchResources, calcularTotal } = useResource();
+  const { fetchResources } = useResource();
 
   const { initialResource } = useLocalSearchParams<{ initialResource?: ResourceType }>();
   const [inputBusqueda, setInputBusqueda] = useState('');
@@ -51,7 +51,7 @@ export const CollectionProvider = ({ children }: any) => {
 			term: inputBusqueda,
 			cantidad: pageSize
 		});
-		setData(resultado || []);
+		setData(resultado?.data || []);
 		setPage(1);
 		setHasMore(true);
 	}
@@ -81,9 +81,9 @@ export const CollectionProvider = ({ children }: any) => {
 			from,
 			to
 		});
-		setData((prevData: any[]) => [...prevData, ...(resultado || [])]);
+		setData((prevData: any[]) => [...prevData, ...(resultado?.data || [])]);
 		setPage((prevPage) => prevPage + 1);
-		if (!resultado || resultado.length < pageSize) {
+		if (!resultado?.data || resultado.data.length < pageSize) {
 			setHasMore(false);
 		}
 	}
@@ -114,24 +114,18 @@ export const CollectionProvider = ({ children }: any) => {
         pendientes, 
         enCurso, 
         completados, 
-        totalPendientes, 
-        totalEnCurso, 
-        totalCompletados
       ] = await Promise.all([
-		fetchResources({ type: categoriaActual, estado: 'PENDIENTE', cantidad: 5, ordenarPorFecha: true }),
-		fetchResources({ type: categoriaActual, estado: 'EN_CURSO', cantidad: 5, ordenarPorFecha: true }),
-		fetchResources({ type: categoriaActual, estado: 'COMPLETADO', cantidad: 5, ordenarPorUltimaActividad: true }),
-        calcularTotal(categoriaActual, 'PENDIENTE'),
-        calcularTotal(categoriaActual, 'EN_CURSO'),
-        calcularTotal(categoriaActual, 'COMPLETADO')
+		fetchResources({ type: categoriaActual, estado: 'PENDIENTE', cantidad: 5, ordenarPorFecha: true, includeCount: true }),
+		fetchResources({ type: categoriaActual, estado: 'EN_CURSO', cantidad: 5, ordenarPorFecha: true, includeCount: true }),
+		fetchResources({ type: categoriaActual, estado: 'COMPLETADO', cantidad: 5, ordenarPorUltimaActividad: true, includeCount: true })
       ]);
 
-      setPendientes(pendientes || []);
-      setEnCurso(enCurso || []);
-      setCompletados(completados || []);
-      setTotalPendientes(totalPendientes);
-      setTotalEnCurso(totalEnCurso);
-      setTotalCompletados(totalCompletados);
+      setPendientes(pendientes?.data || []);
+      setEnCurso(enCurso?.data || []);
+      setCompletados(completados?.data || []);
+      setTotalPendientes(pendientes?.count || 0);
+      setTotalEnCurso(enCurso?.count || 0);
+      setTotalCompletados(completados?.count || 0);
     } catch (error) {
       console.error(error);
       setPendientes([]);
@@ -154,11 +148,17 @@ export const CollectionProvider = ({ children }: any) => {
         return; 
     }
 
-    setInputBusqueda('');
-    setBusqueda('');
-    setData([]); 
-    
-    fetchInitialData();
+	// Borramos los datos de búsqueda y la página actual al cambiar de categoría
+	// Metemos un pequeño Delay para evitar múltiples fetches si el usuario cambia de categoría rápidamente
+	const temporizador = setTimeout(() => {
+		setInputBusqueda('');
+		setBusqueda('');
+		setData([]); 
+
+		fetchInitialData();
+	}, 300);
+
+	return () => clearTimeout(temporizador);
   }, [categoriaActual, refreshTrigger, user?.id]); 
 
   const refreshData = () => {

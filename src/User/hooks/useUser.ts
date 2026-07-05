@@ -86,7 +86,7 @@ export const useUser = (username: string) => {
 				targetUserId
 			});
             
-            const stats = createAdaptedResourceStats(resourceData || [], selectedCategory, selectedYear);
+            const stats = createAdaptedResourceStats(resourceData?.data || [], selectedCategory, selectedYear);
             updateStats(stats);
         } catch (error) {
             console.error('[useUser] Error al cargar estadísticas:', error);

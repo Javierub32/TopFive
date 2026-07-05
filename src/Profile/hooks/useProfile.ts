@@ -94,7 +94,7 @@ export const useProfile = () => {
       setPreviousYear(selectedYear);
 	  fetchResourceInfo();
 	  return;
-  }, [selectedCategory, selectedYear, previousYear,]);
+  }, [selectedCategory, selectedYear]);
 
   const fetchResourceInfo = async () => {
 	try {
@@ -104,7 +104,7 @@ export const useProfile = () => {
 			profile: true
 		});
 		
-		const stats = createAdaptedResourceStats(resourceData || [], selectedCategory, selectedYear);
+		const stats = createAdaptedResourceStats(resourceData?.data || [], selectedCategory, selectedYear);
 
 		updateStats(stats);
 	} catch (error) {

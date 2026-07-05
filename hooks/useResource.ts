@@ -46,6 +46,12 @@ export interface FetchResourcesParams<K extends ResourceType> {
   targetUserId?: string | null;
   ordenarPorUltimaActividad?: boolean | null;
   recursoId?: number | null;
+  includeCount?: boolean;
+}
+
+export interface FetchResourcesResponse<K extends ResourceType> {
+  data: ResourceMap[K][] | null;
+  count: number | null;
 }
 
 export const useResource = () => {
@@ -64,8 +70,9 @@ export const useResource = () => {
     to,
     targetUserId,
     ordenarPorUltimaActividad,
-    recursoId
-  }: FetchResourcesParams<K>): Promise<ResourceMap[K][] | null> => {
+    recursoId,
+	includeCount = false,
+  }: FetchResourcesParams<K>): Promise<FetchResourcesResponse<K>> => {
     try {
       if (!user) throw new Error('User not authenticated');
 
@@ -74,6 +81,7 @@ export const useResource = () => {
       const config = RESOURCE_CONFIG[type];
       const isSearch = term !== undefined && term !== null && term !== '';
       const joinModifier = isSearch ? '!inner' : '';
+	  const selectOptions = includeCount ? { count: 'exact' as const } : undefined;
 
       // Query base por defecto
       let query = supabase
@@ -85,7 +93,7 @@ export const useResource = () => {
                 imagenUrl,
                 fechaLanzamiento
             )
-        ` as any)
+        ` as any, selectOptions)
         .eq('usuarioId', userIdToQuery);
 
       if (recursoId !== undefined && recursoId !== null) {
@@ -98,7 +106,7 @@ export const useResource = () => {
 
         query = supabase
           .from(config.table)
-          .select(dateField as any)
+          .select(dateField as any, selectOptions)
           .eq('usuarioId', userIdToQuery);
       }
 
@@ -131,7 +139,7 @@ export const useResource = () => {
         query = query.limit(cantidad);
       }
 
-      const { data, error } = await query;
+      const { data, count, error } = await query;
 
       if (error) throw error;
       
@@ -144,15 +152,15 @@ export const useResource = () => {
             }
             return item;
         });
-        return normalizedData as unknown as ResourceMap[K][];
+        return { data: normalizedData, count } as unknown as FetchResourcesResponse<K>;
     }
 
     // Si es modo profile o no hay data, devolvemos tal cual
-    return data as unknown as ResourceMap[K][];
+    return { data, count } as unknown as FetchResourcesResponse<K>	;
 
     } catch (error) {
       console.error(`Error al obtener ${type}:`, error);
-      return null;
+      return { data: null, count: null } as FetchResourcesResponse<K>;
     }
   };
 
@@ -181,29 +189,6 @@ export const useResource = () => {
     } catch (error) {
       console.error(`Error al borrar recurso ${tipoRecurso}:`, error);
       return null;
-    }
-  };
-
-  const calcularTotal = async (
-    tipoRecurso: ResourceType,
-    estado: 'COMPLETADO' | 'EN_CURSO' | 'PENDIENTE'
-  ) => {
-    try {
-      if (!user) throw new Error('User not authenticated');
-      
-      const config = RESOURCE_CONFIG[tipoRecurso];
-
-      const { count, error } = await supabase
-        .from(config.table)
-        .select('id', { count: 'exact', head: true })
-        .eq('usuarioId', user.id)
-        .eq('estado', estado);
-
-      if (error) throw error;
-      return count || 0;
-    } catch (error) {
-      console.error(`Error total ${tipoRecurso}:`, error);
-      return 0;
     }
   };
 
@@ -245,7 +230,6 @@ export const useResource = () => {
   return {
     fetchResources,
     borrarRecurso,
-    calcularTotal,
     checkIfResourceExists,
   };
 };

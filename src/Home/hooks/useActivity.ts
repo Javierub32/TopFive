@@ -101,7 +101,7 @@ export const useActivity = () => {
 
 			router.push({
 				pathname: `/details/${type}/${type}Resource`,
-				params: { item: JSON.stringify(item ? item[0] : null), from: 'home' },
+				params: { item: JSON.stringify(item?.data ? item.data[0] : null), from: 'home' },
 			});
 		} catch (error) {
 			console.error('Error navigating to activity details:', error);
