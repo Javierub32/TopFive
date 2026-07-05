@@ -256,7 +256,6 @@ export default function FilmForm() {
   };
 
   if (!film) {
-    console.log(item);
     return (
       <Screen>
         <ThemedStatusBar />
