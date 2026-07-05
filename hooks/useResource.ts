@@ -209,11 +209,10 @@ export const useResource = () => {
 
   const checkIfResourceExists = async (apiId: string | number | null, type: ResourceType) => {
     if (!apiId) return null;
-    try{
-      if (!user) throw new Error("Usuario no autenticado");
+    try {
+      if (!user) throw new Error('User not authenticated');
 
-      const config = RESOURCE_CONFIG[type]
-
+      const config = RESOURCE_CONFIG[type];
       const { data, error } = await supabase
         .from(config.table)
         .select(`
