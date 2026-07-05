@@ -257,41 +257,34 @@ export default function SettingsScreen() {
                     </View>
                   </TouchableOpacity>
                   {showLangOptions && (
-                    <View className="mt-2 flex-row justify-between gap-2">
-                      <TouchableOpacity
-                        className="flex-1 items-center justify-center rounded-xl p-4"
-                        style={{
-                          backgroundColor: colors.background,
-                          borderWidth: 2,
-                          borderColor: i18n.language === 'es' ? colors.accent : 'transparent',
-                        }}
-                        onPress={() => changeLanguage('es')}>
-                        <AppText
-                          className="font-sans text-base font-bold uppercase tracking-wider"
-                          style={{ color: colors.primaryText, fontSize: 16 }}>
-                          ES
-                        </AppText>
-                        <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
-                          {t('languages.es')}
-                        </AppText>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        className="flex-1 items-center justify-center rounded-xl p-4"
-                        style={{
-                          backgroundColor: colors.background,
-                          borderWidth: 2,
-                          borderColor: i18n.language === 'en' ? colors.accent : 'transparent',
-                        }}
-                        onPress={() => changeLanguage('en')}>
-                        <AppText
-                          className="font-sans text-base font-bold uppercase tracking-wider"
-                          style={{ color: colors.primaryText, fontSize: 16 }}>
-                          EN
-                        </AppText>
-                        <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
-                          {t('languages.en')}
-                        </AppText>
-                      </TouchableOpacity>
+                    <View className="mt-2 flex-row flex-wrap justify-between gap-2">
+                      {[
+                        { id: 'es', label: 'ES', region: 'ES' },
+                        { id: 'en', label: 'EN', region: 'US' },
+                        { id: 'en-GB', label: 'EN', region: 'UK' },
+                      ].map((lang) => (
+                        <TouchableOpacity
+                          key={lang.id}
+                          className="mb-2 items-center justify-center rounded-xl p-4"
+                          style={{
+                            backgroundColor: colors.background,
+                            borderWidth: 2,
+                            borderColor: 
+                              i18n.language === lang.id || (i18n.language.startsWith(lang.id) && !(i18n.language === 'en-GB' && lang.id === 'en')) 
+                                ? colors.accent 
+                                : 'transparent',
+                          }}
+                          onPress={() => changeLanguage(lang.id)}>
+                          <AppText
+                            className="font-sans text-base font-bold uppercase tracking-wider"
+                            style={{ color: colors.primaryText, fontSize: 16 }}>
+                            {lang.label}
+                          </AppText>
+                          <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
+                            {lang.region}
+                          </AppText>
+                        </TouchableOpacity>
+                      ))}
                     </View>
                   )}
                 </View>

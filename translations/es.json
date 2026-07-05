@@ -208,7 +208,7 @@
         "resetPassword": {
             "error": {
                 "denied": "Permiso denegado",
-                "errorLink": "El enlace ha caducado o está incompleto. Por farvor, solicita uno nuevo.",
+                "errorLink": "El enlace ha caducado o está incompleto. Por favor, solicita uno nuevo.",
                 "passwordMismatch": "Las contraseñas no coinciden. Por favor, revísalas.",
                 "general": "No se pudo actualizar la contraseña. El enlace podría haber caducado.",
                 "differentPassword": "La nueva contraseña deber ser diferente a la que estabas usando.",
