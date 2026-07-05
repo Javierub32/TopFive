@@ -43,11 +43,11 @@ export default function ProfileScreen() {
 
   // Mismo orden y claves que en Collection
   const routes = [
-    { key: 'libro', title: 'Libros' },
-    { key: 'serie', title: 'Series' },
-    { key: 'pelicula', title: 'Películas' },
-    { key: 'videojuego', title: 'Juegos' },
-    { key: 'cancion', title: 'Música' },
+    { key: 'libro', title: t('category.book') },
+    { key: 'serie', title: t('category.serie') },
+    { key: 'pelicula', title: t('category.film') },
+    { key: 'videojuego', title: t('category.videogame') },
+    { key: 'cancion', title: t('category.album') },
   ];
 
   const index = routes.findIndex((r) => r.key === selectedCategory);
