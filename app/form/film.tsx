@@ -119,13 +119,18 @@ export default function FilmForm() {
           } else if (estadoAnterior === 'COMPLETADO' && estado !== 'COMPLETADO') {
             await supabase.rpc('decrement_review_count', { user_id: user.id });
           }
-          router.replace({
-            pathname: '/details/film/filmResource',
-            params: {
-              item: JSON.stringify(filmResource),
-              from: from,
-            },
-          });
+          if (from === 'contentDetails') {
+            router.back();
+          } else {
+            router.replace({
+              pathname: '/details/film/filmResource',
+              params: {
+                item: JSON.stringify(filmResource),
+                from: from,
+              },
+            });
+          }
+
           setTimeout(() => {
             showNotification({
               title: t('common.success'),
@@ -251,6 +256,7 @@ export default function FilmForm() {
   };
 
   if (!film) {
+    console.log(item);
     return (
       <Screen>
         <ThemedStatusBar />
@@ -259,7 +265,9 @@ export default function FilmForm() {
           <AppText className="mt-4 font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
             {t('details.loadingError.title')}
           </AppText>
-          <AppText className="mt-2 text-center" style={{ color: colors.secondaryText, fontSize: 16 }}>
+          <AppText
+            className="mt-2 text-center"
+            style={{ color: colors.secondaryText, fontSize: 16 }}>
             {t('details.loadingError.films')}
           </AppText>
         </View>
@@ -333,7 +341,9 @@ export default function FilmForm() {
             className="mx-4 mb-14 mt-4 rounded-lg py-3"
             style={{ backgroundColor: colors.primary }}
             activeOpacity={0.8}>
-            <AppText className="text-center font-bold" style={{ color: colors.background, fontSize: 18 }}>
+            <AppText
+              className="text-center font-bold"
+              style={{ color: colors.background, fontSize: 18 }}>
               {loading ? t('common.saving') : t('common.save')}
             </AppText>
           </TouchableOpacity>

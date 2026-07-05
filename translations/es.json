@@ -25,7 +25,8 @@
         "icon": "Icono",
         "colour": "Color",
         "obtain": "Obtener",
-        "update": "Actualizar"
+        "update": "Actualizar",
+        "edit": "Editar"
     },
     "status": {
         "title": "Estado",
@@ -410,7 +411,8 @@
         "days": "{{days}} días",
         "totalReadingTime": "Tiempo total de lectura",
         "userDetails": "Detalles del usuario",
-        "user": "Usuario"
+        "user": "Usuario",
+        "resourceAlreadyInCollection": "Este contenido ya está en tu colección. ¿Quieres editarlo?"
     },
     "forms": {
         "updatingError": "Error al actualizar.",
