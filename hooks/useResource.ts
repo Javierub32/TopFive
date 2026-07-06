@@ -46,6 +46,12 @@ export interface FetchResourcesParams<K extends ResourceType> {
   targetUserId?: string | null;
   ordenarPorUltimaActividad?: boolean | null;
   recursoId?: number | null;
+  includeCount?: boolean;
+}
+
+export interface FetchResourcesResponse<K extends ResourceType> {
+  data: ResourceMap[K][] | null;
+  count: number | null;
 }
 
 export const useResource = () => {
@@ -64,8 +70,9 @@ export const useResource = () => {
     to,
     targetUserId,
     ordenarPorUltimaActividad,
-    recursoId
-  }: FetchResourcesParams<K>): Promise<ResourceMap[K][] | null> => {
+    recursoId,
+	includeCount = false,
+  }: FetchResourcesParams<K>): Promise<FetchResourcesResponse<K>> => {
     try {
       if (!user) throw new Error('User not authenticated');
 
@@ -74,6 +81,7 @@ export const useResource = () => {
       const config = RESOURCE_CONFIG[type];
       const isSearch = term !== undefined && term !== null && term !== '';
       const joinModifier = isSearch ? '!inner' : '';
+	  const selectOptions = includeCount ? { count: 'exact' as const } : undefined;
 
       // Query base por defecto
       let query = supabase
@@ -85,7 +93,7 @@ export const useResource = () => {
                 imagenUrl,
                 fechaLanzamiento
             )
-        ` as any)
+        ` as any, selectOptions)
         .eq('usuarioId', userIdToQuery);
 
       if (recursoId !== undefined && recursoId !== null) {
@@ -98,7 +106,7 @@ export const useResource = () => {
 
         query = supabase
           .from(config.table)
-          .select(dateField as any)
+          .select(dateField as any, selectOptions)
           .eq('usuarioId', userIdToQuery);
       }
 
@@ -131,7 +139,7 @@ export const useResource = () => {
         query = query.limit(cantidad);
       }
 
-      const { data, error } = await query;
+      const { data, count, error } = await query;
 
       if (error) throw error;
       
@@ -144,15 +152,15 @@ export const useResource = () => {
             }
             return item;
         });
-        return normalizedData as unknown as ResourceMap[K][];
+        return { data: normalizedData, count } as unknown as FetchResourcesResponse<K>;
     }
 
     // Si es modo profile o no hay data, devolvemos tal cual
-    return data as unknown as ResourceMap[K][];
+    return { data, count } as unknown as FetchResourcesResponse<K>	;
 
     } catch (error) {
       console.error(`Error al obtener ${type}:`, error);
-      return null;
+      return { data: null, count: null } as FetchResourcesResponse<K>;
     }
   };
 
@@ -184,28 +192,42 @@ export const useResource = () => {
     }
   };
 
-  const calcularTotal = async (
-    tipoRecurso: ResourceType,
-    estado: 'COMPLETADO' | 'EN_CURSO' | 'PENDIENTE'
-  ) => {
-    try {
-      if (!user) throw new Error('User not authenticated');
-      
-      const config = RESOURCE_CONFIG[tipoRecurso];
+	const fetchMonthlyStats = async (
+		tipoRecurso: ResourceType, 
+		year: number, 
+		targetUserId?: string
+	): Promise<number[]> => {
+	try {
+		if (!user) throw new Error('User not authenticated');
+		
+		const userIdToQuery = targetUserId || user.id;
+		const config = RESOURCE_CONFIG[tipoRecurso];
+		const dateField = DATE_FIELDS[tipoRecurso];
 
-      const { count, error } = await supabase
-        .from(config.table)
-        .select('id', { count: 'exact', head: true })
-        .eq('usuarioId', user.id)
-        .eq('estado', estado);
+		const { data, error } = await supabase.rpc('get_monthly_resource_stats', {
+			p_user_id: userIdToQuery,
+			p_table_name: config.table,
+			p_date_field: dateField,
+			p_year: year
+		});
 
-      if (error) throw error;
-      return count || 0;
-    } catch (error) {
-      console.error(`Error total ${tipoRecurso}:`, error);
-      return 0;
-    }
-  };
+		if (error) throw error;
+
+		const chartData = new Array(12).fill(0);
+
+		// Mapeamos los resultados a nuestro array de 12 meses. Ej. [0, 5, 2, 0, 10, 0, 0, 0, 0, 0, 0, 0]
+		if (data) {
+			data.forEach((row: { month: number; count: number }) => {
+				chartData[row.month - 1] = Number(row.count);
+			});
+		}
+
+		return chartData; 
+	} catch (error) {
+		console.error(`Error al obtener stats de ${tipoRecurso}:`, error);
+		return new Array(12).fill(0); // Devuelve datos vacíos para no romper la UI
+	}
+	};
 
   const checkIfResourceExists = async (apiId: string | number | null, type: ResourceType) => {
     if (!apiId) return null;
@@ -245,7 +267,7 @@ export const useResource = () => {
   return {
     fetchResources,
     borrarRecurso,
-    calcularTotal,
     checkIfResourceExists,
+	fetchMonthlyStats,
   };
 };

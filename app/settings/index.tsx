@@ -136,7 +136,7 @@ export default function SettingsScreen() {
   return (
     <Screen>
       <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-        <ReturnButton route="/(tabs)/Profile" title={t('settings.title')} />
+        <ReturnButton route="back" title={t('settings.title')} />
         <View className="mb-14 flex-1 p-4">
           <View className="flex-1 gap-4">
             <View>
@@ -150,12 +150,7 @@ export default function SettingsScreen() {
                   <TouchableOpacity
                     className="w-full flex-row items-center justify-between gap-4 p-2 pb-4"
                     activeOpacity={0.4}
-                    onPress={() =>
-                      router.push({
-                        pathname: '/editProfile',
-                        params: { username, description, from: 'Settings' },
-                      })
-                    }>
+                    onPress={() => router.push('/editProfile')}>
                     <View className="flex-row items-center justify-start gap-2">
                       <AntDesign name="edit" size={24} color={colors.primaryText} />
                       <AppText style={{ color: colors.primaryText, fontSize: 18 }}>

@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 
 export const useFrame = () => {
-  const { user } = useAuth();
+  const { user, refreshProfile } = useAuth();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [userFrames, setUserFrames] = useState<string[]>([]);
@@ -40,7 +40,9 @@ export const useFrame = () => {
         success: true,
       });
 
-      router.back();
+	  refreshProfile();
+      
+	  router.back();
     } catch (error) {
       console.error('Error al guardar el marco:', error);
       showNotification({

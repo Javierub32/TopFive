@@ -1,18 +1,25 @@
 import { useAuth } from "context/AuthContext";
 import { useLocalSearchParams } from "expo-router";
 import { supabase } from "lib/supabase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { useNotification } from "context/NotificationContext";
 
-export const useSettings = () => {
+export const useSettings = (userData?: any) => {
 	const { username, description } = useLocalSearchParams<{ username: string; description: string }>();
-	const { user } = useAuth();
+	const { user, refreshProfile } = useAuth();
 	const {showNotification} = useNotification();
 	const [loading, setLoading] = useState(false);
 	const [usernameAlreadyExists, setUsernameAlreadyExists] = useState(false);
 	const [ uname, setUsername] = useState(username || '');
 	const [ udesc, setDescription] = useState(description || '');
+
+	useEffect(() => {
+		if (userData) {
+			setUsername(userData.username || '');
+			setDescription(userData.description || '');
+		}
+	}, [userData]);
 
 	const handleUsernameChange = (newUsername: string) => {
 		setUsername(newUsername);
@@ -33,12 +40,17 @@ export const useSettings = () => {
 
 			if (error?.code == '23505') {
 				setUsernameAlreadyExists(true);
-				//Alert.alert('Error', 'El nombre de usuario ya está en uso. Por favor, elige otro.');
 				
+				showNotification({
+					title: 'Error',
+					description: 'El nombre de usuario ya está en uso. Por favor, elige otro.',
+					isChoice: false,
+					delete: false,
+					success: false,
+				});
 			}
 			else if (error) {
 				setUsernameAlreadyExists(false);
-				//Alert.alert('Error', 'Hubo un error al actualizar tu perfil. Por favor, intenta de nuevo.');
 				showNotification({
 					title: 'Error',
 					description: 'Hubo un error al actualizar tu perfil. Por favor, intenta de nuevo.',
@@ -48,7 +60,9 @@ export const useSettings = () => {
 				});
 			} else {
 				setUsernameAlreadyExists(false);
-				//Alert.alert('Éxito', 'Tu perfil ha sido actualizado correctamente.');
+				
+				refreshProfile();
+
 				showNotification({
 					title: '¡Éxito!',
 					description: 'Tu perfil ha sido actualizado correctamente.',

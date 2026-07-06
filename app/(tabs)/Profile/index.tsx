@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { AppText } from 'components/AppText';
 import { ResourceType } from 'hooks/useResource';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { useAuth } from 'context/AuthContext';
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
@@ -127,18 +128,7 @@ export default function ProfileScreen() {
           <NotificationButton from="Profile" />
           <Pressable
             className="rounded-full p-3"
-            onPress={() =>
-              router.push({
-                pathname: '/settings',
-                params: {
-                  username: userData?.username,
-                  description: userData?.description,
-                  avatar_url: userData?.avatar_url || null,
-                  frame: userData?.frame || 'none',
-                  from: 'Profile',
-                },
-              })
-            }>
+            onPress={() => router.push('/settings')}>
             <Feather name="settings" size={24} color={colors.primaryText} />
           </Pressable>
         </View>
@@ -163,15 +153,7 @@ export default function ProfileScreen() {
               style={{ backgroundColor: `${colors.accent}33` }}
               activeOpacity={0.4}
               onPress={() =>
-                router.push({
-                  pathname: '/editProfile',
-                  params: {
-                    username: userData?.username,
-                    description: userData?.description,
-                    from: 'Profile',
-                  },
-                })
-              }>
+                router.push('/editProfile')}>
               <AppText className="text-base font-semibold" style={{ fontSize: 14, color: colors.primaryText }}>
                 {t('settings.personalization.editProfile.title')}
               </AppText>

@@ -30,7 +30,7 @@ export const useItemSelector = (category: string | undefined, listId: string | u
 					type: resourceType,
 					ordenarPorFecha: true
 				});
-                setData(items || []);
+                setData(items?.data || []);
             } catch (error) {
                 console.error(error);
             } finally {

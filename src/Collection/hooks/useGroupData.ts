@@ -33,13 +33,13 @@ export const useGroupData = (category: ResourceType, state: StateType) => {
 			});
 
 			if (currentPage === 0) {
-				setData(newItems || []);
+				setData(newItems?.data || []);
 			} else {
-				setData((prev) => [...prev, ...newItems || []]);
+				setData((prev) => [...prev, ...newItems?.data || []]);
 			}
 
 			// Si devolvió menos elementos que el tamaño de página, llegamos al final
-			if (newItems && newItems.length < PAGE_SIZE) {
+			if (newItems && newItems.data && newItems.data.length < PAGE_SIZE) {
 				setHasMore(false);
 			} else {
 				setHasMore(true);
