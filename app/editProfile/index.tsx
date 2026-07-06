@@ -12,7 +12,8 @@ import { useTranslation } from 'react-i18next';
 import { AppText } from 'components/AppText';
 
 export default function EditProfileScreen() {
-  const {
+    const { pickImage, userData } = useProfile();
+	const {
     uname,
     udesc,
     handleUsernameChange,
@@ -20,16 +21,13 @@ export default function EditProfileScreen() {
     usernameAlreadyExists,
     handleSubmit,
     loading,
-  } = useSettings();
-  const { pickImage, userData } = useProfile();
-  const { avatar_url, frame, from } = useLocalSearchParams(); //No les paso desde PROFILE/SETTINGS porque se modifican
+  } = useSettings(userData);
   const { colors } = useTheme();
   const { t } = useTranslation();
 
   // Usar datos actualizados de userData (que se refrescan al volver del focus)
-  const avatarUrlString =
-    userData?.avatar_url || (typeof avatar_url === 'string' ? avatar_url : undefined);
-  const frameString = userData?.frame || (typeof frame === 'string' ? frame : 'none');
+  const avatarUrlString = userData?.avatar_url;
+  const frameString = userData?.frame || 'none';
 
   if (loading) {
     return (
@@ -42,9 +40,8 @@ export default function EditProfileScreen() {
   return (
     <Screen>
       <ReturnButton
-        route={from === 'Profile' ? '/(tabs)/Profile' : '/settings'}
+        route={'back'}
         title={t('profile.editProfile.title')}
-        params={from === 'Settings' ? { username: uname, description: udesc } : {}}
       />
 
       <View className="flex-col gap-2 px-6 py-4">

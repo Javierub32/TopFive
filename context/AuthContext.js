@@ -7,6 +7,11 @@ export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [session, setSession] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const [profileRefreshTrigger, setProfileRefreshTrigger] = useState(0);
+
+	const refreshProfile = () => {
+		setProfileRefreshTrigger(prev => prev + 1);
+	};
 
 	useEffect(() => {
 		let mounted = true;
@@ -223,6 +228,8 @@ export const AuthProvider = ({ children }) => {
 				requestReset,
 				changePassword,
 				deleteAccount,
+				profileRefreshTrigger,
+				refreshProfile,
 			}}>
 			{children}
 		</AuthContext.Provider>
