@@ -1,5 +1,5 @@
 import { View, Modal, TouchableOpacity, Pressable, FlatList } from 'react-native';
-import { MaterialCommunityIcons } from 'components/Icons';
+import { Ionicons, MaterialCommunityIcons } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { useLists } from '../hooks/useLists';
 import { LoadingIndicator } from 'components/LoadingIndicator';
@@ -7,8 +7,18 @@ import { useCollection } from 'context/CollectionContext';
 import { router } from 'expo-router';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+import { useState, useEffect } from 'react';
+import { listServices, CollectionType } from '@/Collection/services/listServices';
 
-const ModalListItem = ({ list, onSelect, colors, t }: any) => (
+const categoryMap: Record<string, CollectionType> = {
+  'pelicula': 'PELICULA',
+  'serie': 'SERIE',
+  'videojuego': 'VIDEOJUEGO',
+  'libro': 'LIBRO',
+  'cancion': 'MUSICA',
+};
+
+const ModalListItem = ({ list, onSelect, colors, t, isSaved }: any) => (
   <TouchableOpacity
     className="active:bg-surfaceButton/80 flex-row items-center justify-between rounded-lg p-3"
     onPress={() => onSelect(list.id, list.tipo)}>
@@ -34,15 +44,43 @@ const ModalListItem = ({ list, onSelect, colors, t }: any) => (
         </AppText>
       </View>
     </View>
-    <MaterialCommunityIcons name="bookmark-outline" size={24} color={colors.secondaryText} />
+    <Ionicons name={isSaved ? "bookmark" : "bookmark-outline"} size={24} color={colors.secondaryText} />
   </TouchableOpacity>
 );
 
-export function AddToListModal({ visible, onClose, resourceCategory, onSelect }: any) {
+export function AddToListModal({ visible, onClose, resourceCategory, resourceId, onSelect }: any) {
   const { colors } = useTheme();
   const { categoriaActual } = useCollection();
   const { lists, loading } = useLists(categoriaActual);
   const { t } = useTranslation();
+  const [savedListIds, setSavedListIds] = useState<string[]>([]);
+  const [checkingLists, setCheckingLists] = useState(false);
+
+  useEffect(() => {
+    if (visible && resourceId && categoriaActual) {
+      const checkSavedLists = async () => {
+        setCheckingLists(true);
+        try {
+          // Como tanto peliculas como series se definen como AUDIOVISUAL, hay que diferenciarlos
+          let exactType = categoriaActual.toUpperCase();
+          if (exactType === 'AUDIOVISUAL') {
+            exactType = categoriaActual === 'serie' ? 'SERIE' : 'PELICULA';
+          }
+
+          const ids = await listServices.getListContainingItem(resourceId, exactType as CollectionType);
+          setSavedListIds(ids);
+        } catch (error) {
+          console.error('Error al verificar las listas guardadas:', error);
+        } finally {
+          setCheckingLists(false);
+        }
+      };
+
+      checkSavedLists();
+    } else {
+      setSavedListIds([]);
+    }
+  }, [visible, resourceId, categoriaActual]);
 
   const getCategoryName = (category: string) => {
     switch (category) {
@@ -80,16 +118,17 @@ export function AddToListModal({ visible, onClose, resourceCategory, onSelect }:
             {t('collection.saveIn')}
           </AppText>
 
-          {loading ? (
+          {loading || checkingLists ? (
             <View className="h-20">
               <LoadingIndicator />
             </View>
           ) : (
             <FlatList
               data={lists}
+              extraData={savedListIds}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
-                <ModalListItem list={item} onSelect={onSelect} colors={colors} t={t} />
+                <ModalListItem list={item} onSelect={onSelect} colors={colors} t={t} isSaved={savedListIds.includes(item.id)} />
               )}
               contentContainerStyle={{ paddingBottom: 20 }}
               ListEmptyComponent={() => (
@@ -105,7 +144,7 @@ export function AddToListModal({ visible, onClose, resourceCategory, onSelect }:
                       onClose();
                       router.push('/form/list');
                     }}>
-                    <AppText style={{ color: colors.primary, fontSize: 14}}>Crear nueva lista</AppText>
+                    <AppText style={{ color: colors.primary, fontSize: 14 }}>Crear nueva lista</AppText>
                   </TouchableOpacity>
                 </View>
               )}

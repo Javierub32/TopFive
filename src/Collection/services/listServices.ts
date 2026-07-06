@@ -1,10 +1,10 @@
 import { supabase } from 'lib/supabase';
 
-export type CollectionType = 'LIBRO' | 'VIDEOJUEGO' | 'PELICULA' | 'SERIE' | 'ALBUM' | 'CANCION';
+export type CollectionType = 'LIBRO' | 'VIDEOJUEGO' | 'PELICULA' | 'SERIE' | 'ALBUM' | 'CANCION' | 'AUDIOVISUAL' | 'MUSICA';
 
 export interface ListInfo {
   id: string;
-  nombre: string;
+  nombre: string; 
   descripcion: string | null;
   icono: string | null;
   color: string | null;
@@ -113,10 +113,20 @@ export const listServices = {
       .select('id')
       .eq('coleccionid', listId)
       .eq(resourceColumn, itemId)
-      .single();
+      .maybeSingle();
 
     if (existingCheck.data) {
-      return 'El ítem ya está en la lista.';
+      const { error, count } = await supabase
+        .from(tableName)
+        .delete({ count: 'exact' })
+        .match({
+          coleccionid: listId,
+          [resourceColumn]: itemId,
+        });
+
+      if (error) throw error;
+      if (count === 0) throw new Error('No se encontró el ítem o no tienes permisos');
+      return 'Recurso eliminado de la lista exitosamente.';
     }
 
     const { error } = await supabase
@@ -385,5 +395,50 @@ export const listServices = {
     });
 
     return formattedItems;
+  },
+
+  async getListContainingItem(itemId: string | number, itemType: CollectionType) {
+    let tableName = '';
+    let resourceColumn = '';
+
+    switch (itemType) {
+      case 'LIBRO':
+        tableName = 'itemcoleccion_libro';
+        resourceColumn = 'recursolibroid';
+        break;
+      case 'PELICULA':
+        tableName = 'itemcoleccion_pelicula';
+        resourceColumn = 'recursopeliculaid';
+        break;
+      case 'SERIE':
+        tableName = 'itemcoleccion_serie';
+        resourceColumn = 'recursoserieid';
+        break;
+      case 'VIDEOJUEGO':
+        tableName = 'itemcoleccion_videojuego';
+        resourceColumn = 'recursovideojuegoid';
+        break;
+      case 'ALBUM':
+        tableName = 'itemcoleccion_album';
+        resourceColumn = 'recursoalbumid';
+        break;
+      case 'CANCION':
+        tableName = 'itemcoleccion_cancion';
+        resourceColumn = 'recursocancionid';
+        break;
+      default:
+        return [];
+    }
+
+    const { data, error } = await supabase
+      .from(tableName)
+      .select('coleccionid')
+      .eq(resourceColumn, itemId);
+
+    if (error) {
+      console.error('Error al obtener las listas que contienen el ítem:', error);
+      return [];
+    }
+    return data.map((item: any) => item.coleccionid);
   },
 };

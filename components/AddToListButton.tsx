@@ -1,5 +1,3 @@
-// components/AddToListButton.tsx
-
 import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -13,24 +11,28 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const { showNotification } = useNotification();
+  
   const { t } = useTranslation();
   const handleListSelect = async (listId: string, listType: CollectionType) => {
     setModalVisible(false);
     setLoading(true);
     try {
-      const message = await listServices.addItemToList(listId, resourceId, listType);
-      const header = message.includes('ya está') ? t('common.attention') : t('common.success');
-      //Alert.alert(header, message);
+      let exactType = listType;
+      if (listType === 'AUDIOVISUAL') {
+        exactType = resourceCategory === 'serie' ? 'SERIE' : 'PELICULA';
+      } else if (listType === 'MUSICA') {
+         exactType = 'CANCION';
+      }
+      const message = await listServices.addItemToList(listId, resourceId, exactType);
       showNotification({
-        title: header,
+        title: t('common.success'),
         description: message,
         isChoice: false,
         delete: false,
-        success: !message.includes('ya está'),
+        success: true,
       });
     } catch (error: any) {
       console.error(error);
-      //Alert.alert('Error', error.message || 'No se pudo añadir a la lista.');
       showNotification({
         title: t('common.error'),
         description: error.message || t('components.errorAddToList'),
@@ -58,6 +60,7 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         resourceCategory={resourceCategory}
+        resourceId={resourceId}
         onSelect={handleListSelect}
       />
     </>
