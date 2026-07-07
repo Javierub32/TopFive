@@ -252,7 +252,7 @@ export default function SettingsScreen() {
                     </View>
                   </TouchableOpacity>
                   {showLangOptions && (
-                    <View className="mt-2 flex-row flex-wrap justify-between gap-2">
+                    <View className="mt-2 flex-row justify-between gap-2">
                       {[
                         { id: 'es', label: 'ES', region: 'ES' },
                         { id: 'en', label: 'EN', region: 'US' },
@@ -260,7 +260,7 @@ export default function SettingsScreen() {
                       ].map((lang) => (
                         <TouchableOpacity
                           key={lang.id}
-                          className="mb-2 items-center justify-center rounded-xl p-4"
+                          className="flex-1 items-center justify-center rounded-xl p-3"
                           style={{
                             backgroundColor: colors.background,
                             borderWidth: 2,
