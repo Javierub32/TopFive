@@ -74,7 +74,9 @@ export const useSearchContent = () => {
     
     router.push({
       pathname: `/details/${type}/${type}Content`,
-      params: { id: resultados[index].id, from: 'search' },
+      params: { id: resultados[index].id, from: 'search',
+        searchCover: resultados[index].cover
+      },
     });
   };
 

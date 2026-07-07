@@ -16,11 +16,18 @@ import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
 
 export default function BookDetail() {
-  const { id, from } = useLocalSearchParams();
+  const { id, from, searchCover } = useLocalSearchParams();
   const { content, loading } = useContent(id as string | number, 'libro');
-  const book: Book = content as Book;
   const { colors } = useTheme();
   const { t } = useTranslation();
+
+  let book: Book = content as Book;
+
+  if (book && !book.image && searchCover) {
+    book.image = searchCover as string;
+    book.imageFull = (searchCover as string).replace('-M.jpg', '-L.jpg');
+  }
+
   const getPath = () => {
     if (from === 'home') return 'back';
     return '/Add?initialCategory=libro';

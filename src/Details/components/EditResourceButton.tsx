@@ -1,48 +1,49 @@
-import { BookResource, FilmResource, GameResource, SeriesResource, SongResource } from "app/types/Resources";
-import { TouchableOpacity } from "react-native";
-import { router } from "expo-router";
-import { useTheme } from "context/ThemeContext";
-import { AntDesign } from "@expo/vector-icons";
-import { ResourceType } from "hooks/useResource";
-
+import {
+  BookResource,
+  FilmResource,
+  GameResource,
+  SeriesResource,
+  SongResource,
+} from 'app/types/Resources';
+import { TouchableOpacity } from 'react-native';
+import { router } from 'expo-router';
+import { useTheme } from 'context/ThemeContext';
+import { AntDesign } from '@expo/vector-icons';
+import { ResourceType } from 'hooks/useResource';
 
 interface Props {
-    resource : BookResource | FilmResource | SeriesResource | SongResource | GameResource | null
-    type : ResourceType
-	from: string | string[]
+  resource: BookResource | FilmResource | SeriesResource | SongResource | GameResource | null;
+  type: ResourceType;
+  from: string | string[];
 }
 
+export const EditResourceButton = ({ resource, type, from }: Props) => {
+  const ResourceMap: Record<ResourceType, string> = {
+    pelicula: 'film',
+    serie: 'series',
+    videojuego: 'game',
+    libro: 'book',
+    cancion: 'song',
+  };
 
-export const EditResourceButton = ({resource, type, from}: Props) => {
-
-    const ResourceMap : Record<ResourceType, string> = {
-        pelicula: 'film',
-        serie: 'series',
-        videojuego: 'game',
-        libro: 'book',
-        cancion: 'song'
-    };    
-
-    const handleEdit = () => {
-        if (resource) {
-            router.push({
-            pathname: '/form/' + ResourceMap[type],
-            params: { item: JSON.stringify(resource), from: from }
-            });
-        }
+  const handleEdit = () => {
+    if (resource) {
+      router.push({
+        pathname: '/form/' + ResourceMap[type],
+        params: { item: JSON.stringify(resource), from: from },
+      });
     }
+  };
 
-    const { colors } = useTheme();
-    
-    return (
-        <TouchableOpacity 
-            onPress={() => handleEdit()}
-            className="h-10 w-10 items-center justify-center rounded-full mr-2"
-            style={{backgroundColor: colors.primary}}
-            activeOpacity={0.7}
-          >
-            <AntDesign name="edit" size={20} color={colors.primaryText} />
-        </TouchableOpacity>
+  const { colors } = useTheme();
 
-    )
-}
+  return (
+    <TouchableOpacity
+      onPress={() => handleEdit()}
+      className="mr-2 h-10 w-10 items-center justify-center rounded-full"
+      style={{ backgroundColor: colors.primary }}
+      activeOpacity={0.7}>
+      <AntDesign name="edit" size={20} color={colors.primaryText} />
+    </TouchableOpacity>
+  );
+};
