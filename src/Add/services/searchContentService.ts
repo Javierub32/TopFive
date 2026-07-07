@@ -20,7 +20,6 @@ export const searchContentService = {
           throw new Error(data.error);
       }
 
-      console.log('Datos recibidos de Supabase Edge Function:', data);
       return data;
 
     } catch (error) {
@@ -45,7 +44,6 @@ export const searchContentService = {
           throw new Error(data.error);
       }
 
-      console.log('Detalles recibidos de Supabase Edge Function:', data);
       return data;
 
     } catch (error) {

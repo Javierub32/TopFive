@@ -41,6 +41,7 @@ interface Book {
   imageFull: string | null;
   description: string | null;
   rating: number | null;
+  imagenUrl?: string | null;
 }
 
 export default function BookForm() {
@@ -188,6 +189,13 @@ export default function BookForm() {
 
         if (existingContent) {
           contentId = existingContent.id;
+          const imagenReparada = book.imageFull || book.image || book.imagenUrl;
+          if (imagenReparada) {
+            await supabase
+              .from('contenidolibro')
+              .update({ imagenUrl: imagenReparada })
+              .eq('id', contentId);
+          }
         } else {
           // Si no existe, lo creamos
           const { data: newContent, error: insertError } = await supabase
@@ -323,9 +331,9 @@ export default function BookForm() {
           </View>
 
           <View className="mb-4 flex-row items-stretch justify-between gap-2 px-4">
-            {book.imageFull || book.image ? (
+            {book.imageFull || book.image || book.imagenUrl ? (
               <Image
-                source={{ uri: book.imageFull || book.image || '' }}
+                source={{ uri: book.imageFull || book.image || book.imagenUrl || '' }}
                 className="aspect-[2/3] h-32 rounded-lg"
                 style={{ backgroundColor: colors.surfaceButton }}
                 resizeMode="cover"
