@@ -514,7 +514,9 @@
         "categoryOfYourCollectionTitle": "{{category}} of your collection",
         "noContentTitle": "No {{category}}",
         "noContentDescription": "First add to your collection for them to be part of your TopFive",
-        "searchButton": "Search"
+        "searchButton": "Search",
+        "duplicateResource": "This resource is already in your TopFive. Choose another resource or remove the existing one first.",
+        "addToTopFiveError": "The resource could not be added to your TopFive. Please try again."
     },
     "layout": {
         "updateAvailableTitle": "Update available",

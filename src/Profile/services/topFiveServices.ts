@@ -21,6 +21,17 @@ export const topFiveService = {
     if (listError) throw listError;
     if (!topFive) throw new Error("No se pudo obtener la lista TopFive");
 
+    const { data: existingItem, error: duplicateError } = await supabase
+      .from('estadistica_topfive_item')
+      .select('id')
+      .eq('topfiveid', topFive.id)
+      .eq('tipo_recurso', tipoRecurso)
+      .eq('recurso_id', recursoId)
+      .maybeSingle();
+
+    if (duplicateError) throw duplicateError;
+    if (existingItem) throw new Error('TOP_FIVE_DUPLICATE_RESOURCE');
+
     // Insertamos o actualizamos el ítem en la posición especificada
     const { error: itemError } = await supabase
       .from('estadistica_topfive_item')

@@ -83,11 +83,7 @@ export const useTopFiveSelector = (category?: ResourceType) => {
     tipoRecurso: ResourceType,
     recursoId: number
   ) => {
-    try {
-      await insertTopFiveMutation.mutateAsync({ posicion, tipoRecurso, recursoId });
-    } catch (error) {
-      console.error('Error al insertar en Top Five:', error);
-    }
+    await insertTopFiveMutation.mutateAsync({ posicion, tipoRecurso, recursoId });
   };
 
   return {

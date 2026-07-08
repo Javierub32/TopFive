@@ -46,16 +46,29 @@ export default function TopFiveSelectorScreen() {
         onLeftPress: () => hideNotification(),
         onRightPress: async () => {
           hideNotification();
-          const posicion = parseInt(position);
-          await insertToTopFive(posicion, resourceType, item.id);
-          router.replace('/Profile');
-          showNotification({
-            title: t('common.success'),
-            description: t('topFiveSelector.addedToTopFive', { title: item.contenido.titulo }),
-            isChoice: false,
-            delete: false,
-            success: true,
-          });
+          try {
+            const posicion = parseInt(position);
+            await insertToTopFive(posicion, resourceType, item.id);
+            router.replace('/Profile');
+            showNotification({
+              title: t('common.success'),
+              description: t('topFiveSelector.addedToTopFive', { title: item.contenido.titulo }),
+              isChoice: false,
+              delete: false,
+              success: true,
+            });
+          } catch (error: any) {
+            showNotification({
+              title: t('common.error'),
+              description:
+                error?.message === 'TOP_FIVE_DUPLICATE_RESOURCE'
+                  ? t('topFiveSelector.duplicateResource')
+                  : t('topFiveSelector.addToTopFiveError'),
+              isChoice: false,
+              delete: false,
+              success: false,
+            });
+          }
         },
       });
     }
