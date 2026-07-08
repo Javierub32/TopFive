@@ -1,84 +1,80 @@
-import { ResourceMap, ResourceType, StateType, useResource } from 'hooks/useResource';
-import { useState, useEffect } from 'react';
+import { ResourceType, StateType, useResource } from 'hooks/useResource';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/query/queryKeys';
+import { useAuth } from 'context/AuthContext';
 
-type GroupState = 'enCurso' | 'pendientes' | 'completados';
+interface GroupDataPage {
+  items: any[];
+  nextPage?: number;
+}
 
 export const useGroupData = (category: ResourceType, state: StateType) => {
+  const { user } = useAuth();
   const { fetchResources } = useResource();
-  const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState<number>(0);
-  const [hasMore, setHasMore] = useState<boolean>(true);
-  
+  const queryClient = useQueryClient();
+
   const PAGE_SIZE = 9;
 
-	const fetchItems = async (currentPage: number) => {
-		// Evitar fetch si ya está cargando (a menos que sea la primera carga)
-		if (loading && currentPage !== 0) return; 
-		
-		setLoading(true);
-		try {
-			const from = currentPage * PAGE_SIZE;
-			const to = from + PAGE_SIZE - 1;
-			const ordenarPorUltimaActividad = state === 'COMPLETADO';
+  const {
+    data: pagedData,
+    isLoading,
+    isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: queryKeys.collectionGroup(user?.id, category, state),
+    queryFn: async ({ pageParam = 0 }) => {
+      const from = pageParam * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
+      const ordenarPorUltimaActividad = state === 'COMPLETADO';
 
-			const newItems = await fetchResources({
-				type: category,
-				estado: state,
-				cantidad: PAGE_SIZE,
-				ordenarPorFecha: true,
-				from,
-				to,
-				ordenarPorUltimaActividad
-			});
+      const result = await fetchResources({
+        type: category,
+        estado: state,
+        cantidad: PAGE_SIZE,
+        ordenarPorFecha: true,
+        from,
+        to,
+        ordenarPorUltimaActividad,
+      });
 
-			if (currentPage === 0) {
-				setData(newItems?.data || []);
-			} else {
-				setData((prev) => [...prev, ...newItems?.data || []]);
-			}
+      const items = result?.data || [];
 
-			// Si devolvió menos elementos que el tamaño de página, llegamos al final
-			if (newItems && newItems.data && newItems.data.length < PAGE_SIZE) {
-				setHasMore(false);
-			} else {
-				setHasMore(true);
-			}
-		}
-		catch (error) {
-			console.error("Error fetching list details:", error);
-		}
-		finally {
-			setLoading(false);
-		}
-	}
+      return {
+        items,
+        nextPage: items.length === PAGE_SIZE ? pageParam + 1 : undefined,
+      };
+    },
+    enabled: !!user?.id && !!category && !!state,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage: GroupDataPage) => lastPage.nextPage,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+    maxPages: 5,
+  });
 
-  	useEffect(() => {
-		setPage(0);
-		setHasMore(true);
-		fetchItems(0);
-	}, [category, state]);
+  const data = pagedData?.pages.flatMap((page: GroupDataPage) => page.items) ?? [];
 
-    // Función para cargar la siguiente página
-	const handleLoadMore = () => {
-		if (!loading && hasMore) {
-			const nextPage = page + 1;
-			setPage(nextPage);
-			fetchItems(nextPage);
-		}
-	};
+  // Función para cargar la siguiente página
+  const handleLoadMore = () => {
+    if (hasNextPage && !isFetchingNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  };
 
-	const resetListDetails = () => {
-		setData([]);
-		setPage(0);
-		setHasMore(true);
-		fetchItems(0);
-	}
+  const resetListDetails = () => {
+    queryClient.invalidateQueries({
+      queryKey: queryKeys.collectionGroup(user?.id, category, state),
+    });
+    refetch();
+  };
 
   return {
-    loading,
+    loading: isLoading || isFetchingNextPage,
     data,
-	handleLoadMore,
-	resetListDetails,
+    handleLoadMore,
+    resetListDetails,
   };
 };

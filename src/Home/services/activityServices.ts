@@ -1,5 +1,20 @@
 import { supabase } from 'lib/supabase';
-import { Activity } from '../hooks/useActivity';
+
+export interface Activity {
+  recurso_id: string;
+  tipo_contenido: string;
+  fechacreacion: string;
+  fecha_actividad: string;
+  calificacion: number | null;
+  comentario: string | null;
+  estado: string;
+  titulo: string;
+  imagen_url: string | null;
+  usuarioId: string;
+  username: string;
+  avatar_url: string | null;
+  idapi?: string | number;
+}
 
 export const activityService = {
   async getUltimosRecursosActivos(
@@ -39,10 +54,10 @@ export const activityService = {
 		`
       )
       .in('usuarioId', friendIds) // Solo actividades de amigos
-	  .eq('estado', 'COMPLETADO') // Solo actividades de recursos finalizados
+      .eq('estado', 'COMPLETADO') // Solo actividades de recursos finalizados
       .not('fecha_actividad', 'is', null)
       .order('fecha_actividad', { ascending: false })
-	  .order('fechacreacion', { ascending: false })
+      .order('fechacreacion', { ascending: false })
       .range(from, to);
 
     if (error) throw error;

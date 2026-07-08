@@ -9,7 +9,6 @@ import { useNotification } from 'context/NotificationContext';
 import { TopFivePlaceholder } from '@/TopFiveSelector/components/TopFivePlaceholder';
 import { useTranslation } from 'react-i18next';
 export default function TopFiveSelectorScreen() {
-  const { data, loading, fetchTopFiveSelector, insertToTopFive } = useTopFiveSelector();
   const { t } = useTranslation();
 
   const ContentTitle: Record<ResourceType, string> = {
@@ -23,11 +22,12 @@ export default function TopFiveSelectorScreen() {
     resourceType: ResourceType;
     position: string;
   }>();
+  const { data, loading, fetchTopFiveSelector, insertToTopFive } = useTopFiveSelector(resourceType);
   const { showNotification, hideNotification } = useNotification();
 
   const handleLoadMore = () => {
     if (resourceType) {
-      fetchTopFiveSelector(resourceType);
+      fetchTopFiveSelector();
     }
   };
 

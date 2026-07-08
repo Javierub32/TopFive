@@ -126,12 +126,12 @@ export default function GameForm() {
           };
 
           //Alert.alert('¡Éxito!', `Has actualizado ${game.titulo || game.title} en tu colección.`);
-          refreshData();
           if (estadoAnterior !== 'COMPLETADO' && estado === 'COMPLETADO') {
             await supabase.rpc('increment_review_count', { user_id: user.id });
           } else if (estadoAnterior === 'COMPLETADO' && estado !== 'COMPLETADO') {
             await supabase.rpc('decrement_review_count', { user_id: user.id });
           }
+          refreshData('videojuego');
           if (from === 'contentDetails') {
             router.back();
           } else {
@@ -200,7 +200,7 @@ export default function GameForm() {
 
         if (existingResource) {
           //Alert.alert('Aviso', 'Ya tienes este videojuego en tu colección.');
-          refreshData();
+          refreshData('videojuego');
           router.back();
           setTimeout(() => {
             showNotification({
@@ -241,10 +241,10 @@ export default function GameForm() {
           console.error('Error al insertar:', inventoryError);
         } else {
           //Alert.alert('¡Éxito!', `Has añadido ${game.title} a tu colección.`);
-          refreshData();
           if (estado === 'COMPLETADO') {
             await supabase.rpc('increment_review_count', { user_id: user.id });
           }
+          refreshData('videojuego');
           router.back();
           setTimeout(() => {
             showNotification({

@@ -1,11 +1,12 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from 'context/AuthContext';
 import { userService } from '../services/profileService';
 import { ResourceType, useResource } from 'hooks/useResource';
 import { useNotification } from 'context/NotificationContext';
-import { useFocusEffect } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/query/queryKeys';
 
 export type CategoryKey = 'libros' | 'películas' | 'series' | 'canciones' | 'videojuegos';
 
@@ -58,56 +59,60 @@ export const useProfile = () => {
   const { user, profileRefreshTrigger, refreshProfile } = useAuth();
   const { fetchMonthlyStats } = useResource();
   const { showNotification } = useNotification();
-  const [loading, setLoading] = useState(true);
-  const [statsLoading, setStatsLoading] = useState(false);
+  const queryClient = useQueryClient();
   const { t } = useTranslation();
 
   const [selectedCategory, setSelectedCategory] = useState<ResourceType>('pelicula');
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
-  const [userData, setUserData] = useState<User | null>(null);
   const [isPressed, setIsPressed] = useState(false);
-  const [fullCategoryData, setFullCategoryData] = useState(INITIAL_CATEGORY_DATA);
-  const [previousYear, setPreviousYear] = useState<number>(new Date().getFullYear());
 
-  // Fetch user profile on mount or when user changes
-  // isMounted is only to avoid fetching on components destroy, but it's not ultra necessary.
-  useEffect(() => {
-    let isMounted = true;
-    const fetchUserData = async () => {
-      try {
-        setLoading(true);
-        if (user) {
-          const userData = await userService.fetchUserProfile(user.id);
-          if (isMounted) setUserData(userData as User);
-        }
-      } catch (error) {
-        console.error('[useProfile] Error al cargar perfil:', error);
-      } finally {
-        if (isMounted) setLoading(false);
-      }
+  const {
+    data: userData = null,
+    isLoading: profileLoading,
+    isFetching: profileFetching,
+    error: profileError,
+  } = useQuery<User | null>({
+    queryKey: queryKeys.profile(user?.id),
+    queryFn: () => userService.fetchUserProfile(user!.id) as Promise<User>,
+    enabled: !!user?.id,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 60,
+  });
+
+  const {
+    data: stats = new Array(12).fill(0),
+    isLoading: statsLoading,
+    isFetching: statsFetching,
+    error: statsError,
+  } = useQuery<number[]>({
+    queryKey: queryKeys.profileStats(user?.id, selectedCategory, selectedYear),
+    queryFn: () => fetchMonthlyStats(selectedCategory, selectedYear, user!.id),
+    enabled: !!user?.id,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 60,
+  });
+
+  const currentStats = useMemo(() => {
+    const total = stats.reduce((acc: number, curr: number) => acc + curr, 0);
+    const average = Number((total / 12).toFixed(1));
+
+    return {
+      ...INITIAL_CATEGORY_DATA[selectedCategory],
+      chartData: stats,
+      total,
+      average,
     };
-    fetchUserData();
+  }, [selectedCategory, stats]);
 
-    return () => {
-      isMounted = false;
-    };
-  }, [user?.id, profileRefreshTrigger]);
-
-  // Fetch stats when category or year changes
   useEffect(() => {
-    setFullCategoryData(INITIAL_CATEGORY_DATA);
-    setPreviousYear(selectedYear);
-    fetchResourceInfo();
-    return;
-  }, [selectedCategory, selectedYear]);
+    if (profileError) {
+      console.error('[useProfile] Error al cargar perfil:', profileError);
+    }
+  }, [profileError]);
 
-  const fetchResourceInfo = async () => {
-    try {
-      setStatsLoading(true);
-      const stats = await fetchMonthlyStats(selectedCategory, selectedYear, user?.id || '');
-      updateStats(stats);
-    } catch (error) {
-      console.error('[useProfile] Error al cargar estadísticas:', error);
+  useEffect(() => {
+    if (statsError) {
+      console.error('[useProfile] Error al cargar estadísticas:', statsError);
       showNotification({
         title: t('common.error'),
         description: t('profile.loadingStatsError'),
@@ -115,30 +120,25 @@ export const useProfile = () => {
         delete: false,
         success: false,
       });
-    } finally {
-      setStatsLoading(false);
     }
-  };
+  }, [showNotification, statsError, t]);
 
-  const updateStats = (chartData: number[]) => {
-    const total = chartData.reduce((acc, curr) => acc + curr, 0);
-    const average = Number((total / 12).toFixed(1));
-
-    const newData = { ...fullCategoryData };
-
-    newData[selectedCategory] = {
-      ...newData[selectedCategory],
-      chartData: chartData,
-      total: total,
-      average: average,
-    };
-
-    setFullCategoryData(newData);
-  };
+  const uploadAvatarMutation = useMutation({
+    mutationFn: async (uri: string) => {
+      await userService.deletePreviousAvatar(userData?.avatar_url || null);
+      return userService.uploadAvatar(user!.id, uri);
+    },
+    onSuccess: async (newUrl: string) => {
+      queryClient.setQueryData(queryKeys.profile(user?.id), (previous: User | null | undefined) =>
+        previous ? { ...previous, avatar_url: newUrl } : previous
+      );
+      await queryClient.invalidateQueries({ queryKey: queryKeys.profile(user?.id) });
+      refreshProfile();
+    },
+  });
 
   const pickImage = async () => {
     try {
-      setLoading(true);
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
         //Alert.alert('Permiso denegado', 'Necesitamos acceso a tu galería');
@@ -160,13 +160,9 @@ export const useProfile = () => {
       });
 
       if (!result.canceled && result.assets[0] && user) {
-        await userService.deletePreviousAvatar(userData?.avatar_url || null);
-        const newUrl = await userService.uploadAvatar(user.id, result.assets[0].uri);
-        setUserData({ ...userData, avatar_url: newUrl, frame: userData?.frame || 'none' } as User);
+        await uploadAvatarMutation.mutateAsync(result.assets[0].uri);
 
-		refreshProfile();
-
-		showNotification({
+        showNotification({
           title: t('common.success'),
           description: t('profile.profilePhotoUpdated'),
           isChoice: false,
@@ -184,21 +180,20 @@ export const useProfile = () => {
         delete: false,
         success: false,
       });
-    } finally {
-      setLoading(false);
     }
   };
+
   return {
     userData,
     selectedCategory,
     selectedYear,
     isPressed,
-    loading,
+    loading: profileLoading || profileFetching || uploadAvatarMutation.isPending,
     setSelectedCategory,
     setSelectedYear,
     setIsPressed,
     pickImage,
-    statsLoading,
-    currentStats: fullCategoryData[selectedCategory],
+    statsLoading: statsLoading || statsFetching,
+    currentStats,
   };
 };

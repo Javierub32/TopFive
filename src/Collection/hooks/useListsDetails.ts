@@ -1,131 +1,113 @@
 // src/Collection/hooks/useListsDetails.ts
-import { useEffect, useState } from "react";
-import { CollectionType, listServices } from "../services/listServices";
-import { ResourceType } from "hooks/useResource";
-import { useNotification } from "context/NotificationContext";
-import { useTranslation } from "react-i18next";
+import { CollectionType, listServices } from '../services/listServices';
+import { ResourceType } from 'hooks/useResource';
+import { useNotification } from 'context/NotificationContext';
+import { useTranslation } from 'react-i18next';
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/query/queryKeys';
 
 const categoryMap: Record<ResourceType, CollectionType> = {
-	'pelicula': 'PELICULA',
-	'serie': 'SERIE',
-	'videojuego': 'VIDEOJUEGO',
-	'libro': 'LIBRO',
-	'cancion': 'CANCION',
+  pelicula: 'PELICULA',
+  serie: 'SERIE',
+  videojuego: 'VIDEOJUEGO',
+  libro: 'LIBRO',
+  cancion: 'CANCION',
 };
 
 const PAGE_SIZE = 9; // Cantidad de elementos a cargar por página
 
+interface ListDetailsPage {
+  items: any[];
+  nextPage?: number;
+}
+
 export const useListsDetails = (categoriaActual: ResourceType, listId: string) => {
-	const [loading, setLoading] = useState(false);
-	const [data, setData] = useState<any[]>([]);
-	const [page, setPage] = useState(0);
-	const [hasMore, setHasMore] = useState(true);
-	const { showNotification, hideNotification } = useNotification();
-	const { t } = useTranslation();
+  const { showNotification, hideNotification } = useNotification();
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const collectionType = categoryMap[categoriaActual] as CollectionType;
 
-	const fetchListDetails = async (currentPage: number) => {
-		// Evitar fetch si ya está cargando (a menos que sea la primera carga)
-		if (loading && currentPage !== 0) return; 
-		
-		setLoading(true);
-		try {
-			const from = currentPage * PAGE_SIZE;
-			const to = from + PAGE_SIZE - 1;
+  const {
+    data: pagedData,
+    isLoading,
+    isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: queryKeys.listDetails(listId, collectionType),
+    queryFn: async ({ pageParam = 0 }) => {
+      const from = pageParam * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
+      const items = await listServices.fetchListDetails(listId, collectionType, from, to);
 
-			const newItems = await listServices.fetchListDetails(
-				listId, 
-				categoryMap[categoriaActual] as CollectionType,
-				from,
-				to
-			);
+      return {
+        items,
+        nextPage: items.length === PAGE_SIZE ? pageParam + 1 : undefined,
+      };
+    },
+    enabled: !!listId && !!categoriaActual,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage: ListDetailsPage) => lastPage.nextPage,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 60,
+    maxPages: 5,
+  });
 
-			if (currentPage === 0) {
-				setData(newItems);
-			} else {
-				setData((prev) => [...prev, ...newItems]);
-			}
+  const data = pagedData?.pages.flatMap((page: ListDetailsPage) => page.items) ?? [];
 
-			// Si devolvió menos elementos que el tamaño de página, llegamos al final
-			if (newItems.length < PAGE_SIZE) {
-				setHasMore(false);
-			} else {
-                setHasMore(true);
-            }
-		}
-		catch (error) {
-			console.error("Error fetching list details:", error);
-		}
-		finally {
-			setLoading(false);
-		}
-	}
+  // Función para cargar la siguiente página
+  const handleLoadMore = () => {
+    if (hasNextPage && !isFetchingNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  };
 
-    // Carga inicial
-	useEffect(() => {
-		setPage(0);
-		setHasMore(true);
-		fetchListDetails(0);
-	}, [listId, categoriaActual]);
+  const resetListDetails = () => {
+    refetch();
+  };
 
-    // Función para cargar la siguiente página
-	const handleLoadMore = () => {
-		if (!loading && hasMore) {
-			const nextPage = page + 1;
-			setPage(nextPage);
-			fetchListDetails(nextPage);
-		}
-	};
+  const deleteItemMutation = useMutation({
+    mutationFn: ({ itemId, type }: { itemId: string; type: CollectionType }) =>
+      listServices.removeItemFromList(listId, itemId, type),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.listDetails(listId, collectionType) }),
+        queryClient.invalidateQueries({ queryKey: ['lists'] }),
+      ]);
+    },
+  });
 
-	const resetListDetails = () => {
-		setData([]);
-		setPage(0);
-		setHasMore(true);
-		fetchListDetails(0);
-	}
+  const handleDeleteItem = async (itemId: string, type: CollectionType) => {
+    showNotification({
+      title: t('list.deleteItemFromListNotification.title'),
+      description: t('list.deleteItemFromListNotification.description'),
+      leftButtonText: t('common.cancel'),
+      rightButtonText: t('common.confirm'),
+      isChoice: true,
+      delete: true,
+      success: false,
+      onLeftPress: () => hideNotification(),
+      onRightPress: async () => {
+        hideNotification();
+        await deleteItemMutation.mutateAsync({ itemId, type });
+        showNotification({
+          title: t('common.success'),
+          description: t('list.deleteItemFromListNotification.confirmationDescription'),
+          isChoice: false,
+          delete: false,
+          success: true,
+        });
+      },
+    });
+  };
 
-	const deleteItemFromList = async (itemId: string, type: CollectionType ) => {
-		try {
-			setLoading(true);
-			await listServices.removeItemFromList(listId, itemId, type);
-	}
-		catch (error) {
-			console.error("Error deleting item from list:", error);
-		}
-		finally {
-			setLoading(false);
-		}
-	}
-
-	const handleDeleteItem = async (itemId: string, type: CollectionType) => {
-		showNotification({
-			title: t('list.deleteItemFromListNotification.title'),
-			description: t('list.deleteItemFromListNotification.description'),
-			leftButtonText: t('common.cancel'),
-			rightButtonText: t('common.confirm'),
-			isChoice: true,
-			delete: true,
-			success: false,
-			onLeftPress: () => hideNotification(),
-			onRightPress: async () => {
-				hideNotification();
-				await deleteItemFromList(itemId, type);
-				await resetListDetails();
-				showNotification({
-					title: t('common.success'),
-					description: t('list.deleteItemFromListNotification.confirmationDescription'),
-					isChoice: false,
-					delete: false,
-					success: true,
-				});
-			}
-		})
-	}
-
-	return {
-		loading,
-		data,
-		handleLoadMore,
-        hasMore,
-		handleDeleteItem,
-	};
+  return {
+    loading: isLoading || isFetchingNextPage || deleteItemMutation.isPending,
+    data,
+    handleLoadMore,
+    hasMore: !!hasNextPage,
+    handleDeleteItem,
+  };
 };

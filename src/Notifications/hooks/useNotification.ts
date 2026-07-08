@@ -1,109 +1,125 @@
-import { useEffect, useState } from "react";
 import { notificationServices } from '../services/notificationServices';
-import { useAuth } from "context/AuthContext";
-import { supabase } from "lib/supabase";
+import { useAuth } from 'context/AuthContext';
+import { supabase } from 'lib/supabase';
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/query/queryKeys';
+
+interface NotificationsPage {
+  items: any[];
+  nextPage?: number;
+}
 
 export const useNotification = () => {
-	const [loading, setLoading] = useState(false);
-	const [notifications, setNotifications] = useState([] as any[]);
-	const [page, setPage] = useState(0);
-	const [hasMore, setHasMore] = useState(true);
-	const [refreshing, setRefreshing] = useState(false);
-	const { user } = useAuth();
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
 
-	const pageSize = 10;
+  const pageSize = 10;
 
-	const fetchNotifications = async () => {
-		if(loading || !hasMore || !user?.id) return;
-		setLoading(true);
-		try {
-			const from = page * pageSize;
-			const to = from + pageSize - 1;
-			const data = await notificationServices.fetchNotifications(user.id, from, to);
-			// Traemos los usuarios que seguimos para comprobar el estado del seguimiento
-			const { data: myFollows } = await supabase
-				.from('relationships')
-				.select('following_id, status')
-				.eq('follower_id', user.id);
+  const enrichNotifications = async (data: any[]) => {
+    if (!user?.id) return data;
 
-			const followMap = new Map(myFollows?.map(f => [f.following_id, f.status]));
+    const { data: myFollows } = await supabase
+      .from('relationships')
+      .select('following_id, status')
+      .eq('follower_id', user.id);
 
-			const enriched = data.map(n => ({
-				...n,
-				myFollowStatus: followMap.get(n.follower_id) || 'none'
-			}));
-			//Evitar duplicados 
-			setNotifications((prev) => {
-				const existingIds = new Set(prev.map(item => item.id));
-				const uniqueNew = enriched.filter(item => !existingIds.has(item.id));
-				return [...prev, ...uniqueNew];
-			});
+    const followMap = new Map(myFollows?.map((f) => [f.following_id, f.status]));
 
-			setPage((prev) => prev + 1); 
-			if(data.length < pageSize){
-				setHasMore(false);
-			}
-		} catch (error) {
-			console.error('Error fetching notifications:', error);
-		} finally {
-			setLoading(false);
-		}
-	};
+    return data.map((n) => ({
+      ...n,
+      myFollowStatus: followMap.get(n.follower_id) || 'none',
+    }));
+  };
 
-	const refreshNotifications = async () => {
-		if(refreshing || !user?.id) return;
-		setRefreshing(true);
-		setPage(0);
-		setHasMore(true);
-		try {
-			const data = await notificationServices.fetchNotifications(user.id, 0, pageSize - 1);
-			const { data: myFollows } = await supabase.from('relationships').select('following_id, status').eq('follower_id', user.id);
-			const followMap = new Map(myFollows?.map(f => [f.following_id, f.status]));
+  const { data, isLoading, isFetching, isFetchingNextPage, hasNextPage, fetchNextPage, refetch } =
+    useInfiniteQuery({
+      queryKey: queryKeys.notifications(user?.id),
+      queryFn: async ({ pageParam = 0 }) => {
+        const from = pageParam * pageSize;
+        const to = from + pageSize - 1;
+        const data = await notificationServices.fetchNotifications(user!.id, from, to);
+        const enriched = await enrichNotifications(data);
 
-			const enriched = data.map(n => ({
-				...n,
-				myFollowStatus: followMap.get(n.follower_id) || 'none'
-			}));
+        return {
+          items: enriched,
+          nextPage: data.length === pageSize ? pageParam + 1 : undefined,
+        };
+      },
+      enabled: !!user?.id,
+      initialPageParam: 0,
+      getNextPageParam: (lastPage: NotificationsPage) => lastPage.nextPage,
+      staleTime: 1000 * 60 * 2,
+      gcTime: 1000 * 60 * 30,
+      maxPages: 5,
+    });
 
-			setNotifications(enriched || []);
-			setPage(1);
-			if(data.length < pageSize) setHasMore(false);
-		}catch (error){
-			console.error('Error refreshing notifications:', error);
-		}finally {
-			setRefreshing(false);
-		}
-	}
+  const notifications = data?.pages.flatMap((page: NotificationsPage) => page.items) ?? [];
 
-	useEffect(() => {
-		if (user?.id) refreshNotifications();
-	}, [user?.id]);
+  const fetchNotifications = async () => {
+    if (hasNextPage && !isFetchingNextPage && !isFetching) {
+      await fetchNextPage();
+    }
+  };
 
-	const handleAcceptNotification = async (notificationId: string, follower_id: string, following_id: string) => {
-		try {
-			await notificationServices.acceptNotification(follower_id, following_id);
-			setNotifications(prev => prev.map(n => n.id === notificationId ? { ...n, status: 'accepted' } : n));
-		} catch (error) {
-			console.error('Error accepting notification:', error);
-		}
-	};
+  const refreshNotifications = async () => {
+    if (!user?.id) return;
+    await refetch();
+  };
 
-	const handleDeclineNotification = async (notificationId: string, follower_id: string, following_id: string) => {
-		try {
-			await notificationServices.declineNotification(follower_id, following_id);
-			setNotifications(prev => prev.filter(n => n.id !== notificationId));
-		} catch (error) {
-			console.error('Error declining notification:', error);
-		}
-	};
+  const invalidateNotificationData = async () => {
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: queryKeys.notifications(user?.id) }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.notificationCount(user?.id) }),
+      queryClient.invalidateQueries({ queryKey: ['followers'] }),
+      queryClient.invalidateQueries({ queryKey: ['following'] }),
+      queryClient.invalidateQueries({ queryKey: ['profile'] }),
+    ]);
+  };
 
-	return { 
-    loading, 
-    notifications, 
+  const acceptMutation = useMutation({
+    mutationFn: ({ follower_id, following_id }: { follower_id: string; following_id: string }) =>
+      notificationServices.acceptNotification(follower_id, following_id),
+    onSuccess: invalidateNotificationData,
+  });
+
+  const declineMutation = useMutation({
+    mutationFn: ({ follower_id, following_id }: { follower_id: string; following_id: string }) =>
+      notificationServices.declineNotification(follower_id, following_id),
+    onSuccess: invalidateNotificationData,
+  });
+
+  const handleAcceptNotification = async (
+    notificationId: string,
+    follower_id: string,
+    following_id: string
+  ) => {
+    try {
+      await acceptMutation.mutateAsync({ follower_id, following_id });
+    } catch (error) {
+      console.error('Error accepting notification:', error);
+    }
+  };
+
+  const handleDeclineNotification = async (
+    notificationId: string,
+    follower_id: string,
+    following_id: string
+  ) => {
+    try {
+      await declineMutation.mutateAsync({ follower_id, following_id });
+    } catch (error) {
+      console.error('Error declining notification:', error);
+    }
+  };
+
+  return {
+    loading:
+      isLoading || isFetchingNextPage || acceptMutation.isPending || declineMutation.isPending,
+    notifications,
     fetchNotifications, // ¡No olvides exportar esto!
-    refreshNotifications, 
-    refreshing, 
-    handleAcceptNotification, 
-    handleDeclineNotification 
+    refreshNotifications,
+    refreshing: isFetching && !isFetchingNextPage,
+    handleAcceptNotification,
+    handleDeclineNotification,
   };
 };

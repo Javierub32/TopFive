@@ -1,9 +1,9 @@
 import '../global.css';
 import '../i18n';
 import { SplashScreen, Stack, useRouter, useSegments } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
-import { View, Linking, Platform, Alert } from 'react-native';
+import { View, Linking, Platform } from 'react-native';
 import * as Font from 'expo-font';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeProvider } from 'context/ThemeContext';
@@ -11,12 +11,14 @@ import { CollectionProvider } from 'context/CollectionContext';
 import { NotificationProvider, useNotification } from 'context/NotificationContext';
 import { SearchProvider } from 'context/SearchContext';
 import Constants from 'expo-constants';
-import { supabase } from 'lib/supabase';
 import { NotificationModal } from 'components/NotificationModal';
 import { AdsConsent, AdsConsentStatus } from 'lib/adsConsent';
 import { registerForPushNotificationsAsync } from 'lib/pushNotifications';
 import { FontSizeProvider } from 'context/FontSizeContext';
 import { useTranslation } from 'react-i18next';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { asyncStoragePersister, queryClient } from '@/query/queryClient';
+import { useAppVersion } from '@/AppVersion/hooks/useAppVersion';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,6 +29,8 @@ function InitialLayout() {
   const [appIsReady, setAppIsReady] = useState(false);
   const { showNotification, hideNotification, visible, config } = useNotification();
   const { t } = useTranslation();
+  const { data: remoteVersion, error: appVersionError } = useAppVersion();
+  const notifiedAppVersionRef = useRef<string | null>(null);
 
   useEffect(() => {
     async function prepare() {
@@ -88,78 +92,62 @@ function InitialLayout() {
   }, [appIsReady, session]);
 
   useEffect(() => {
-    const checkAppVersion = async () => {
-      try {
-        if (Platform.OS === 'web') return; // No verificamos versión en web
-        let query;
-        if (Platform.OS === 'android') {
-          query = supabase.from('version').select('version_android').single();
-        } else {
-          query = supabase.from('version').select('version').single();
-        }
-        const { data, error } = await query;
+    if (appVersionError) {
+      console.error('Error verificando versión de la app:', appVersionError);
+      return;
+    }
 
-        if (error || !data) return;
+    if (!appIsReady || !remoteVersion || Platform.OS === 'web') return;
+    if (notifiedAppVersionRef.current === remoteVersion) return;
 
-        const remoteVersion =
-          Platform.OS === 'android' ? (data as any).version_android : (data as any).version;
-        const localVersion = Constants.expoConfig?.version || Constants.nativeAppVersion || '1.0.0';
+    const localVersion = Constants.expoConfig?.version || Constants.nativeAppVersion || '1.0.0';
 
-        // Función auxiliar para comparar versiones semánticas (X.Y.Z)
-        const cmp = (v1: string, v2: string) => {
-          const p1 = v1.split('.').map(Number);
-          const p2 = v2.split('.').map(Number);
-          for (let i = 0; i < Math.max(p1.length, p2.length); i++) {
-            const n1 = p1[i] || 0;
-            const n2 = p2[i] || 0;
-            if (n1 > n2) return 1;
-            if (n1 < n2) return -1;
-          }
-          return 0;
-        };
-
-        if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'android') {
-          showNotification({
-            title: t('layout.updateAvailableTitle'),
-            description: t('layout.updateAvailableDescription'),
-            isChoice: true,
-            rightButtonText: t('common.update'),
-            onRightPress: () => {
-              hideNotification();
-              Linking.openURL(
-                'https://play.google.com/store/apps/details?id=com.leftjoiners.topfive'
-              );
-            },
-            delete: false,
-            success: false,
-            info: true,
-          });
-        }
-        if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'ios') {
-          showNotification({
-            title: t('layout.updateAvailableTitle'),
-            description: t('layout.updateAvailableDescription'),
-            isChoice: true,
-            rightButtonText: t('common.update'),
-            onRightPress: () => {
-              hideNotification();
-              Linking.openURL('https://apps.apple.com/es/app/topfive/id6761102319');
-            },
-            delete: false,
-            success: false,
-            info: true,
-          });
-        }
-      } catch (e) {
-        console.error('Error verificando versión de la app:', e);
+    // Función auxiliar para comparar versiones semánticas (X.Y.Z)
+    const cmp = (v1: string, v2: string) => {
+      const p1 = v1.split('.').map(Number);
+      const p2 = v2.split('.').map(Number);
+      for (let i = 0; i < Math.max(p1.length, p2.length); i++) {
+        const n1 = p1[i] || 0;
+        const n2 = p2[i] || 0;
+        if (n1 > n2) return 1;
+        if (n1 < n2) return -1;
       }
+      return 0;
     };
 
-    // Lanzamos el verificador solo cuando la app ya esté lista (fuentes cargadas, etc)
-    if (appIsReady) {
-      checkAppVersion();
+    if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'android') {
+      notifiedAppVersionRef.current = remoteVersion;
+      showNotification({
+        title: t('layout.updateAvailableTitle'),
+        description: t('layout.updateAvailableDescription'),
+        isChoice: true,
+        rightButtonText: t('common.update'),
+        onRightPress: () => {
+          hideNotification();
+          Linking.openURL('https://play.google.com/store/apps/details?id=com.leftjoiners.topfive');
+        },
+        delete: false,
+        success: false,
+        info: true,
+      });
     }
-  }, [hideNotification, showNotification, appIsReady]);
+    if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'ios') {
+      notifiedAppVersionRef.current = remoteVersion;
+      showNotification({
+        title: t('layout.updateAvailableTitle'),
+        description: t('layout.updateAvailableDescription'),
+        isChoice: true,
+        rightButtonText: t('common.update'),
+        onRightPress: () => {
+          hideNotification();
+          Linking.openURL('https://apps.apple.com/es/app/topfive/id6761102319');
+        },
+        delete: false,
+        success: false,
+        info: true,
+      });
+    }
+  }, [appIsReady, appVersionError, hideNotification, remoteVersion, showNotification, t]);
 
   useEffect(() => {
     // Cuando las fuentes carguen (appIsReady) Y la sesión de Supabase esté lista (!loading),
@@ -226,18 +214,25 @@ function InitialLayout() {
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <FontSizeProvider>
-        <ThemeProvider>
-          <CollectionProvider>
-            <NotificationProvider>
-              <SearchProvider>
-                <InitialLayout />
-              </SearchProvider>
-            </NotificationProvider>
-          </CollectionProvider>
-        </ThemeProvider>
-      </FontSizeProvider>
-    </AuthProvider>
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{
+        persister: asyncStoragePersister,
+        maxAge: 1000 * 60 * 60 * 24,
+      }}>
+      <AuthProvider>
+        <FontSizeProvider>
+          <ThemeProvider>
+            <CollectionProvider>
+              <NotificationProvider>
+                <SearchProvider>
+                  <InitialLayout />
+                </SearchProvider>
+              </NotificationProvider>
+            </CollectionProvider>
+          </ThemeProvider>
+        </FontSizeProvider>
+      </AuthProvider>
+    </PersistQueryClientProvider>
   );
 }

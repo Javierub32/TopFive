@@ -113,12 +113,12 @@ export default function FilmForm() {
             contenido: contentData,
           };
 
-          refreshData();
           if (estadoAnterior !== 'COMPLETADO' && estado === 'COMPLETADO') {
             await supabase.rpc('increment_review_count', { user_id: user.id });
           } else if (estadoAnterior === 'COMPLETADO' && estado !== 'COMPLETADO') {
             await supabase.rpc('decrement_review_count', { user_id: user.id });
           }
+          refreshData('pelicula');
           if (from === 'contentDetails') {
             router.back();
           } else {
@@ -191,7 +191,7 @@ export default function FilmForm() {
 
         if (existingResource) {
           //Alert.alert("Aviso", "Ya tienes esta película en tu colección.");
-          refreshData();
+          refreshData('pelicula');
           router.back();
           setTimeout(() => {
             showNotification({
@@ -230,10 +230,10 @@ export default function FilmForm() {
           console.error('Error al insertar:', inventoryError);
         } else {
           //Alert.alert("¡Éxito!", `Has añadido a ${film.title} a tu colección.`);
-          refreshData();
           if (estado === 'COMPLETADO') {
             await supabase.rpc('increment_review_count', { user_id: user.id });
           }
+          refreshData('pelicula');
           router.back();
           setTimeout(() => {
             showNotification({

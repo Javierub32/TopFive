@@ -1,160 +1,155 @@
-import { useEffect, useState } from "react";
-import { userService } from "../services/userService";
-import { useAuth } from "context/AuthContext";
-import { ResourceType, useResource } from "hooks/useResource";
+import { useMemo, useState } from 'react';
+import { userService } from '../services/userService';
+import { useAuth } from 'context/AuthContext';
+import { ResourceType, useResource } from 'hooks/useResource';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/query/queryKeys';
 
 export interface User {
-	id: string;
-	username: string;
-	avatar_url: string;
-	description: string;
-	followers_count: number;
-	following_count: number;
-	is_requested: boolean;
-	following_status: 'pending' | 'accepted' | null;
-	frame: string;
-	reviews_count: number;
+  id: string;
+  username: string;
+  avatar_url: string;
+  description: string;
+  followers_count: number;
+  following_count: number;
+  is_requested: boolean;
+  following_status: 'pending' | 'accepted' | null;
+  frame: string;
+  reviews_count: number;
 }
 
 // Estructura inicial de estadísticas
 const INITIAL_CATEGORY_DATA = {
-    libro: { title: 'Libros Leídos', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
-    pelicula: { title: 'Películas Vistas', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
-    serie: { title: 'Series Vistas', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
-    cancion: { title: 'Álbumes Escuchadas', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
-    videojuego: { title: 'Videojuegos Jugados', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
+  libro: { title: 'Libros Leídos', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
+  pelicula: { title: 'Películas Vistas', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
+  serie: { title: 'Series Vistas', total: 0, average: 0.0, chartData: new Array(12).fill(0) },
+  cancion: {
+    title: 'Álbumes Escuchadas',
+    total: 0,
+    average: 0.0,
+    chartData: new Array(12).fill(0),
+  },
+  videojuego: {
+    title: 'Videojuegos Jugados',
+    total: 0,
+    average: 0.0,
+    chartData: new Array(12).fill(0),
+  },
 };
 
 export const useUser = (username: string) => {
-	const {user} = useAuth();
-    const { fetchMonthlyStats } = useResource();
+  const { user } = useAuth();
+  const { fetchMonthlyStats } = useResource();
+  const queryClient = useQueryClient();
 
-	const [userData, setUserData] = useState<User | null>(null);
-	const [loading, setLoading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<ResourceType>('libro');
+  const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
 
-    const [selectedCategory, setSelectedCategory] = useState<ResourceType>('libro');
-    const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
-    const [previousYear, setPreviousYear] = useState<number>(new Date().getFullYear());
-    const [fullCategoryData, setFullCategoryData] = useState(INITIAL_CATEGORY_DATA);
-    const [statsLoading, setStatsLoading] = useState(false);
+  const {
+    data: userData = null,
+    isLoading,
+    isFetching,
+  } = useQuery<User | null>({
+    queryKey: queryKeys.publicProfile(username, user?.id),
+    queryFn: async () => {
+      if (!username) return null;
+      const userId = await userService.getUserIdByUsername(username);
+      if (!userId) throw new Error('User not found');
+      const data = await userService.fetchUserById(userId, user?.id);
+      if (data?.id === user?.id) data.following_status = 'accepted';
+      return data;
+    },
+    enabled: !!username,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 60,
+  });
 
-	useEffect(() => {
-		const fetchUserData = async () => {
-			if (!username) return; // No fetch si username está vacío
-			setLoading(true);
-			try {
-				const userId = await userService.getUserIdByUsername(username);
-				if (!userId) throw new Error("User not found");
-				const data = await userService.fetchUserById(userId, user?.id);
-				if (data?.id === user?.id) data.following_status = 'accepted';
-				setUserData(data);
-			} catch (error) {
-				console.error("Error fetching user data:", error);
-			} finally {
-				setLoading(false);
-			}
-		};
-		fetchUserData();
-	}, [username, user?.id]);
+  const {
+    data: stats = new Array(12).fill(0),
+    isLoading: statsLoading,
+    isFetching: statsFetching,
+  } = useQuery<number[]>({
+    queryKey: queryKeys.profileStats(userData?.id, selectedCategory, selectedYear),
+    queryFn: () => fetchMonthlyStats(selectedCategory, selectedYear, userData!.id),
+    enabled: !!userData?.id,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 60,
+  });
 
-    // Fetch stats when user data is ready, or category/year changes
-    useEffect(() => {
-        if (!userData?.id) return;
+  const currentStats = useMemo(() => {
+    const total = stats.reduce((acc: number, curr: number) => acc + curr, 0);
+    const average = Number((total / 12).toFixed(1));
 
-        // Si cambió el año, resetear
-        if (selectedYear !== previousYear) {
-            setFullCategoryData(INITIAL_CATEGORY_DATA);
-            setPreviousYear(selectedYear);
-            fetchResourceInfo(userData.id);
-            return;
-        }
-
-        // Si no tenemos datos cacheados para esta categoría, buscar
-        if (fullCategoryData[selectedCategory].total === 0) {
-            fetchResourceInfo(userData.id);
-        }
-    }, [selectedCategory, selectedYear, previousYear, userData?.id]);
-
-    const fetchResourceInfo = async (targetUserId: string) => {
-        try {
-            setStatsLoading(true);
-            const stats = await fetchMonthlyStats(selectedCategory, selectedYear, targetUserId);
-            updateStats(stats);
-        } catch (error) {
-            console.error('[useUser] Error al cargar estadísticas:', error);
-        } finally {
-            setStatsLoading(false);
-        }
+    return {
+      ...INITIAL_CATEGORY_DATA[selectedCategory],
+      chartData: stats,
+      total,
+      average,
     };
+  }, [selectedCategory, stats]);
 
-	const updateStats = (chartData: number[]) => {
-        const total = chartData.reduce((acc, curr) => acc + curr, 0);
-        const average = Number((total / 12).toFixed(1));
+  const invalidateUserData = async () => {
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: queryKeys.publicProfile(username, user?.id) }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.notifications(user?.id) }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.notificationCount(user?.id) }),
+      queryClient.invalidateQueries({ queryKey: ['followers'] }),
+      queryClient.invalidateQueries({ queryKey: ['following'] }),
+    ]);
+  };
 
-        const newData = { ...fullCategoryData };
-        newData[selectedCategory] = {
-            ...newData[selectedCategory],
-            chartData: chartData,
-            total: total,
-            average: average,
-        };
-        setFullCategoryData(newData);
-    };
+  const followMutation = useMutation({
+    mutationFn: async (userIdToFollow?: string | any) => {
+      if (!user) return;
+      const userId =
+        typeof userIdToFollow === 'string'
+          ? userIdToFollow
+          : await userService.getUserIdByUsername(username);
 
+      if (!userId) throw new Error('User not found');
+      await userService.requestFollow(user.id, userId);
+    },
+    onSuccess: invalidateUserData,
+  });
 
-	const handleFollow = async (userIdToFollow?: string | any) => {
-		if (!user) return;
-		try {
-			const userId = typeof userIdToFollow === 'string' 
-				? userIdToFollow 
-				: await userService.getUserIdByUsername(username);
-				
-			if (!userId) throw new Error("User not found");
-			
-			await userService.requestFollow(user.id, userId);
-			
-			setUserData((prevData: any) => {
-				if (!prevData) return prevData;
-				return {
-					...prevData,
-					is_requested: true,
-					following_status: 'pending'
-				};
-			});
-		} catch (error) {
-			console.error("Error requesting follow:", error);
-		}
-	};
+  const cancelRequestMutation = useMutation({
+    mutationFn: async () => {
+      if (!user) return;
+      const userId = await userService.getUserIdByUsername(username);
+      if (!userId) throw new Error('User not found');
+      await userService.unfollow(user.id, userId);
+    },
+    onSuccess: invalidateUserData,
+  });
 
-	const cancelRequest = async () => {
-		if (!user) return;
-		try {
-			const userId = await userService.getUserIdByUsername(username);
-			if (!userId) throw new Error("User not found");
-			await userService.unfollow(user.id, userId);
-			setUserData((prevData: any) => {
-				if (!prevData) return prevData;
-				return {
-					...prevData,
-					is_requested: false,
-					following_status: null
-				};
-			});
-		} catch (error) {
-			console.error("Error cancelling follow request:", error);
-		}
-	};
+  const handleFollow = async (userIdToFollow?: string | any) => {
+    if (!user) return;
+    try {
+      await followMutation.mutateAsync(userIdToFollow);
+    } catch (error) {
+      console.error('Error requesting follow:', error);
+    }
+  };
 
-	return { 
-        userData, 
-        loading, 
-        handleFollow, 
-        cancelRequest,
-        selectedCategory,
-        setSelectedCategory,
-        selectedYear,
-        setSelectedYear,
-        statsLoading,
-        currentStats: fullCategoryData[selectedCategory],
-    };
-}
+  const cancelRequest = async () => {
+    if (!user) return;
+    try {
+      await cancelRequestMutation.mutateAsync();
+    } catch (error) {
+      console.error('Error cancelling follow request:', error);
+    }
+  };
+
+  return {
+    userData,
+    loading: isLoading || isFetching || followMutation.isPending || cancelRequestMutation.isPending,
+    handleFollow,
+    cancelRequest,
+    selectedCategory,
+    setSelectedCategory,
+    selectedYear,
+    setSelectedYear,
+    statsLoading: statsLoading || statsFetching,
+    currentStats,
+  };
+};

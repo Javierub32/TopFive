@@ -6,24 +6,55 @@ import { AddToListModal } from '@/Collection/components/AddToListModal';
 import { CollectionType, listServices } from '@/Collection/services/listServices';
 import { useNotification } from 'context/NotificationContext';
 import { useTranslation } from 'react-i18next';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/query/queryKeys';
+
+const getExactListType = (listType: CollectionType, resourceCategory: string): CollectionType => {
+  if (listType === 'AUDIOVISUAL') {
+    return resourceCategory === 'serie' ? 'SERIE' : 'PELICULA';
+  }
+
+  if (listType === 'MUSICA') {
+    return 'CANCION';
+  }
+
+  return listType;
+};
+
 export function AddToListButton({ resourceCategory, resourceId }: any) {
   const { colors } = useTheme();
   const [modalVisible, setModalVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
   const { showNotification } = useNotification();
-  
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
+
+  const addToListMutation = useMutation({
+    mutationFn: ({
+      listId,
+      listType,
+    }: {
+      listId: string;
+      listType: CollectionType;
+    }) => {
+      const exactType = getExactListType(listType, resourceCategory);
+      return listServices.addItemToList(listId, resourceId, exactType);
+    },
+    onSuccess: async (_message, { listId, listType }) => {
+      const exactType = getExactListType(listType, resourceCategory);
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['lists'] }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.listDetails(listId, exactType) }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.listContainingItem(resourceId, exactType),
+        }),
+      ]);
+    },
+  });
+
   const handleListSelect = async (listId: string, listType: CollectionType) => {
     setModalVisible(false);
-    setLoading(true);
     try {
-      let exactType = listType;
-      if (listType === 'AUDIOVISUAL') {
-        exactType = resourceCategory === 'serie' ? 'SERIE' : 'PELICULA';
-      } else if (listType === 'MUSICA') {
-         exactType = 'CANCION';
-      }
-      const message = await listServices.addItemToList(listId, resourceId, exactType);
+      const message = await addToListMutation.mutateAsync({ listId, listType });
       showNotification({
         title: t('common.success'),
         description: message,
@@ -40,8 +71,6 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
         delete: false,
         success: false,
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -49,7 +78,7 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
     <>
       <TouchableOpacity
         onPress={() => setModalVisible(true)}
-        disabled={loading}
+        disabled={addToListMutation.isPending}
         className="mr-2 h-10 w-10 items-center justify-center rounded-full"
         style={{ backgroundColor: `${colors.accent}99` }}
         activeOpacity={0.7}>

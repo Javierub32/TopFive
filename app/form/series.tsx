@@ -134,12 +134,12 @@ export default function SeriesForm() {
           };
 
           //Alert.alert('¡Éxito!', `Has actualizado ${series.titulo || series.title} en tu colección.`);
-          refreshData();
           if (estadoAnterior !== 'COMPLETADO' && estado === 'COMPLETADO') {
             await supabase.rpc('increment_review_count', { user_id: user.id });
           } else if (estadoAnterior === 'COMPLETADO' && estado !== 'COMPLETADO') {
             await supabase.rpc('decrement_review_count', { user_id: user.id });
           }
+          refreshData('serie');
           if (from === 'contentDetails') {
             router.back();
           } else {
@@ -208,7 +208,7 @@ export default function SeriesForm() {
 
         if (resource) {
           //Alert.alert('Aviso', 'Ya tienes esta serie en tu colección.');
-          refreshData();
+          refreshData('serie');
           router.back();
           setTimeout(() => {
             showNotification({
@@ -250,10 +250,10 @@ export default function SeriesForm() {
           console.error('Error al insertar:', inventoryError);
         } else {
           //Alert.alert('¡Éxito!', `Has añadido ${series.title} a tu colección.`);
-          refreshData();
           if (estado === 'COMPLETADO') {
             await supabase.rpc('increment_review_count', { user_id: user.id });
           }
+          refreshData('serie');
           router.back();
           setTimeout(() => {
             showNotification({

@@ -5,53 +5,60 @@ import { searchAdapter } from '../../Add/adapters/searchResultsAdapter';
 import { ResourceType } from 'hooks/useResource';
 import { useSearch } from 'context/SearchContext';
 import { useTranslation } from 'react-i18next';
+import { useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/query/queryKeys';
 
 export const useSearchContent = () => {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
   const {
-	setContentQuery: setBusqueda,
-	contentQuery: busqueda,
-	contentCategory: recursoBusqueda,
-	setContentCategory,
-	setContentResults: setResultados,
-	contentResults: resultados,
-	clearContentSearch,
+    setContentQuery: setBusqueda,
+    contentQuery: busqueda,
+    contentCategory: recursoBusqueda,
+    setContentCategory,
+    setContentResults: setResultados,
+    contentResults: resultados,
+    clearContentSearch,
   } = useSearch();
 
   const params = useLocalSearchParams<{ initialCategory?: string }>();
 
-    // Aplicar la categoría inicial si viene en la URL
+  // Aplicar la categoría inicial si viene en la URL
   useEffect(() => {
-	if (params.initialCategory && params.initialCategory !== recursoBusqueda) {
-	  setContentCategory(params.initialCategory as ResourceType);
-	  clearContentSearch();
-    setHasSearched(false);
-	}
+    if (params.initialCategory && params.initialCategory !== recursoBusqueda) {
+      setContentCategory(params.initialCategory as ResourceType);
+      clearContentSearch();
+      setHasSearched(false);
+    }
   }, [params.initialCategory]);
-
 
   const handleSearch = async (categoria?: ResourceType) => {
     if (!busqueda.trim()) {
-		setResultados([]);
-		setHasSearched(false);
-		return;
-	}
+      setResultados([]);
+      setHasSearched(false);
+      return;
+    }
     setHasSearched(true);
     setLoading(true);
     setMenuAbierto(false);
     setResultados([]);
     const categoriaAUsar = categoria || recursoBusqueda;
-    
+
     try {
-      const data = await searchContentService.fetchContent(busqueda, categoriaAUsar);
-      
+      const searchTerm = busqueda.trim();
+      const data = await queryClient.fetchQuery({
+        queryKey: queryKeys.contentSearch(categoriaAUsar, searchTerm),
+        queryFn: () => searchContentService.fetchContent(searchTerm, categoriaAUsar),
+        staleTime: 1000 * 60 * 20,
+        gcTime: 1000 * 60 * 60,
+      });
 
       if (Array.isArray(data)) {
-        const mapped = data.map(item => searchAdapter[categoriaAUsar](item, t));
+        const mapped = data.map((item) => searchAdapter[categoriaAUsar](item, t));
         setResultados(mapped);
       }
     } catch (error) {
@@ -62,38 +69,39 @@ export const useSearchContent = () => {
   };
 
   const navigateToDetails = (index: number) => {
-    const typeMap: Record<ResourceType, string> = { 
-      libro: 'book', 
-      pelicula: 'film', 
-      serie: 'series', 
-      videojuego: 'game', 
-      cancion: 'song' 
+    const typeMap: Record<ResourceType, string> = {
+      libro: 'book',
+      pelicula: 'film',
+      serie: 'series',
+      videojuego: 'game',
+      cancion: 'song',
     };
 
     const type = typeMap[recursoBusqueda];
-    
+
     router.push({
       pathname: `/details/${type}/${type}Content`,
-      params: { id: resultados[index].id, from: 'search',
-        searchCover: resultados[index].cover
-      },
+      params: { id: resultados[index].id, from: 'search', searchCover: resultados[index].cover },
     });
   };
 
-  const setRecursoBusqueda = async (categoria: ResourceType)  =>  {
-	setContentCategory(categoria);
-	await handleSearch(categoria);
-  }
+  const setRecursoBusqueda = async (categoria: ResourceType) => {
+    setContentCategory(categoria);
+    await handleSearch(categoria);
+  };
 
   return {
-    busqueda, setBusqueda,
-    recursoBusqueda, setRecursoBusqueda,
-    menuAbierto, setMenuAbierto,
+    busqueda,
+    setBusqueda,
+    recursoBusqueda,
+    setRecursoBusqueda,
+    menuAbierto,
+    setMenuAbierto,
     hasSearched,
-    loading, resultados,
-    handleSearch, navigateToDetails,
-    setResultados
+    loading,
+    resultados,
+    handleSearch,
+    navigateToDetails,
+    setResultados,
   };
 };
-
-

@@ -142,12 +142,12 @@ export default function BookForm() {
             ...rawData,
             contenido: contentData,
           };
-          refreshData();
           if (estadoAnterior !== 'COMPLETADO' && estado === 'COMPLETADO') {
             await supabase.rpc('increment_review_count', { user_id: user.id });
           } else if (estadoAnterior === 'COMPLETADO' && estado !== 'COMPLETADO') {
             await supabase.rpc('decrement_review_count', { user_id: user.id });
           }
+          refreshData('libro');
           if (from === 'contentDetails') {
             router.back();
           } else {
@@ -226,7 +226,7 @@ export default function BookForm() {
         }
 
         if (resource) {
-          refreshData();
+          refreshData('libro');
           router.back();
           // Mostrar modal después de navegar
           setTimeout(() => {
@@ -267,10 +267,10 @@ export default function BookForm() {
           });
           console.error('Error al insertar:', inventoryError);
         } else {
-          refreshData();
           if (estado === 'COMPLETADO') {
             await supabase.rpc('increment_review_count', { user_id: user.id });
           }
+          refreshData('libro');
           router.back();
           // Mostrar modal después de navegar
           setTimeout(() => {

@@ -1,10 +1,24 @@
 import { supabase } from '../lib/supabase';
 import { useAuth } from 'context/AuthContext';
-import { BookResource, FilmResource, GameResource, SeriesResource, SongResource } from 'app/types/Resources';
+import {
+  BookResource,
+  FilmResource,
+  GameResource,
+  SeriesResource,
+  SongResource,
+} from 'app/types/Resources';
+import { useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/query/queryKeys';
 
 // Definimos los tipos de recursos válidos y sus interfaces de configuración
 export type ResourceType = 'pelicula' | 'serie' | 'videojuego' | 'libro' | 'cancion';
-export const RESOURCE_TYPES: ResourceType[] = ['libro', 'serie', 'pelicula', 'videojuego', 'cancion'];
+export const RESOURCE_TYPES: ResourceType[] = [
+  'libro',
+  'serie',
+  'pelicula',
+  'videojuego',
+  'cancion',
+];
 
 export type StateType = 'PENDIENTE' | 'EN_CURSO' | 'COMPLETADO';
 
@@ -56,6 +70,7 @@ export interface FetchResourcesResponse<K extends ResourceType> {
 
 export const useResource = () => {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
 
   // Función genérica para todos los recursos
   const fetchResources = async <K extends ResourceType>({
@@ -71,29 +86,32 @@ export const useResource = () => {
     targetUserId,
     ordenarPorUltimaActividad,
     recursoId,
-	includeCount = false,
+    includeCount = false,
   }: FetchResourcesParams<K>): Promise<FetchResourcesResponse<K>> => {
     try {
       if (!user) throw new Error('User not authenticated');
 
-      const userIdToQuery = targetUserId || user.id; 
+      const userIdToQuery = targetUserId || user.id;
 
       const config = RESOURCE_CONFIG[type];
       const isSearch = term !== undefined && term !== null && term !== '';
       const joinModifier = isSearch ? '!inner' : '';
-	  const selectOptions = includeCount ? { count: 'exact' as const } : undefined;
+      const selectOptions = includeCount ? { count: 'exact' as const } : undefined;
 
       // Query base por defecto
       let query = supabase
         .from(config.table)
-        .select(`
+        .select(
+          `
             *, 
             ${config.contentJoin}${joinModifier} (
                 titulo,
                 imagenUrl,
                 fechaLanzamiento
             )
-        ` as any, selectOptions)
+        ` as any,
+          selectOptions
+        )
         .eq('usuarioId', userIdToQuery);
 
       if (recursoId !== undefined && recursoId !== null) {
@@ -114,7 +132,7 @@ export const useResource = () => {
         query = query.range(from, to);
       }
 
-	  // Filtros adicionales
+      // Filtros adicionales
       if (favorito === true) {
         query = query.eq('favorito', true);
       }
@@ -142,22 +160,21 @@ export const useResource = () => {
       const { data, count, error } = await query;
 
       if (error) throw error;
-      
-	// Normalizamos los datos para tenerlos en el mismo formato
-    if (data && !profile) {
+
+      // Normalizamos los datos para tenerlos en el mismo formato
+      if (data && !profile) {
         const normalizedData = data.map((item: any) => {
-            if (item[config.contentJoin]) {
-                item.contenido = item[config.contentJoin];
-                delete item[config.contentJoin];
-            }
-            return item;
+          if (item[config.contentJoin]) {
+            item.contenido = item[config.contentJoin];
+            delete item[config.contentJoin];
+          }
+          return item;
         });
         return { data: normalizedData, count } as unknown as FetchResourcesResponse<K>;
-    }
+      }
 
-    // Si es modo profile o no hay data, devolvemos tal cual
-    return { data, count } as unknown as FetchResourcesResponse<K>	;
-
+      // Si es modo profile o no hay data, devolvemos tal cual
+      return { data, count } as unknown as FetchResourcesResponse<K>;
     } catch (error) {
       console.error(`Error al obtener ${type}:`, error);
       return { data: null, count: null } as FetchResourcesResponse<K>;
@@ -165,16 +182,12 @@ export const useResource = () => {
   };
 
   // Mantenemos la lógica de borrarRecurso
-  const borrarRecurso = async (
-    recursoId: any,
-    tipoRecurso: ResourceType,
-    estado: string
-  ) => {
+  const borrarRecurso = async (recursoId: any, tipoRecurso: ResourceType, estado: string) => {
     try {
       if (!user) throw new Error('User not authenticated');
-      
+
       const config = RESOURCE_CONFIG[tipoRecurso];
-      
+
       const { data, error } = await supabase
         .from(config.table)
         .delete()
@@ -183,8 +196,22 @@ export const useResource = () => {
 
       if (error) throw error;
       if (estado === 'COMPLETADO') {
-        await supabase.rpc('decrement_review_count', {user_id: user.id})
+        await supabase.rpc('decrement_review_count', { user_id: user.id });
       }
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.collectionOverview(user.id, tipoRecurso),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ['collection', 'group', user.id, tipoRecurso],
+        }),
+        queryClient.invalidateQueries({ queryKey: ['resources', user.id, tipoRecurso] }),
+        queryClient.invalidateQueries({ queryKey: ['lists'] }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.profile(user.id) }),
+        queryClient.invalidateQueries({ queryKey: ['profile', 'stats', user.id] }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.topFive(user.id) }),
+        queryClient.invalidateQueries({ queryKey: ['topFive', 'selector', user.id] }),
+      ]);
       return data;
     } catch (error) {
       console.error(`Error al borrar recurso ${tipoRecurso}:`, error);
@@ -192,42 +219,42 @@ export const useResource = () => {
     }
   };
 
-	const fetchMonthlyStats = async (
-		tipoRecurso: ResourceType, 
-		year: number, 
-		targetUserId?: string
-	): Promise<number[]> => {
-	try {
-		if (!user) throw new Error('User not authenticated');
-		
-		const userIdToQuery = targetUserId || user.id;
-		const config = RESOURCE_CONFIG[tipoRecurso];
-		const dateField = DATE_FIELDS[tipoRecurso];
+  const fetchMonthlyStats = async (
+    tipoRecurso: ResourceType,
+    year: number,
+    targetUserId?: string
+  ): Promise<number[]> => {
+    try {
+      if (!user) throw new Error('User not authenticated');
 
-		const { data, error } = await supabase.rpc('get_monthly_resource_stats', {
-			p_user_id: userIdToQuery,
-			p_table_name: config.table,
-			p_date_field: dateField,
-			p_year: year
-		});
+      const userIdToQuery = targetUserId || user.id;
+      const config = RESOURCE_CONFIG[tipoRecurso];
+      const dateField = DATE_FIELDS[tipoRecurso];
 
-		if (error) throw error;
+      const { data, error } = await supabase.rpc('get_monthly_resource_stats', {
+        p_user_id: userIdToQuery,
+        p_table_name: config.table,
+        p_date_field: dateField,
+        p_year: year,
+      });
 
-		const chartData = new Array(12).fill(0);
+      if (error) throw error;
 
-		// Mapeamos los resultados a nuestro array de 12 meses. Ej. [0, 5, 2, 0, 10, 0, 0, 0, 0, 0, 0, 0]
-		if (data) {
-			data.forEach((row: { month: number; count: number }) => {
-				chartData[row.month - 1] = Number(row.count);
-			});
-		}
+      const chartData = new Array(12).fill(0);
 
-		return chartData; 
-	} catch (error) {
-		console.error(`Error al obtener stats de ${tipoRecurso}:`, error);
-		return new Array(12).fill(0); // Devuelve datos vacíos para no romper la UI
-	}
-	};
+      // Mapeamos los resultados a nuestro array de 12 meses. Ej. [0, 5, 2, 0, 10, 0, 0, 0, 0, 0, 0, 0]
+      if (data) {
+        data.forEach((row: { month: number; count: number }) => {
+          chartData[row.month - 1] = Number(row.count);
+        });
+      }
+
+      return chartData;
+    } catch (error) {
+      console.error(`Error al obtener stats de ${tipoRecurso}:`, error);
+      return new Array(12).fill(0); // Devuelve datos vacíos para no romper la UI
+    }
+  };
 
   const checkIfResourceExists = async (apiId: string | number | null, type: ResourceType) => {
     if (!apiId) return null;
@@ -237,14 +264,16 @@ export const useResource = () => {
       const config = RESOURCE_CONFIG[type];
       const { data, error } = await supabase
         .from(config.table)
-        .select(`
+        .select(
+          `
           *,
           ${config.contentJoin}!inner(*)
-          `)
+          `
+        )
         .eq('usuarioId', user.id)
         .eq(`${config.contentJoin}.idApi`, apiId)
         .maybeSingle();
-      
+
       if (error) throw error;
       if (!data) return null;
 
@@ -256,8 +285,6 @@ export const useResource = () => {
       }
 
       return normalizedData;
-
-
     } catch (error) {
       console.error(`Error al comprobar si existe el recurso ${type}: `, error);
       return null;
@@ -268,6 +295,6 @@ export const useResource = () => {
     fetchResources,
     borrarRecurso,
     checkIfResourceExists,
-	fetchMonthlyStats,
+    fetchMonthlyStats,
   };
 };
