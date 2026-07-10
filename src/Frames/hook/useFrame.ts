@@ -2,21 +2,51 @@ import { useAuth } from 'context/AuthContext';
 import { useNotification } from 'context/NotificationContext';
 import { router } from 'expo-router';
 import { supabase } from 'lib/supabase';
-import { useEffect, useState } from 'react';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/query/queryKeys';
 
 export const useFrame = () => {
   const { user, refreshProfile } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [userFrames, setUserFrames] = useState<string[]>([]);
   const { showNotification } = useNotification();
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
 
-  const handleSaveFrame = async (selectedFrameCode: string) => {
-    if (!user) return;
-    setSaving(true);
-    try {
+  const {
+    data: userFrames = [],
+    isLoading,
+    isFetching,
+  } = useQuery<string[]>({
+    queryKey: queryKeys.frames(user?.id),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('usuario_frame')
+        .select(
+          `
+        frame!fk_frame (
+          codigo
+        )
+      `
+        )
+        .eq('usuario_id', user!.id);
+
+      if (error) throw error;
+
+      const codes = data?.map((item: any) => item.frame.codigo) || [];
+
+      if (!codes.includes('none')) {
+        codes.push('none');
+      }
+
+      return codes;
+    },
+    enabled: !!user?.id,
+    staleTime: 1000 * 60 * 15,
+    gcTime: 1000 * 60 * 60,
+  });
+
+  const saveFrameMutation = useMutation({
+    mutationFn: async (selectedFrameCode: string) => {
       const { data: frameData, error: frameError } = await supabase
         .from('frame')
         .select('id')
@@ -31,7 +61,17 @@ export const useFrame = () => {
         .eq('id', user.id);
 
       if (error) throw error;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.profile(user?.id) });
+      refreshProfile();
+    },
+  });
 
+  const handleSaveFrame = async (selectedFrameCode: string) => {
+    if (!user) return;
+    try {
+      await saveFrameMutation.mutateAsync(selectedFrameCode);
       showNotification({
         title: t('common.success'),
         description: t('frameSelector.updatedNotification'),
@@ -40,9 +80,7 @@ export const useFrame = () => {
         success: true,
       });
 
-	  refreshProfile();
-      
-	  router.back();
+      router.back();
     } catch (error) {
       console.error('Error al guardar el marco:', error);
       showNotification({
@@ -52,57 +90,11 @@ export const useFrame = () => {
         delete: false,
         success: false,
       });
-    } finally {
-      setSaving(false);
     }
   };
 
-  const fetchUserFrames = async () => {
-    if (!user) return;
-    setLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from('usuario_frame')
-        .select(
-          `
-        frame!fk_frame (
-          codigo
-        )
-      `
-        )
-        .eq('usuario_id', user.id);
-
-      if (error) throw error;
-
-      const codes = data?.map((item: any) => item.frame.codigo) || [];
-
-      if (!codes.includes('none')) {
-        codes.push('none');
-      }
-
-      setUserFrames(codes);
-    } catch (error) {
-      console.error('Error al cargar los marcos:', error);
-      showNotification({
-        title: t('common.error'),
-        description: t('frameSelector.errorLoadingNotification'),
-        isChoice: false,
-        delete: false,
-        success: false,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchUserFrames();
-  }, [user?.id]);
-
-  const unlockFrame = async (frameCode: string) => {
-    if (!user) return;
-    setSaving(true);
-    try {
-      // Obtenemos el ID del marco
+  const unlockFrameMutation = useMutation({
+    mutationFn: async (frameCode: string) => {
       const { data: frameData, error: frameError } = await supabase
         .from('frame')
         .select('id')
@@ -111,15 +103,21 @@ export const useFrame = () => {
 
       if (frameError) throw frameError;
 
-      // Insertamos el marco en el inventario del usuario
       const { error: insertError } = await supabase
         .from('usuario_frame')
-        .insert({ usuario_id: user.id, frame_id: frameData.id });
+        .insert({ usuario_id: user!.id, frame_id: frameData.id });
 
       if (insertError) throw insertError;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.frames(user?.id) });
+    },
+  });
 
-      // Actualizamos el estado local para que se refleje inmediatamente
-      setUserFrames(prev => [...prev, frameCode]);
+  const unlockFrame = async (frameCode: string) => {
+    if (!user) return;
+    try {
+      await unlockFrameMutation.mutateAsync(frameCode);
 
       showNotification({
         title: t('frameSelector.unlockedNotificationTitle'),
@@ -128,7 +126,6 @@ export const useFrame = () => {
         delete: false,
         success: true,
       });
-
     } catch (error) {
       console.error('Error al desbloquear el marco:', error);
       showNotification({
@@ -138,16 +135,14 @@ export const useFrame = () => {
         delete: false,
         success: false,
       });
-    } finally {
-      setSaving(false);
     }
   };
 
   return {
-    loading,
-    saving,
+    loading: isLoading || isFetching,
+    saving: saveFrameMutation.isPending || unlockFrameMutation.isPending,
     handleSaveFrame,
-	userFrames,
-	unlockFrame
+    userFrames,
+    unlockFrame,
   };
 };

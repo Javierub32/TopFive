@@ -9,7 +9,6 @@ import { useNotification } from 'context/NotificationContext';
 import { TopFivePlaceholder } from '@/TopFiveSelector/components/TopFivePlaceholder';
 import { useTranslation } from 'react-i18next';
 export default function TopFiveSelectorScreen() {
-  const { data, loading, fetchTopFiveSelector, insertToTopFive } = useTopFiveSelector();
   const { t } = useTranslation();
 
   const ContentTitle: Record<ResourceType, string> = {
@@ -23,11 +22,12 @@ export default function TopFiveSelectorScreen() {
     resourceType: ResourceType;
     position: string;
   }>();
+  const { data, loading, fetchTopFiveSelector, insertToTopFive } = useTopFiveSelector(resourceType);
   const { showNotification, hideNotification } = useNotification();
 
   const handleLoadMore = () => {
     if (resourceType) {
-      fetchTopFiveSelector(resourceType);
+      fetchTopFiveSelector();
     }
   };
 
@@ -46,16 +46,29 @@ export default function TopFiveSelectorScreen() {
         onLeftPress: () => hideNotification(),
         onRightPress: async () => {
           hideNotification();
-          const posicion = parseInt(position);
-          await insertToTopFive(posicion, resourceType, item.id);
-          router.replace('/Profile');
-          showNotification({
-            title: t('common.success'),
-            description: t('topFiveSelector.addedToTopFive', { title: item.contenido.titulo }),
-            isChoice: false,
-            delete: false,
-            success: true,
-          });
+          try {
+            const posicion = parseInt(position);
+            await insertToTopFive(posicion, resourceType, item.id);
+            router.replace('/Profile');
+            showNotification({
+              title: t('common.success'),
+              description: t('topFiveSelector.addedToTopFive', { title: item.contenido.titulo }),
+              isChoice: false,
+              delete: false,
+              success: true,
+            });
+          } catch (error: any) {
+            showNotification({
+              title: t('common.error'),
+              description:
+                error?.message === 'TOP_FIVE_DUPLICATE_RESOURCE'
+                  ? t('topFiveSelector.duplicateResource')
+                  : t('topFiveSelector.addToTopFiveError'),
+              isChoice: false,
+              delete: false,
+              success: false,
+            });
+          }
         },
       });
     }

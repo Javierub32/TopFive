@@ -2,26 +2,30 @@ import { createContext, useState, useEffect, useContext } from 'react';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useAuth } from './AuthContext';
 import { ResourceType, useResource } from 'hooks/useResource';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/query/queryKeys';
+import { Alert } from 'react-native';
 
 const CollectionContext = createContext<any>(undefined);
 
 export type CategoryType = 'Libros' | 'Películas' | 'Series' | 'Videojuegos' | 'Canciones';
 
-
 export const CollectionProvider = ({ children }: any) => {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
 
   const { fetchResources } = useResource();
 
   const { initialResource } = useLocalSearchParams<{ initialResource?: ResourceType }>();
   const [inputBusqueda, setInputBusqueda] = useState('');
   const [busqueda, setBusqueda] = useState('');
-  const [categoriaActual, setCategoriaActual] = useState<ResourceType>(initialResource ? initialResource : 'pelicula');
+  const [categoriaActual, setCategoriaActual] = useState<ResourceType>(
+    initialResource ? initialResource : 'pelicula'
+  );
   const [loading, setLoading] = useState(false);
   const [menuCategoriaAbierto, setMenuCategoriaAbierto] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
-
 
   // Datos por estado
   const [pendientes, setPendientes] = useState<any[]>([]);
@@ -37,95 +41,139 @@ export const CollectionProvider = ({ children }: any) => {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const pageSize = 9;
 
+  const {
+    data: collectionOverview,
+    isLoading: overviewLoading,
+    isFetching: overviewFetching,
+    refetch: refetchCollectionOverview,
+  } = useQuery({
+    queryKey: queryKeys.collectionOverview(user?.id, categoriaActual),
+    queryFn: async () => {
+      const [pendientes, enCurso, completados] = await Promise.all([
+        fetchResources({
+          type: categoriaActual,
+          estado: 'PENDIENTE',
+          cantidad: 5,
+          ordenarPorFecha: true,
+          includeCount: true,
+        }),
+        fetchResources({
+          type: categoriaActual,
+          estado: 'EN_CURSO',
+          cantidad: 5,
+          ordenarPorFecha: true,
+          includeCount: true,
+        }),
+        fetchResources({
+          type: categoriaActual,
+          estado: 'COMPLETADO',
+          cantidad: 5,
+          ordenarPorUltimaActividad: true,
+          includeCount: true,
+        }),
+      ]);
+
+      return { pendientes, enCurso, completados };
+    },
+    enabled: !!user?.id,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+  });
+
+  useEffect(() => {
+    if (!collectionOverview) return;
+
+    setPendientes(collectionOverview.pendientes?.data || []);
+    setEnCurso(collectionOverview.enCurso?.data || []);
+    setCompletados(collectionOverview.completados?.data || []);
+    setTotalPendientes(collectionOverview.pendientes?.count || 0);
+    setTotalEnCurso(collectionOverview.enCurso?.count || 0);
+    setTotalCompletados(collectionOverview.completados?.count || 0);
+  }, [collectionOverview]);
+
   const handleSearch = async () => {
-	if (!user) return;
-	if (!inputBusqueda || inputBusqueda.trim() === '') {
-		setBusqueda('');
-		return;
-	}
+    if (!user) return;
+    if (!inputBusqueda || inputBusqueda.trim() === '') {
+      setBusqueda('');
+      return;
+    }
     setBusqueda(inputBusqueda);
-	try {
-		setLoading(true);
-		const resultado = await fetchResources({
-			type: categoriaActual,
-			term: inputBusqueda,
-			cantidad: pageSize
-		});
-		setData(resultado?.data || []);
-		setPage(1);
-		setHasMore(true);
-	}
-	catch (error) {
-		console.error(error);
-		setData([]);
-	}
-	finally {
-		setLoading(false);
-	}
+    try {
+      setLoading(true);
+      const term = inputBusqueda.trim();
+      const resultado = await queryClient.fetchQuery({
+        queryKey: queryKeys.resources(user.id, categoriaActual, { term, page: 0, pageSize }),
+        queryFn: () =>
+          fetchResources({
+            type: categoriaActual,
+            term,
+            cantidad: pageSize,
+          }),
+        staleTime: 1000 * 60 * 10,
+        gcTime: 1000 * 60 * 30,
+      });
+      setData(resultado?.data || []);
+      setPage(1);
+      setHasMore(true);
+    } catch (error) {
+      console.error(error);
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSearchPagination = async () => {
-	if (!user) return;
-	if (!inputBusqueda || inputBusqueda.trim() === '') return;
-	if (!hasMore) return;
-	if (loading) return; 
+    if (!user) return;
+    if (!inputBusqueda || inputBusqueda.trim() === '') return;
+    if (!hasMore) return;
+    if (loading) return;
 
-	const from = page * pageSize;
-	const to = from + pageSize - 1;
-	try {
-		setLoading(true);
-		const resultado = await fetchResources({ 
-			type: categoriaActual,
-			term: inputBusqueda,
-			cantidad: pageSize,
-			from,
-			to
-		});
-		setData((prevData: any[]) => [...prevData, ...(resultado?.data || [])]);
-		setPage((prevPage) => prevPage + 1);
-		if (!resultado?.data || resultado.data.length < pageSize) {
-			setHasMore(false);
-		}
-	}
-	catch (error) {
-		console.error(error);
-	}
-	finally {
-		setLoading(false);
-	}
-  }
+    const from = page * pageSize;
+    const to = from + pageSize - 1;
+    try {
+      setLoading(true);
+      const term = inputBusqueda.trim();
+      const resultado = await queryClient.fetchQuery({
+        queryKey: queryKeys.resources(user.id, categoriaActual, { term, page, pageSize }),
+        queryFn: () =>
+          fetchResources({
+            type: categoriaActual,
+            term,
+            cantidad: pageSize,
+            from,
+            to,
+          }),
+        staleTime: 1000 * 60 * 10,
+        gcTime: 1000 * 60 * 30,
+      });
+      setData((prevData: any[]) => [...prevData, ...(resultado?.data || [])]);
+      setPage((prevPage) => prevPage + 1);
+      if (!resultado?.data || resultado.data.length < pageSize) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const toggleSearch = () => {
     if (isSearchVisible) {
-        // Si se está cerrando, limpiamos todo para volver a la vista normal
-        setInputBusqueda('');
-        setBusqueda('');
-        setData([]);
+      // Si se está cerrando, limpiamos todo para volver a la vista normal
+      setInputBusqueda('');
+      setBusqueda('');
+      setData([]);
     }
     setIsSearchVisible(!isSearchVisible);
   };
 
   const fetchInitialData = async () => {
-	if (!user) return;
+    if (!user) return;
 
-    setLoading(true);
     try {
-      const [
-        pendientes, 
-        enCurso, 
-        completados, 
-      ] = await Promise.all([
-		fetchResources({ type: categoriaActual, estado: 'PENDIENTE', cantidad: 5, ordenarPorFecha: true, includeCount: true }),
-		fetchResources({ type: categoriaActual, estado: 'EN_CURSO', cantidad: 5, ordenarPorFecha: true, includeCount: true }),
-		fetchResources({ type: categoriaActual, estado: 'COMPLETADO', cantidad: 5, ordenarPorUltimaActividad: true, includeCount: true })
-      ]);
-
-      setPendientes(pendientes?.data || []);
-      setEnCurso(enCurso?.data || []);
-      setCompletados(completados?.data || []);
-      setTotalPendientes(pendientes?.count || 0);
-      setTotalEnCurso(enCurso?.count || 0);
-      setTotalCompletados(completados?.count || 0);
+      await refetchCollectionOverview();
     } catch (error) {
       console.error(error);
       setPendientes([]);
@@ -134,35 +182,56 @@ export const CollectionProvider = ({ children }: any) => {
       setTotalPendientes(0);
       setTotalEnCurso(0);
       setTotalCompletados(0);
-    } finally {
-      setLoading(false);
     }
   };
 
   useEffect(() => {
-	// Limpiamos si el usuario hace logout
+    // Limpiamos si el usuario hace logout
     if (!user) {
-        setPendientes([]);
-        setEnCurso([]);
-        setCompletados([]);
-        return; 
+      setPendientes([]);
+      setEnCurso([]);
+      setCompletados([]);
+      return;
     }
 
-	// Borramos los datos de búsqueda y la página actual al cambiar de categoría
-	// Metemos un pequeño Delay para evitar múltiples fetches si el usuario cambia de categoría rápidamente
-	const temporizador = setTimeout(() => {
-		setInputBusqueda('');
-		setBusqueda('');
-		setData([]); 
+    // Al cambiar de categoría solo limpiamos la búsqueda local.
+    // React Query carga/reutiliza la colección según la queryKey de la categoría.
+    setInputBusqueda('');
+    setBusqueda('');
+    setData([]);
+  }, [categoriaActual, user?.id]);
 
-		fetchInitialData();
-	}, 300);
+  const refreshData = (resourceType?: ResourceType) => {
+    const typeToRefresh = resourceType || categoriaActual;
 
-	return () => clearTimeout(temporizador);
-  }, [categoriaActual, refreshTrigger, user?.id]); 
+    setRefreshTrigger((prev) => prev + 1);
 
-  const refreshData = () => {
-    setRefreshTrigger(prev => prev + 1);
+    if (!user?.id) return;
+
+    queryClient.invalidateQueries({
+      queryKey: queryKeys.collectionOverview(user.id, typeToRefresh),
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['collection', 'group', user.id, typeToRefresh],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['resources', user.id, typeToRefresh],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['resources', 'exists', user.id, typeToRefresh],
+    });
+    queryClient.invalidateQueries({
+      queryKey: queryKeys.profile(user.id),
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['profile', 'stats', user.id],
+    });
+    queryClient.invalidateQueries({
+      queryKey: queryKeys.topFive(user.id),
+    });
+    queryClient.invalidateQueries({
+      queryKey: queryKeys.topFiveSelector(user.id, typeToRefresh),
+    });
   };
 
   const navigateToGrid = (title: any, state: any, category: any) => {
@@ -171,7 +240,7 @@ export const CollectionProvider = ({ children }: any) => {
       params: { title, state, category },
     });
   };
-  
+
   const handleItemPress = (item: any, categoria?: ResourceType, from?: string) => {
     const resourceTypeMap: Record<ResourceType, string> = {
       pelicula: 'film',
@@ -185,7 +254,7 @@ export const CollectionProvider = ({ children }: any) => {
       pathname: `/details/${type}/${type}Resource`,
       params: { item: JSON.stringify(item), from: from || 'collection' },
     });
-	setIsSearchVisible(false);
+    setIsSearchVisible(false);
   };
 
   return (
@@ -193,7 +262,7 @@ export const CollectionProvider = ({ children }: any) => {
       value={{
         categoriaActual,
         setCategoriaActual,
-        loading,
+        loading: loading || overviewLoading || overviewFetching,
         inputBusqueda,
         setInputBusqueda,
         handleSearch,
@@ -209,12 +278,12 @@ export const CollectionProvider = ({ children }: any) => {
         handleItemPress,
         busqueda,
         setBusqueda,
-		data,
-		refreshData,
+        data,
+        refreshData,
         isSearchVisible,
         toggleSearch,
-		handleSearchPagination,
-		setIsSearchVisible
+        handleSearchPagination,
+        setIsSearchVisible,
       }}>
       {children}
     </CollectionContext.Provider>

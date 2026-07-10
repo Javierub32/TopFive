@@ -1,64 +1,97 @@
 import { topFiveService } from '@/Profile/services/topFiveServices';
+import { queryKeys } from '@/query/queryKeys';
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from 'context/AuthContext';
 import { ResourceMap, ResourceType, useResource } from 'hooks/useResource';
-import { useEffect, useState } from 'react';
 
-export const useTopFiveSelector = () => {
-  const {user} = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<ResourceMap[]>([]);
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
+type TopFiveSelectorResource = ResourceMap[ResourceType];
 
+interface TopFiveSelectorPage {
+  items: TopFiveSelectorResource[];
+  nextPage?: number;
+}
+
+export const useTopFiveSelector = (category?: ResourceType) => {
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
   const { fetchResources } = useResource();
 
   const PAGE_SIZE = 9; // Cantidad de elementos a cargar por página
 
-  const fetchTopFiveSelector = async (category: ResourceType) => {
-    if (loading || !user || !hasMore) return; // Evitar fetch si ya está cargando o no hay usuario
-    setLoading(true);
-    try {
-      const from = page * PAGE_SIZE;
+  const {
+    data: pagedData,
+    isLoading,
+    isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    queryKey: queryKeys.topFiveSelector(user?.id, category),
+    queryFn: async ({ pageParam = 0 }) => {
+      if (!category) {
+        return { items: [] as TopFiveSelectorResource[], nextPage: undefined };
+      }
+
+      const from = pageParam * PAGE_SIZE;
       const to = from + PAGE_SIZE - 1;
       const result = await fetchResources({
-		type: category,
-		from,
-		to
-	  });
+        type: category,
+        from,
+        to,
+      });
       const newItems = result?.data || [];
-      if (newItems && newItems.length > 0) {
-        setData((prevData) => [...prevData, ...newItems] as ResourceMap[]);
-        setPage((prevPage) => prevPage + 1);
-        if (newItems.length < PAGE_SIZE) {
-          setHasMore(false);
-        }
-      } else {
-        setHasMore(false);
-      }
-    } catch (error) {
-      console.error('Error al cargar recursos para Top Five Selector:', error);
-    } finally {
-      setLoading(false);
-    }
+
+      return {
+        items: newItems as TopFiveSelectorResource[],
+        nextPage: newItems.length === PAGE_SIZE ? pageParam + 1 : undefined,
+      };
+    },
+    enabled: !!user?.id && !!category,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage: TopFiveSelectorPage) => lastPage.nextPage,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+    maxPages: 5,
+  });
+
+  const fetchTopFiveSelector = async () => {
+    if (!user || isFetchingNextPage || isFetching) return;
+    if (hasNextPage) await fetchNextPage();
   };
 
   const resetTopFiveSelector = () => {
-    setData([]);
-    setPage(0);
-    setHasMore(true);
+    queryClient.invalidateQueries({ queryKey: ['topFive', 'selector', user?.id] });
   };
 
-    const insertToTopFive = async (
-	  posicion: number,
-	  tipoRecurso: ResourceType,
-	  recursoId: number
-	) => {
-	  try {
-		await topFiveService.insertToTopFive(user.id, posicion, tipoRecurso, recursoId);
-	  } catch (error) {
-		console.error('Error al insertar en Top Five:', error);
-	  }
-	};
+  const insertTopFiveMutation = useMutation({
+    mutationFn: ({
+      posicion,
+      tipoRecurso,
+      recursoId,
+    }: {
+      posicion: number;
+      tipoRecurso: ResourceType;
+      recursoId: number;
+    }) => topFiveService.insertToTopFive(user.id, posicion, tipoRecurso, recursoId),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.topFive(user?.id) });
+    },
+  });
 
-  return { data, loading, hasMore, fetchTopFiveSelector, resetTopFiveSelector, insertToTopFive };
+  const insertToTopFive = async (
+    posicion: number,
+    tipoRecurso: ResourceType,
+    recursoId: number
+  ) => {
+    await insertTopFiveMutation.mutateAsync({ posicion, tipoRecurso, recursoId });
+  };
+
+  return {
+    data: pagedData?.pages.flatMap((page: TopFiveSelectorPage) => page.items) ?? [],
+    loading: isLoading || isFetchingNextPage || insertTopFiveMutation.isPending,
+    hasMore: !!hasNextPage,
+    fetchTopFiveSelector,
+    resetTopFiveSelector,
+    insertToTopFive,
+  };
 };

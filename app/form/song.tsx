@@ -110,12 +110,12 @@ export default function SongForm() {
           };
 
           //Alert.alert('¡Éxito!', `Has actualizado ${song.titulo || song.title} en tu colección.`);
-          refreshData();
           if (estadoAnterior !== 'COMPLETADO' && estado === 'COMPLETADO') {
             await supabase.rpc('increment_review_count', { user_id: user.id });
           } else if (estadoAnterior === 'COMPLETADO' && estado !== 'COMPLETADO') {
             await supabase.rpc('decrement_review_count', { user_id: user.id });
           }
+          refreshData('cancion');
 
           if (from === 'contentDetails') {
             router.back();
@@ -188,7 +188,7 @@ export default function SongForm() {
 
         if (resource) {
           //Alert.alert('Aviso', 'Ya tienes esta canción en tu colección.');
-          refreshData();
+          refreshData('cancion');
           router.back();
           setTimeout(() => {
             showNotification({
@@ -227,10 +227,10 @@ export default function SongForm() {
           console.error('Error al insertar:', inventoryError);
         } else {
           //Alert.alert('¡Éxito!', `Has añadido ${song.title} a tu colección.`);
-          refreshData();
           if (estado === 'COMPLETADO') {
             await supabase.rpc('increment_review_count', { user_id: user.id });
           }
+          refreshData('cancion');
           router.back();
           setTimeout(() => {
             showNotification({

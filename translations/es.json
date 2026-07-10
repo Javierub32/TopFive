@@ -514,7 +514,9 @@
         "categoryOfYourCollectionTitle": "{{category}} de tu colección",
         "noContentTitle": "No hay {{category}}",
         "noContentDescription": "Primero añade a tu colección para que formen parte de tu TopFive",
-        "searchButton": "Buscar"
+        "searchButton": "Buscar",
+        "duplicateResource": "Este recurso ya está en tu TopFive. Elige otro recurso o elimina primero el existente.",
+        "addToTopFiveError": "No se pudo añadir el recurso a tu TopFive. Inténtalo de nuevo."
     },
     "layout": {
         "updateAvailableTitle": "Actualización disponible",

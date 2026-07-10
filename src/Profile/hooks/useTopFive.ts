@@ -1,40 +1,41 @@
 import { useAuth } from 'context/AuthContext';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { TopFiveItem, topFiveService } from '../services/topFiveServices';
 import { router } from 'expo-router';
 import { useCollection } from 'context/CollectionContext';
 import { useNotification } from 'context/NotificationContext';
 import { useTranslation } from 'react-i18next';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/query/queryKeys';
 
 export const useTopFive = (userId: string) => {
   const { user } = useAuth();
   const { handleItemPress } = useCollection();
-  const {showNotification, hideNotification} = useNotification();
-  const [topFiveItems, setTopFiveItems] = useState<TopFiveItem[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { showNotification, hideNotification } = useNotification();
+  const queryClient = useQueryClient();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState<number | null>(null);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    fetchTopFive();
-  }, [userId]);
+  const {
+    data: topFiveItems = [],
+    isLoading,
+    isFetching,
+    refetch: fetchTopFive,
+  } = useQuery<TopFiveItem[]>({
+    queryKey: queryKeys.topFive(userId),
+    queryFn: () => topFiveService.fetchTopFive(userId),
+    enabled: !!userId,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 60,
+  });
 
-  const fetchTopFive = async () => {
-    if (!userId) return;
-    try {
-      setLoading(true);
-	  setTopFiveItems([]);
-      const topFiveData = await topFiveService.fetchTopFive(userId);
-      setTopFiveItems(topFiveData);
-    } catch (error) {
-      console.error('Error al obtener Top Five:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-
+  const removeTopFiveMutation = useMutation({
+    mutationFn: (position: number) => topFiveService.removeFromTopFive(userId, position),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.topFive(userId) });
+    },
+  });
 
   const handlePress = (position: number, item: TopFiveItem | undefined) => {
     if (item) {
@@ -47,35 +48,34 @@ export const useTopFive = (userId: string) => {
   };
 
   const handleLongPress = (position: number, item: TopFiveItem | undefined) => {
-	if (item) {
-    showNotification({
-      title: t('profile.removeFromTopFiveNotification.title'),
-      description: t('profile.removeFromTopFiveNotification.description'),
-      leftButtonText: t('common.cancel'),
-      rightButtonText: t('common.delete'),
-      isChoice: true,
-      delete: true,
-	  success: false,
-      onLeftPress: () => hideNotification(),
-      onRightPress: async () => {
-        try {  
-          hideNotification();        
-          await topFiveService.removeFromTopFive(userId, position);
-          fetchTopFive();
-          showNotification({
-            title: t('common.success'),
-            description: t('profile.removeFromTopFiveNotification.confirmationDescription'),
-            isChoice: false,
-			delete: false,
-			success: true,
-          });
-        } catch (error) {
-          console.error('Error al eliminar item del Top 5:', error);
-        }
-	    }
-    });
-	}
-  }
+    if (item) {
+      showNotification({
+        title: t('profile.removeFromTopFiveNotification.title'),
+        description: t('profile.removeFromTopFiveNotification.description'),
+        leftButtonText: t('common.cancel'),
+        rightButtonText: t('common.delete'),
+        isChoice: true,
+        delete: true,
+        success: false,
+        onLeftPress: () => hideNotification(),
+        onRightPress: async () => {
+          try {
+            hideNotification();
+            await removeTopFiveMutation.mutateAsync(position);
+            showNotification({
+              title: t('common.success'),
+              description: t('profile.removeFromTopFiveNotification.confirmationDescription'),
+              isChoice: false,
+              delete: false,
+              success: true,
+            });
+          } catch (error) {
+            console.error('Error al eliminar item del Top 5:', error);
+          }
+        },
+      });
+    }
+  };
 
   const handleCategorySelect = (category: string) => {
     if (selectedPosition !== null) {
@@ -92,12 +92,12 @@ export const useTopFive = (userId: string) => {
 
   return {
     topFiveItems,
-    loading,
+    loading: isLoading || isFetching || removeTopFiveMutation.isPending,
     fetchTopFive,
-	handlePress,
-	handleCategorySelect,
-	modalVisible,
-	setModalVisible,
-	handleLongPress,
+    handlePress,
+    handleCategorySelect,
+    modalVisible,
+    setModalVisible,
+    handleLongPress,
   };
 };

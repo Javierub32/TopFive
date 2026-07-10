@@ -1,61 +1,62 @@
 import { useAuth } from 'context/AuthContext';
-import { useEffect, useState } from 'react';
 import { followersServices } from '../services/followersServices';
 import { User } from '@/User/hooks/useUser';
 import { useNotification } from 'context/NotificationContext';
 import { useTranslation } from 'react-i18next';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { queryKeys } from '@/query/queryKeys';
 
 export const useFollowers = (username: string) => {
   const { user } = useAuth();
-  const {showNotification, hideNotification} = useNotification();
-  const [followers, setFollowers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { showNotification, hideNotification } = useNotification();
+  const queryClient = useQueryClient();
   const ownList = user?.user_metadata.username === username;
   const { t } = useTranslation();
 
+  const {
+    data: followers = [],
+    isLoading,
+    isFetching,
+  } = useQuery<User[]>({
+    queryKey: queryKeys.followers(username),
+    queryFn: () => followersServices.fetchFollowers(username),
+    enabled: !!username,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+  });
 
-  useEffect(() => {
-    const fetchFollowers = async () => {
-      setLoading(true);
-      try {
-        const data = await followersServices.fetchFollowers(username);
-        setFollowers(data || []);
-      } catch (error) {
-        console.error('Error fetching followers:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    if (username) {
-      fetchFollowers();
-    }
-  }, [username]);
+  const removeFollowerMutation = useMutation({
+    mutationFn: (deleteId: string) => followersServices.removeFollower(user.id, deleteId),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.followers(username) }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.profile(user?.id) }),
+      ]);
+    },
+  });
 
   const handleRemoveFollower = async (usernameToRemove: string, deleteId: string) => {
-	setLoading(true);
     try {
-		await followersServices.removeFollower(user.id, deleteId);
-		// Actualizar la lista de seguidores localmente
-		setFollowers((prevFollowers) => prevFollowers.filter(follower => follower.username !== usernameToRemove));
-	  showNotification({
-      title: t('common.success'),
-      description: t('profile.deleteFollowers.successDescription', { username: usernameToRemove }),
-      isChoice: false,
-      delete: false,
-      success: true,
-    });
-  } catch (error) {
-		console.error('Error removing follower:', error);
-    showNotification({
-      title: t('common.error'),
-      description: t('profile.deleteFollowers.errorDescription', { username: usernameToRemove }),
-      isChoice: false,
-      delete: false,
-      success: false,
-    });
-	} finally {
-		setLoading(false);
-	}
+      await removeFollowerMutation.mutateAsync(deleteId);
+      showNotification({
+        title: t('common.success'),
+        description: t('profile.deleteFollowers.successDescription', {
+          username: usernameToRemove,
+        }),
+        isChoice: false,
+        delete: false,
+        success: true,
+      });
+    } catch (error) {
+      console.error('Error removing follower:', error);
+      showNotification({
+        title: t('common.error'),
+        description: t('profile.deleteFollowers.errorDescription', { username: usernameToRemove }),
+        isChoice: false,
+        delete: false,
+        success: false,
+      });
+    }
   };
 
   const handleRemovePress = (username: string, deleteId: string) => {
@@ -74,10 +75,15 @@ export const useFollowers = (username: string) => {
       onLeftPress: () => hideNotification(),
       onRightPress: () => {
         hideNotification();
-        handleRemoveFollower(username, deleteId)
-      }
+        handleRemoveFollower(username, deleteId);
+      },
     });
   };
 
-  return { followers, loading, handleRemovePress, ownList };
+  return {
+    followers,
+    loading: isLoading || isFetching || removeFollowerMutation.isPending,
+    handleRemovePress,
+    ownList,
+  };
 };
