@@ -48,7 +48,7 @@ export const useUser = (username: string) => {
   const {
     data: userData = null,
     isLoading,
-    isFetching,
+    //isFetching, ---------------------------
   } = useQuery<User | null>({
     queryKey: queryKeys.publicProfile(username, user?.id),
     queryFn: async () => {
@@ -60,19 +60,21 @@ export const useUser = (username: string) => {
       return data;
     },
     enabled: !!username,
-    staleTime: 1000 * 60 * 10,
+    staleTime: 0,
     gcTime: 1000 * 60 * 60,
+    refetchInterval: (query) =>
+      query.state.data?.following_status === 'pending' ? 5000 : false,  //ESTA LINEA Y LA DE ARRIBA SON LAS NUEVAS, REFETCH PARA QUE RECARGUE -------------
   });
 
   const {
     data: stats = new Array(12).fill(0),
     isLoading: statsLoading,
-    isFetching: statsFetching,
+    //isFetching: statsFetching, ---------------------------
   } = useQuery<number[]>({
     queryKey: queryKeys.profileStats(userData?.id, selectedCategory, selectedYear),
     queryFn: () => fetchMonthlyStats(selectedCategory, selectedYear, userData!.id),
     enabled: !!userData?.id,
-    staleTime: 1000 * 60 * 10,
+    staleTime: 0,
     gcTime: 1000 * 60 * 60,
   });
 
@@ -142,14 +144,14 @@ export const useUser = (username: string) => {
 
   return {
     userData,
-    loading: isLoading || isFetching || followMutation.isPending || cancelRequestMutation.isPending,
+    loading: isLoading  || followMutation.isPending || cancelRequestMutation.isPending, // || isFetching ---------------------------
     handleFollow,
     cancelRequest,
     selectedCategory,
     setSelectedCategory,
     selectedYear,
     setSelectedYear,
-    statsLoading: statsLoading || statsFetching,
+    statsLoading: statsLoading, // || statsFetching, -------------------------------
     currentStats,
   };
 };

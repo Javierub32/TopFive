@@ -278,6 +278,7 @@
     }, 
     "profile": {
         "shareMessage": "Check out my profile on TopFive!\n{{url}}",
+        "shareUserMessage": "Check out this profile on TopFive!\n{{url}}",
         "user": "User",
         "selectYear": "Select year",
         "monthsAbbreviation": {
