@@ -1,5 +1,5 @@
 import { TouchableOpacity, Image, View } from 'react-native';
-import { MaterialCommunityIcons } from 'components/Icons';
+import { ScalableMaterialCommunityIcons } from 'components/Icons';
 import { collectionAdapter } from '../adapters/collectionAdapter';
 import { FallbackCover } from 'components/FallbackCover';
 import { useTheme } from 'context/ThemeContext';
@@ -75,7 +75,7 @@ export const CollectionGroup = ({
         {/* Rating (Arriba Derecha) */}
         {item.estado !== 'PENDIENTE' && item.calificacion > 0 ? (
           <View className="absolute right-2 top-2 flex-row items-center rounded-sm bg-black/50 px-1">
-            <MaterialCommunityIcons name="star" size={10} color={colors.rating} />
+            <ScalableMaterialCommunityIcons name="star" size={10} color={colors.rating} />
             <AppText className="ml-1  font-bold text-white" style={{ fontSize: 10 }}>
               {item.calificacion || '0'}
             </AppText>
@@ -84,7 +84,7 @@ export const CollectionGroup = ({
 
         {item.favorito && (
           <View className="absolute bottom-2 right-2 items-center rounded-sm bg-black/50 px-1">
-            <MaterialCommunityIcons name="heart" size={16} color={colors.error} />
+            <ScalableMaterialCommunityIcons name="heart" size={16} color={colors.error} />
           </View>
         )}
 

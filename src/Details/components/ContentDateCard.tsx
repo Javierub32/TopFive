@@ -1,4 +1,4 @@
-import { CalendarIcon } from 'components/Icons';
+import { ScalableCalendarIcon } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { View } from 'react-native';
 import { AppText } from 'components/AppText';
@@ -29,7 +29,7 @@ export const ContentDateCard = ({ releaseDate }: Props) => {
       className="flex-1 justify-between rounded-2xl p-4"
       style={{ backgroundColor: `${colors.primary}1A` }}>
       <View className="flex-row items-center gap-2">
-        <CalendarIcon />
+        <ScalableCalendarIcon />
         <AppText
           className="text-sm font-bold uppercase tracking-widest"
           style={{ color: colors.markerText, fontSize: 12 }}>

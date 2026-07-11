@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { UserIcon } from 'components/Icons';
+import { ScalableUserIcon } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +21,7 @@ export const UserSearchPlaceholder = ({ loading }: UserSearchPlaceholderProps) =
         <View
           className="h-28 w-28 items-center justify-center rounded-full"
           style={{ backgroundColor: colors.secondary }}>
-          <UserIcon size={64} color={colors.primaryText} />
+          <ScalableUserIcon size={64} color={colors.primaryText} />
         </View>
       </View>
 

@@ -1,5 +1,5 @@
 import { User } from '@/User/hooks/useUser';
-import { AcceptIcon, CancelIcon } from 'components/Icons';
+import { ScalableAcceptIcon, ScalableCancelIcon } from 'components/Icons';
 import { TouchableOpacity, View } from 'react-native';
 import { UserResultItem } from '@/Search/components/UserResultItem';
 import { useTheme } from 'context/ThemeContext';
@@ -60,14 +60,14 @@ export function NotificationItem({
             className="mr-3 h-10 w-10 items-center justify-center rounded-full"
             style={{ backgroundColor: colors.surfaceButton }}
             activeOpacity={0.7}>
-            <CancelIcon />
+            <ScalableCancelIcon />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={handleAccept}
             className="mr-1 h-10 w-10 items-center justify-center rounded-full"
             style={{ backgroundColor: `${colors.success}99` }}
             activeOpacity={0.7}>
-            <AcceptIcon />
+            <ScalableAcceptIcon />
           </TouchableOpacity>
         </View>
       ) : (

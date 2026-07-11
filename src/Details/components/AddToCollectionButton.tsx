@@ -1,5 +1,5 @@
 import { Book, Film, Game, Series, Song } from 'app/types/Content';
-import { UploadIcon } from 'components/Icons';
+import { ScalableUploadIcon } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { router } from 'expo-router';
 import { useResource, ResourceType } from 'hooks/useResource';
@@ -87,7 +87,7 @@ export const AddToCollectionButton = ({ content, type }: Props) => {
       disabled={loading}
       className="mt-4 flex-1 flex-row items-center justify-center rounded-xl py-4"
       style={{ backgroundColor: colors.primary }}>
-      <UploadIcon className="mr-4" />
+      <ScalableUploadIcon className="mr-4" />
       <AppText className="font-bold" style={{ color: colors.background, fontSize: 14 }}>
         {loading ? t('common.loading') : t('details.addToCollection')}
       </AppText>

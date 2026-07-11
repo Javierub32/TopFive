@@ -23,7 +23,7 @@
         "readMore": "Read more",
         "readLess": "Read less",
         "icon": "Icon",
-        "colour": "Colour",
+        "colour": "Color",
         "obtain": "Obtain",
         "update": "Update",
         "edit": "Edit"
@@ -514,9 +514,7 @@
         "categoryOfYourCollectionTitle": "{{category}} of your collection",
         "noContentTitle": "No {{category}}",
         "noContentDescription": "First add to your collection for them to be part of your TopFive",
-        "searchButton": "Search",
-        "duplicateResource": "This resource is already in your TopFive. Choose another resource or remove the existing one first.",
-        "addToTopFiveError": "The resource could not be added to your TopFive. Please try again."
+        "searchButton": "Search"
     },
     "layout": {
         "updateAvailableTitle": "Update available",

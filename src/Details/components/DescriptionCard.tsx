@@ -1,7 +1,7 @@
 import { useTheme } from 'context/ThemeContext';
 import { View } from 'react-native';
 import { useState } from 'react';
-import { MaterialCommunityIcons } from 'components/Icons';
+import { ScalableMaterialCommunityIcons } from 'components/Icons';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
 
@@ -54,7 +54,7 @@ export const DescriptionCard = ({ description }: Props) => {
       className="space-y-3 rounded-2xl border-l-4 p-5"
       style={{ backgroundColor: colors.surfaceButton, borderColor: colors.borderButton }}>
       <View className="flex-row items-center gap-2">
-        <MaterialCommunityIcons name="book-open-page-variant" size={20} color={colors.primary} />
+        <ScalableMaterialCommunityIcons name="book-open-page-variant" size={20} color={colors.primary} />
         <AppText
           className="font-bold uppercase tracking-widest"
           style={{ color: colors.markerText, fontSize: 14 }}>

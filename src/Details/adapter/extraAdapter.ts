@@ -1,9 +1,9 @@
-import { GameModeIcon, AlbumIcon } from 'components/Icons';
+import { ScalableGameModeIcon, ScalableAlbumIcon } from 'components/Icons';
 export const extraAdapter = {
     getIcon : (category: string) => {
         const map: Record<string, any> = {
-            'cancion': AlbumIcon,
-            'videojuego': GameModeIcon,
+            'cancion': ScalableAlbumIcon,
+            'videojuego': ScalableGameModeIcon,
         };
         return map[category];
     },

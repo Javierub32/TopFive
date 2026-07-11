@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
-import { CalendarIcon } from 'components/Icons';
+import { ScalableCalendarIcon } from 'components/Icons';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
 interface Props {
@@ -28,7 +28,7 @@ export const DateCard = ({ startDate, endDate, isRange }: Props) => {
         className="flex flex-1 justify-between gap-2 rounded-2xl p-4"
         style={{ backgroundColor: `${colors.primary}1A` }}>
         <View className="flex-row items-center gap-2">
-          <CalendarIcon color={colors.primary} />
+          <ScalableCalendarIcon color={colors.primary} />
           <AppText
             className="font-bold uppercase tracking-widest"
             style={{ color: colors.markerText, fontSize: 14 }}>
@@ -51,7 +51,7 @@ export const DateCard = ({ startDate, endDate, isRange }: Props) => {
         className="flex-1 space-y-2 rounded-2xl p-4"
         style={{ backgroundColor: colors.surfaceButton }}>
         <View className="flex-row items-center gap-2">
-          <CalendarIcon />
+          <ScalableCalendarIcon />
           <AppText
             className="text-sm font-bold uppercase tracking-widest"
             style={{ color: colors.markerText }}>
@@ -69,7 +69,7 @@ export const DateCard = ({ startDate, endDate, isRange }: Props) => {
         className="flex-1 space-y-2 rounded-2xl p-4"
         style={{ backgroundColor: colors.surfaceButton }}>
         <View className="flex-row items-center gap-2">
-          <CalendarIcon />
+          <ScalableCalendarIcon />
           <AppText
             className="text-sm font-bold uppercase tracking-widest"
             style={{ color: colors.markerText }}>

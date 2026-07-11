@@ -1,5 +1,5 @@
 import { View, Modal, TouchableOpacity, Pressable, FlatList } from 'react-native';
-import { Ionicons, MaterialCommunityIcons } from 'components/Icons';
+import { ScalableIonicons, ScalableMaterialCommunityIcons } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { useLists } from '../hooks/useLists';
 import { LoadingIndicator } from 'components/LoadingIndicator';
@@ -26,7 +26,7 @@ const ModalListItem = ({ list, onSelect, colors, t, isSaved }: any) => (
       <View
         className="mr-3 h-12 w-12 items-center justify-center rounded-lg"
         style={{ backgroundColor: list.color || colors.primary }}>
-        <MaterialCommunityIcons
+        <ScalableMaterialCommunityIcons
           name={(list.icono as any) || 'folder-outline'}
           size={28}
           color={colors.primaryText}
@@ -44,7 +44,7 @@ const ModalListItem = ({ list, onSelect, colors, t, isSaved }: any) => (
         </AppText>
       </View>
     </View>
-    <Ionicons name={isSaved ? "bookmark" : "bookmark-outline"} size={24} color={colors.secondaryText} />
+    <ScalableIonicons name={isSaved ? "bookmark" : "bookmark-outline"} size={24} color={colors.secondaryText} />
   </TouchableOpacity>
 );
 

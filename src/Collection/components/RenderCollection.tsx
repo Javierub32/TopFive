@@ -1,6 +1,6 @@
 import { View, FlatList, TouchableOpacity } from 'react-native';
 import { CollectionGroup } from './CollectionGroup';
-import { MaterialCommunityIcons } from 'components/Icons';
+import { ScalableMaterialCommunityIcons } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +24,7 @@ export const RenderCollection = ({
             {title} <AppText className=" font-normal text-secondaryText" style={{ fontSize: 12 }}>
               ({total})
             </AppText>
-            <MaterialCommunityIcons name="chevron-right" size={14} color={colors.secondaryText} />
+            <ScalableMaterialCommunityIcons name="chevron-right" size={14} color={colors.secondaryText} />
           </AppText>
         </View>
       </TouchableOpacity>

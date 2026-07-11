@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
-import { RatingIcon, FontAwesome5 } from 'components/Icons';
+import { ScalableRatingIcon, ScalableFontAwesome5 } from 'components/Icons';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
 
@@ -17,7 +17,7 @@ export const RatingCard = ({ rating }: Props) => {
       className="flex flex-1 justify-between gap-2 rounded-2xl p-4"
       style={{ backgroundColor: `${colors.rating}1A` }}>
       <View className="flex-row items-center gap-2">
-        <RatingIcon />
+        <ScalableRatingIcon />
         <AppText
           className="font-bold uppercase tracking-widest"
           style={{ color: colors.markerText, fontSize: 14 }}>
@@ -43,7 +43,7 @@ export const RatingCard = ({ rating }: Props) => {
           }
 
           return (
-            <FontAwesome5
+            <ScalableFontAwesome5
               key={star}
               name={iconName}
               size={20}

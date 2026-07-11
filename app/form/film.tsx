@@ -24,7 +24,7 @@ import { DateSetter } from '@/Form/components/DateSetter';
 import { ViewsSetter } from '@/Form/components/ViewsSetter';
 import { useNotification } from 'context/NotificationContext';
 import { AdBanner } from 'components/AdBanner';
-import { MaterialCommunityIcons } from 'components/Icons';
+import { ScalableMaterialCommunityIcons } from 'components/Icons';
 import { FallbackCover } from 'components/FallbackCover';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
@@ -260,7 +260,7 @@ export default function FilmForm() {
       <Screen>
         <ThemedStatusBar />
         <View className="flex-1 items-center justify-center px-4">
-          <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
+          <ScalableMaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <AppText className="mt-4 font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
             {t('details.loadingError.title')}
           </AppText>

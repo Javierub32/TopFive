@@ -8,7 +8,7 @@ import { ReturnButton } from 'components/ReturnButton';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { CollectionStructure } from 'components/CollectionStructure';
 import { useTheme } from 'context/ThemeContext';
-import { MaterialCommunityIcons } from 'components/Icons';
+import { ScalableMaterialCommunityIcons } from 'components/Icons';
 import { ResourceType } from 'hooks/useResource';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
@@ -57,7 +57,7 @@ export default function ListDetails() {
           <View
             className="mr-4 h-16 w-16 items-center justify-center rounded-2xl shadow-sm"
             style={{ backgroundColor: parsedListData?.color || colors.primary }}>
-            <MaterialCommunityIcons
+            <ScalableMaterialCommunityIcons
               name={(parsedListData?.icono as any) || 'folder'}
               size={32}
               color={colors.primaryText}

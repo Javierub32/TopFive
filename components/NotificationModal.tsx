@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
-import { MaterialCommunityIcons } from 'components/Icons';
+import { ScalableMaterialCommunityIcons } from 'components/Icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import {AppText} from 'components/AppText';
@@ -213,7 +213,7 @@ export const NotificationModal = ({
             </View>
 
             <TouchableOpacity onPress={onClose} className="p-1" activeOpacity={0.7}>
-              <MaterialCommunityIcons name="close" size={24} color={colors.secondaryText} />
+              <ScalableMaterialCommunityIcons name="close" size={24} color={colors.secondaryText} />
             </TouchableOpacity>
           </View>
         </View>

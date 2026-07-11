@@ -1,5 +1,5 @@
 import { BookResource, SeriesResource, GameResource } from 'app/types/Resources';
-import { TimerIcon } from 'components/Icons';
+import { ScalableTimerIcon } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { View } from 'react-native';
 import { AppText } from 'components/AppText';
@@ -62,7 +62,7 @@ export const TimeCard = ({ resource }: Props) => {
           <View
             className="h-12 w-12 items-center justify-center rounded-2xl"
             style={{ backgroundColor: `${colors.primaryText}33` }}>
-            <TimerIcon />
+            <ScalableTimerIcon />
           </View>
         </View>
       </View>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Tabs, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { HomeIcon, CardsIcon, UserIcon, SearchIcon, AddIcon, ListIcon } from 'components/Icons';
+import { ScalableHomeIcon, ScalableCardsIcon, ScalableUserIcon, ScalableSearchIcon, AddIcon, ScalableListIcon } from 'components/Icons';
 import { CategorySelectorModal } from 'components/CategorySelectorModal';
 import { useTheme } from 'context/ThemeContext';
 import { useSearch } from 'context/SearchContext';
@@ -52,7 +52,7 @@ export default function TabLayout() {
         name="Home/index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, size }) => <HomeIcon color={color} size={28} />,
+          tabBarIcon: ({ color, size }) => <ScalableHomeIcon color={color} size={28} />,
         }}
 		listeners={{ tabPress: () => clearContentSearch() }}
       />
@@ -60,7 +60,7 @@ export default function TabLayout() {
         name="Lists/index"
         options={{
           title: 'List',
-          tabBarIcon: ({ color, size }) => <ListIcon color={color} size={30} />,
+          tabBarIcon: ({ color, size }) => <ScalableListIcon color={color} size={30} />,
         }}
 		listeners={{ tabPress: () => clearContentSearch() }}
       />
@@ -82,7 +82,7 @@ export default function TabLayout() {
         name="Collection/index"
         options={{
           title: 'Collection',
-          tabBarIcon: ({ color, size }) => <CardsIcon color={color} size={26} />,
+          tabBarIcon: ({ color, size }) => <ScalableCardsIcon color={color} size={26} />,
         }}
 		listeners={{ tabPress: () => clearContentSearch() }}
       />
@@ -90,7 +90,7 @@ export default function TabLayout() {
         name="Profile/index"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color, size }) => <UserIcon color={color} size={26} />,
+          tabBarIcon: ({ color, size }) => <ScalableUserIcon color={color} size={26} />,
         }}
 		listeners={{ tabPress: () => clearContentSearch() }}
       />

@@ -1,5 +1,5 @@
 import { View, Image, TouchableOpacity } from 'react-native';
-import { FontAwesome5, MaterialCommunityIcons } from 'components/Icons';
+import { ScalableFontAwesome5, ScalableMaterialCommunityIcons } from 'components/Icons';
 import { SearchResult } from '../../Add/adapters/searchResultsAdapter';
 import { useTheme } from 'context/ThemeContext';
 import { ResourceType } from 'hooks/useResource';
@@ -60,7 +60,7 @@ export const SearchResultItem = ({ item, onPress, type }: SearchResultItemProps)
             className="mb-2 "
             style={{ color: colors.secondaryText, fontSize: 12 }}
             numberOfLines={1}>
-            {item.date} | <FontAwesome5 name="star" size={16} color={colors.rating} solid={true} />{' '}
+            {item.date} | <ScalableFontAwesome5 name="star" size={16} color={colors.rating} solid={true} />{' '}
             {item.rating}
           </AppText>
         )}
@@ -77,7 +77,7 @@ export const SearchResultItem = ({ item, onPress, type }: SearchResultItemProps)
             className="mb-2"
             style={{ color: colors.secondaryText, fontSize: 12 }}
             numberOfLines={1}>
-            <FontAwesome5 name="star" size={12} color={colors.rating} solid={true} /> {item.rating}
+            <ScalableFontAwesome5 name="star" size={12} color={colors.rating} solid={true} /> {item.rating}
           </AppText>
         )}
 
@@ -98,7 +98,7 @@ export const SearchResultItem = ({ item, onPress, type }: SearchResultItemProps)
 
       {/* Icono de flecha lateral */}
       <View className="justify-center pr-3 opacity-50">
-        <MaterialCommunityIcons name="chevron-right" size={24} color={colors.secondaryText} />
+        <ScalableMaterialCommunityIcons name="chevron-right" size={24} color={colors.secondaryText} />
       </View>
     </TouchableOpacity>
   );

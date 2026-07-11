@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, TouchableOpacity, Animated, LayoutChangeEvent } from 'react-native';
 import { TabBarProps } from 'react-native-tab-view';
 import { useTheme } from 'context/ThemeContext';
-import { BookIcon, FilmIcon, ShowIcon, GameIcon, MusicIcon } from 'components/Icons';
+import { ScalableBookIcon, ScalableFilmIcon, ScalableShowIcon, ScalableGameIcon, ScalableMusicIcon } from 'components/Icons';
 
 export const CategoryTabBar = (props: TabBarProps<any>) => {
   const { colors } = useTheme();
@@ -20,11 +20,11 @@ export const CategoryTabBar = (props: TabBarProps<any>) => {
   const renderIcon = (key: string, isActive: boolean) => {
     const iconProps = { size: 24, color: isActive ? colors.primaryText : colors.secondaryText };
     switch (key) {
-      case 'libro': return <BookIcon {...iconProps} />;
-      case 'pelicula': return <FilmIcon {...iconProps} />;
-      case 'serie': return <ShowIcon {...iconProps} />;
-      case 'videojuego': return <GameIcon {...iconProps} />;
-      case 'cancion': return <MusicIcon {...iconProps} />;
+      case 'libro': return <ScalableBookIcon {...iconProps} />;
+      case 'pelicula': return <ScalableFilmIcon {...iconProps} />;
+      case 'serie': return <ScalableShowIcon {...iconProps} />;
+      case 'videojuego': return <ScalableGameIcon {...iconProps} />;
+      case 'cancion': return <ScalableMusicIcon {...iconProps} />;
       default: return null;
     }
   };

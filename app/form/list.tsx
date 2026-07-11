@@ -1,7 +1,7 @@
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
-import { FontAwesome5, MaterialCommunityIcons } from 'components/Icons';
+import { ScalableFontAwesome5, ScalableMaterialCommunityIcons } from 'components/Icons';
 import { useEffect, useState } from 'react';
 import { useTheme } from 'context/ThemeContext';
 import { useCollection } from 'context/CollectionContext';
@@ -144,7 +144,7 @@ export default function ListForm() {
           <View
             className="h-24 w-24 items-center justify-center rounded-3xl shadow-md"
             style={{ backgroundColor: formData.color }}>
-            <MaterialCommunityIcons
+            <ScalableMaterialCommunityIcons
               name={formData.icon as any}
               size={32}
               color={colors.primaryText}
@@ -206,7 +206,7 @@ export default function ListForm() {
                   backgroundColor:
                     formData.icon === iconName ? colors.primary : colors.tabBarBackgroundColor,
                 }}>
-                <MaterialCommunityIcons
+                <ScalableMaterialCommunityIcons
                   name={iconName as any}
                   size={20}
                   color={formData.icon === iconName ? colors.primaryText : colors.secondaryText}
@@ -245,7 +245,7 @@ export default function ListForm() {
           }}
           className="flex-1 flex-row items-center justify-center rounded-xl py-4"
           style={{ backgroundColor: colors.primary }}>
-          <FontAwesome5
+          <ScalableFontAwesome5
             name="cloud-upload-alt"
             size={16}
             color={colors.primaryText}

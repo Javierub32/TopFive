@@ -1,4 +1,4 @@
-import { TimerIcon, MaterialCommunityIcons } from 'components/Icons';
+import { ScalableTimerIcon, ScalableMaterialCommunityIcons } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { ResourceType } from 'hooks/useResource';
 import { TouchableOpacity, View } from 'react-native';
@@ -37,7 +37,7 @@ export const ProgressSetter = ({
         className="mx-4 flex justify-between gap-2 rounded-2xl p-4"
         style={{ backgroundColor: colors.surfaceButton }}>
         <View className="flex-row items-center gap-2">
-          <TimerIcon color={colors.primary} />
+          <ScalableTimerIcon color={colors.primary} />
           <AppText
             className="font-bold uppercase tracking-widest"
             style={{ color: colors.markerText, fontSize: 14 }}>
@@ -53,7 +53,7 @@ export const ProgressSetter = ({
               <TouchableOpacity
                 onPress={() => setProgress(Math.max(0, (progress as number) - 1))}
                 className="items-center rounded-lg p-2">
-                <MaterialCommunityIcons name="minus" size={16} color={colors.error} />
+                <ScalableMaterialCommunityIcons name="minus" size={16} color={colors.error} />
               </TouchableOpacity>
 
               <AppTextInput
@@ -75,7 +75,7 @@ export const ProgressSetter = ({
               <TouchableOpacity
                 onPress={() => setProgress(Number(progress) + 1)}
                 className="rounded-lg p-2">
-                <MaterialCommunityIcons name="plus" size={16} color={colors.success} />
+                <ScalableMaterialCommunityIcons name="plus" size={16} color={colors.success} />
               </TouchableOpacity>
             </View>
           </View>
@@ -87,7 +87,7 @@ export const ProgressSetter = ({
               <TouchableOpacity
                 onPress={() => setProgressExtra(Math.max(0, (progressExtra as number) - 1))}
                 className="items-center rounded-lg p-2">
-                <MaterialCommunityIcons name="minus" size={16} color={colors.error} />
+                <ScalableMaterialCommunityIcons name="minus" size={16} color={colors.error} />
               </TouchableOpacity>
 
               <AppTextInput
@@ -109,7 +109,7 @@ export const ProgressSetter = ({
               <TouchableOpacity
                 onPress={() => setProgressExtra(Number(progressExtra) + 1)}
                 className="rounded-lg p-2">
-                <MaterialCommunityIcons name="plus" size={16} color={colors.success} />
+                <ScalableMaterialCommunityIcons name="plus" size={16} color={colors.success} />
               </TouchableOpacity>
             </View>
           </View>

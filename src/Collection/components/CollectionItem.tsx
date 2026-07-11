@@ -1,7 +1,7 @@
 //
 
 import { TouchableOpacity, Image, View } from 'react-native';
-import { MaterialCommunityIcons } from 'components/Icons';
+import { ScalableMaterialCommunityIcons } from 'components/Icons';
 import { collectionAdapter } from '../adapters/collectionAdapter';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +26,7 @@ export const CollectionItem = ({ item, category, onPress }: any) => {
               {title}
             </AppText>
             {item.favorito && (
-              <MaterialCommunityIcons name="heart" size={16} color={colors.error} />
+              <ScalableMaterialCommunityIcons name="heart" size={16} color={colors.error} />
             )}
           </View>
           <AppText className="text-sm text-secondaryText" style={{ fontSize: 14 }}>
@@ -35,7 +35,7 @@ export const CollectionItem = ({ item, category, onPress }: any) => {
         </View>
         <View className="mt-2 flex-row items-center justify-between">
           <View className="border-primary/20 flex-row items-center rounded border bg-marker px-2 py-1">
-            <MaterialCommunityIcons name="star" size={12} color="#fbbf24" />
+            <ScalableMaterialCommunityIcons name="star" size={12} color="#fbbf24" />
             <AppText className="ml-1 font-bold text-markerText" style={{ fontSize: 12 }}>
               {item.calificacion || 0}
             </AppText>

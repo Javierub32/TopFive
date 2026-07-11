@@ -1,6 +1,6 @@
 import { useTheme } from 'context/ThemeContext';
 import { View, TouchableOpacity } from 'react-native';
-import { MaterialCommunityIcons } from 'components/Icons';
+import { ScalableMaterialCommunityIcons } from 'components/Icons';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
 interface Props {
@@ -29,7 +29,7 @@ export const StatsGrid = ({ title, total, average, onPress }: Props) => {
         activeOpacity={onPress ? 0.7 : 1}>
         <View className="mb-2 flex-row items-center justify-between">
           <View className="rounded-full p-2" style={{ backgroundColor: `${colors.primary}20` }}>
-            <MaterialCommunityIcons name="chart-bar" size={20} color={colors.primary} />
+            <ScalableMaterialCommunityIcons name="chart-bar" size={20} color={colors.primary} />
           </View>
           <AppText className="font-bold uppercase" style={{ color: colors.secondaryText, fontSize: 18 }}>
             {t('profile.total')}
@@ -53,7 +53,7 @@ export const StatsGrid = ({ title, total, average, onPress }: Props) => {
         }}>
         <View className="mb-2 flex-row items-center justify-between">
           <View className="rounded-full p-2" style={{ backgroundColor: `${colors.accent}20` }}>
-            <MaterialCommunityIcons name="chart-timeline-variant" size={20} color={colors.accent} />
+            <ScalableMaterialCommunityIcons name="chart-timeline-variant" size={20} color={colors.accent} />
           </View>
           <AppText className="font-bold uppercase" style={{ color: colors.secondaryText, fontSize: 18 }}>
             {t('profile.average')}

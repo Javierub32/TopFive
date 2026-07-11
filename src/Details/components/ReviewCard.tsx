@@ -1,6 +1,6 @@
 import { View, useWindowDimensions } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
-import { ReviewIcon } from 'components/Icons';
+import { ScalableReviewIcon } from 'components/Icons';
 import { AppText } from 'components/AppText';
 import RenderHtml from 'react-native-render-html';
 import { useTranslation } from 'react-i18next';
@@ -35,7 +35,7 @@ export const ReviewCard = ({ review }: Props) => {
       className="flex flex-1 justify-between gap-2 rounded-2xl border-l-4 p-4"
       style={{ backgroundColor: colors.surfaceButton, borderColor: colors.borderButton }}>
       <View className="flex-row items-center gap-2">
-        <ReviewIcon />
+        <ScalableReviewIcon />
         <AppText
           className="font-bold uppercase tracking-widest"
           style={{ color: colors.markerText, fontSize: 14 }}>

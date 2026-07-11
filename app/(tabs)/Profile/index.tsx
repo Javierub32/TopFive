@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, ScrollView, Pressable, TouchableOpacity, Share, useWindowDimensions } from 'react-native';
 import { Screen } from 'components/Screen';
-import { Feather } from '@expo/vector-icons';
+import { SettingsIcon } from 'components/Icons';
 import { TabView } from 'react-native-tab-view';
 
 import { useProfile } from 'src/Profile/hooks/useProfile';
@@ -129,7 +129,7 @@ export default function ProfileScreen() {
           <Pressable
             className="rounded-full p-3"
             onPress={() => router.push('/settings')}>
-            <Feather name="settings" size={24} color={colors.primaryText} />
+            <SettingsIcon size={22} color={colors.primaryText} />
           </Pressable>
         </View>
 

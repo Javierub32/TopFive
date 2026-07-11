@@ -1,16 +1,16 @@
 import { useTheme } from 'context/ThemeContext';
 import { View, TouchableOpacity, Modal } from 'react-native';
-import { BookIcon, FilmIcon, GameIcon, MusicIcon, ShowIcon } from 'components/Icons';
+import { ScalableBookIcon, ScalableFilmIcon, ScalableGameIcon, ScalableMusicIcon, ScalableShowIcon } from 'components/Icons';
 import { ResourceType } from 'hooks/useResource';
 import { useRouter } from 'expo-router';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
 const categories: { type: ResourceType; labelKey: string; icon: any }[] = [
-  { type: 'libro', labelKey: 'category.book', icon: BookIcon },
-  { type: 'serie', labelKey: 'category.serie', icon: ShowIcon },
-  { type: 'pelicula', labelKey: 'category.film', icon: FilmIcon },
-  { type: 'videojuego', labelKey: 'category.videogame', icon: GameIcon },
-  { type: 'cancion', labelKey: 'category.album', icon: MusicIcon },
+  { type: 'libro', labelKey: 'category.book', icon: ScalableBookIcon },
+  { type: 'serie', labelKey: 'category.serie', icon: ScalableShowIcon },
+  { type: 'pelicula', labelKey: 'category.film', icon: ScalableFilmIcon },
+  { type: 'videojuego', labelKey: 'category.videogame', icon: ScalableGameIcon },
+  { type: 'cancion', labelKey: 'category.album', icon: ScalableMusicIcon },
 ];
 
 interface CategorySelectorModalProps {

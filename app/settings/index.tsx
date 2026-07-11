@@ -3,12 +3,12 @@ import { TouchableOpacity, View, Linking, Platform, Share, ScrollView } from 're
 import { Screen } from 'components/Screen';
 //Todos los iconos se importan desde el archivo Icons
 import {
-  AntDesign,
-  FontAwesome,
-  FontAwesome5,
-  Ionicons,
-  MaterialCommunityIcons,
-  MaterialIcons,
+  ScalableAntDesign,
+  ScalableFontAwesome,
+  ScalableFontAwesome5,
+  ScalableIonicons,
+  ScalableMaterialCommunityIcons,
+  ScalableMaterialIcons,
 } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -152,13 +152,13 @@ export default function SettingsScreen() {
                     activeOpacity={0.4}
                     onPress={() => router.push('/editProfile')}>
                     <View className="flex-row items-center justify-start gap-2">
-                      <AntDesign name="edit" size={24} color={colors.primaryText} />
+                      <ScalableAntDesign name="edit" size={24} color={colors.primaryText} />
                       <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.personalization.editProfile.title')}
                       </AppText>
                     </View>
                     <View>
-                      <MaterialCommunityIcons
+                      <ScalableMaterialCommunityIcons
                         name="chevron-right"
                         size={20}
                         color={colors.secondaryText}
@@ -175,7 +175,7 @@ export default function SettingsScreen() {
                     activeOpacity={0.4}
                     onPress={() => setShowThemeOptions(!showThemeOptions)}>
                     <View className="flex-row items-center justify-start gap-2">
-                      <FontAwesome5 name="palette" size={24} color={colors.primaryText} />
+                      <ScalableFontAwesome5 name="palette" size={24} color={colors.primaryText} />
                       <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.personalization.changeTheme.title')}
                       </AppText>
@@ -191,7 +191,7 @@ export default function SettingsScreen() {
                           borderColor: themePreference === 'dark' ? colors.accent : 'transparent',
                         }}
                         onPress={() => changeTheme('dark')}>
-                        <MaterialIcons name="dark-mode" size={24} color={colors.primaryText} />
+                        <ScalableMaterialIcons name="dark-mode" size={24} color={colors.primaryText} />
                         <AppText
                           className="text-center text-sm"
                           style={{ color: colors.primaryText, fontSize: 16 }}>
@@ -206,7 +206,7 @@ export default function SettingsScreen() {
                           borderColor: themePreference === 'light' ? colors.accent : 'transparent',
                         }}
                         onPress={() => changeTheme('light')}>
-                        <MaterialIcons name="light-mode" size={24} color={colors.primaryText} />
+                        <ScalableMaterialIcons name="light-mode" size={24} color={colors.primaryText} />
                         <AppText
                           className="text-center text-sm"
                           style={{ color: colors.primaryText, fontSize: 16 }}>
@@ -221,7 +221,7 @@ export default function SettingsScreen() {
                           borderColor: themePreference === 'system' ? colors.accent : 'transparent',
                         }}
                         onPress={() => changeTheme('system')}>
-                        <MaterialCommunityIcons
+                        <ScalableMaterialCommunityIcons
                           name="cellphone-cog"
                           size={24}
                           color={colors.primaryText}
@@ -245,7 +245,7 @@ export default function SettingsScreen() {
                     activeOpacity={0.4}
                     onPress={() => setShowLangOptions(!showLangOptions)}>
                     <View className="flex-row items-center justify-start gap-2">
-                      <MaterialIcons name="language" size={24} color={colors.primaryText} />
+                      <ScalableMaterialIcons name="language" size={24} color={colors.primaryText} />
                       <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.personalization.changeLanguage')}
                       </AppText>
@@ -290,7 +290,7 @@ export default function SettingsScreen() {
                     activeOpacity={0.4}
                     onPress={() => setShowFontSizeOptions(!showFontSizeOptions)}>
                     <View className="flex-row items-center justify-start gap-2">
-                      <Ionicons name="text" size={24} color={colors.primaryText} />
+                      <ScalableIonicons name="text" size={24} color={colors.primaryText} />
                       <AppText style={{ color: colors.primaryText, fontSize: 16 }}>
                         {t('settings.personalization.changeFontSize')}
                       </AppText>
@@ -351,7 +351,7 @@ export default function SettingsScreen() {
                     activeOpacity={0.4}
                     onPress={handleShare}>
                     <View className="flex-row items-center justify-start gap-2">
-                      <Ionicons name="share-outline" size={24} color={colors.primaryText} />
+                      <ScalableIonicons name="share-outline" size={24} color={colors.primaryText} />
                       <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.account.share.title')}
                       </AppText>
@@ -365,7 +365,7 @@ export default function SettingsScreen() {
                     activeOpacity={0.4}
                     onPress={handleCloseSession}>
                     <View className="flex-row items-center justify-start gap-2">
-                      <Ionicons name="log-out-outline" size={24} color={colors.primaryText} />
+                      <ScalableIonicons name="log-out-outline" size={24} color={colors.primaryText} />
                       <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.account.logOut.title')}
                       </AppText>
@@ -378,7 +378,7 @@ export default function SettingsScreen() {
                   activeOpacity={0.4}
                   onPress={handleDeleteAccount}>
                   <View className="flex-row items-center justify-start gap-2">
-                    <Ionicons name="trash-outline" size={24} color={colors.error} />
+                    <ScalableIonicons name="trash-outline" size={24} color={colors.error} />
                     <AppText className="font-bold" style={{ color: colors.error, fontSize: 18 }}>
                       {t('settings.account.deleteAccount.title')}
                     </AppText>
@@ -400,13 +400,13 @@ export default function SettingsScreen() {
                     activeOpacity={0.4}
                     onPress={() => Linking.openURL('https://forms.gle/2FCL2eyicn4yLuTw8')}>
                     <View className="flex-row items-center justify-start gap-2">
-                      <MaterialIcons name="feedback" size={24} color={colors.primaryText} />
+                      <ScalableMaterialIcons name="feedback" size={24} color={colors.primaryText} />
                       <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.legal.sendFeed')}
                       </AppText>
                     </View>
                     <View>
-                      <MaterialCommunityIcons
+                      <ScalableMaterialCommunityIcons
                         name="chevron-right"
                         size={20}
                         color={colors.secondaryText}
@@ -420,7 +420,7 @@ export default function SettingsScreen() {
                     activeOpacity={0.4}
                     onPress={() => router.push('/aboutUs')}>
                     <View className="flex-row items-center justify-start gap-2">
-                      <Ionicons
+                      <ScalableIonicons
                         name="information-circle-outline"
                         size={24}
                         color={colors.primaryText}
@@ -430,7 +430,7 @@ export default function SettingsScreen() {
                       </AppText>
                     </View>
                     <View>
-                      <MaterialCommunityIcons
+                      <ScalableMaterialCommunityIcons
                         name="chevron-right"
                         size={20}
                         color={colors.secondaryText}
@@ -446,13 +446,13 @@ export default function SettingsScreen() {
                     Linking.openURL('https://topfive-politica-privacidad.vercel.app/')
                   }>
                   <View className="flex-row items-center justify-start gap-2">
-                    <FontAwesome name="check-circle-o" size={24} color={colors.primaryText} />
+                    <ScalableFontAwesome name="check-circle-o" size={24} color={colors.primaryText} />
                     <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                       {t('settings.legal.privacy')}
                     </AppText>
                   </View>
                   <View>
-                    <MaterialCommunityIcons
+                    <ScalableMaterialCommunityIcons
                       name="chevron-right"
                       size={20}
                       color={colors.secondaryText}
@@ -468,13 +468,13 @@ export default function SettingsScreen() {
                       activeOpacity={0.4}
                       onPress={handleRevokeConsent}>
                       <View className="flex-row items-center justify-start gap-2">
-                        <MaterialIcons name="security" size={24} color={colors.primaryText} />
+                        <ScalableMaterialIcons name="security" size={24} color={colors.primaryText} />
                         <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
                           {t('settings.legal.adsPriv')}
                         </AppText>
                       </View>
                       <View>
-                        <MaterialCommunityIcons
+                        <ScalableMaterialCommunityIcons
                           name="chevron-right"
                           size={20}
                           color={colors.secondaryText}
