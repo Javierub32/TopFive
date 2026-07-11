@@ -23,7 +23,7 @@ export const queryKeys = {
     ['search', 'users', viewerId, term] as const,
   contentSearch: (type?: ResourceType, term?: string | null) =>
     ['search', 'content', type, term] as const,
-  lists: (userId?: string | null, type?: string | null) => ['lists', userId, type] as const,
+  lists: (userId?: string | null, type?: string | null) => ['lists', 'infinite', userId, type] as const,
   listDetails: (listId?: string | null, type?: string | null) =>
     ['lists', 'details', listId, type] as const,
   listContainingItem: (itemId?: string | number | null, type?: string | null) =>
