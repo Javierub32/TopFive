@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import { ResourceType } from 'hooks/useResource';
 import { useNotification } from 'context/NotificationContext';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/query/queryKeys';
 
 const categoryMap: Record<ResourceType, CollectionType> = {
@@ -15,6 +15,8 @@ const categoryMap: Record<ResourceType, CollectionType> = {
   cancion: 'CANCION',
 };
 
+const PAGE_SIZE = 4;
+
 export const useLists = (categoriaActual: ResourceType) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -23,17 +25,42 @@ export const useLists = (categoriaActual: ResourceType) => {
   const collectionType = categoryMap[categoriaActual] as CollectionType;
 
   const {
-    data: lists = [],
+    data: pagedData,
     isLoading,
     isFetching,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
     refetch: fetchListInfo,
-  } = useQuery<ListInfo[]>({
+  } = useInfiniteQuery({
     queryKey: queryKeys.lists(user?.id, collectionType),
-    queryFn: () => listServices.fetchListInfo(user.id, collectionType),
-    enabled: !!user?.id,
+    queryFn: async ({ pageParam = 0 }) => {
+      const from = pageParam * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
+      const response = await listServices.fetchListInfo(user!.id, collectionType, from, to);
+
+      const items = response || [];
+      return {
+        items,
+        nextPage: items.length === PAGE_SIZE ? pageParam + 1 : undefined,
+      };
+    },
+
+    enabled: !!user.id,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextPage,
     staleTime: 1000 * 60 * 10,
     gcTime: 1000 * 60 * 60,
-  });
+    maxPages: 5,
+});
+
+const lists = pagedData?.pages.flatMap((page) => page.items) ?? [];
+
+const handleLoadMore = () => {
+    if (hasNextPage && !isFetchingNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  };
 
   const invalidateLists = async () => {
     await Promise.all([
@@ -99,9 +126,9 @@ export const useLists = (categoriaActual: ResourceType) => {
         });
       }, 100);
       /*Alert.alert("Lista creada", `La lista "${nombre}" ha sido creada exitosamente.`,
-				[{ text: "OK", 
-					onPress: () => router.push({ pathname: '/Lists', params: { initialResource: categoriaActual as ResourceType } }) }]
-			 );*/
+        [{ text: "OK", 
+          onPress: () => router.push({ pathname: '/Lists', params: { initialResource: categoriaActual as ResourceType } }) }]
+       );*/
     } catch (error) {
       console.error('Error creating list:', error);
       showNotification({
@@ -140,11 +167,12 @@ export const useLists = (categoriaActual: ResourceType) => {
   return {
     loading:
       isLoading ||
-      isFetching ||
+      isFetchingNextPage ||
       createListMutation.isPending ||
       updateListMutation.isPending ||
       deleteListMutation.isPending,
     lists,
+    handleLoadMore,
     createList,
     updateList,
     deleteList,

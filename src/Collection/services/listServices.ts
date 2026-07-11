@@ -205,7 +205,7 @@ export const listServices = {
     return true;
   },
 
-  async fetchListInfo(userId: string, listType: CollectionType) {
+  async fetchListInfo(userId: string, listType: CollectionType, from: number = 0, to: number = 6): Promise<ListInfo[]> {
     let itemTable = '';
     let resourceTable = '';
     let contentTable = '';
@@ -252,7 +252,9 @@ export const listServices = {
       .from('recursocoleccion')
       .select('id, nombrecoleccion, descripcion, icono, color, tipo_contenido')
       .eq('usuarioid', userId)
-      .eq('tipo_contenido', listType);
+      .eq('tipo_contenido', listType)
+      .range(from, to)
+      .order('fechacreacion', { ascending: false });
 
     if (listsError) {
       console.error('Error al obtener las listas del usuario por tipo:', listsError);
