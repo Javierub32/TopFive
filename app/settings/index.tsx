@@ -291,7 +291,7 @@ export default function SettingsScreen() {
                     onPress={() => setShowFontSizeOptions(!showFontSizeOptions)}>
                     <View className="flex-row items-center justify-start gap-2">
                       <ScalableIonicons name="text" size={24} color={colors.primaryText} />
-                      <AppText style={{ color: colors.primaryText, fontSize: 16 }}>
+                      <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.personalization.changeFontSize')}
                       </AppText>
                     </View>
