@@ -78,7 +78,7 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
   const tagsStyles = {
     body: {
       color: colors.secondaryText,
-      fontSize: 12 * fontSizeMultiplier,
+      fontSize: 11 * fontSizeMultiplier,
       lineHeight: 20 * fontSizeMultiplier,
     },
     p: { margin: 0 },
@@ -92,7 +92,8 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
     <TouchableOpacity
 	  onPress={onPress}
       className=" mb-4 overflow-hidden rounded-2xl shadow-xl"
-      style={{ borderWidth: 0, borderColor: colors.borderButton }}>
+      style={{ borderWidth: 0, borderColor: colors.borderButton }}
+      activeOpacity={0.7}>
       {/* Imagen de fonde */}
       <ImageBackground
         source={{ uri: item.imagen_url || 'https://via.placeholder.com/150' }}
@@ -158,7 +159,7 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
                   <View className="flex-1">
                     <AppText
                       className="mb-2 mr-2 text-base font-bold leading-tight"
-                      style={{ color: colors.primaryText, fontSize: 18 }}>
+                      style={{ color: colors.primaryText, fontSize: 16 }}>
                       {item.titulo}
                     </AppText>
                     {/* Calificación */}
