@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { userService } from '../services/userService';
 import { useAuth } from 'context/AuthContext';
 import { ResourceType, useResource } from 'hooks/useResource';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/query/queryKeys';
+import { useFocusEffect } from 'expo-router';
 
 export interface User {
   id: string;
@@ -61,9 +62,18 @@ export const useUser = (username: string) => {
       return data;
     },
     enabled: !!username,
-    staleTime: (query) => query.state.data?.following_status  === 'accepted' ? 1000 * 60 * 5 : 0,
+    staleTime: 0,
+    refetchOnMount: 'always',
     gcTime: 1000 * 60 * 60,
   });
+
+  useFocusEffect(
+    useCallback(() => {
+      if (username) {
+        refetchUser();
+      }
+    }, [refetchUser, username])
+  );
 
   const {
     data: stats = new Array(12).fill(0),
