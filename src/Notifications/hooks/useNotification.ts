@@ -3,6 +3,8 @@ import { useAuth } from 'context/AuthContext';
 import { supabase } from 'lib/supabase';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/query/queryKeys';
+import { useFocusEffect } from 'expo-router';
+import { useCallback } from 'react';
 
 interface NotificationsPage {
   items: any[];
@@ -48,12 +50,21 @@ export const useNotification = () => {
       enabled: !!user?.id,
       initialPageParam: 0,
       getNextPageParam: (lastPage: NotificationsPage) => lastPage.nextPage,
-      staleTime: 1000 * 60 * 2,
+      staleTime: 0,
+      refetchOnMount: 'always',
       gcTime: 1000 * 60 * 30,
       maxPages: 5,
     });
 
   const notifications = data?.pages.flatMap((page: NotificationsPage) => page.items) ?? [];
+
+  useFocusEffect(
+    useCallback(() => {
+      if (user?.id) {
+        refetch();
+      }
+    }, [refetch, user?.id])
+  );
 
   const fetchNotifications = async () => {
     if (hasNextPage && !isFetchingNextPage && !isFetching) {
@@ -73,6 +84,7 @@ export const useNotification = () => {
       queryClient.invalidateQueries({ queryKey: ['followers'] }),
       queryClient.invalidateQueries({ queryKey: ['following'] }),
       queryClient.invalidateQueries({ queryKey: ['profile'] }),
+      queryClient.invalidateQueries({ queryKey: ['profile', 'public'] }),
     ]);
   };
 

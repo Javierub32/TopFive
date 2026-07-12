@@ -1,12 +1,13 @@
 import { MaterialIcons } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { Pressable, View } from 'react-native';
 import { notificationServices } from '../services/notificationServices';
 import { useAuth } from 'context/AuthContext';
 import { AppText } from 'components/AppText';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/query/queryKeys';
+import { useCallback } from 'react';
 interface NotificationProps {
   from: string;
 }
@@ -14,13 +15,22 @@ interface NotificationProps {
 export const NotificationButton = (props: NotificationProps) => {
   const { colors } = useTheme();
   const { user } = useAuth();
-  const { data: notificationCount = 0 } = useQuery({
+  const { data: notificationCount = 0, refetch } = useQuery({
     queryKey: queryKeys.notificationCount(user?.id),
     queryFn: () => notificationServices.countPendingNotifications(user!.id),
     enabled: !!user?.id,
-    staleTime: 1000 * 60 * 2,
+    staleTime: 0,
+    refetchOnMount: 'always',
     gcTime: 1000 * 60 * 30,
   });
+
+  useFocusEffect(
+    useCallback(() => {
+      if (user?.id) {
+        refetch();
+      }
+    }, [refetch, user?.id])
+  );
 
   const visibility = notificationCount > 0;
   const displayCount = notificationCount > 10 ? '10+' : notificationCount.toString();
