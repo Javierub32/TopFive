@@ -69,7 +69,7 @@ export const useFollowing = (username: string) => {
       title: t('profile.deleteFollowing.title'),
       description: t('profile.deleteFollowing.description', { username }),
       leftButtonText: t('common.cancel'),
-      rightButtonText: t('common.delete'),
+      rightButtonText: t('profile.deleteFollowing.title'),
       isChoice: true,
       delete: true,
       success: false,

@@ -38,3 +38,5 @@ package-lock.json
 # Archivos de Firebase
 google-services.json
 GoogleService-Info.plist
+
+.codebase-memory/

@@ -18,7 +18,7 @@ export function FollowButton({
 
   if (!isFollowed && !isRequested) {
     return (
-      <View className='flex items-center'>
+      <View className='flex items-center mt-6'>
         <TouchableOpacity
           className="items-center px-4 flex w-2/3 rounded-md py-2"
           style={{ backgroundColor: colors.accent }}
@@ -30,7 +30,7 @@ export function FollowButton({
   }
   if (!isFollowed && isRequested) {
     return (
-      <View className='flex items-center'>
+      <View className='flex items-center  mt-6'>
         <TouchableOpacity
           className="items-center px-4 flex w-2/3 rounded-md py-2"
           style={{ backgroundColor: colors.surfaceButton }}

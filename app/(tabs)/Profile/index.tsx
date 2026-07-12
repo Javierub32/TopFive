@@ -147,7 +147,7 @@ export default function ProfileScreen() {
             />
           </ProfileData>
 
-          <View className="mt-5 flex-row gap-x-2">
+          <View className="mt-6 flex-row gap-x-2">
             <TouchableOpacity
               className="flex-1 items-center justify-center rounded-xl px-3 py-2"
               style={{ backgroundColor: `${colors.accent}33` }}

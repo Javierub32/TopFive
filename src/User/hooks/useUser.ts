@@ -49,6 +49,7 @@ export const useUser = (username: string) => {
     data: userData = null,
     isLoading,
     isFetching,
+    refetch: refetchUser,
   } = useQuery<User | null>({
     queryKey: queryKeys.publicProfile(username, user?.id),
     queryFn: async () => {
@@ -60,7 +61,7 @@ export const useUser = (username: string) => {
       return data;
     },
     enabled: !!username,
-    staleTime: 1000 * 60 * 10,
+    staleTime: (query) => query.state.data?.following_status  === 'accepted' ? 1000 * 60 * 5 : 0,
     gcTime: 1000 * 60 * 60,
   });
 
@@ -68,11 +69,12 @@ export const useUser = (username: string) => {
     data: stats = new Array(12).fill(0),
     isLoading: statsLoading,
     isFetching: statsFetching,
+    refetch: refetchStats,
   } = useQuery<number[]>({
     queryKey: queryKeys.profileStats(userData?.id, selectedCategory, selectedYear),
     queryFn: () => fetchMonthlyStats(selectedCategory, selectedYear, userData!.id),
     enabled: !!userData?.id,
-    staleTime: 1000 * 60 * 10,
+    staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 60,
   });
 
@@ -140,16 +142,25 @@ export const useUser = (username: string) => {
     }
   };
 
+  const refreshUserData = async () => {
+    await refetchUser();
+    if (userData?.id) {
+      await refetchStats();
+    }
+  };
+
   return {
     userData,
-    loading: isLoading || isFetching || followMutation.isPending || cancelRequestMutation.isPending,
+    loading: isLoading || followMutation.isPending || cancelRequestMutation.isPending,
+    refreshing: isFetching || statsFetching,
+    refreshUserData,
     handleFollow,
     cancelRequest,
     selectedCategory,
     setSelectedCategory,
     selectedYear,
     setSelectedYear,
-    statsLoading: statsLoading || statsFetching,
+    statsLoading,
     currentStats,
   };
 };
