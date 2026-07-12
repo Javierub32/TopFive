@@ -20,8 +20,7 @@ export default function ListScreen() {
   const layout = useWindowDimensions();
   const { categoriaActual, setCategoriaActual } = useCollection();
   const [isChanging, setIsChanging] = useState(false);
-
-  const { lists, loading, deleteList } = useLists(categoriaActual as ResourceType);
+  const { lists, loading, deleteList, handleLoadMore } = useLists(categoriaActual as ResourceType);
 
   const [routes] = useState([
     { key: 'libro', nombre: t('categories.books') },
@@ -46,7 +45,7 @@ export default function ListScreen() {
   };
 
   const renderScene = ({ route }: any) => {
-    if (isChanging || route.key !== categoriaActual || loading) {
+    if (isChanging || route.key !== categoriaActual || (loading && lists.length === 0)) {
       return (
         <View
           className="mt-10 flex-1 items-center justify-center"
@@ -56,15 +55,13 @@ export default function ListScreen() {
       );
     }
 
-    if (loading) {
-      return (
-        <View className="mt-10 flex-1 items-center justify-center">
-          <LoadingIndicator />
-        </View>
-      );
-    }
-
-    return <Lists data={lists} placeholder={route.nombre.toLowerCase()} deleteList={deleteList} />;
+    return <Lists 
+      data={lists} 
+      placeholder={route.nombre.toLowerCase()} 
+      deleteList={deleteList} 
+      onLoadMore={handleLoadMore}
+      loading={loading}
+    />;
   };
 
   return (
