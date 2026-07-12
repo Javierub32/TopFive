@@ -46,7 +46,7 @@ export const useLists = (categoriaActual: ResourceType) => {
       };
     },
 
-    enabled: !!user.id,
+    enabled: !!user?.id,
     initialPageParam: 0,
     getNextPageParam: (lastPage) => lastPage.nextPage,
     staleTime: 1000 * 60 * 10,
