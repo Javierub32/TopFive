@@ -83,14 +83,17 @@ export default function ProfileScreen() {
       );
     }
 
+    const currentCategoryTitle = routes.find(r => r.key === selectedCategory)?.title || '';
+
     return (
       <Animated.View entering={FadeIn.duration(300)} exiting={FadeOut.duration(300)} style={{ flex: 1, paddingTop: 16 }}>
         {statsLoading ? (
-          <View className="flex-1 items-center justify-center py-10">
+          <View className="flex-1 items-center justify-center py-1">
             <LoadingIndicator />
           </View>
         ) : (
           <>
+            
             <StatsGrid
               title={t(currentStats.titleKey as any)}
               total={currentStats.total}
@@ -102,6 +105,25 @@ export default function ProfileScreen() {
               selectedYear={selectedYear}
               setSelectedYear={setSelectedYear}
             />
+            
+            <TouchableOpacity
+              className="mx-1 mb-6 rounded-xl p-4"
+              style={{ backgroundColor: colors.accent, marginTop: -10 }}
+              activeOpacity={0.7}
+              onPress={() => router.push({      
+                pathname: '/group',
+                params: { 
+                  title: 'Completados', 
+                  state: 'completados', 
+                  category: selectedCategory,
+                  from: 'Profile'
+                }
+              })}
+            >
+              <AppText className="text-center font-semibold" style={{ color: colors.primaryText, fontSize: 16 }}>
+               {t(`profile.viewCompleted.${selectedCategory}`)}
+              </AppText>
+            </TouchableOpacity>
           </>
         )}
       </Animated.View>
@@ -133,7 +155,7 @@ export default function ProfileScreen() {
           </Pressable>
         </View>
 
-        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+        <ScrollView className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
           <ProfileData
             username={userData?.username || t('profile.user')}
             description={userData?.description}

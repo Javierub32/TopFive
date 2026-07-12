@@ -59,11 +59,11 @@ export default function UserDetailsScreen() {
   const route = getPath();
 
   const routes = [
-    { key: 'libro', title: 'Libros' },
-    { key: 'serie', title: 'Series' },
-    { key: 'pelicula', title: 'Películas' },
-    { key: 'videojuego', title: 'Juegos' },
-    { key: 'cancion', title: 'Música' },
+    { key: 'libro', title: t('category.book') },
+    { key: 'serie', title: t('category.serie') },
+    { key: 'pelicula', title: t('category.film') },
+    { key: 'videojuego', title: t('category.videogame') },
+    { key: 'cancion', title: t('category.album') },
   ];
 
   const index = routes.findIndex((r) => r.key === selectedCategory);
@@ -116,6 +116,9 @@ export default function UserDetailsScreen() {
       );
     }
 
+    const currentCategoryTitle = routes.find(r => r.key === selectedCategory)?.title || '';
+
+
     return (
       <Animated.View entering={FadeIn.duration(300)} style={{ flex: 1, paddingTop: 16 }}>
         {statsLoading ? (
@@ -134,6 +137,26 @@ export default function UserDetailsScreen() {
               selectedYear={selectedYear}
               setSelectedYear={setSelectedYear}
             />
+
+            <TouchableOpacity
+              className="rounded-lg p-4 mb-6 mx-1" // Le he puesto un mt-4 para separarlo un poco
+              style={{ backgroundColor: colors.accent, marginTop: -10 }}
+              activeOpacity={0.7}
+              onPress={() => router.push({
+                pathname: '/group',
+                params: { 
+                  title: 'Completados', 
+                  state: 'completados', 
+                  category: selectedCategory,
+                  targetUserId: userData?.id
+                }
+              })}
+            >
+              <AppText className="text-center font-semibold" style={{ color: colors.primaryText, fontSize: 16 }}>
+                {t(`profile.viewCompleted.${selectedCategory}`)}
+              </AppText>
+            </TouchableOpacity>
+
           </>
         )}
       </Animated.View>
@@ -161,7 +184,9 @@ export default function UserDetailsScreen() {
             onRefresh={refreshUserData}
             tintColor={colors.primaryText}
           />
-        }>
+        }
+        contentContainerStyle={{ paddingBottom: 20 }}
+        >
         <View className="px-4 pb-6">
           <ProfileData
             username={userData?.username || t('details.user')}
@@ -224,7 +249,7 @@ export default function UserDetailsScreen() {
                   onIndexChange={handleIndexChange}
                   initialLayout={{ width: layout.width }}
                   swipeEnabled={true}
-                  style={{ height: 480 }}
+                  style={{ height: 600 }}
                 />
               </View>
             </>
