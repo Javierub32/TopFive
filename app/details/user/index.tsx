@@ -6,7 +6,14 @@ import { ProfileData } from '@/User/components/ProfileData';
 import { UserAvatar } from '@/User/components/UserAvatar';
 import { FollowButton } from '@/User/components/FollowButton';
 import { LoadingIndicator } from 'components/LoadingIndicator';
-import { View, ScrollView, useWindowDimensions, TouchableOpacity, Share } from 'react-native';
+import {
+  View,
+  ScrollView,
+  useWindowDimensions,
+  TouchableOpacity,
+  Share,
+  RefreshControl,
+} from 'react-native';
 import { TopFiveSelector } from '@/Profile/components/TopFiveSelector';
 import { StatsChart } from '@/Profile/components/StatsChart';
 import { StatsGrid } from '@/Profile/components/StatsGrid';
@@ -39,6 +46,8 @@ export default function UserDetailsScreen() {
     setSelectedYear,
     currentStats,
     statsLoading,
+    refreshing,
+    refreshUserData,
   } = useUser(username as string);
 
   const canViewStats = userData?.following_status === 'accepted';
@@ -143,7 +152,16 @@ export default function UserDetailsScreen() {
   return (
     <Screen>
       <ReturnButton route={route} title={userData?.username || t('details.userDetails')} />
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={refreshUserData}
+            tintColor={colors.primaryText}
+          />
+        }>
         <View className="px-4 pb-6">
           <ProfileData
             username={userData?.username || t('details.user')}
