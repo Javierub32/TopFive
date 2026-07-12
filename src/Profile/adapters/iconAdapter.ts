@@ -1,14 +1,14 @@
-import { BookIcon, FilmIcon, ShowIcon, MusicIcon, GameIcon } from 'components/Icons';
+import { ScalableBookIcon, ScalableFilmIcon, ScalableShowIcon, ScalableMusicIcon, ScalableGameIcon } from 'components/Icons';
 import { ResourceType } from 'hooks/useResource';
 
 export const iconAdapter = {
     getIcon : (category: ResourceType) => {
         const map: Record<ResourceType, any> = {
-            'libro': BookIcon,
-            'pelicula': FilmIcon,
-            'serie': ShowIcon,
-            'cancion': MusicIcon,
-            'videojuego': GameIcon,
+            'libro': ScalableBookIcon,
+            'pelicula': ScalableFilmIcon,
+            'serie': ScalableShowIcon,
+            'cancion': ScalableMusicIcon,
+            'videojuego': ScalableGameIcon,
         };
         return map[category];
     }

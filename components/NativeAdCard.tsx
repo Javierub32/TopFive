@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, Image, ImageBackground, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from 'context/ThemeContext';
-import { FontAwesome5, MaterialCommunityIcons } from 'components/Icons';
+import { ScalableFontAwesome5, ScalableMaterialCommunityIcons } from 'components/Icons';
 import {
   NativeAd,
   NativeAdView,
@@ -140,7 +140,7 @@ export const NativeAdCard = () => {
                                 isSolid = false;
                               }
                               return (
-                                <FontAwesome5
+                                <ScalableFontAwesome5
                                   key={star}
                                   name={iconName}
                                   solid={isSolid}
@@ -200,7 +200,7 @@ export const NativeAdCard = () => {
                     <Image source={{ uri: nativeAd.icon.url }} style={{ width: 40, height: 40 }} />
                   </NativeAsset>
                 ) : (
-                  <MaterialCommunityIcons name="bullhorn" size={20} color={colors.primaryText} />
+                  <ScalableMaterialCommunityIcons name="bullhorn" size={20} color={colors.primaryText} />
                 )}
               </View>
 

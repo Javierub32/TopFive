@@ -1,5 +1,5 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { CalendarEndIcon, CalendarIcon, CalendarStartIcon } from 'components/Icons';
+import { ScalableCalendarEndIcon, ScalableCalendarIcon, ScalableCalendarStartIcon } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { useState } from 'react';
 import { Modal, Platform, TouchableOpacity, View } from 'react-native';
@@ -112,7 +112,7 @@ export const DateSetter = ({
           style={{ backgroundColor: `${colors.primary}1A` }}
           onPress={() => setShowDatePickerInicio(true)}>
           <View className="flex-row items-center gap-2 p-1">
-            <CalendarIcon />
+            <ScalableCalendarIcon />
             <AppText
               className="font-bold uppercase tracking-widest"
               style={{ color: colors.markerText, fontSize: 14 }}>
@@ -157,7 +157,7 @@ export const DateSetter = ({
           style={{ backgroundColor: `${colors.primary}1A` }}
           onPress={() => setShowDatePickerInicio(true)}>
           <View className="flex-row items-center gap-2">
-            <CalendarStartIcon />
+            <ScalableCalendarStartIcon />
             <AppText
               className="text-sm font-bold uppercase tracking-widest"
               style={{ color: colors.markerText, fontSize: 14 }}>
@@ -193,7 +193,7 @@ export const DateSetter = ({
           style={{ backgroundColor: `${colors.primary}1A` }}
           onPress={() => setShowDatePickerFin(true)}>
           <View className="flex-row items-center gap-2">
-            <CalendarEndIcon />
+            <ScalableCalendarEndIcon />
             <AppText
               className="font-bold uppercase tracking-widest"
               style={{ color: colors.markerText, fontSize: 14 }}>

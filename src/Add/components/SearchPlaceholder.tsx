@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { ResourceType } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
-import { BookIcon, FilmIcon, ShowIcon, GameIcon, MusicIcon, WrenchIcon } from 'components/Icons';
+import { ScalableBookIcon, ScalableFilmIcon, ScalableShowIcon, ScalableGameIcon, ScalableMusicIcon, ScalableWrenchIcon } from 'components/Icons';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
 interface SearchPlaceholderProps {
@@ -12,11 +12,11 @@ interface SearchPlaceholderProps {
 
 // Mapeo de iconos por categoría
 const ICONOS_CATEGORIA: Record<ResourceType, React.ElementType> = {
-  libro: BookIcon,
-  pelicula: FilmIcon,
-  serie: ShowIcon,
-  videojuego: GameIcon,
-  cancion: MusicIcon,
+  libro: ScalableBookIcon,
+  pelicula: ScalableFilmIcon,
+  serie: ScalableShowIcon,
+  videojuego: ScalableGameIcon,
+  cancion: ScalableMusicIcon,
 };
 
 const CATEGORY_LABELS: Record<ResourceType, string> = {
@@ -28,7 +28,7 @@ const CATEGORY_LABELS: Record<ResourceType, string> = {
 } as const satisfies Record<ResourceType, string>;
 
 export const SearchPlaceholder = ({ category, loading }: SearchPlaceholderProps) => {
-  const IconComponent = ICONOS_CATEGORIA[category] || WrenchIcon;
+  const IconComponent = ICONOS_CATEGORIA[category] || ScalableWrenchIcon;
   const categoryLabel = CATEGORY_LABELS[category] || 'contenido';
   const { colors } = useTheme();
   const { t } = useTranslation();

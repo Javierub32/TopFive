@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
-import { RatingIcon, FontAwesome5 } from 'components/Icons';
+import { ScalableRatingIcon, ScalableFontAwesome5 } from 'components/Icons';
 import { Book, Film, Game, Series, Song } from 'app/types/Content';
 import { ResourceType } from 'hooks/useResource';
 import { AppText } from 'components/AppText';
@@ -41,7 +41,7 @@ export const ContentRating = ({ content, type }: Props) => {
           className="flex flex-1 justify-between gap-2 rounded-2xl p-4"
           style={{ backgroundColor: `${colors.rating}1A` }}>
           <View className="flex-row items-center gap-2">
-            <RatingIcon />
+            <ScalableRatingIcon />
             <AppText
               className="font-bold uppercase tracking-widest"
               style={{ color: colors.markerText, fontSize: 12 }}>
@@ -68,7 +68,7 @@ export const ContentRating = ({ content, type }: Props) => {
                 }
 
                 return (
-                  <FontAwesome5
+                  <ScalableFontAwesome5
                     key={star}
                     name={iconName}
                     size={20}

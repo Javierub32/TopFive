@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { TimesWatchedIcon } from 'components/Icons';
+import { ScalableTimesWatchedIcon } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { TouchableOpacity, View } from 'react-native';
 import { AppText } from 'components/AppText';
@@ -19,7 +19,7 @@ export const ViewsSetter = ({ views, setViews }: Props) => {
       className="mx-4 flex flex-1 gap-2 rounded-2xl p-4"
       style={{ backgroundColor: `${colors.accent}33` }}>
       <View className="flex-row items-center gap-2">
-        <TimesWatchedIcon color={colors.accent} />
+        <ScalableTimesWatchedIcon color={colors.accent} />
         <AppText
           className="font-bold uppercase tracking-widest"
           style={{ color: colors.markerText, fontSize: 14 }}>

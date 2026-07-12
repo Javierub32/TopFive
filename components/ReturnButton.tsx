@@ -1,6 +1,6 @@
 import { router, useNavigation } from 'expo-router';
 import { BackHandler, Text, TouchableOpacity, View } from 'react-native';
-import { LeftArrowIcon } from './Icons';
+import { ScalableLeftArrowIcon } from './Icons';
 import { useTheme } from 'context/ThemeContext';
 import { useSearch } from 'context/SearchContext';
 import { useCallback, useEffect, useRef } from "react";
@@ -63,7 +63,7 @@ export const ReturnButton = ({ route, title, style, params, deleteSearchResults,
         className="mr-3 h-10 w-10 items-center justify-center rounded-full"
         style={backgroundStyle}
         activeOpacity={0.7}>
-        <LeftArrowIcon color={colors.primaryText} />
+        <ScalableLeftArrowIcon color={colors.primaryText} />
       </TouchableOpacity>
       <AppText className="flex-1 font-bold" style={{ color: colors.primaryText, fontSize: 20}} numberOfLines={1}>
         {title}

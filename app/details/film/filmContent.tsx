@@ -1,7 +1,7 @@
 import { View, ScrollView } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
-import { MaterialCommunityIcons } from 'components/Icons';
+import { ScalableMaterialCommunityIcons } from 'components/Icons';
 import { Film } from 'app/types/Content';
 import { ReturnButton } from 'components/ReturnButton';
 import { useTheme } from 'context/ThemeContext';
@@ -42,7 +42,7 @@ export default function FilmDetail() {
         <ThemedStatusBar />
         <ReturnButton route={path} title={t('forms.film.filmDetails')} />
         <View className="flex-1 items-center justify-center px-4">
-          <MaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
+          <ScalableMaterialCommunityIcons name="alert-circle" size={64} color={colors.error} />
           <AppText className="mt-4 font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
             {t('details.loadingError.title')}
           </AppText>

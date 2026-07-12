@@ -1,4 +1,4 @@
-import { FavoriteIcon, NonFavoriteIcon } from "components/Icons";
+import { ScalableFavoriteIcon, ScalableNonFavoriteIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext"
 import { useState } from "react";
 import { TouchableOpacity } from "react-native";
@@ -14,10 +14,10 @@ export const FavoriteSetter = ({favorite, setFavorite} : Props) => {
     return (
         <TouchableOpacity onPress={() => setFavorite(!favorite)} className="p-2 rounded-full items-center" style={{backgroundColor: `${colors.favorite}1A`}}>
             {favorite && (
-                <FavoriteIcon size={24}/>
+                <ScalableFavoriteIcon size={24}/>
             )}
             {!favorite && (
-                <NonFavoriteIcon size={24}/>
+                <ScalableNonFavoriteIcon size={24}/>
             )}
         </TouchableOpacity>
     )

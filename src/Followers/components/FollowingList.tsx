@@ -3,7 +3,7 @@ import { UserResultItem } from "@/Search/components/UserResultItem";
 import { router, useLocalSearchParams } from "expo-router";
 import { LoadingIndicator } from "components/LoadingIndicator";
 import { useFollowing } from "../hooks/useFollowing";
-import { CancelIcon } from "components/Icons";
+import { ScalableCancelIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext";
 
 export default function FollowingList() {
@@ -29,7 +29,7 @@ export default function FollowingList() {
 				</View>
 				{ownList && 
 				<TouchableOpacity onPress={() => handleRemovePress(item.username, item.id)}>
-					<CancelIcon color={colors.primaryText} size={28} />
+					<ScalableCancelIcon color={colors.primaryText} size={28} />
 				</TouchableOpacity>
 				}
 			</View>

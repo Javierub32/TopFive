@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Activity } from '../hooks/useActivity';
-import { BookIcon, FilmIcon, GameIcon, MusicIcon, ShowIcon } from 'components/Icons';
+import { ScalableBookIcon, ScalableFilmIcon, ScalableGameIcon, ScalableMusicIcon, ScalableShowIcon } from 'components/Icons';
 import { router } from 'expo-router';
 import { ResourceType } from 'hooks/useResource';
 import { useState } from 'react';
@@ -45,11 +45,11 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
   };
 
   const categoryMap: Record<string, { color: any; icon: any; resourceType: ResourceType }> = {
-    LIBRO: { color: colors.ground1, icon: BookIcon, resourceType: 'libro' },
-    PELICULA: { color: colors.ground2, icon: FilmIcon, resourceType: 'pelicula' },
-    SERIE: { color: colors.ground3, icon: ShowIcon, resourceType: 'serie' },
-    VIDEOJUEGO: { color: colors.ground4, icon: GameIcon, resourceType: 'videojuego' },
-    CANCION: { color: colors.ground5, icon: MusicIcon, resourceType: 'cancion' },
+    LIBRO: { color: colors.ground1, icon: ScalableBookIcon, resourceType: 'libro' },
+    PELICULA: { color: colors.ground2, icon: ScalableFilmIcon, resourceType: 'pelicula' },
+    SERIE: { color: colors.ground3, icon: ScalableShowIcon, resourceType: 'serie' },
+    VIDEOJUEGO: { color: colors.ground4, icon: ScalableGameIcon, resourceType: 'videojuego' },
+    CANCION: { color: colors.ground5, icon: ScalableMusicIcon, resourceType: 'cancion' },
   };
 
   const rating = item.calificacion || 0;

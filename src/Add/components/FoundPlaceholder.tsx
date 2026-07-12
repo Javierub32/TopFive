@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { ResourceType } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
-import { CrossIcon } from 'components/Icons';
+import { ScalableCrossIcon } from 'components/Icons';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
 interface SearchPlaceholderProps {
@@ -11,7 +11,7 @@ interface SearchPlaceholderProps {
 }
 
 export const FoundPlaceholder = ({ category, loading }: SearchPlaceholderProps) => {
-  const IconComponent = CrossIcon;
+  const IconComponent = ScalableCrossIcon;
   const { colors } = useTheme();
   const { t } = useTranslation();
   return (

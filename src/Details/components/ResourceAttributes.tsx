@@ -5,7 +5,7 @@ import {
   SongResource,
   GameResource,
 } from 'app/types/Resources';
-import { DificultyIcon, FavoriteIcon, TimesWatchedIcon } from 'components/Icons';
+import { ScalableDificultyIcon, ScalableFavoriteIcon, ScalableTimesWatchedIcon } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { View } from 'react-native';
 import { AddToListButton } from 'components/AddToListButton';
@@ -138,7 +138,7 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
           <View
             className="flex-row items-center rounded-lg px-3 py-1.5"
             style={{ backgroundColor: `${colors.accent}33` }}>
-            <TimesWatchedIcon />
+            <ScalableTimesWatchedIcon />
             <AppText className="ml-1 font-bold" style={{ color: colors.markerText, fontSize: 14 }}>
               {getConsumptionCount(resource)}x
             </AppText>
@@ -149,7 +149,7 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
           <View
             className="flex-row items-center justify-between rounded-lg px-3 py-1.5"
             style={{ backgroundColor: `${getDificultyColor(getDificulty(resource))}33` }}>
-            <DificultyIcon color={getDificultyColor(getDificulty(resource))} />
+            <ScalableDificultyIcon color={getDificultyColor(getDificulty(resource))} />
             <AppText
               className="text-semibold ml-1"
               style={{ color: getDificultyColor(getDificulty(resource)), fontSize: 14 }}>
@@ -163,7 +163,7 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
           <View
             className="justify-center rounded-lg px-3 py-1.5"
             style={{ backgroundColor: `${colors.favorite}33` }}>
-            <FavoriteIcon />
+            <ScalableFavoriteIcon />
           </View>
         )}
       </View>

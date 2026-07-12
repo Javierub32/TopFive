@@ -4,7 +4,7 @@ import { ListInfo } from '../services/listServices';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { useNotification } from 'context/NotificationContext';
-import { PlusIcon, EditIcon, TrashIcon, MaterialCommunityIcons } from 'components/Icons';
+import { ScalablePlusIcon, ScalableEditIcon, ScalableTrashIcon, ScalableMaterialCommunityIcons } from 'components/Icons';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
 interface ListItemProps {
@@ -85,7 +85,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
         <View
           className="mr-3 h-12 w-12 items-center justify-center rounded-full"
           style={{ backgroundColor: list.color || colors.placeholderText }}>
-          <MaterialCommunityIcons name={list.icono as any} size={24} color={colors.primaryText} />
+          <ScalableMaterialCommunityIcons name={list.icono as any} size={24} color={colors.primaryText} />
         </View>
 
         {/* Título y contador */}
@@ -108,7 +108,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
             e.stopPropagation(); // Evita que pase a la tarjeta y abra los detalles
             setMenuListasAbierto(!menuListasAbierto);
           }}>
-          <MaterialCommunityIcons
+          <ScalableMaterialCommunityIcons
             name={menuListasAbierto ? 'close' : 'dots-horizontal'}
             size={24}
             color={colors.secondaryText}
@@ -128,7 +128,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
               handleEdit();
               setMenuListasAbierto(false);
             }}>
-            <EditIcon style={{ marginRight: 8 }} color={colors.primaryText} />
+            <ScalableEditIcon style={{ marginRight: 8 }} color={colors.primaryText} />
             <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
               {t('list.editList')}
             </AppText>
@@ -141,7 +141,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
               setMenuListasAbierto(false);
               handleAdd();
             }}>
-            <PlusIcon style={{ marginRight: 8 }} color={colors.primaryText} />
+            <ScalablePlusIcon style={{ marginRight: 8 }} color={colors.primaryText} />
             <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
               {t('list.addToList')}
             </AppText>
@@ -154,7 +154,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
               setMenuListasAbierto(false);
               handleDelete();
             }}>
-            <TrashIcon style={{ marginRight: 8 }} color={colors.error} />
+            <ScalableTrashIcon style={{ marginRight: 8 }} color={colors.error} />
             <AppText style={{ color: colors.error, fontSize: 14 }}>
               {t('list.deleteList')}
             </AppText>

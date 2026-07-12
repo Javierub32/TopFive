@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
-import { BookIcon, FilmIcon, ShowIcon, GameIcon, MusicIcon } from 'components/Icons';
+import { ScalableBookIcon, ScalableFilmIcon, ScalableShowIcon, ScalableGameIcon, ScalableMusicIcon } from 'components/Icons';
 import { ResourceType } from 'hooks/useResource';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
@@ -17,17 +17,17 @@ export const FallbackCover = ({ type, style, fullSize }: FallbackCoverProps) => 
   const getFallbackConfig = () => {
     switch (type) {
       case 'serie':
-        return { Icon: ShowIcon, text: t('components.noImage.serie') };
+        return { Icon: ScalableShowIcon, text: t('components.noImage.serie') };
       case 'pelicula':
-        return { Icon: FilmIcon, text: t('components.noImage.film') };
+        return { Icon: ScalableFilmIcon, text: t('components.noImage.film') };
       case 'libro':
-        return { Icon: BookIcon, text: t('components.noImage.book') };
+        return { Icon: ScalableBookIcon, text: t('components.noImage.book') };
       case 'videojuego':
-        return { Icon: GameIcon, text: t('components.noImage.videogame') };
+        return { Icon: ScalableGameIcon, text: t('components.noImage.videogame') };
       case 'cancion':
-        return { Icon: MusicIcon, text: t('components.noImage.album') };
+        return { Icon: ScalableMusicIcon, text: t('components.noImage.album') };
       default:
-        return { Icon: ShowIcon, text: t('components.noImage.title') };
+        return { Icon: ScalableShowIcon, text: t('components.noImage.title') };
     }
   };
 

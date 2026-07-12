@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
-import { ProgressIcon } from 'components/Icons';
+import { ScalableProgressIcon } from 'components/Icons';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
 interface Props {
@@ -25,7 +25,7 @@ export const ProgressCard = ({ progress, unit }: Props) => {
         className="flex flex-1 justify-between gap-2 rounded-2xl p-4"
         style={{ backgroundColor: `${colors.primary}1A` }}>
         <View className="flex-row items-center gap-2">
-          <ProgressIcon />
+          <ScalableProgressIcon />
           <AppText
             className="font-bold uppercase tracking-widest"
             style={{ color: colors.markerText, fontSize: 14 }}>
@@ -50,7 +50,7 @@ export const ProgressCard = ({ progress, unit }: Props) => {
       className="flex flex-1 justify-between gap-2 rounded-2xl p-4"
       style={{ backgroundColor: `${colors.primary}1A` }}>
       <View className="flex-row items-center gap-2">
-        <ProgressIcon />
+        <ScalableProgressIcon />
         <AppText
           className="text-sm font-bold uppercase tracking-widest"
           style={{ color: colors.markerText }}>

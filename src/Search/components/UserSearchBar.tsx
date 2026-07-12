@@ -1,6 +1,6 @@
 import { View, TouchableOpacity } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
-import { SearchIcon } from 'components/Icons';
+import { ScalableSearchIcon } from 'components/Icons';
 import { AppTextInput } from 'components/AppTextInput';
 import { useTranslation } from 'react-i18next';
 
@@ -26,7 +26,7 @@ export function UserSearchBar({ value, onChangeText, onSearch }: SearchBarProps)
             onPress={onSearch}
             activeOpacity={0.7}
             hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}>
-            <SearchIcon color={colors.secondaryText} />
+            <ScalableSearchIcon color={colors.secondaryText} />
           </TouchableOpacity>
         }
 

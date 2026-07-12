@@ -10,7 +10,7 @@ import { router } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
 import { ResourceType, useResource } from 'hooks/useResource';
 import { useCollection } from 'context/CollectionContext';
-import { DeleteIcon } from 'components/Icons';
+import { ScalableDeleteIcon } from 'components/Icons';
 import { useNotification } from 'context/NotificationContext';
 import { useTranslation } from 'react-i18next';
 
@@ -78,7 +78,7 @@ export const DeleteResourceButton = ({ resource, type }: Props) => {
       className="mr-2 h-10 w-10 items-center justify-center rounded-full"
       style={{ backgroundColor: colors.error }}
       activeOpacity={0.7}>
-      <DeleteIcon />
+      <ScalableDeleteIcon />
     </TouchableOpacity>
   );
 };

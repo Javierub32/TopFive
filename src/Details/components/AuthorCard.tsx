@@ -1,4 +1,4 @@
-import { AuthorIcon } from 'components/Icons';
+import { ScalableAuthorIcon } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { View } from 'react-native';
 import { AppText } from 'components/AppText';
@@ -16,7 +16,7 @@ export const AuthorCard = ({ autor }: Props) => {
       className="flex-1 justify-between gap-2 rounded-2xl p-4"
       style={{ backgroundColor: colors.surfaceButton }}>
       <View className="flex-row items-center gap-2">
-        <AuthorIcon />
+        <ScalableAuthorIcon />
         <AppText
           className="text-sm font-bold uppercase tracking-widest"
           style={{ color: colors.markerText, fontSize: 12 }}>

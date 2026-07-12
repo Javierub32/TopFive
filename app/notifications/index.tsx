@@ -7,7 +7,7 @@ import { NotificationItem } from '@/Notifications/components/NotificationItems';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useTheme } from 'context/ThemeContext';
-import { MaterialIcons } from 'components/Icons';
+import { ScalableMaterialIcons } from 'components/Icons';
 import { useUser } from '@/User/hooks/useUser';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
@@ -85,7 +85,7 @@ export default function NotificationsScreen() {
             <View
               className="mb-6 h-28 w-28 items-center justify-center rounded-full"
               style={{ backgroundColor: `${colors.secondary}20` }}>
-              <MaterialIcons name="notifications-off" size={56} color={colors.secondary} />
+              <ScalableMaterialIcons name="notifications-off" size={56} color={colors.secondary} />
             </View>
 
             <AppText

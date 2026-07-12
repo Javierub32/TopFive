@@ -1,5 +1,5 @@
 import { View, TouchableOpacity } from 'react-native';
-import { MaterialCommunityIcons, SearchIcon } from 'components/Icons';
+import { ScalableMaterialCommunityIcons, ScalableSearchIcon } from 'components/Icons';
 import { ResourceType } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
 import { AppText } from 'components/AppText';
@@ -50,7 +50,7 @@ export const SearchBar = ({
           onPress={() => onSearch()}
           activeOpacity={0.7}
           hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}>
-          <SearchIcon color={colors.secondaryText} />
+          <ScalableSearchIcon color={colors.secondaryText} />
         </TouchableOpacity>
 
         {/* Input de texto */}
@@ -81,7 +81,7 @@ export const SearchBar = ({
               {t(CATEGORY_LABELS[selectedCategory] as any)}
             </AppText>
           </View>
-          <MaterialCommunityIcons
+          <ScalableMaterialCommunityIcons
             name={menuAbierto ? 'chevron-up' : 'chevron-down'}
             size={20}
             color={colors.secondaryText}
@@ -114,7 +114,7 @@ export const SearchBar = ({
                 {t(CATEGORY_LABELS[opcion] as any)}
               </AppText>
               {selectedCategory === opcion && (
-                <MaterialCommunityIcons name="check" size={16} color={colors.primaryText} />
+                <ScalableMaterialCommunityIcons name="check" size={16} color={colors.primaryText} />
               )}
             </TouchableOpacity>
           ))}
