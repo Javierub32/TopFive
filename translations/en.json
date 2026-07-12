@@ -280,6 +280,7 @@
         "shareMessage": "Check out my profile on TopFive!\n{{url}}",
         "shareUserMessage": "Check out this profile on TopFive!\n{{url}}",
         "user": "User",
+        "reviews": "Reviews",
         "selectYear": "Select year",
         "monthsAbbreviation": {
             "january": "Jan",
