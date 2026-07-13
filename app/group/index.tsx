@@ -21,17 +21,18 @@ export default function GroupScreen() {
   const state = params.state as string;
   const category = params.category as string;
   const from = params.from as string;
+  const targetUserId = params.targetUserId as string;
 
   const { handleItemPress, setIsSearchVisible } = useCollection();
-  const { loading, data, handleLoadMore } = useGroupData(category as ResourceType, stateMap[state]);
+  const { loading, data, handleLoadMore } = useGroupData(category as ResourceType, stateMap[state], targetUserId);
 
   useEffect(() => {
 		setIsSearchVisible(false);
   }, []);
 
-  const returnRoute = from === 'Profile' ? '/Profile' : '/Collection';
-  const returnParams = from === 'Profile' ? {} : { initialResource: category as ResourceType };
-  
+  const returnRoute = targetUserId ? 'back' : (from === 'Profile' ? '/Profile' : '/Collection');
+  const returnParams = (from === 'Profile' || targetUserId) ? {} : { initialResource: category as ResourceType };
+
   return (
     <Screen>
       <View className="flex-1 px-4 pt-4">

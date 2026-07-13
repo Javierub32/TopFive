@@ -308,6 +308,13 @@
             "videogames": "Video games played",
             "albums": "Albums listened"
         },
+        "viewCompleted": {
+            "books": "View Read Books",
+            "series": "View Watched Series",
+            "films": "View Watched Movies",
+            "videogames": "View Played Games",
+            "albums": "View Listened Albums"
+        },
         "loadingStatsError": "Could not load the stats. Try again later.",
         "noPermissionError": {
             "title": "Permission denied",

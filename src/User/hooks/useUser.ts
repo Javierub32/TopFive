@@ -43,7 +43,7 @@ export const useUser = (username: string) => {
   const { fetchMonthlyStats } = useResource();
   const queryClient = useQueryClient();
 
-  const [selectedCategory, setSelectedCategory] = useState<ResourceType>('libro');
+  const [selectedCategory, setSelectedCategory] = useState<ResourceType>('pelicula');
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
 
   const {
