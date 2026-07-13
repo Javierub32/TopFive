@@ -258,7 +258,9 @@ export default function SeriesForm() {
           setTimeout(() => {
             showNotification({
               title: t('common.success'),
-              description: t('forms.savingSuccessDescription'),
+              description: t('forms.savingSuccessDescription', {
+                titulo: series.titulo || series.title,
+              }),
               isChoice: false,
               delete: false,
               success: true,
