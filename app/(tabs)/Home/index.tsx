@@ -20,7 +20,8 @@ const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 export default function HomeScreen() {
   const { colors } = useTheme();
   const { t } = useTranslation();
-  const { activities, loading, refreshing, fetchActivities, refreshActivities, handleItemPress } = useActivity();
+  const { activities, loading, refreshing, fetchActivities, refreshActivities, handleItemPress } =
+    useActivity();
   const navigation = useNavigation();
   const lastBackPress = useRef(0);
   const { showNotification } = useNotification();
@@ -104,7 +105,14 @@ export default function HomeScreen() {
           data={activities}
           onScroll={scrollHandler}
           scrollEventThrottle={16}
-          keyExtractor={(item: any, index: number) => `${item.recurso_id}-${index}`} //hay que tiparlos explicitamente por el ANIMATED
+          keyExtractor={(item: any) =>
+            [
+              item.usuarioId,
+              item.tipo_contenido,
+              item.recurso_id,
+              item.fecha_actividad ?? item.fechacreacion,
+            ].join('-')
+          } //hay que tiparlos explicitamente por el ANIMATED
           renderItem={({ item, index }: { item: any; index: number }) => (
             <>
               <ActivityItem item={item} onPress={() => handleItemPress(item)} />
