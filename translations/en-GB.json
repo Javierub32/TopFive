@@ -309,11 +309,11 @@
             "albums": "Albums listened"
         },
         "viewCompleted": {
-            "libro": "View Read Books",
-            "serie": "View Watched Series",
-            "pelicula": "View Watched Movies",
-            "videojuego": "View Played Games",
-            "cancion": "View Listened Albums"
+            "books": "View Read Books",
+            "series": "View Watched Series",
+            "films": "View Watched Movies",
+            "videogames": "View Played Games",
+            "albums": "View Listened Albums"
         },
         "loadingStatsError": "Could not load the stats. Try again later.",
         "noPermissionError": {

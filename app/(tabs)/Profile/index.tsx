@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { View, ScrollView, Pressable, TouchableOpacity, Share, useWindowDimensions } from 'react-native';
+import {
+  View,
+  ScrollView,
+  Pressable,
+  TouchableOpacity,
+  Share,
+  useWindowDimensions,
+} from 'react-native';
 import { Screen } from 'components/Screen';
 import { SettingsIcon } from 'components/Icons';
 import { TabView } from 'react-native-tab-view';
@@ -51,6 +58,14 @@ export default function ProfileScreen() {
     { key: 'cancion', title: t('category.album') },
   ];
 
+  const categoryMap: Record<string, string> = {
+    libro: 'profile.viewCompleted.books',
+    pelicula: 'profile.viewCompleted.films',
+    serie: 'profile.viewCompleted.series',
+    videojuego: 'profile.viewCompleted.videogames',
+    cancion: 'profile.viewCompleted.albums',
+  };
+
   const index = routes.findIndex((r) => r.key === selectedCategory);
   const safeIndex = index === -1 ? 0 : index;
 
@@ -83,17 +98,17 @@ export default function ProfileScreen() {
       );
     }
 
-    const currentCategoryTitle = routes.find(r => r.key === selectedCategory)?.title || '';
-
     return (
-      <Animated.View entering={FadeIn.duration(300)} exiting={FadeOut.duration(300)} style={{ flex: 1, paddingTop: 16 }}>
+      <Animated.View
+        entering={FadeIn.duration(300)}
+        exiting={FadeOut.duration(300)}
+        style={{ flex: 1, paddingTop: 16 }}>
         {statsLoading ? (
           <View className="flex-1 items-center justify-center py-1">
             <LoadingIndicator />
           </View>
         ) : (
           <>
-            
             <StatsGrid
               title={t(currentStats.titleKey as any)}
               total={currentStats.total}
@@ -105,23 +120,26 @@ export default function ProfileScreen() {
               selectedYear={selectedYear}
               setSelectedYear={setSelectedYear}
             />
-            
+
             <TouchableOpacity
               className="mx-1 mb-6 rounded-xl p-4"
               style={{ backgroundColor: colors.accent, marginTop: -10 }}
               activeOpacity={0.7}
-              onPress={() => router.push({      
-                pathname: '/group',
-                params: { 
-                  title: 'Completados', 
-                  state: 'completados', 
-                  category: selectedCategory,
-                  from: 'Profile'
-                }
-              })}
-            >
-              <AppText className="text-center font-semibold" style={{ color: colors.primaryText, fontSize: 16 }}>
-               {t(`profile.viewCompleted.${selectedCategory}`)}
+              onPress={() =>
+                router.push({
+                  pathname: '/group',
+                  params: {
+                    title: t('status.completed') as string,
+                    state: 'completados',
+                    category: selectedCategory,
+                    from: 'Profile',
+                  },
+                })
+              }>
+              <AppText
+                className="text-center font-semibold"
+                style={{ color: colors.primaryText, fontSize: 16 }}>
+                {t(categoryMap[selectedCategory] as any)}
               </AppText>
             </TouchableOpacity>
           </>
@@ -148,14 +166,15 @@ export default function ProfileScreen() {
 
         <View className="absolute right-4 top-5 z-10 flex-row gap-x-2">
           <NotificationButton from="Profile" />
-          <Pressable
-            className="rounded-full p-3"
-            onPress={() => router.push('/settings')}>
+          <Pressable className="rounded-full p-3" onPress={() => router.push('/settings')}>
             <SettingsIcon size={22} color={colors.primaryText} />
           </Pressable>
         </View>
 
-        <ScrollView className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
+        <ScrollView
+          className="flex-1"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 20 }}>
           <ProfileData
             username={userData?.username || t('profile.user')}
             description={userData?.description}
@@ -174,9 +193,10 @@ export default function ProfileScreen() {
               className="flex-1 items-center justify-center rounded-xl px-3 py-2"
               style={{ backgroundColor: `${colors.accent}33` }}
               activeOpacity={0.4}
-              onPress={() =>
-                router.push('/editProfile')}>
-              <AppText className="text-base font-semibold" style={{ fontSize: 14, color: colors.primaryText }}>
+              onPress={() => router.push('/editProfile')}>
+              <AppText
+                className="text-base font-semibold"
+                style={{ fontSize: 14, color: colors.primaryText }}>
                 {t('settings.personalization.editProfile.title')}
               </AppText>
             </TouchableOpacity>
@@ -186,7 +206,9 @@ export default function ProfileScreen() {
               style={{ backgroundColor: `${colors.accent}33` }}
               activeOpacity={0.4}
               onPress={handleShare}>
-              <AppText className="text-base font-semibold" style={{ fontSize: 14, color: colors.primaryText }}>
+              <AppText
+                className="text-base font-semibold"
+                style={{ fontSize: 14, color: colors.primaryText }}>
                 {t('settings.account.share.title')}
               </AppText>
             </TouchableOpacity>
@@ -202,7 +224,7 @@ export default function ProfileScreen() {
               <CategorySelector
                 selected={selectedCategory}
                 onSelect={(cat) => {
-                  const newIndex = routes.findIndex(r => r.key === cat);
+                  const newIndex = routes.findIndex((r) => r.key === cat);
                   handleIndexChange(newIndex);
                 }}
               />
