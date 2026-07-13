@@ -56,7 +56,6 @@ export default function Login() {
   )[0];
 
   const handleLogin = async () => {
-    alert('Web ID: ' + process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID);
     setLoading(true);
     try {
       await signIn(email, password);

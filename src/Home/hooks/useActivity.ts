@@ -1,6 +1,7 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import {
   useInfiniteQuery,
+  useQueryClient,
   type InfiniteData,
   type QueryFunctionContext,
 } from '@tanstack/react-query';
@@ -21,9 +22,23 @@ type ActivityFeedQueryKey = ['activity-feed', string | undefined];
 export const useActivity = () => {
   const { user } = useAuth();
   const { fetchResources } = useResource();
+  const queryClient = useQueryClient();
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const pageSize = 5;
+  const queryKey: ActivityFeedQueryKey = ['activity-feed', user?.id];
 
-  const { data, isLoading, isFetching, isFetchingNextPage, hasNextPage, fetchNextPage, refetch } =
+  const fetchActivityPage = async (pageParam: number) => {
+    const from = pageParam * pageSize;
+    const to = from + pageSize - 1;
+    const activities = await activityService.getUltimosRecursosActivos(from, to, user?.id || '');
+
+    return {
+      items: activities,
+      nextPage: activities.length === pageSize ? pageParam + 1 : undefined,
+    } satisfies ActivityPage;
+  };
+
+  const { data, isLoading, isFetching, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useInfiniteQuery<
       ActivityPage,
       Error,
@@ -31,27 +46,15 @@ export const useActivity = () => {
       ActivityFeedQueryKey,
       number
     >({
-      queryKey: ['activity-feed', user?.id],
+      queryKey,
       queryFn: async ({ pageParam = 0 }: QueryFunctionContext<ActivityFeedQueryKey, number>) => {
-        const from = pageParam * pageSize;
-        const to = from + pageSize - 1;
-        const activities = await activityService.getUltimosRecursosActivos(
-          from,
-          to,
-          user?.id || ''
-        );
-
-        return {
-          items: activities,
-          nextPage: activities.length === pageSize ? pageParam + 1 : undefined,
-        } satisfies ActivityPage;
+        return fetchActivityPage(pageParam);
       },
       enabled: !!user?.id,
       initialPageParam: 0,
       getNextPageParam: (lastPage: ActivityPage) => lastPage.nextPage,
       staleTime: 1000 * 60 * 2,
       gcTime: 1000 * 60 * 30,
-      maxPages: 5,
     });
 
   const activities = useMemo<Activity[]>(
@@ -66,7 +69,22 @@ export const useActivity = () => {
   };
 
   const refreshActivities = async () => {
-    await refetch();
+    if (!user?.id) return;
+
+    setIsRefreshing(true);
+
+    try {
+      queryClient.removeQueries({ queryKey, exact: true });
+
+      const firstPage = await fetchActivityPage(0);
+
+      queryClient.setQueryData<InfiniteData<ActivityPage, number>>(queryKey, {
+        pages: [firstPage],
+        pageParams: [0],
+      });
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
   const handleItemPress = async (activity: Activity) => {
@@ -100,7 +118,7 @@ export const useActivity = () => {
 
   return {
     activities,
-    refreshing: isFetching && !isFetchingNextPage,
+    refreshing: isRefreshing || (isFetching && !isFetchingNextPage),
     loading: isLoading || isFetchingNextPage,
     fetchActivities,
     refreshActivities,
