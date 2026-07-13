@@ -66,6 +66,13 @@ export default function UserDetailsScreen() {
     { key: 'cancion', title: t('category.album') },
   ];
 
+  const categoryMap: Record<string, string> = {
+    libro: 'profile.viewCompleted.books',
+    pelicula: 'profile.viewCompleted.films',
+    serie: 'profile.viewCompleted.series',
+    videojuego: 'profile.viewCompleted.videogames',
+    cancion: 'profile.viewCompleted.albums',
+  };
   const index = routes.findIndex((r) => r.key === selectedCategory);
   const safeIndex = index === -1 ? 0 : index;
 
@@ -101,11 +108,10 @@ export default function UserDetailsScreen() {
       onLeftPress: () => hideNotification(),
       onRightPress: () => {
         hideNotification();
-        cancelRequest(); 
+        cancelRequest();
       },
     });
   };
-  
 
   const renderScene = ({ route: tabRoute }: any) => {
     if (isChanging || tabRoute.key !== selectedCategory) {
@@ -115,9 +121,6 @@ export default function UserDetailsScreen() {
         </View>
       );
     }
-
-    const currentCategoryTitle = routes.find(r => r.key === selectedCategory)?.title || '';
-
 
     return (
       <Animated.View entering={FadeIn.duration(300)} style={{ flex: 1, paddingTop: 16 }}>
@@ -139,24 +142,26 @@ export default function UserDetailsScreen() {
             />
 
             <TouchableOpacity
-              className="rounded-lg p-4 mb-6 mx-1" // Le he puesto un mt-4 para separarlo un poco
+              className="mx-1 mb-6 rounded-lg p-4" // Le he puesto un mt-4 para separarlo un poco
               style={{ backgroundColor: colors.accent, marginTop: -10 }}
               activeOpacity={0.7}
-              onPress={() => router.push({
-                pathname: '/group',
-                params: { 
-                  title: 'Completados', 
-                  state: 'completados', 
-                  category: selectedCategory,
-                  targetUserId: userData?.id
-                }
-              })}
-            >
-              <AppText className="text-center font-semibold" style={{ color: colors.primaryText, fontSize: 16 }}>
-                {t(`profile.viewCompleted.${selectedCategory}`)}
+              onPress={() =>
+                router.push({
+                  pathname: '/group',
+                  params: {
+                    title: t('status.completed') as string,
+                    state: 'completados',
+                    category: selectedCategory,
+                    targetUserId: userData?.id,
+                  },
+                })
+              }>
+              <AppText
+                className="text-center font-semibold"
+                style={{ color: colors.primaryText, fontSize: 16 }}>
+                {t(categoryMap[selectedCategory] as any)}
               </AppText>
             </TouchableOpacity>
-
           </>
         )}
       </Animated.View>
@@ -185,8 +190,7 @@ export default function UserDetailsScreen() {
             tintColor={colors.primaryText}
           />
         }
-        contentContainerStyle={{ paddingBottom: 20 }}
-        >
+        contentContainerStyle={{ paddingBottom: 20 }}>
         <View className="px-4 pb-6">
           <ProfileData
             username={userData?.username || t('details.user')}
@@ -214,7 +218,9 @@ export default function UserDetailsScreen() {
                   style={{ backgroundColor: `${colors.accent}33` }}
                   activeOpacity={0.4}
                   onPress={handleUnfollowPress}>
-                  <AppText className="text-base font-semibold" style={{ fontSize: 14, color: colors.primaryText }}>
+                  <AppText
+                    className="text-base font-semibold"
+                    style={{ fontSize: 14, color: colors.primaryText }}>
                     {t('profile.deleteFollowing.title')}
                   </AppText>
                 </TouchableOpacity>
@@ -224,11 +230,12 @@ export default function UserDetailsScreen() {
                   style={{ backgroundColor: `${colors.accent}33` }}
                   activeOpacity={0.4}
                   onPress={handleShare}>
-                  <AppText className="text-base font-semibold" style={{ fontSize: 14, color: colors.primaryText }}>
+                  <AppText
+                    className="text-base font-semibold"
+                    style={{ fontSize: 14, color: colors.primaryText }}>
                     {t('settings.account.share.title')}
                   </AppText>
                 </TouchableOpacity>
-
               </View>
 
               <TopFiveSelector userId={userData.id} />
@@ -241,7 +248,7 @@ export default function UserDetailsScreen() {
                     <CategorySelector
                       selected={selectedCategory}
                       onSelect={(cat) => {
-                        const newIndex = routes.findIndex(r => r.key === cat);
+                        const newIndex = routes.findIndex((r) => r.key === cat);
                         handleIndexChange(newIndex);
                       }}
                     />
