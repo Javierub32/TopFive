@@ -53,7 +53,7 @@ export const CollectionStructure = ({
           posterWidth={itemWidth}
           posterHeight={itemHeight}
           showStatus={showStatus}
-          onLongPress={() => handleLongPress(item.id, categoryMap[categoriaActual as ResourceType])}
+          onLongPress={handleLongPress ? () => handleLongPress(item.id, categoryMap[categoriaActual as ResourceType]) : null}
         />
       )}
     />
