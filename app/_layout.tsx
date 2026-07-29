@@ -3,7 +3,7 @@ import '../i18n';
 import { SplashScreen, Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
-import { View, Linking, Platform } from 'react-native';
+import { AppState, View, Linking, Platform } from 'react-native';
 import * as Font from 'expo-font';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeProvider } from 'context/ThemeContext';
@@ -16,8 +16,8 @@ import { AdsConsent, AdsConsentStatus } from 'lib/adsConsent';
 import { registerForPushNotificationsAsync } from 'lib/pushNotifications';
 import { FontSizeProvider } from 'context/FontSizeContext';
 import { useTranslation } from 'react-i18next';
-import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
-import { asyncStoragePersister, queryClient } from '@/query/queryClient';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@/query/queryClient';
 import { useAppVersion } from '@/AppVersion/hooks/useAppVersion';
 
 SplashScreen.preventAutoHideAsync();
@@ -31,6 +31,23 @@ function InitialLayout() {
   const { t } = useTranslation();
   const { data: remoteVersion, error: appVersionError } = useAppVersion();
   const notifiedAppVersionRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    let previousAppState = AppState.currentState;
+
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      const returnedToApp =
+        /inactive|background/.test(previousAppState) && nextAppState === 'active';
+
+      if (returnedToApp) {
+        queryClient.invalidateQueries();
+      }
+
+      previousAppState = nextAppState;
+    });
+
+    return () => subscription.remove();
+  }, []);
 
   useEffect(() => {
     async function prepare() {
@@ -214,12 +231,7 @@ function InitialLayout() {
 
 export default function RootLayout() {
   return (
-    <PersistQueryClientProvider
-      client={queryClient}
-      persistOptions={{
-        persister: asyncStoragePersister,
-        maxAge: 1000 * 60 * 60 * 24,
-      }}>
+    <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <FontSizeProvider>
           <ThemeProvider>
@@ -233,6 +245,6 @@ export default function RootLayout() {
           </ThemeProvider>
         </FontSizeProvider>
       </AuthProvider>
-    </PersistQueryClientProvider>
+    </QueryClientProvider>
   );
 }

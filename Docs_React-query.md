@@ -9,7 +9,7 @@ React Query no reemplaza a Supabase. Supabase sigue siendo quien lee y escribe e
 - saber cuando un dato esta fresco o viejo;
 - refetchear cuando se invalida una cache;
 - manejar estados de carga, error, refresh y paginacion;
-- persistir la cache en `AsyncStorage` para reducir egress entre sesiones.
+- mantener la cache en memoria durante la sesion actual de la app.
 
 ## Configuracion global
 
@@ -22,7 +22,7 @@ export const queryClient = new QueryClient({
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 60 * 24,
       retry: 1,
-      refetchOnMount: false,
+      refetchOnMount: 'always',
       refetchOnReconnect: true,
       refetchOnWindowFocus: false,
     },
@@ -30,17 +30,12 @@ export const queryClient = new QueryClient({
 });
 ```
 
-La app se envuelve en `PersistQueryClientProvider` en `app/_layout.tsx`. Eso hace que React Query este disponible para todos los providers y pantallas, y que parte de la cache se guarde en `AsyncStorage`.
+La app se envuelve en `QueryClientProvider` en `app/_layout.tsx`. La cache de React Query vive solo en memoria: al cerrar y volver a abrir la app se crea un cliente nuevo y los datos se vuelven a pedir. Al volver desde segundo plano, el layout invalida las queries para refrescar los datos activos.
 
 ```tsx
-<PersistQueryClientProvider
-  client={queryClient}
-  persistOptions={{
-    persister: asyncStoragePersister,
-    maxAge: 1000 * 60 * 60 * 24,
-  }}>
+<QueryClientProvider client={queryClient}>
   <AuthProvider>{/* resto de providers */}</AuthProvider>
-</PersistQueryClientProvider>
+</QueryClientProvider>
 ```
 
 ## Query keys
