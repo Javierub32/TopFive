@@ -1,4 +1,4 @@
-import { CollectionType, ListInfo, listServices } from '../services/listServices';
+import { CollectionType, listServices } from '../services/listServices';
 import { useAuth } from 'context/AuthContext';
 import { router } from 'expo-router';
 import { ResourceType } from 'hooks/useResource';
@@ -52,11 +52,11 @@ export const useLists = (categoriaActual: ResourceType) => {
     staleTime: 1000 * 60 * 10,
     gcTime: 1000 * 60 * 60,
     maxPages: 5,
-});
+  });
 
-const lists = pagedData?.pages.flatMap((page) => page.items) ?? [];
+  const lists = pagedData?.pages.flatMap((page) => page.items) ?? [];
 
-const handleLoadMore = () => {
+  const handleLoadMore = () => {
     if (hasNextPage && !isFetchingNextPage && !isFetching) {
       fetchNextPage();
     }
@@ -65,7 +65,7 @@ const handleLoadMore = () => {
   const invalidateLists = async () => {
     await Promise.all([
       queryClient.invalidateQueries({ queryKey: queryKeys.lists(user?.id, collectionType) }),
-      queryClient.invalidateQueries({ queryKey: ['lists'] }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.listsPrefix() }),
     ]);
   };
 
@@ -167,6 +167,7 @@ const handleLoadMore = () => {
   return {
     loading:
       isLoading ||
+      isFetching ||
       isFetchingNextPage ||
       createListMutation.isPending ||
       updateListMutation.isPending ||

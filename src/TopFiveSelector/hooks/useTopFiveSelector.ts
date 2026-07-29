@@ -60,7 +60,7 @@ export const useTopFiveSelector = (category?: ResourceType) => {
   };
 
   const resetTopFiveSelector = () => {
-    queryClient.invalidateQueries({ queryKey: ['topFive', 'selector', user?.id] });
+    queryClient.invalidateQueries({ queryKey: queryKeys.topFiveSelectorPrefix(user?.id) });
   };
 
   const insertTopFiveMutation = useMutation({
@@ -88,7 +88,7 @@ export const useTopFiveSelector = (category?: ResourceType) => {
 
   return {
     data: pagedData?.pages.flatMap((page: TopFiveSelectorPage) => page.items) ?? [],
-    loading: isLoading || isFetchingNextPage || insertTopFiveMutation.isPending,
+    loading: isLoading || isFetching || isFetchingNextPage || insertTopFiveMutation.isPending,
     hasMore: !!hasNextPage,
     fetchTopFiveSelector,
     resetTopFiveSelector,

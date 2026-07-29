@@ -31,6 +31,7 @@ function InitialLayout() {
   const { t } = useTranslation();
   const { data: remoteVersion, error: appVersionError } = useAppVersion();
   const notifiedAppVersionRef = useRef<string | null>(null);
+  const previousSessionUserIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     let previousAppState = AppState.currentState;
@@ -48,6 +49,21 @@ function InitialLayout() {
 
     return () => subscription.remove();
   }, []);
+
+  useEffect(() => {
+    if (loading) return;
+
+    const currentUserId = session?.user.id ?? null;
+    const sessionChanged =
+      previousSessionUserIdRef.current !== null &&
+      previousSessionUserIdRef.current !== currentUserId;
+
+    if (sessionChanged) {
+      queryClient.clear();
+    }
+
+    previousSessionUserIdRef.current = currentUserId;
+  }, [loading, session]);
 
   useEffect(() => {
     async function prepare() {

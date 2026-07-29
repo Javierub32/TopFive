@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useResource, ResourceType } from 'hooks/useResource';
 import { listServices, CollectionType } from '../services/listServices';
 import { useNotification } from 'context/NotificationContext';
@@ -48,7 +47,7 @@ export const useItemSelector = (category: string | undefined, listId: string | u
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: queryKeys.listDetails(listId, category) }),
-        queryClient.invalidateQueries({ queryKey: ['lists'] }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.listsPrefix() }),
       ]);
     },
   });

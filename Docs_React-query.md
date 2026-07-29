@@ -22,7 +22,7 @@ export const queryClient = new QueryClient({
       staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 60 * 24,
       retry: 1,
-      refetchOnMount: 'always',
+      refetchOnMount: true,
       refetchOnReconnect: true,
       refetchOnWindowFocus: false,
     },
@@ -74,7 +74,7 @@ queryKeys.listDetails(listId, collectionType)
 Importante: las invalidaciones pueden ser exactas o por prefijo.
 
 ```ts
-queryClient.invalidateQueries({ queryKey: ['lists'] });
+queryClient.invalidateQueries({ queryKey: queryKeys.listsPrefix() });
 ```
 
 Invalida todas las queries que empiezan por `['lists']`, por ejemplo:
@@ -314,11 +314,13 @@ En TopFive, `refreshData(type)` invalida:
 
 ```ts
 queryKeys.collectionOverview(user.id, type)
-['collection', 'group', user.id, type]
-['resources', user.id, type]
-['resources', 'exists', user.id, type]
+queryKeys.collectionGroupPrefix(user.id, type)
+queryKeys.resourcesPrefix(user.id, type)
+queryKeys.resourceExistsPrefix(user.id, type)
+queryKeys.listsPrefix()
 queryKeys.profile(user.id)
-['profile', 'stats', user.id]
+queryKeys.publicProfilePrefix()
+queryKeys.profileStatsPrefix(user.id)
 queryKeys.topFive(user.id)
 queryKeys.topFiveSelector(user.id, type)
 ```
@@ -328,7 +330,9 @@ Asi, al crear o editar un recurso, no se queda viejo:
 - el overview de Collection;
 - las pantallas de grupo;
 - busquedas/listados de recursos;
+- listas y detalles de listas;
 - perfil y estadisticas;
+- perfiles publicos que muestran esos datos;
 - Top Five;
 - selector de Top Five.
 
@@ -368,6 +372,7 @@ Al borrar, invalida:
 - `resources`: busquedas/listados cacheados.
 - `lists`: listas y detalles de listas, porque un recurso borrado puede aparecer ahi.
 - `profile`: contador de reviews.
+- `publicProfile`: datos publicos del usuario.
 - `profileStats`: graficas.
 - `topFive`: si el recurso estaba en Top Five.
 - `topFiveSelector`: selector de recursos para Top Five.

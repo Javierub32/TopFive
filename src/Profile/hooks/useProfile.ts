@@ -56,7 +56,7 @@ interface User {
 }
 
 export const useProfile = () => {
-  const { user, profileRefreshTrigger, refreshProfile } = useAuth();
+  const { user, refreshProfile } = useAuth();
   const { fetchMonthlyStats } = useResource();
   const { showNotification } = useNotification();
   const queryClient = useQueryClient();
@@ -132,7 +132,10 @@ export const useProfile = () => {
       queryClient.setQueryData(queryKeys.profile(user?.id), (previous: User | null | undefined) =>
         previous ? { ...previous, avatar_url: newUrl } : previous
       );
-      await queryClient.invalidateQueries({ queryKey: queryKeys.profile(user?.id) });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.profile(user?.id) }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.publicProfilePrefix() }),
+      ]);
       refreshProfile();
     },
   });

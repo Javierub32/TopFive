@@ -84,7 +84,7 @@ export const useNotification = () => {
       queryClient.invalidateQueries({ queryKey: ['followers'] }),
       queryClient.invalidateQueries({ queryKey: ['following'] }),
       queryClient.invalidateQueries({ queryKey: ['profile'] }),
-      queryClient.invalidateQueries({ queryKey: ['profile', 'public'] }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.publicProfilePrefix() }),
     ]);
   };
 

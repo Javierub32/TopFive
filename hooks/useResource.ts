@@ -128,7 +128,7 @@ export const useResource = () => {
           .eq('usuarioId', userIdToQuery);
       }
 
-      if (from != undefined && to != null) {
+      if (from !== undefined && from !== null && to !== undefined && to !== null) {
         query = query.range(from, to);
       }
 
@@ -203,14 +203,17 @@ export const useResource = () => {
           queryKey: queryKeys.collectionOverview(user.id, tipoRecurso),
         }),
         queryClient.invalidateQueries({
-          queryKey: ['collection', 'group', user.id, tipoRecurso],
+          queryKey: queryKeys.collectionGroupPrefix(user.id, tipoRecurso),
         }),
-        queryClient.invalidateQueries({ queryKey: ['resources', user.id, tipoRecurso] }),
-        queryClient.invalidateQueries({ queryKey: ['lists'] }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.resourcesPrefix(user.id, tipoRecurso),
+        }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.listsPrefix() }),
         queryClient.invalidateQueries({ queryKey: queryKeys.profile(user.id) }),
-        queryClient.invalidateQueries({ queryKey: ['profile', 'stats', user.id] }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.publicProfilePrefix() }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.profileStatsPrefix(user.id) }),
         queryClient.invalidateQueries({ queryKey: queryKeys.topFive(user.id) }),
-        queryClient.invalidateQueries({ queryKey: ['topFive', 'selector', user.id] }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.topFiveSelectorPrefix(user.id) }),
       ]);
       return data;
     } catch (error) {

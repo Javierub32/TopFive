@@ -29,20 +29,14 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
   const queryClient = useQueryClient();
 
   const addToListMutation = useMutation({
-    mutationFn: ({
-      listId,
-      listType,
-    }: {
-      listId: string;
-      listType: CollectionType;
-    }) => {
+    mutationFn: ({ listId, listType }: { listId: string; listType: CollectionType }) => {
       const exactType = getExactListType(listType, resourceCategory);
       return listServices.addItemToList(listId, resourceId, exactType);
     },
     onSuccess: async (_message, { listId, listType }) => {
       const exactType = getExactListType(listType, resourceCategory);
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['lists'] }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.listsPrefix() }),
         queryClient.invalidateQueries({ queryKey: queryKeys.listDetails(listId, exactType) }),
         queryClient.invalidateQueries({
           queryKey: queryKeys.listContainingItem(resourceId, exactType),

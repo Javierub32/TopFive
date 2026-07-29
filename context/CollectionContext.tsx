@@ -4,7 +4,6 @@ import { useAuth } from './AuthContext';
 import { ResourceType, useResource } from 'hooks/useResource';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/query/queryKeys';
-import { Alert } from 'react-native';
 
 const CollectionContext = createContext<any>(undefined);
 
@@ -24,7 +23,6 @@ export const CollectionProvider = ({ children }: any) => {
   );
   const [loading, setLoading] = useState(false);
   const [menuCategoriaAbierto, setMenuCategoriaAbierto] = useState(false);
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [isSearchVisible, setIsSearchVisible] = useState(false);
 
   // Datos por estado
@@ -45,7 +43,6 @@ export const CollectionProvider = ({ children }: any) => {
     data: collectionOverview,
     isLoading: overviewLoading,
     isFetching: overviewFetching,
-    refetch: refetchCollectionOverview,
   } = useQuery({
     queryKey: queryKeys.collectionOverview(user?.id, categoriaActual),
     queryFn: async () => {
@@ -169,25 +166,9 @@ export const CollectionProvider = ({ children }: any) => {
     setIsSearchVisible(!isSearchVisible);
   };
 
-  const fetchInitialData = async () => {
-    if (!user) return;
-
-    try {
-      await refetchCollectionOverview();
-    } catch (error) {
-      console.error(error);
-      setPendientes([]);
-      setEnCurso([]);
-      setCompletados([]);
-      setTotalPendientes(0);
-      setTotalEnCurso(0);
-      setTotalCompletados(0);
-    }
-  };
-
   useEffect(() => {
     // Limpiamos si el usuario hace logout
-    if (!user) {
+    if (!user?.id) {
       setPendientes([]);
       setEnCurso([]);
       setCompletados([]);
@@ -204,27 +185,27 @@ export const CollectionProvider = ({ children }: any) => {
   const refreshData = (resourceType?: ResourceType) => {
     const typeToRefresh = resourceType || categoriaActual;
 
-    setRefreshTrigger((prev) => prev + 1);
-
     if (!user?.id) return;
 
     queryClient.invalidateQueries({
       queryKey: queryKeys.collectionOverview(user.id, typeToRefresh),
     });
     queryClient.invalidateQueries({
-      queryKey: ['collection', 'group', user.id, typeToRefresh],
+      queryKey: queryKeys.collectionGroupPrefix(user.id, typeToRefresh),
     });
     queryClient.invalidateQueries({
-      queryKey: ['resources', user.id, typeToRefresh],
+      queryKey: queryKeys.resourcesPrefix(user.id, typeToRefresh),
     });
     queryClient.invalidateQueries({
-      queryKey: ['resources', 'exists', user.id, typeToRefresh],
+      queryKey: queryKeys.resourceExistsPrefix(user.id, typeToRefresh),
     });
+    queryClient.invalidateQueries({ queryKey: queryKeys.listsPrefix() });
     queryClient.invalidateQueries({
       queryKey: queryKeys.profile(user.id),
     });
+    queryClient.invalidateQueries({ queryKey: queryKeys.publicProfilePrefix() });
     queryClient.invalidateQueries({
-      queryKey: ['profile', 'stats', user.id],
+      queryKey: queryKeys.profileStatsPrefix(user.id),
     });
     queryClient.invalidateQueries({
       queryKey: queryKeys.topFive(user.id),
