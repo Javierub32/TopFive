@@ -6,10 +6,11 @@ import { Screen } from 'components/Screen';
 import { ProfileAvatar } from 'src/Profile/components/ProfileAvatar';
 import { useProfile } from 'src/Profile/hooks/useProfile';
 import { useTheme } from 'context/ThemeContext';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View, Animated } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { AppText } from 'components/AppText';
+import { useState, useRef, useEffect } from 'react';
 
 export default function EditProfileScreen() {
   const { pickImage, userData } = useProfile();
@@ -31,6 +32,21 @@ export default function EditProfileScreen() {
   // Usar datos actualizados de userData (que se refrescan al volver del focus)
   const avatarUrlString = userData?.avatar_url;
   const frameString = userData?.frame || 'none';
+
+  const slideAnim = useRef(new Animated.Value(uprivate ? 1 : 0)).current;
+
+  useEffect(() => {
+    Animated.timing(slideAnim, {
+      toValue: uprivate ? 1 : 0,
+      duration: 200,
+      useNativeDriver: false, 
+    }).start();
+  }, [uprivate]);
+
+  const position = slideAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0%', '50%'],
+  });
 
   if (loading) {
     return (
@@ -97,16 +113,24 @@ export default function EditProfileScreen() {
         </View>
 
         <View
-          className="relative flex-row mt-1 mb-2 rounded-full p-1"
-          style={{ backgroundColor: colors.surfaceButton }}
+          className="relative flex-row mt-2 mb-2 rounded-full"
+          style={{ backgroundColor: colors.surfaceButton, padding: 4 }}
         >
+          <View className="absolute top-1 bottom-1 left-1 right-1">
+            <Animated.View
+              className="h-full rounded-full shadow-sm"
+              style={{
+                width: '50%',
+                left: position,
+                backgroundColor: colors.background,
+              }}
+            />
+          </View>
+
           <TouchableOpacity
-            className="z-10 flex-1 items-center justify-center rounded-full py-2"
+            className="z-10 flex-1 items-center justify-center py-2"
             activeOpacity={0.7}
             onPress={() => setPrivate(false)}
-            style={{ 
-              backgroundColor: !uprivate ? colors.background : 'transparent' 
-            }}
           >
             <AppText
               className="font-semibold"
@@ -120,12 +144,9 @@ export default function EditProfileScreen() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            className="z-10 flex-1 items-center justify-center rounded-full py-2"
+            className="z-10 flex-1 items-center justify-center py-2"
             activeOpacity={0.7}
             onPress={() => setPrivate(true)}
-            style={{ 
-              backgroundColor: uprivate ? colors.background : 'transparent' 
-            }}
           >
             <AppText
               className="font-semibold"
