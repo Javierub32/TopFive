@@ -18,13 +18,13 @@ export const useSettings = (userData?: any) => {
   const [usernameAlreadyExists, setUsernameAlreadyExists] = useState(false);
   const [uname, setUsername] = useState(username || '');
   const [udesc, setDescription] = useState(description || '');
-  const [uprivate, setPrivate] = useState(is_private ? is_private === 'true' : true);
+  const [uprivate, setPrivate] = useState(is_private === 'true' );
 
   useEffect(() => {
     if (userData) {
       setUsername(userData.username || '');
       setDescription(userData.description || '');
-      setPrivate(userData.is_private || true);
+      setPrivate(userData.is_private ?? false);
     }
   }, [userData]);
 
