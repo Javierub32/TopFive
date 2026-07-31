@@ -7,9 +7,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/query/queryKeys';
 
 export const useSettings = (userData?: any) => {
-  const { username, description } = useLocalSearchParams<{
+  const { username, description, is_private } = useLocalSearchParams<{
     username: string;
     description: string;
+    is_private: string;
   }>();
   const { user, refreshProfile } = useAuth();
   const { showNotification } = useNotification();
@@ -17,11 +18,13 @@ export const useSettings = (userData?: any) => {
   const [usernameAlreadyExists, setUsernameAlreadyExists] = useState(false);
   const [uname, setUsername] = useState(username || '');
   const [udesc, setDescription] = useState(description || '');
+  const [uprivate, setPrivate] = useState(is_private ? is_private === 'true' : true);
 
   useEffect(() => {
     if (userData) {
       setUsername(userData.username || '');
       setDescription(userData.description || '');
+      setPrivate(userData.is_private || true);
     }
   }, [userData]);
 
@@ -36,13 +39,15 @@ export const useSettings = (userData?: any) => {
     mutationFn: async ({
       newUsername,
       newDescription,
+      newIsPrivate,
     }: {
       newUsername: string;
       newDescription: string;
+      newIsPrivate: boolean;
     }) => {
       const { error } = await supabase
         .from('usuario')
-        .update({ username: newUsername, description: newDescription })
+        .update({ username: newUsername, description: newDescription, is_private: newIsPrivate })
         .eq('id', user.id);
 
       if (error) throw error;
@@ -53,9 +58,9 @@ export const useSettings = (userData?: any) => {
     },
   });
 
-  const handleSubmit = async (newUsername: string, newDescription: string) => {
+  const handleSubmit = async (newUsername: string, newDescription: string, newIsPrivate: boolean) => {
     try {
-      await updateProfileMutation.mutateAsync({ newUsername, newDescription });
+      await updateProfileMutation.mutateAsync({ newUsername, newDescription, newIsPrivate });
       setUsernameAlreadyExists(false);
 
       showNotification({
@@ -94,10 +99,12 @@ export const useSettings = (userData?: any) => {
   return {
     loading: updateProfileMutation.isPending,
     uname,
+    uprivate, 
+    setPrivate,
     handleUsernameChange,
     udesc,
     setDescription,
     usernameAlreadyExists,
-    handleSubmit,
+    handleSubmit
   };
 };

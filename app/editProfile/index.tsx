@@ -12,16 +12,19 @@ import { useTranslation } from 'react-i18next';
 import { AppText } from 'components/AppText';
 
 export default function EditProfileScreen() {
-    const { pickImage, userData } = useProfile();
-	const {
+  const { pickImage, userData } = useProfile();
+  const {
     uname,
     udesc,
+    uprivate, 
+    setPrivate, 
     handleUsernameChange,
     setDescription,
     usernameAlreadyExists,
     handleSubmit,
     loading,
   } = useSettings(userData);
+  
   const { colors } = useTheme();
   const { t } = useTranslation();
 
@@ -83,10 +86,63 @@ export default function EditProfileScreen() {
           maxLength={110}
           numberOfLines={4}
         />
+        
+        <View className="flex-row items-center justify-between">
+          <AppText
+            className="mt-3 font-semibold"
+            style={{ fontSize: 16, color: colors.primaryText }}
+          >
+            {'Perfil'}
+          </AppText>
+        </View>
+
+        <View
+          className="relative flex-row mt-2 mb-2 rounded-full p-1"
+          style={{ backgroundColor: colors.surfaceButton }}
+        >
+          <TouchableOpacity
+            className="z-10 flex-1 items-center justify-center rounded-full py-2"
+            activeOpacity={0.7}
+            onPress={() => setPrivate(false)}
+            style={{ 
+              backgroundColor: !uprivate ? colors.background : 'transparent' 
+            }}
+          >
+            <AppText
+              className="font-semibold"
+              style={{ 
+                fontSize: 14, 
+                color: !uprivate ? colors.primaryText : colors.secondaryText 
+              }}
+            >
+              {t('common.public', 'Público')}
+            </AppText>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            className="z-10 flex-1 items-center justify-center rounded-full py-2"
+            activeOpacity={0.7}
+            onPress={() => setPrivate(true)}
+            style={{ 
+              backgroundColor: uprivate ? colors.background : 'transparent' 
+            }}
+          >
+            <AppText
+              className="font-semibold"
+              style={{ 
+                fontSize: 14, 
+                color: uprivate ? colors.primaryText : colors.secondaryText 
+              }}
+            >
+              {t('common.private', 'Privado')}
+            </AppText>
+          </TouchableOpacity>
+        </View>
+
         <TouchableOpacity
-          className="mt-4 w-full items-center rounded-xl py-3"
+          className="mt-2 w-full items-center rounded-xl py-3"
           style={{ backgroundColor: colors.primary }}
-          onPress={() => handleSubmit(uname.trim(), udesc.trim())}>
+          onPress={() => handleSubmit(uname.trim(), udesc.trim(), uprivate)}>
           <AppText className="font-bold" style={{ color: colors.background, fontSize: 18 }}>
             {t('common.saveChanges')}
           </AppText>
