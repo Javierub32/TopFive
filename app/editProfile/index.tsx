@@ -89,7 +89,7 @@ export default function EditProfileScreen() {
         
         <View className="flex-row items-center justify-between">
           <AppText
-            className="mt-3 font-semibold"
+            className="font-semibold"
             style={{ fontSize: 16, color: colors.primaryText }}
           >
             {'Perfil'}
@@ -97,7 +97,7 @@ export default function EditProfileScreen() {
         </View>
 
         <View
-          className="relative flex-row mt-2 mb-2 rounded-full p-1"
+          className="relative flex-row mt-1 mb-2 rounded-full p-1"
           style={{ backgroundColor: colors.surfaceButton }}
         >
           <TouchableOpacity
