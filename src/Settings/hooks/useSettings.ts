@@ -48,7 +48,10 @@ export const useSettings = (userData?: any) => {
       if (error) throw error;
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: queryKeys.profile(user?.id) });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.profile(user?.id) }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.publicProfilePrefix() }),
+      ]);
       refreshProfile();
     },
   });
@@ -67,7 +70,7 @@ export const useSettings = (userData?: any) => {
       });
     } catch (error: any) {
       console.error('Error al actualizar el perfil:', error);
-      if (error?.code == '23505') {
+      if (error?.code === '23505') {
         setUsernameAlreadyExists(true);
 
         showNotification({

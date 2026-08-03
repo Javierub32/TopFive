@@ -63,7 +63,10 @@ export const useFrame = () => {
       if (error) throw error;
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: queryKeys.profile(user?.id) });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.profile(user?.id) }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.publicProfilePrefix() }),
+      ]);
       refreshProfile();
     },
   });

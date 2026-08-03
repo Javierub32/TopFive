@@ -34,7 +34,6 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
-    refetch,
   } = useInfiniteQuery({
     queryKey: queryKeys.listDetails(listId, collectionType),
     queryFn: async ({ pageParam = 0 }) => {
@@ -64,17 +63,13 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
     }
   };
 
-  const resetListDetails = () => {
-    refetch();
-  };
-
   const deleteItemMutation = useMutation({
     mutationFn: ({ itemId, type }: { itemId: string; type: CollectionType }) =>
       listServices.removeItemFromList(listId, itemId, type),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: queryKeys.listDetails(listId, collectionType) }),
-        queryClient.invalidateQueries({ queryKey: ['lists'] }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.listsPrefix() }),
       ]);
     },
   });
@@ -104,7 +99,7 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
   };
 
   return {
-    loading: isLoading || isFetchingNextPage || deleteItemMutation.isPending,
+    loading: isLoading || isFetching || isFetchingNextPage || deleteItemMutation.isPending,
     data,
     handleLoadMore,
     hasMore: !!hasNextPage,

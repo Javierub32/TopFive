@@ -1,5 +1,5 @@
 import { ResourceType, StateType, useResource } from 'hooks/useResource';
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/query/queryKeys';
 import { useAuth } from 'context/AuthContext';
 
@@ -8,10 +8,9 @@ interface GroupDataPage {
   nextPage?: number;
 }
 
-export const useGroupData = (category: ResourceType, state: StateType, targetUserId?: string ) => {
+export const useGroupData = (category: ResourceType, state: StateType, targetUserId?: string) => {
   const { user } = useAuth();
   const { fetchResources } = useResource();
-  const queryClient = useQueryClient();
 
   const PAGE_SIZE = 9;
 
@@ -24,7 +23,6 @@ export const useGroupData = (category: ResourceType, state: StateType, targetUse
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
-    refetch,
   } = useInfiniteQuery({
     queryKey: queryKeys.collectionGroup(queryKeyId, category, state),
     queryFn: async ({ pageParam = 0 }) => {
@@ -40,7 +38,7 @@ export const useGroupData = (category: ResourceType, state: StateType, targetUse
         from,
         to,
         ordenarPorUltimaActividad,
-        targetUserId: queryKeyId
+        targetUserId: queryKeyId,
       });
 
       const items = result?.data || [];
@@ -67,17 +65,9 @@ export const useGroupData = (category: ResourceType, state: StateType, targetUse
     }
   };
 
-  const resetListDetails = () => {
-    queryClient.invalidateQueries({
-      queryKey: queryKeys.collectionGroup(user?.id, category, state),
-    });
-    refetch();
-  };
-
   return {
-    loading: isLoading || isFetchingNextPage,
+    loading: isLoading || isFetching || isFetchingNextPage,
     data,
     handleLoadMore,
-    resetListDetails,
   };
 };
