@@ -332,7 +332,10 @@
             "username": "Nombre de usuario",
             "usernamePlaceholder": "Escribe tu nombre de usuario...",
             "description": "Descripción",
-            "descriptionPlaceholder": "Escribe algo sobre ti..."
+            "descriptionPlaceholder": "Escribe algo sobre ti...",
+            "profileType": "Perfil",
+            "profilePublic": "Público",
+            "profilePrivate": "Privado"
         },
         "followers": "Seguidores",
         "following": "Seguidos",

@@ -1,5 +1,5 @@
 import { useAuth } from 'context/AuthContext';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { supabase } from 'lib/supabase';
 import { useEffect, useState } from 'react';
 import { useNotification } from 'context/NotificationContext';
@@ -62,7 +62,7 @@ export const useSettings = (userData?: any) => {
     try {
       await updateProfileMutation.mutateAsync({ newUsername, newDescription, newIsPrivate });
       setUsernameAlreadyExists(false);
-
+      await router.back();
       showNotification({
         title: '¡Éxito!',
         description: 'Tu perfil ha sido actualizado correctamente.',

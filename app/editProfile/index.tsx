@@ -108,7 +108,7 @@ export default function EditProfileScreen() {
             className="font-semibold"
             style={{ fontSize: 16, color: colors.primaryText }}
           >
-            {'Perfil'}
+            {t('profile.editProfile.profileType')}
           </AppText>
         </View>
 
@@ -139,7 +139,7 @@ export default function EditProfileScreen() {
                 color: !uprivate ? colors.primaryText : colors.secondaryText 
               }}
             >
-              {t('common.public', 'Público')}
+              {t('profile.editProfile.profilePublic')}
             </AppText>
           </TouchableOpacity>
 
@@ -155,7 +155,7 @@ export default function EditProfileScreen() {
                 color: uprivate ? colors.primaryText : colors.secondaryText 
               }}
             >
-              {t('common.private', 'Privado')}
+              {t('profile.editProfile.profilePrivate')}
             </AppText>
           </TouchableOpacity>
         </View>
