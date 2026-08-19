@@ -335,8 +335,13 @@
             "descriptionPlaceholder": "Tell us about yourself...",
             "profileType": "Profile",
             "profilePublic": "Public",
-            "profilePrivate": "Private"
+            "profilePrivate": "Private",
+            "profileUpdated": "Your profile has been updated successfully.",
+            "usernameExists": "This username is already in use. Please choose another.",
+            "profileUpdateError": "There was an error updating your profile. Please try again."
         },
+        "follow" : "Follow",
+        "followApplied": "Follow request sent",
         "followers": "Followers",
         "following": "Following",
         "deleteFollowers": {
@@ -350,6 +355,10 @@
             "description": "Do you want to unfollow {{username}}?",
             "successDescription": "You've unfollowed {{username}}.",
             "errorDescription": "Could not unfollow {{username}}. Please, try again."
+        },
+        "privateProfile": {
+            "title": "Private Profile",
+            "description": "This profile is private. You cannot view its content."
         }
     },
     "aboutUs": {

@@ -1,6 +1,7 @@
 import { useTheme } from 'context/ThemeContext';
 import { Text, TouchableOpacity, View } from 'react-native';
 import {AppText} from 'components/AppText';
+import {useTranslation} from 'react-i18next';
 interface FollowButtonProps {
   isFollowed: boolean;
   isRequested: boolean;
@@ -15,6 +16,7 @@ export function FollowButton({
   cancelRequest,
 }: FollowButtonProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   if (!isFollowed && !isRequested) {
     return (
@@ -23,7 +25,7 @@ export function FollowButton({
           className="items-center px-4 flex w-2/3 rounded-md py-2"
           style={{ backgroundColor: colors.accent }}
           onPress={handleFollow}>
-          <AppText className="font-semibold" style={{ color: colors.primaryText, fontSize: 14}}>Seguir</AppText>
+          <AppText className="font-semibold" style={{ color: colors.primaryText, fontSize: 14}}>{t('profile.follow')}</AppText>
         </TouchableOpacity>
       </View>
     );
@@ -35,7 +37,7 @@ export function FollowButton({
           className="items-center px-4 flex w-2/3 rounded-md py-2"
           style={{ backgroundColor: colors.surfaceButton }}
           onPress={cancelRequest}>
-          <AppText className="font-semibold" style={{ color: colors.primaryText, fontSize: 14 }}>Solicitud enviada</AppText>
+          <AppText className="font-semibold" style={{ color: colors.primaryText, fontSize: 14 }}>{t('profile.followApplied')}</AppText>
         </TouchableOpacity>
       </View>
     );

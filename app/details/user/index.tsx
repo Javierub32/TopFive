@@ -232,13 +232,13 @@ export default function UserDetailsScreen() {
                         <AppText
                           className="text-base font-semibold"
                           style={{ color: colors.primaryText, fontSize: 14 }}>
-                          {'Solicitud enviada'}
+                          {t('profile.followApplied')}
                         </AppText>
                       </TouchableOpacity>
                     );
                   }
                   // Si no se sigue al usuario o es un perfil privado
-                  if (!userData?.following_status || !profilePublic) {
+                  if (!userData?.following_status ) {
                     return (
                       <TouchableOpacity
                         className="flex-1 items-center justify-center rounded-xl px-3 py-2"
@@ -248,11 +248,12 @@ export default function UserDetailsScreen() {
                         <AppText
                           className="text-base font-semibold"
                           style={{ fontSize: 14, color: colors.primaryText }}>
-                          {'Seguir'}
+                          {t('profile.follow')}
                         </AppText>
                       </TouchableOpacity>
                     );
                   }
+                  if(userData?.following_status === 'accepted') {
                   return (
                     // Si se sigue al usuario
                     <TouchableOpacity
@@ -267,6 +268,7 @@ export default function UserDetailsScreen() {
                       </AppText>
                     </TouchableOpacity>
                   );
+                }
                 })()}
 
 
@@ -324,12 +326,12 @@ export default function UserDetailsScreen() {
                   <AppText
                     className="mb-3 text-center font-bold"
                     style={{ color: colors.primaryText, fontSize: 28 }}>
-                    {'Cuenta privada'}
+                    {t('profile.privateProfile.title')}
                   </AppText>
             
                   {/* Texto Secundario (Instrucciones) */}
                   <AppText className="px-4 text-center" style={{ color: colors.secondaryText, fontSize: 14 }}>
-                    {'Sigue a este usuario para ver sus contenidos'}
+                    {t('profile.privateProfile.description')}
                   </AppText>
                 </View>
 

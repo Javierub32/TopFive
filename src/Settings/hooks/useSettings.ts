@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useNotification } from 'context/NotificationContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/query/queryKeys';
+import { useTranslation } from 'react-i18next';
 
 export const useSettings = (userData?: any) => {
   const { username, description, is_private } = useLocalSearchParams<{
@@ -19,6 +20,7 @@ export const useSettings = (userData?: any) => {
   const [uname, setUsername] = useState(username || '');
   const [udesc, setDescription] = useState(description || '');
   const [uprivate, setPrivate] = useState(is_private === 'true' );
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (userData) {
@@ -64,8 +66,8 @@ export const useSettings = (userData?: any) => {
       setUsernameAlreadyExists(false);
       await router.back();
       showNotification({
-        title: '¡Éxito!',
-        description: 'Tu perfil ha sido actualizado correctamente.',
+        title: t('common.success'),
+        description: t('profile.editProfile.profileUpdated'),
         isChoice: false,
         delete: false,
         success: true,
@@ -76,8 +78,8 @@ export const useSettings = (userData?: any) => {
         setUsernameAlreadyExists(true);
 
         showNotification({
-          title: 'Error',
-          description: 'El nombre de usuario ya está en uso. Por favor, elige otro.',
+          title: t('common.error'),
+          description: t('profile.editProfile.usernameExists'),
           isChoice: false,
           delete: false,
           success: false,
@@ -87,8 +89,8 @@ export const useSettings = (userData?: any) => {
 
       setUsernameAlreadyExists(false);
       showNotification({
-        title: 'Error',
-        description: 'Hubo un error al actualizar tu perfil. Por favor, intenta de nuevo.',
+        title: t('common.error'),
+        description: t('profile.editProfile.profileUpdateError'),
         isChoice: false,
         delete: false,
         success: false,
