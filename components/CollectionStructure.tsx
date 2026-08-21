@@ -1,9 +1,13 @@
 import { CollectionGroup } from '@/Collection/components/CollectionGroup';
-import { FlatList, useWindowDimensions } from 'react-native';
+import { FlatList, useWindowDimensions, View } from 'react-native';
 import { LoadingIndicator } from './LoadingIndicator';
 import { ResourceType } from 'hooks/useResource';
 import { CollectionType } from '@/Collection/services/listServices';
 import { useFontSize } from 'context/FontSizeContext';
+import { AppText } from './AppText';
+import { useTranslation } from 'react-i18next';
+import colors from 'tailwindcss/colors';
+import { useTheme } from 'context/ThemeContext';
 
 const categoryMap: Record<ResourceType, CollectionType> = {
   pelicula: 'PELICULA',
@@ -16,6 +20,7 @@ const categoryMap: Record<ResourceType, CollectionType> = {
 export const CollectionStructure = ({
   data,
   categoriaActual,
+  estadoActual,
   handleItemPress,
   handleSearchPagination,
   showStatus,
@@ -33,6 +38,18 @@ export const CollectionStructure = ({
   const espacioHuecos = GAP * (numColumns - 1);
   const itemWidth = (anchoDisponible - espacioHuecos) / numColumns;
   const itemHeight = itemWidth * 1.5;
+
+  const { colors } = useTheme();
+  const { t } = useTranslation();
+  // Mapa de traducción para las categorías
+  const categoryTranslationMap: Record<ResourceType, string> = {
+    libro: t('categories.books'),
+    pelicula: t('categories.films'),
+    serie: t('categories.series'),
+    videojuego: t('categories.videogames'),
+    cancion: t('categories.albums'),
+  };
+
   return (
     <FlatList
       key={numColumns}
@@ -53,9 +70,19 @@ export const CollectionStructure = ({
           posterWidth={itemWidth}
           posterHeight={itemHeight}
           showStatus={showStatus}
+          status={estadoActual}
           onLongPress={handleLongPress ? () => handleLongPress(item.id, categoryMap[categoriaActual as ResourceType]) : null}
         />
       )}
+      ListEmptyComponent={
+        <View
+          className={`fixed bottom-0 left-0 right-0 top-0 flex-1 items-center justify-center px-2 ${loading ? 'hidden' : ''}`}>
+          <AppText className="mb-3 text-center font-bold"
+            style={{ color: colors.secondaryText, fontSize: 20 }}>
+            {t('collection.noContentDescription', { category: categoryTranslationMap[categoriaActual as ResourceType].toLowerCase(), status: (estadoActual ? estadoActual.toLowerCase() : t('list.onThisList')) })}
+          </AppText>
+        </View>
+      }
     />
   );
 };

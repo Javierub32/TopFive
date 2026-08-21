@@ -47,6 +47,8 @@ export default function ResourceList() {
         data={enCurso}
         total={totalEnCurso}
         category={categoriaActual}
+        estadoActual={t('status.inProgress')}
+        status= {t('status.inProgress')}
         onPressItem={handleItemPress}
         onPressTitle={() => navigateToGrid(t('status.inProgress'), 'enCurso', categoriaActual)}
       />
@@ -55,6 +57,7 @@ export default function ResourceList() {
         data={completados}
         total={totalCompletados}
         category={categoriaActual}
+        estadoActual= {t('status.completed')}
         onPressItem={handleItemPress}
         onPressTitle={() => navigateToGrid(t('status.completed'), 'completados', categoriaActual)}
       />
@@ -63,6 +66,7 @@ export default function ResourceList() {
         data={pendientes}
         total={totalPendientes}
         category={categoriaActual}
+        estadoActual= {t('status.pending')}
         onPressItem={handleItemPress}
         onPressTitle={() => navigateToGrid(t('status.pending'), 'pendientes', categoriaActual)}
       />

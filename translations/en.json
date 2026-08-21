@@ -239,7 +239,8 @@
         "status": "Status",
         "onlyFavorites": "Only favorites",
         "noContent": "No content available",
-        "searchInPlaceholder": "Search in {{category}}..."
+        "searchInPlaceholder": "Search in {{category}}...",
+        "noContentDescription": "There are no {{category}} {{status}}"
     },
     "list": {
         "deleteListNotification": {
@@ -263,7 +264,8 @@
             "description": "Are you sure you want to remove this item from the list?",
             "confirmationDescription": "The item has been deleted from the list."
         },
-        "createNewList": "+ Create new list"
+        "createNewList": "+ Create new list",
+        "onThisList": "on this list"
     },
     "home": {
         "pressAgainToExit": "Press again to exit.",
@@ -478,7 +480,8 @@
             "listNamePlaceholder": "E.g.: Essential movies",
             "description": "Description",
             "descriptionPlaceholder": "Describe the content of this list...",
-            "listDetails": "List details"
+            "listDetails": "List details",
+            "onThisList": "on this list"
         },
         "ready": "Ready",
         "lastTime": "Last time",

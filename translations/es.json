@@ -239,7 +239,8 @@
         "status": "Estado",
         "onlyFavorites": "Solo favoritos",
         "noContent": "No hay contenido disponible",
-        "searchInPlaceholder": "Buscar en {{category}}..."
+        "searchInPlaceholder": "Buscar en {{category}}...",
+        "noContentDescription": "No hay {{category}} {{status}}"
     },
     "list": {
         "deleteListNotification": {
@@ -263,7 +264,8 @@
             "description": "¿Estás seguro de que deseas eliminar este elemento de la lista?",
             "confirmationDescription": "El elemento ha sido eliminado exitosamente de la lista."
         },
-        "createNewList": "+ Nueva lista"
+        "createNewList": "+ Nueva lista",
+        "onThisList": "en esta lista"
     },
     "home": {
         "pressAgainToExit": "Vuelve a tocar para salir.",
