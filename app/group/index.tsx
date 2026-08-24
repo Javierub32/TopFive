@@ -1,6 +1,6 @@
-import { View, Text} from 'react-native';
-import { useLocalSearchParams } from 'expo-router'; 
-import { Screen } from 'components/Screen'; 
+import { View, Text } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
+import { Screen } from 'components/Screen';
 import { useCollection } from 'context/CollectionContext';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { CollectionStructure } from 'components/CollectionStructure';
@@ -10,9 +10,9 @@ import { useEffect } from 'react';
 import { ResourceType, StateType } from 'hooks/useResource';
 
 const stateMap: Record<string, StateType> = {
-	enCurso: 'EN_CURSO',
-	pendientes: 'PENDIENTE',
-	completados: 'COMPLETADO',
+  enCurso: 'EN_CURSO',
+  pendientes: 'PENDIENTE',
+  completados: 'COMPLETADO',
 };
 
 export default function GroupScreen() {
@@ -24,10 +24,11 @@ export default function GroupScreen() {
   const targetUserId = params.targetUserId as string;
 
   const { handleItemPress, setIsSearchVisible } = useCollection();
+  const {handleLongPress, selectedItems} = useCollection();
   const { loading, data, handleLoadMore } = useGroupData(category as ResourceType, stateMap[state], targetUserId);
 
   useEffect(() => {
-		setIsSearchVisible(false);
+    setIsSearchVisible(false);
   }, []);
 
   const returnRoute = targetUserId ? 'back' : (from === 'Profile' ? '/Profile' : '/Collection');
@@ -36,7 +37,7 @@ export default function GroupScreen() {
   return (
     <Screen>
       <View className="flex-1 px-4 pt-4">
-        <ReturnButton route={returnRoute} title={title} style={" "} params={returnParams}/>
+        <ReturnButton route={returnRoute} title={title} style={" "} params={returnParams} />
         {loading && data.length === 0 ? (
           <LoadingIndicator />
         ) : (
@@ -44,9 +45,10 @@ export default function GroupScreen() {
             data={data}
             categoriaActual={category}
             handleItemPress={(item: any) => handleItemPress(item, category as ResourceType, 'group')}
-			showStatus={false}
-			handleSearchPagination={handleLoadMore}
-			loading={loading}
+            showStatus={false}
+            handleLongPress={(item: any) => handleLongPress(item, category as ResourceType, 'group')}
+            handleSearchPagination={handleLoadMore}
+            loading={loading}
           />
         )}
       </View>

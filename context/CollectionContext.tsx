@@ -35,6 +35,9 @@ export const CollectionProvider = ({ children }: any) => {
   const [totalEnCurso, setTotalEnCurso] = useState<number>(0);
   const [totalCompletados, setTotalCompletados] = useState<number>(0);
 
+  // Multiple selección
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const pageSize = 9;
@@ -231,12 +234,28 @@ export const CollectionProvider = ({ children }: any) => {
       cancion: 'song',
     };
     const type = resourceTypeMap[categoria || categoriaActual];
+    //En el caso de que antes no se ha mantenido pulsado, se mantiene la acción
+    if(selectedItems.length <= 0) {
     router.push({
       pathname: `/details/${type}/${type}Resource`,
       params: { item: JSON.stringify(item), from: from || 'collection' },
     });
     setIsSearchVisible(false);
+    }else{
+      //Vemos si el item está o no seleccionado 
+      setSelectedItems((prevSelectedItems) => {
+        if(prevSelectedItems.includes(item.id)){
+          return prevSelectedItems.filter((id) => id !== item.id);
+        } else {
+          return [...prevSelectedItems, item.id];
+        }
+      });
+    }
   };
+
+  const handleLongPress = (item: any, categoria?: ResourceType, from?: string) => {  
+      setSelectedItems([item.id]);
+  }
 
   return (
     <CollectionContext.Provider
@@ -257,6 +276,8 @@ export const CollectionProvider = ({ children }: any) => {
         totalCompletados,
         navigateToGrid,
         handleItemPress,
+        handleLongPress,
+        selectedItems,
         busqueda,
         setBusqueda,
         data,

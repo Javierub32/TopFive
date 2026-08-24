@@ -21,6 +21,7 @@ export const CollectionStructure = ({
   showStatus,
   loading,
   handleLongPress,
+  selectedItems
 }: any) => {
   const { width } = useWindowDimensions();
   const { fontSizeMultiplier } = useFontSize();
@@ -53,7 +54,7 @@ export const CollectionStructure = ({
           posterWidth={itemWidth}
           posterHeight={itemHeight}
           showStatus={showStatus}
-          onLongPress={handleLongPress ? () => handleLongPress(item.id, categoryMap[categoriaActual as ResourceType]) : null}
+          onLongPress={() =>handleLongPress(item)}
         />
       )}
     />
