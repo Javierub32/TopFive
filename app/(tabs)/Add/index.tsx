@@ -1,4 +1,4 @@
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Screen } from 'components/Screen';
 import { useSearchContent } from 'src/Add/hooks/useSearchContent';
 
@@ -33,45 +33,48 @@ export default function AddScreen() {
   return (
     <Screen>
       <ThemedStatusBar />
-      <View className="flex-1 px-4 pt-6">
-        <AppText className="mb-4 mt-2 font-bold" style={{ fontSize: 28, color: colors.primaryText }}>
-          {t('tabs.search')}
-        </AppText>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View className="flex-1 px-4 pt-6">
+            <AppText className="mb-4 mt-2 font-bold" style={{ fontSize: 28, color: colors.primaryText }}>
+              {t('tabs.search')}
+            </AppText>
 
-        <SearchBar
-          value={busqueda}
-          onChangeText={setBusqueda}
-          onSearch={handleSearch}
-          selectedCategory={recursoBusqueda}
-          onCategoryChange={(cat) => {
-            setRecursoBusqueda(cat);
-          }}
-          menuAbierto={menuAbierto}
-          setMenuAbierto={setMenuAbierto}
-        />
-        {resultados.length > 0 ? (
-          <FlatList
-            className={`-z-10 flex-1 ${loading ? 'hidden' : ''}`}
-            data={resultados}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item, index }) => (
-              <SearchResultItem
-                item={item}
-                type={recursoBusqueda}
-                onPress={() => navigateToDetails(index)}
+            <SearchBar
+              value={busqueda}
+              onChangeText={setBusqueda}
+              onSearch={handleSearch}
+              selectedCategory={recursoBusqueda}
+              onCategoryChange={(cat) => {
+                setRecursoBusqueda(cat);
+              }}
+              menuAbierto={menuAbierto}
+              setMenuAbierto={setMenuAbierto}
+            />
+            {resultados.length > 0 ? (
+              <FlatList
+                className={`-z-10 flex-1 ${loading ? 'hidden' : ''}`}
+                data={resultados}
+                keyExtractor={(item) => item.id}
+                keyboardShouldPersistTaps="handled"
+                renderItem={({ item, index }) => (
+                  <SearchResultItem
+                    item={item}
+                    type={recursoBusqueda}
+                    onPress={() => navigateToDetails(index)}
+                  />
+                )}
+                contentContainerStyle={{ paddingBottom: 40, paddingTop: 10 }}
+                showsVerticalScrollIndicator={false}
               />
+            ) : hasSearched ? (
+              <FoundPlaceholder category={recursoBusqueda} loading={loading} />
+            ) : (
+              <SearchPlaceholder category={recursoBusqueda} loading={loading} />
             )}
-            contentContainerStyle={{ paddingBottom: 40, paddingTop: 10 }}
-            showsVerticalScrollIndicator={false}
-          />
-        ) : hasSearched ? (
-          <FoundPlaceholder category={recursoBusqueda} loading={loading} />
-        ) : (
-          <SearchPlaceholder category={recursoBusqueda} loading={loading} />
-        )}
 
-        {loading && <LoadingIndicator />}
-      </View>
+            {loading && <LoadingIndicator />}
+          </View>
+        </TouchableWithoutFeedback>
     </Screen>
   );
 }

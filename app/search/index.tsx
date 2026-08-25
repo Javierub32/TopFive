@@ -1,4 +1,4 @@
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Screen } from 'components/Screen';
 import { UserSearchBar } from '@/Search/components/UserSearchBar';
 import { useSearchUser } from '@/Search/hooks/useSearchUser';
@@ -20,13 +20,17 @@ export default function SearchhScreen() {
     return (
       <Screen>
         <ThemedStatusBar />
-        <View className="flex-1 px-4 pt-6">
-          <ReturnButton route="back" title={t('search.usersTitle')} style="mb-8" />
-          <UserSearchBar value={busqueda} onChangeText={setBusqueda} onSearch={handleSearch} />
-          <View className="flex-1 items-center justify-center">
-            <LoadingIndicator />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View className="flex-1 px-4 pt-6">
+
+            <ReturnButton route="back" title={t('search.usersTitle')} style="mb-8" />
+            <UserSearchBar value={busqueda} onChangeText={setBusqueda} onSearch={handleSearch} />
+            <View className="flex-1 items-center justify-center">
+              <LoadingIndicator />
+            </View>
+
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Screen>
     );
   }
@@ -34,43 +38,46 @@ export default function SearchhScreen() {
   return (
     <Screen>
       <ThemedStatusBar />
-      <View className="flex-1 px-4 pt-6">
-        <ReturnButton
-          route="back"
-          title={t('search.usersTitle')}
-          style="mb-6"
-          deleteSearchResults={true}
-        />
-        <UserSearchBar value={busqueda} onChangeText={setBusqueda} onSearch={handleSearch} />
-
-        {resultados.length > 0 ? (
-          <FlatList
-            className="-z-10 flex-1"
-            data={resultados}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <UserResultItem
-                item={item}
-                onPress={() =>
-                  router.push({
-                    pathname: 'details/user/',
-                    params: { username: item.username },
-                  })
-                }
-              />
-            )}
-            // Umbral para cargar más antes de llegar al final
-            onEndReachedThreshold={0.5}
-            onEndReached={handleLoadMore}
-            contentContainerStyle={{ paddingBottom: 40, paddingTop: 10 }}
-            // Loader inferior pequeño para paginación
-            ListFooterComponent={() => (loading ? <LoadingIndicator /> : null)}
-            showsVerticalScrollIndicator={false}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View className="flex-1 px-4 pt-6">
+          <ReturnButton
+            route="back"
+            title={t('search.usersTitle')}
+            style="mb-6"
+            deleteSearchResults={true}
           />
-        ) : (
-          <UserSearchPlaceholder loading={loading} />
-        )}
-      </View>
+          <UserSearchBar value={busqueda} onChangeText={setBusqueda} onSearch={handleSearch} />
+
+          {resultados.length > 0 ? (
+            <FlatList
+              className="-z-10 flex-1"
+              data={resultados}
+              keyExtractor={(item) => item.id}
+              keyboardShouldPersistTaps="handled"
+              renderItem={({ item }) => (
+                <UserResultItem
+                  item={item}
+                  onPress={() =>
+                    router.push({
+                      pathname: 'details/user/',
+                      params: { username: item.username },
+                    })
+                  }
+                />
+              )}
+              // Umbral para cargar más antes de llegar al final
+              onEndReachedThreshold={0.5}
+              onEndReached={handleLoadMore}
+              contentContainerStyle={{ paddingBottom: 40, paddingTop: 10 }}
+              // Loader inferior pequeño para paginación
+              ListFooterComponent={() => (loading ? <LoadingIndicator /> : null)}
+              showsVerticalScrollIndicator={false}
+            />
+          ) : (
+            <UserSearchPlaceholder loading={loading} />
+          )}
+        </View>
+      </TouchableWithoutFeedback>
     </Screen>
   );
 }
