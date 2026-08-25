@@ -17,6 +17,7 @@ export interface User {
   following_status: 'pending' | 'accepted' | null;
   frame: string;
   reviews_count: number;
+  is_private: boolean;
 }
 
 // Estructura inicial de estadísticas

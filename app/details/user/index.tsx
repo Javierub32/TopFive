@@ -6,6 +6,7 @@ import { ProfileData } from '@/User/components/ProfileData';
 import { UserAvatar } from '@/User/components/UserAvatar';
 import { FollowButton } from '@/User/components/FollowButton';
 import { LoadingIndicator } from 'components/LoadingIndicator';
+import { ScalableLockIcon } from 'components/Icons';
 import {
   View,
   ScrollView,
@@ -50,7 +51,9 @@ export default function UserDetailsScreen() {
     refreshUserData,
   } = useUser(username as string);
 
-  const canViewStats = userData?.following_status === 'accepted';
+  const isFollowing = userData?.following_status === 'accepted';
+  const profilePublic = userData?.is_private === false;
+  const canViewStats = isFollowing || profilePublic;
   const getPath = () => {
     if (from === 'home') return 'back';
     if (from === 'link') return '/Home';
@@ -203,27 +206,71 @@ export default function UserDetailsScreen() {
               frame={userData?.frame || 'none'}
             />
           </ProfileData>
+          {!isFollowing && !profilePublic
+            && (
+              <FollowButton
+                isFollowed={userData?.following_status === 'accepted' || false}
+                isRequested={userData?.is_requested || false}
+                handleFollow={handleFollow}
+                cancelRequest={cancelRequest}
+              />
+            )
+          }
 
-          <FollowButton
-            isFollowed={userData?.following_status === 'accepted' || false}
-            isRequested={userData?.is_requested || false}
-            handleFollow={handleFollow}
-            cancelRequest={cancelRequest}
-          />
-          {canViewStats && userData?.id && (
+          {(canViewStats) && userData?.id && (
             <>
               <View className="mt-6 flex-row gap-x-2">
-                <TouchableOpacity
-                  className="flex-1 items-center justify-center rounded-xl px-3 py-2"
-                  style={{ backgroundColor: `${colors.accent}33` }}
-                  activeOpacity={0.4}
-                  onPress={handleUnfollowPress}>
-                  <AppText
-                    className="text-base font-semibold"
-                    style={{ fontSize: 14, color: colors.primaryText }}>
-                    {t('profile.deleteFollowing.title')}
-                  </AppText>
-                </TouchableOpacity>
+                {(() => {
+                  // Si se ha enviado solicitud y está pendiente
+                  if (userData?.following_status === 'pending') {
+                    return (
+                      <TouchableOpacity
+                        className="flex-1 items-center justify-center rounded-xl px-3 py-2"
+                        style={{ backgroundColor: `${colors.surfaceButton}` }}
+                        activeOpacity={0.4}
+                        onPress={cancelRequest || handleUnfollowPress}>
+                        <AppText
+                          className="text-base font-semibold"
+                          style={{ color: colors.primaryText, fontSize: 14 }}>
+                          {t('profile.followApplied')}
+                        </AppText>
+                      </TouchableOpacity>
+                    );
+                  }
+                  // Si no se sigue al usuario o es un perfil privado
+                  if (!userData?.following_status ) {
+                    return (
+                      <TouchableOpacity
+                        className="flex-1 items-center justify-center rounded-xl px-3 py-2"
+                        style={{ backgroundColor: colors.accent }}
+                        activeOpacity={0.4}
+                        onPress={handleFollow}>
+                        <AppText
+                          className="text-base font-semibold"
+                          style={{ fontSize: 14, color: colors.primaryText }}>
+                          {t('profile.follow')}
+                        </AppText>
+                      </TouchableOpacity>
+                    );
+                  }
+                  if(userData?.following_status === 'accepted') {
+                  return (
+                    // Si se sigue al usuario
+                    <TouchableOpacity
+                      className="flex-1 items-center justify-center rounded-xl px-3 py-2"
+                      style={{ backgroundColor: `${colors.accent}33` }}
+                      activeOpacity={0.4}
+                      onPress={handleUnfollowPress}>
+                      <AppText
+                        className="text-base font-semibold"
+                        style={{ fontSize: 14, color: colors.primaryText }}>
+                        {t('profile.deleteFollowing.title')}
+                      </AppText>
+                    </TouchableOpacity>
+                  );
+                }
+                })()}
+
 
                 <TouchableOpacity
                   className="flex-1 items-center justify-center rounded-xl px-3 py-2"
@@ -261,8 +308,36 @@ export default function UserDetailsScreen() {
               </View>
             </>
           )}
+          {(!canViewStats) && (
+
+            <View className='flex-1 items-center justify-center py-20'>
+                  {/* Contenedor del Icono  */}
+                  <View
+                    className="mb-6 h-32 w-32 items-center justify-center rounded-full"
+                    style={{ backgroundColor: `${colors.primaryText}1A` }}>
+                    <View
+                      className="h-28 w-28 items-center justify-center rounded-full"
+                      style={{ backgroundColor: colors.secondary }}>
+                      <ScalableLockIcon size={80} color={colors.primaryText} />
+                    </View>
+                  </View>
+            
+                  {/* Texto Principal (Nombre de la categoría) */}
+                  <AppText
+                    className="mb-3 text-center font-bold"
+                    style={{ color: colors.primaryText, fontSize: 28 }}>
+                    {t('profile.privateProfile.title')}
+                  </AppText>
+            
+                  {/* Texto Secundario (Instrucciones) */}
+                  <AppText className="px-4 text-center" style={{ color: colors.secondaryText, fontSize: 14 }}>
+                    {t('profile.privateProfile.description')}
+                  </AppText>
+                </View>
+
+          )}
         </View>
       </ScrollView>
-    </Screen>
+    </Screen >
   );
 }

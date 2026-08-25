@@ -6,6 +6,7 @@ import RNFeather from '@expo/vector-icons/Feather';
 import RNEntypo from '@expo/vector-icons/Entypo';
 import RNAntDesign from '@expo/vector-icons/AntDesign';
 import RNMaterialIcons from '@expo/vector-icons/MaterialIcons';
+import RNEvilIcons from '@expo/vector-icons/EvilIcons';
 
 import { useTheme } from 'context/ThemeContext';
 import { useFontSize } from 'context/FontSizeContext';
@@ -27,6 +28,7 @@ export const ScalableFeather = withScalableSize(RNFeather);
 export const ScalableEntypo = withScalableSize(RNEntypo);
 export const ScalableAntDesign = withScalableSize(RNAntDesign);
 export const ScalableMaterialIcons = withScalableSize(RNMaterialIcons);
+export const ScalableEvilIcons = withScalableSize(RNEvilIcons);
 
 // Exportamos las bases originales para uso directo si es necesario
 export const FontAwesome = RNFontAwesome;
@@ -37,6 +39,7 @@ export const Feather = RNFeather;
 export const Entypo = RNEntypo;
 export const AntDesign = RNAntDesign;
 export const MaterialIcons = RNMaterialIcons;
+export const EvilIcons = RNEvilIcons;
 
 //-----ICONOS-----//
 
@@ -99,6 +102,9 @@ export const AcceptIcon = (props) => <RNFeather name="check" size={24} color="wh
 
 export const ScalableWrenchIcon = (props) => <ScalableMaterialCommunityIcons name="hammer-wrench" size={24} color="white" {...props} />;
 export const WrenchIcon = (props) => <RNMaterialCommunityIcons name="hammer-wrench" size={24} color="white" {...props} />;
+
+export const ScalableLockIcon = (props) => <ScalableEvilIcons name="lock" size={24} color="white" {...props} />;
+export const LockIcon = (props) => <RNEvilIcons name="lock" size={24} color="white" {...props} />;
 
 // Iconos con contexto (Theme)
 export const ScalableRatingIcon = (props) => {
