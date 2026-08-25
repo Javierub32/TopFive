@@ -43,12 +43,21 @@ export const userService = {
 	},
 
 	async requestFollow(userId: string, targetUserId: string) {
+		const {data: targetData} = await supabase
+			.from('usuario')
+			.select('is_private')
+			.eq('id', targetUserId)
+			.single();
+
+		const isTargetPrivate = targetData?.is_private;
+		const finalStatus = isTargetPrivate ? 'pending' : 'accepted';
+
 		const { data, error } = await supabase
 			.from('relationships')
 			.insert([{
 				follower_id: userId,
 				following_id: targetUserId,
-				status: 'pending'
+				status: finalStatus
 			}]);
 		if (error) throw error;
 
