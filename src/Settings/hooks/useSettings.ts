@@ -19,7 +19,7 @@ export const useSettings = (userData?: any) => {
   const [usernameAlreadyExists, setUsernameAlreadyExists] = useState(false);
   const [uname, setUsername] = useState(username || '');
   const [udesc, setDescription] = useState(description || '');
-  const [uprivate, setPrivate] = useState(is_private === 'true' );
+  const [uprivate, setPrivate] = useState(is_private === 'true');
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -63,6 +63,14 @@ export const useSettings = (userData?: any) => {
   const handleSubmit = async (newUsername: string, newDescription: string, newIsPrivate: boolean) => {
     try {
       await updateProfileMutation.mutateAsync({ newUsername, newDescription, newIsPrivate });
+      if (newIsPrivate === false) {
+        const { error } = await supabase
+          .from('relationships')
+          .update({ status: 'accepted' })
+          .eq('following_id', user?.id)
+          .eq('status', 'pending');
+        if (error) throw error;
+      }
       setUsernameAlreadyExists(false);
       await router.back();
       showNotification({
@@ -101,7 +109,7 @@ export const useSettings = (userData?: any) => {
   return {
     loading: updateProfileMutation.isPending,
     uname,
-    uprivate, 
+    uprivate,
     setPrivate,
     handleUsernameChange,
     udesc,
