@@ -6,6 +6,8 @@ import { CategorySelectorModal } from 'components/CategorySelectorModal';
 import { useAuth } from 'context/AuthContext';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+
+
 export const TopFiveSelector = ({ userId }: { userId: string }) => {
   const slots = Array.from({ length: 5 });
   const { colors } = useTheme();
@@ -56,7 +58,7 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
                   onLongPress={() => isOwnProfile && handleLongPress(position, item)}
                   activeOpacity={0.7}>
                   <View
-                    className="aspect-[2/3] w-full items-center justify-center overflow-hidden rounded-lg border"
+                    className="aspect-[2/3] w-full items-center justify-center overflow-hidden rounded-lg"
                     style={{
                       backgroundColor: colors.surfaceButton,
                       borderColor: colors.borderButton,

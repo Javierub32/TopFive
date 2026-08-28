@@ -63,7 +63,7 @@ export const useSettings = (userData?: any) => {
     },
   });
 
-  const handleSubmit = async (newUsername: string, newDescription: string, newIsPrivate: boolean) => {
+  const handleSubmit = async (newUsername: string, newDescription: string, newIsPrivate: boolean, onSaveTopFive?: () => Promise<void>) => {
     try {
       await updateProfileMutation.mutateAsync({ newUsername, newDescription, newIsPrivate });
       if (newIsPrivate === false) {
@@ -74,8 +74,13 @@ export const useSettings = (userData?: any) => {
           .eq('status', 'pending');
         if (error) throw error;
       }
+
+      if (onSaveTopFive) {
+        await onSaveTopFive();
+      }
+
       setUsernameAlreadyExists(false);
-      await router.back();
+      router.replace('/Profile');
       showNotification({
         title: t('common.success'),
         description: t('profile.editProfile.profileUpdated'),

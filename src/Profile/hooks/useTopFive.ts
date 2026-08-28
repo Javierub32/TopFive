@@ -37,9 +37,45 @@ export const useTopFive = (userId: string) => {
     },
   });
 
-  const handlePress = (position: number, item: TopFiveItem | undefined) => {
+  const removeItem = (position: number) => {
+    removeTopFiveMutation.mutate(position);
+  };
+
+  /* const updateOrderMutation = useMutation({
+    mutationFn: async (newOrder: any[]) => {
+      // Filtramos los huecos vacíos y sacamos el ID y la nueva posición
+      const itemsToUpdate = newOrder
+        .filter((slot) => slot.item)
+        .map((slot) => ({
+          id: slot.item.id,
+          posicion: slot.position,
+        }));
+
+      return topFiveService.updateTopFiveOrder(userId, itemsToUpdate);
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.topFive(userId) });
+    },
+  });
+
+  const updateOrder = (newOrder: any[]) => {
+    updateOrderMutation.mutate(newOrder);
+  }; */
+
+  const saveCompleteTopFive = async (slots: { position: number; item: any | null }[]) => {
+    try {
+      await topFiveService.saveCompleteTopFive(userId, slots);
+      // Invalidamos la caché para que cuando el usuario vuelva a ver su perfil se refresque
+      await queryClient.invalidateQueries({ queryKey: queryKeys.topFive(userId) });
+    } catch (error) {
+      console.error("Error al guardar el Top 5 completo:", error);
+      throw error;
+    }
+  };
+
+  const handlePress = (position: number, item: TopFiveItem | undefined, forceOwnProfile?: boolean) => {
     if (item) {
-      const isOwnProfile = user?.id === userId;
+      const isOwnProfile = forceOwnProfile !== undefined ? forceOwnProfile : (user?.id === userId); //forzamos cuando venimos de editar perfil
       handleItemPress(item.resourceData, item.type, isOwnProfile ? 'profile' : 'user');
     } else {
       setSelectedPosition(position);
@@ -77,7 +113,7 @@ export const useTopFive = (userId: string) => {
     }
   };
 
-  const handleCategorySelect = (category: string) => {
+  const handleCategorySelect = (category: string, isEditing?: boolean) => {
     if (selectedPosition !== null) {
       setModalVisible(false);
       router.push({
@@ -85,6 +121,7 @@ export const useTopFive = (userId: string) => {
         params: {
           resourceType: category,
           position: selectedPosition,
+          ...(isEditing ? { returnToEdit: 'true' } : {}),
         },
       });
     }
@@ -99,5 +136,7 @@ export const useTopFive = (userId: string) => {
     modalVisible,
     setModalVisible,
     handleLongPress,
+    removeItem,
+    saveCompleteTopFive
   };
 };
