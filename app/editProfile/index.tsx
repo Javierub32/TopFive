@@ -42,8 +42,6 @@ export default function EditProfileScreen() {
   const { 
     topFiveItems, 
     loading: topFiveLoading, 
-    removeItem, 
-    /* updateOrder,  */
     saveCompleteTopFive,
     handlePress,
     modalVisible,
@@ -56,7 +54,7 @@ export default function EditProfileScreen() {
   const params = useLocalSearchParams<{ addedItem?: string; targetPosition?: string; addedItemType?: string }>();
 
   useEffect(() => {
-    // Solo entramos si tenemos datos Y el candado está abierto
+    // Solo entramos si tenemos datos Y está abierto
     if (topFiveItems && !isInitialized.current) {
       const formatted = Array.from({ length: 5 }).map((_, index) => {
         const position = index + 1;
@@ -89,17 +87,17 @@ export default function EditProfileScreen() {
             );
           
           if (isDuplicate) {
-            // Si ya está, avisamos al usuario y bloqueamos la inserción
+            // Si ya está en el topfive avisamos al usuario y bloqueamos la inserción
             setTimeout(() => {
               showNotification({
-                title: t('common.error') || 'Error',
-                description: t('topFiveSelector.duplicateResource') || 'Este elemento ya está en tu Top 5',
+                title: t('common.error'),
+                description: t('topFiveSelector.duplicateResource'),
                 isChoice: false,
                 delete: false,
                 success: false,
               });
             }, 0);            
-            return prevSlots; // Devolvemos la lista intacta sin el duplicado
+            return prevSlots; // Devolvemos la lista que teniamos sin el duplicado
           }
 
           // Si no está, lo añadimos al hueco correspondiente
@@ -127,7 +125,7 @@ export default function EditProfileScreen() {
     }
   }, [params.addedItem, params.targetPosition, params.addedItemType]);
 
-  // Usar datos actualizados de userData (que se refrescan al volver del focus)
+  //  datos actualizados de userData (que se recargan al volver)
   const avatarUrlString = userData?.avatar_url;
   const frameString = userData?.frame || 'none';
 
@@ -171,7 +169,7 @@ export default function EditProfileScreen() {
               className="h-full w-full items-center justify-center overflow-hidden rounded-lg"
               style={{
                 backgroundColor: colors.surfaceButton,
-                borderWidth: hasContent ? 0 : 2,
+                borderWidth: hasContent ? 0 : 0,      /* CAMBIAR COLOR DE BORDE????  */
                 borderColor: colors.borderButton,
               }}>
               {hasContent && imageUrl ? (
@@ -184,7 +182,7 @@ export default function EditProfileScreen() {
             </View>
           </TouchableOpacity>
 
-          {/* Botón X para borrar ( visible si hay contenido) */}
+          {/* Botón X para borrar (solo con contenidos) */}
           {hasContent && (
             <RNTouchableOpacity
               className="absolute -right-2 -top-2 z-50 items-center justify-center rounded-full p-1 shadow-md"
@@ -207,7 +205,7 @@ export default function EditProfileScreen() {
   }
 
   return (
-    // Envuelto el Screen con GestureHandlerRootView para gestos
+    // Screen con GestureHandlerRootView para gestos
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Screen>
         <ReturnButton
@@ -319,10 +317,10 @@ export default function EditProfileScreen() {
 
             <View className="mb-1 mt-2 ">
               <AppText className="font-semibold" style={{ fontSize: 16, color: colors.primaryText }}>
-                { 'Editar Mi TopFive'} {/* TRADUCIR -------- */}
+                {t('profile.editProfile.topfive')} 
               </AppText>
-              <AppText className="mb-3 mt-1" style={{ fontSize: 12, color: colors.secondaryText }}> {/* TRADUCIR ------> */}
-                Mantén pulsado para ordenar. Pulsa la X para eliminar. 
+              <AppText className="mb-3 mt-1" style={{ fontSize: 12, color: colors.secondaryText }}> 
+                {t('profile.editProfile.topfiveDescription')}
               </AppText>
 
               <View style={{ height: 112, justifyContent: 'center' }}>

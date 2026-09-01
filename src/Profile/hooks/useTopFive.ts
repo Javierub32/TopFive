@@ -41,34 +41,13 @@ export const useTopFive = (userId: string) => {
     removeTopFiveMutation.mutate(position);
   };
 
-  /* const updateOrderMutation = useMutation({
-    mutationFn: async (newOrder: any[]) => {
-      // Filtramos los huecos vacíos y sacamos el ID y la nueva posición
-      const itemsToUpdate = newOrder
-        .filter((slot) => slot.item)
-        .map((slot) => ({
-          id: slot.item.id,
-          posicion: slot.position,
-        }));
-
-      return topFiveService.updateTopFiveOrder(userId, itemsToUpdate);
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: queryKeys.topFive(userId) });
-    },
-  });
-
-  const updateOrder = (newOrder: any[]) => {
-    updateOrderMutation.mutate(newOrder);
-  }; */
-
   const saveCompleteTopFive = async (slots: { position: number; item: any | null }[]) => {
     try {
       await topFiveService.saveCompleteTopFive(userId, slots);
       // Invalidamos la caché para que cuando el usuario vuelva a ver su perfil se refresque
       await queryClient.invalidateQueries({ queryKey: queryKeys.topFive(userId) });
     } catch (error) {
-      console.error("Error al guardar el Top 5 completo:", error);
+      console.error(t('profile.editProfile.topfiveUpdateError'), error);
       throw error;
     }
   };
@@ -106,7 +85,7 @@ export const useTopFive = (userId: string) => {
               success: true,
             });
           } catch (error) {
-            console.error('Error al eliminar item del Top 5:', error);
+            console.error(t("profile.removeFromTopFiveNotification.error"), error);
           }
         },
       });

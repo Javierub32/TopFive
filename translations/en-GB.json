@@ -327,7 +327,8 @@
         "removeFromTopFiveNotification": {
             "title": "Delete from TopFive",
             "description": "Are you sure you want to remove this item from your TopFive?",
-            "confirmationDescription": "The item has been deleted from your TopFive."
+            "confirmationDescription": "The item has been deleted from your TopFive.",
+            "error": "There was an error trying to delete the item from your TopFive."
         },
         "editProfile": {
             "title": "Edit profile",
@@ -340,7 +341,8 @@
             "profilePrivate": "Private",
             "profileUpdated": "Your profile has been updated successfully.",
             "usernameExists": "This username is already in use. Please choose another.",
-            "profileUpdateError": "There was an error updating your profile. Please try again."
+            "profileUpdateError": "There was an error updating your profile. Please try again.",
+            "topfiveUpdateError": "Error trying to update your TopFive. Please try again."
         },
         "follow" : "Follow",
         "followApplied": "Follow request sent",

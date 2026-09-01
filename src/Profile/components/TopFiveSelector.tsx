@@ -62,6 +62,8 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
                     style={{
                       backgroundColor: colors.surfaceButton,
                       borderColor: colors.borderButton,
+                      borderWidth: 0,     /* <- dejar o no color de borde cuando no hay nada */
+
                     }}>
                     <AppText  style={{ color: colors.secondaryText, fontSize: 14 }}>
                       +

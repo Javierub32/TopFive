@@ -48,7 +48,7 @@ export default function TopFiveSelectorScreen() {
         onLeftPress: () => hideNotification(),
         onRightPress: async () => {
           hideNotification();
-          if (returnToEdit === 'true') {  //si viene del edit profile, para que no se actualice a tiempo real
+          if (returnToEdit === 'true') {  //si viene del edit profile, para que no se actualice a tiempo real => dismissTo, de otra manera se actualizaba
             router.dismissTo({
               pathname: '/editProfile',
               params: {

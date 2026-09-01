@@ -89,7 +89,7 @@ export const useSettings = (userData?: any) => {
         success: true,
       });
     } catch (error: any) {
-      console.error('Error al actualizar el perfil:', error);
+      console.error('Error al actualizar el perfil:', error); 
       if (error?.code === '23505') {
         setUsernameAlreadyExists(true);
 
