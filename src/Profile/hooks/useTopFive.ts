@@ -62,36 +62,6 @@ export const useTopFive = (userId: string) => {
     }
   };
 
-  const handleLongPress = (position: number, item: TopFiveItem | undefined) => {
-    if (item) {
-      showNotification({
-        title: t('profile.removeFromTopFiveNotification.title'),
-        description: t('profile.removeFromTopFiveNotification.description'),
-        leftButtonText: t('common.cancel'),
-        rightButtonText: t('common.delete'),
-        isChoice: true,
-        delete: true,
-        success: false,
-        onLeftPress: () => hideNotification(),
-        onRightPress: async () => {
-          try {
-            hideNotification();
-            await removeTopFiveMutation.mutateAsync(position);
-            showNotification({
-              title: t('common.success'),
-              description: t('profile.removeFromTopFiveNotification.confirmationDescription'),
-              isChoice: false,
-              delete: false,
-              success: true,
-            });
-          } catch (error) {
-            console.error(t("profile.removeFromTopFiveNotification.error"), error);
-          }
-        },
-      });
-    }
-  };
-
   const handleCategorySelect = (category: string, isEditing?: boolean) => {
     if (selectedPosition !== null) {
       setModalVisible(false);
@@ -114,7 +84,6 @@ export const useTopFive = (userId: string) => {
     handleCategorySelect,
     modalVisible,
     setModalVisible,
-    handleLongPress,
     removeItem,
     saveCompleteTopFive
   };

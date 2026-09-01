@@ -281,6 +281,7 @@
     "profile": {
         "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}",
         "shareUserMessage": "¡Echa un vistazo a este perfil en TopFive!\n{{url}}",
+        "shareTopFive": "Compartir mi TopFive",
         "user": "Usuario",
         "reviews": "Reseñas",
         "selectYear": "Seleccionar año",

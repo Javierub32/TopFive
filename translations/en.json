@@ -281,6 +281,7 @@
     "profile": {
         "shareMessage": "Check out my profile on TopFive!\n{{url}}",
         "shareUserMessage": "Check out this profile on TopFive!\n{{url}}",
+        "shareTopFive": "Share my TopFive",
         "user": "User",
         "reviews": "Reviews",
         "selectYear": "Select year",
@@ -342,7 +343,9 @@
             "profileUpdated": "Your profile has been updated successfully.",
             "usernameExists": "This username is already in use. Please choose another.",
             "profileUpdateError": "There was an error updating your profile. Please try again.",
-            "topfiveUpdateError": "Error trying to update your TopFive. Please try again."
+            "topfiveUpdateError": "Error trying to update your TopFive. Please try again.",
+            "topfive": "Edit my TopFive",
+            "topfiveDescription": "Press and hold to sort. Press X to delete."
         },
         "follow" : "Follow",
         "followApplied": "Follow request sent",
