@@ -30,7 +30,7 @@ export default function GroupScreen() {
 		setIsSearchVisible(false);
   }, []);
 
-  const returnRoute = targetUserId ? 'back' : (from === 'Profile' ? '/Profile' : '/Collection');
+  const returnRoute = (from === 'Profile' || targetUserId) ? 'back' : '/Collection'; /* Hago back en lugar de volver a cargar el perfil, asi guarda de donde venia y no recarga el perfil innecesariamente */
   const returnParams = (from === 'Profile' || targetUserId) ? {} : { initialResource: category as ResourceType };
 
   return (
