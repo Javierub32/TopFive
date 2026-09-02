@@ -291,7 +291,11 @@ export default function GameForm() {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}>
-        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+        <ScrollView className="flex-1" showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          contentContainerStyle={{ flexGrow: 1 }}>
+
           <View className="flex-row items-center justify-between px-4 pb-4 pt-2">
             <View className="flex-1 flex-row items-center">
               <ReturnButton route="back" title={game.titulo || game.title} style={' '} />

@@ -509,7 +509,7 @@
        
     },
     "frameSelector": {
-        "title": "Selecciona un marco",
+        "title": "Selecciona foto y marco",
         "loadingAd": "Cargando anuncio...",
         "adNotReady": "El anuncio aún no está listo. Por favor, espera unos segundos e inténtalo de nuevo.",
         "updatedNotification": "Tu marco de perfil ha sido actualizado.",

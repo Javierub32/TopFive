@@ -57,7 +57,7 @@ export default function UserDetailsScreen() {
   const getPath = () => {
     if (from === 'home') return 'back';
     if (from === 'link') return '/Home';
-    return '/Home';
+    return 'back';
   };
   const route = getPath();
 
