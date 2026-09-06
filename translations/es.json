@@ -281,6 +281,7 @@
     "profile": {
         "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}",
         "shareUserMessage": "¡Echa un vistazo a este perfil en TopFive!\n{{url}}",
+        "shareTopFive": "Compartir mi TopFive",
         "user": "Usuario",
         "reviews": "Reseñas",
         "selectYear": "Seleccionar año",
@@ -327,7 +328,8 @@
         "removeFromTopFiveNotification": {
             "title": "Eliminar de TopFive",
             "description": "¿Estás seguro de que deseas eliminar este elemento de tu TopFive?",
-            "confirmationDescription": "El elemento ha sido eliminado de tu TopFive."
+            "confirmationDescription": "El elemento ha sido eliminado de tu TopFive.",
+            "error": "Error al eliminar item del TopFive."
         },
         "editProfile": {
             "title": "Editar perfil",
@@ -340,7 +342,10 @@
             "profilePrivate": "Privado",
             "profileUpdated": "Tu perfil ha sido actualizado correctamente.",
             "usernameExists": "Este nombre de usuario ya está en uso. Por favor, elige otro.",
-            "profileUpdateError": "Hubo un error al actualizar tu perfil. Por favor, intenta de nuevo."
+            "profileUpdateError": "Hubo un error al actualizar tu perfil. Por favor, intenta de nuevo.",
+            "topfiveUpdateError": "Error al guardar el Top 5 completo. Por favor, intenta de nuevo.",
+            "topfive": "Editar mi TopFive",
+            "topfiveDescription": "Mantén pulsado para ordenar. Pulsa la X para eliminar."
         },
         "follow" : "Seguir",
         "followApplied": "Solicitud enviada",

@@ -28,6 +28,7 @@ import { AppText } from 'components/AppText';
 import { ResourceType } from 'hooks/useResource';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useAuth } from 'context/AuthContext';
+import { useTopFive } from '@/Profile/hooks/useTopFive';
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
@@ -68,6 +69,9 @@ export default function ProfileScreen() {
 
   const index = routes.findIndex((r) => r.key === selectedCategory);
   const safeIndex = index === -1 ? 0 : index;
+
+  const [editTopFiveModalVisible, setEditTopFiveModalVisible] = useState(false);
+  const { topFiveItems, loading: topFiveLoading, saveCompleteTopFive, handlePress } = useTopFive(userData?.id || '');
 
   const handleIndexChange = (i: number) => {
     setIsChanging(true);

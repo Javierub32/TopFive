@@ -37,9 +37,24 @@ export const useTopFive = (userId: string) => {
     },
   });
 
-  const handlePress = (position: number, item: TopFiveItem | undefined) => {
+  const removeItem = (position: number) => {
+    removeTopFiveMutation.mutate(position);
+  };
+
+  const saveCompleteTopFive = async (slots: { position: number; item: any | null }[]) => {
+    try {
+      await topFiveService.saveCompleteTopFive(userId, slots);
+      // Invalidamos la caché para que cuando el usuario vuelva a ver su perfil se refresque
+      await queryClient.invalidateQueries({ queryKey: queryKeys.topFive(userId) });
+    } catch (error) {
+      console.error(t('profile.editProfile.topfiveUpdateError'), error);
+      throw error;
+    }
+  };
+
+  const handlePress = (position: number, item: TopFiveItem | undefined, forceOwnProfile?: boolean) => {
     if (item) {
-      const isOwnProfile = user?.id === userId;
+      const isOwnProfile = forceOwnProfile !== undefined ? forceOwnProfile : (user?.id === userId); //forzamos cuando venimos de editar perfil
       handleItemPress(item.resourceData, item.type, isOwnProfile ? 'profile' : 'user');
     } else {
       setSelectedPosition(position);
@@ -47,37 +62,7 @@ export const useTopFive = (userId: string) => {
     }
   };
 
-  const handleLongPress = (position: number, item: TopFiveItem | undefined) => {
-    if (item) {
-      showNotification({
-        title: t('profile.removeFromTopFiveNotification.title'),
-        description: t('profile.removeFromTopFiveNotification.description'),
-        leftButtonText: t('common.cancel'),
-        rightButtonText: t('common.delete'),
-        isChoice: true,
-        delete: true,
-        success: false,
-        onLeftPress: () => hideNotification(),
-        onRightPress: async () => {
-          try {
-            hideNotification();
-            await removeTopFiveMutation.mutateAsync(position);
-            showNotification({
-              title: t('common.success'),
-              description: t('profile.removeFromTopFiveNotification.confirmationDescription'),
-              isChoice: false,
-              delete: false,
-              success: true,
-            });
-          } catch (error) {
-            console.error('Error al eliminar item del Top 5:', error);
-          }
-        },
-      });
-    }
-  };
-
-  const handleCategorySelect = (category: string) => {
+  const handleCategorySelect = (category: string, isEditing?: boolean) => {
     if (selectedPosition !== null) {
       setModalVisible(false);
       router.push({
@@ -85,6 +70,7 @@ export const useTopFive = (userId: string) => {
         params: {
           resourceType: category,
           position: selectedPosition,
+          ...(isEditing ? { returnToEdit: 'true' } : {}),
         },
       });
     }
@@ -98,6 +84,7 @@ export const useTopFive = (userId: string) => {
     handleCategorySelect,
     modalVisible,
     setModalVisible,
-    handleLongPress,
+    removeItem,
+    saveCompleteTopFive
   };
 };
