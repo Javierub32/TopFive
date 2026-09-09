@@ -346,13 +346,15 @@ export default function EditProfileScreen() {
                 )}
               </View>
             </View>
-
+            
             <RNTouchableOpacity
               className="mt-5 w-full items-center rounded-xl py-3"
-              style={{ backgroundColor: colors.primary }}
-              onPress={() => handleSubmit(uname.trim(), udesc.trim(), uprivate, async () => {await saveCompleteTopFive(localSlots); })}>
+              style={{ backgroundColor: colors.primary, opacity: topFiveLoading ? 0.5 : 1 }}
+              onPress={() => handleSubmit(uname.trim(), udesc.trim(), uprivate, async () => {await saveCompleteTopFive(localSlots); })}
+              disabled={topFiveLoading}
+              >
 
-              <AppText className="font-bold" style={{ color: colors.background, fontSize: 18 }}>
+              <AppText className="font-bold" style={{ color: colors.background, fontSize: 18 }} >
                 {t('common.saveChanges')}
               </AppText>
             </RNTouchableOpacity>
