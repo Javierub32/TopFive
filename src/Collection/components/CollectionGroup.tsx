@@ -84,14 +84,16 @@ export const CollectionGroup = ({
           ) : null}
 
           {/* Rating (Arriba Derecha) */}
-          {(item.estado !== 'PENDIENTE' && item.calificacion <= 0) || selectedItems.length <=0 ? (
+          {(item.estado !== 'PENDIENTE' && item.calificacion > 0) && selectedItems.length <=0 ? (
             <View className="absolute right-2 top-2 flex-row items-center rounded-sm bg-black/50 px-1">
               <ScalableMaterialCommunityIcons name="star" size={10} color={colors.rating} />
               <AppText className="ml-1  font-bold text-white" style={{ fontSize: 10 }}>
                 {item.calificacion || '0'}
               </AppText>
             </View>
-          ) : isSelected ?(
+          ) : null}
+
+            {selectedItems<=0 ? (null) : isSelected ?(
             <View className="absolute top-1 right-1 z-10">
               <ScalableFontAwesome5
                 name="check-circle"
@@ -100,7 +102,7 @@ export const CollectionGroup = ({
                 backgroundColor={colors.primary}
               />
             </View>
-          ):(<View className="absolute top-1 right-1 z-10 ">
+          ): (<View className="absolute top-1 right-1 z-10 ">
               <ScalableFontAwesome5
                 name="circle"
                 size={20}
