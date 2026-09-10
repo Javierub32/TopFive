@@ -20,7 +20,7 @@ export const CollectionGroup = ({
   const { t } = useTranslation();
 
   const { selectedItems } = useCollection();
-  const isSelected = selectedItems.includes(item.id);
+  const isSelected = selectedItems?.some((selected: any) => selected.id === item.id);
 
   const title = collectionAdapter.getTitle(item, category, t);
   const image = collectionAdapter.getImage(item, category);

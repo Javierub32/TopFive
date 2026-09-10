@@ -36,7 +36,7 @@ export const CollectionProvider = ({ children }: any) => {
   const [totalCompletados, setTotalCompletados] = useState<number>(0);
 
   // Multiple selección
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<any[]>([]);
 
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
@@ -226,35 +226,36 @@ export const CollectionProvider = ({ children }: any) => {
   };
 
   const handleItemPress = (item: any, categoria?: ResourceType, from?: string) => {
-    const resourceTypeMap: Record<ResourceType, string> = {
-      pelicula: 'film',
-      serie: 'series',
-      videojuego: 'game',
-      libro: 'book',
-      cancion: 'song',
-    };
-    const type = resourceTypeMap[categoria || categoriaActual];
-    //En el caso de que antes no se ha mantenido pulsado, se mantiene la acción
-    if(selectedItems.length <= 0) {
+  const resourceTypeMap: Record<ResourceType, string> = {
+    pelicula: 'film',
+    serie: 'series',
+    videojuego: 'game',
+    libro: 'book',
+    cancion: 'song',
+  };
+  const type = resourceTypeMap[categoria || categoriaActual];
+
+  if(selectedItems.length <= 0) {
     router.push({
       pathname: `/details/${type}/${type}Resource`,
       params: { item: JSON.stringify(item), from: from || 'collection' },
     });
     setIsSearchVisible(false);
-    }else{
-      //Vemos si el item está o no seleccionado 
-      setSelectedItems((prevSelectedItems) => {
-        if(prevSelectedItems.includes(item.id)){
-          return prevSelectedItems.filter((id) => id !== item.id);
-        } else {
-          return [...prevSelectedItems, item.id];
-        }
-      });
-    }
-  };
+  } else {
+    setSelectedItems((prevSelectedItems) => {
+      const isSelected = prevSelectedItems.some((selectedItem) => selectedItem.id === item.id);
+      
+      if(isSelected){
+        return prevSelectedItems.filter((selectedItem) => selectedItem.id !== item.id);
+      } else {
+        return [...prevSelectedItems, item];
+      }
+    });
+  }
+};
 
   const handleLongPress = (item: any, categoria?: ResourceType, from?: string) => {  
-      setSelectedItems([item.id]);
+      setSelectedItems([item]);
   }
   const clearSelectedItems = () => {
     setSelectedItems([]);
