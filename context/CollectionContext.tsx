@@ -256,6 +256,9 @@ export const CollectionProvider = ({ children }: any) => {
   const handleLongPress = (item: any, categoria?: ResourceType, from?: string) => {  
       setSelectedItems([item.id]);
   }
+  const clearSelectedItems = () => {
+    setSelectedItems([]);
+  }
 
   return (
     <CollectionContext.Provider
@@ -286,6 +289,7 @@ export const CollectionProvider = ({ children }: any) => {
         toggleSearch,
         handleSearchPagination,
         setIsSearchVisible,
+        clearSelectedItems,
       }}>
       {children}
     </CollectionContext.Provider>

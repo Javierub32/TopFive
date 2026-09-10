@@ -26,6 +26,7 @@ export default function GroupScreen() {
   const { handleItemPress, setIsSearchVisible } = useCollection();
   const {handleLongPress, selectedItems} = useCollection();
   const { loading, data, handleLoadMore } = useGroupData(category as ResourceType, stateMap[state], targetUserId);
+  const { clearSelectedItems } = useCollection();
 
   useEffect(() => {
     setIsSearchVisible(false);
@@ -37,7 +38,7 @@ export default function GroupScreen() {
   return (
     <Screen>
       <View className="flex-1 px-4 pt-4">
-        <ReturnButton route={returnRoute} title={title} style={" "} params={returnParams} />
+        <ReturnButton route={returnRoute} title={title} style={" "} params={returnParams} selection={selectedItems.length > 0} />
         {loading && data.length === 0 ? (
           <LoadingIndicator />
         ) : (

@@ -49,7 +49,6 @@ export const CollectionGroup = ({
         className="relative w-full rounded-lg"
         style={{
           height: finalHeight,
-          //backgroundColor: isSelected ? colors.surfaceButton : colors.surfaceButton,
         }}>
 
         {/* Imagen */}
