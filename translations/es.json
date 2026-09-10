@@ -393,6 +393,9 @@
         "deleteResource": {
             "title": "Confirmar eliminación",
             "description": "¿Estás seguro de que deseas eliminar {{titulo}} de tu colección?",
+            "multipleDescription": "¿Estás seguro de que deseas eliminar {{count}} {{type}} de tu colección?",
+            "multipleSuccessTitle": "Recursos eliminados",
+            "multipleSuccessDescription": "Has eliminado {{count}} {{type}} de tu colección exitosamente.",
             "successTitle": "Recurso eliminado",
             "resourceDeletedDescription": "Has eliminado {{titulo}} de tu colección exitosamente.",
             "failedToDelete": "No se pudo eliminar el recurso. Inténtalo de nuevo más tarde.",

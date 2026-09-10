@@ -16,9 +16,9 @@ import { useTranslation } from 'react-i18next';
 
 interface Props {
   resource?: BookResource | FilmResource | SeriesResource | SongResource | GameResource | null;
-  resources?: any[]; // <-- Añadido para soportar múltiples recursos
+  resources?: any[];
   type: ResourceType;
-  onCustomDelete?: () => Promise<void> | void; // <-- Callback opcional para pantallas de grupo/lista
+  onCustomDelete?: () => Promise<void> | void; 
 }
 
 export const DeleteResourceButton = ({ resource, resources, type, onCustomDelete }: Props) => {
@@ -28,12 +28,22 @@ export const DeleteResourceButton = ({ resource, resources, type, onCustomDelete
   const { showNotification, hideNotification } = useNotification();
   const { t } = useTranslation();
 
-  const isMultiple = resources && resources.length > 0;
+  const hasSelection = resources && resources.length > 0;
+  const isMultiple = resources && resources.length > 1;
   const count = resources ? resources.length : 1;
 
+  const categoryTranslationMap: Record<ResourceType, string> = {
+  libro: t('categories.books'),
+  pelicula: t('categories.films'),
+  serie: t('categories.series'),
+  videojuego: t('categories.videogames'),
+  cancion: t('categories.albums'),
+}; 
+
+const categoryKey = categoryTranslationMap[type];
+
   const handleDelete = () => {
-    // Si no hay recurso individual ni lista múltiple, no hace nada
-    if (!resource && !isMultiple) {
+    if (!resource && !hasSelection) {
       showNotification({
         title: t('common.error'),
         description: t('details.deleteResource.failedToDelete'),
@@ -44,15 +54,23 @@ export const DeleteResourceButton = ({ resource, resources, type, onCustomDelete
       return;
     }
 
-    const titleText = isMultiple
-      ? (t('details.deleteResource.title') || 'Eliminar recursos')
-      : t('details.deleteResource.title');
+    const titleText = t('details.deleteResource.title');
 
-    const descText = isMultiple
-      ? `¿Estás seguro de que deseas eliminar los ${count} elementos seleccionados?`
-      : t('details.deleteResource.description', {
-          titulo: resource?.contenido?.titulo || t('details.deleteResource.thisResource'),
-        });
+    let descText = '';
+    if (isMultiple) {
+      descText = t('details.deleteResource.multipleDescription', {
+        count: count,
+        type: categoryKey.toLocaleLowerCase(),
+      });
+    } else if (hasSelection && resources.length === 1) {
+      descText = t('details.deleteResource.description', {
+        titulo: resources[0]?.contenido?.titulo || t('details.deleteResource.thisResource'),
+      });
+    } else {
+      descText = t('details.deleteResource.description', {
+        titulo: resource?.contenido?.titulo || t('details.deleteResource.thisResource'),
+      });
+    }
 
     showNotification({
       title: titleText,
@@ -69,7 +87,7 @@ export const DeleteResourceButton = ({ resource, resources, type, onCustomDelete
 
         if (onCustomDelete) {
           await onCustomDelete();
-        } else if (isMultiple) {
+        } else if (hasSelection) {
           await Promise.all(
             resources.map((item) => borrarRecurso(item.id, type, item.estado))
           );
@@ -87,7 +105,10 @@ export const DeleteResourceButton = ({ resource, resources, type, onCustomDelete
           showNotification({
             title: t('details.deleteResource.successTitle'),
             description: isMultiple
-              ? 'Los recursos seleccionados han sido eliminados.'
+              ? t('details.deleteResource.multipleSuccessDescription', {
+                  count: count,
+                  type: categoryKey.toLocaleLowerCase(),
+                })
               : t('details.deleteResource.resourceDeletedDescription', {
                   titulo: resource?.contenido?.titulo || t('details.deleteResource.theResource'),
                 }),
