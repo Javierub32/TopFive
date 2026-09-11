@@ -364,7 +364,7 @@ export default function EditProfileScreen() {
       <CategorySelectorModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        onSelectCategory={(category) => handleCategorySelect(category, true)}
+        onSelectCategory={(category) => handleCategorySelect(category, '/editProfile')}
       />
       )}
 

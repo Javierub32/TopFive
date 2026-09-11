@@ -6,10 +6,11 @@ import { CategorySelectorModal } from 'components/CategorySelectorModal';
 import { useAuth } from 'context/AuthContext';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ScalableMaterialCommunityIcons, ScalableEditIcon } from 'components/Icons';
 import DraggableFlatList, { RenderItemParams, ScaleDecorator } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
 
 export const TopFiveSelector = ({ userId }: { userId: string }) => {
@@ -34,10 +35,14 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
   const [localSlots, setLocalSlots] = useState<any[]>([]);
   const [showOptionsMenu, setShowOptionsMenu] = useState(false);
 
+  const router = useRouter();
+  const params = useLocalSearchParams<{ addedItem?: string; targetPosition?: string; addedItemType?: string }>();
 
-  // inicializo slots locales cuando se abre el modal
+  const isInitialized = useRef(false);
+
+  // 1. Inicialización de los slots locales
   useEffect(() => {
-    if (isEditing && topFiveItems) {
+    if (isEditing && topFiveItems && !isInitialized.current) {
       const formatted = Array.from({ length: 5 }).map((_, index) => {
         const position = index + 1;
         return {
@@ -47,8 +52,71 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
         };
       });
       setLocalSlots(formatted);
+      isInitialized.current = true;
+    }
+
+    // Cuando sales de edición (guardas o cancelas), reseteas para la próxima vez
+    if (!isEditing) {
+      isInitialized.current = false;
     }
   }, [isEditing, topFiveItems]);
+
+  // 2. Escucha del recurso que viene del buscador
+  useEffect(() => {
+    if (params.addedItem && params.targetPosition) {
+      if (!isEditing) setIsEditing(true);
+
+      try {
+        const parsedResource = JSON.parse(params.addedItem);
+        const targetPos = Number(params.targetPosition);
+        const itemType = params.addedItemType || parsedResource.type || parsedResource.tipo_recurso;
+
+        setLocalSlots((prevSlots) => {
+          let currentSlots = prevSlots;
+
+          // Si aún no se había inicializado prevSlots, lo creamos desde topFiveItems
+          if (currentSlots.length === 0 && topFiveItems) {
+            currentSlots = Array.from({ length: 5 }).map((_, index) => ({
+              key: `slot-${index + 1}`,
+              position: index + 1,
+              item: topFiveItems.find((i: any) => i.posicion === index + 1) || null,
+            }));
+            isInitialized.current = true;
+          }
+
+          const isDuplicate = currentSlots.some(
+            (slot) =>
+              slot.position !== targetPos &&
+              slot.item !== null &&
+              slot.item.resourceData?.id === parsedResource.id &&
+              slot.item.type === itemType
+          );
+
+          if (isDuplicate) {
+            return currentSlots;
+          }
+
+          return currentSlots.map((slot) =>
+            slot.position === targetPos
+              ? {
+                  ...slot,
+                  item: {
+                    id: parsedResource.id,
+                    posicion: targetPos,
+                    type: itemType,
+                    resourceData: parsedResource,
+                  },
+                }
+              : slot
+          );
+        });
+
+        router.setParams({ addedItem: '', targetPosition: '', addedItemType: '' });
+      } catch (e) {
+        console.error('Error al parsear el ítem en TopFiveSelector:', e);
+      }
+    }
+  }, [params.addedItem, params.targetPosition, params.addedItemType, topFiveItems]);
 
   const handleLocalRemove = (position: number) => {
     setLocalSlots((prev) =>
@@ -304,7 +372,7 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
       <CategorySelectorModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        onSelectCategory={(category) => handleCategorySelect(category)}
+        onSelectCategory={(category) => handleCategorySelect(category, isEditing ? '/(tabs)/Profile' : "")}
       />
     </View>
   );

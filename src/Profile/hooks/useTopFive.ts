@@ -62,7 +62,7 @@ export const useTopFive = (userId: string) => {
     }
   };
 
-  const handleCategorySelect = (category: string, isEditing?: boolean) => {
+  const handleCategorySelect = (category: string, returnRoute: string) => {
     if (selectedPosition !== null) {
       setModalVisible(false);
       router.push({
@@ -70,7 +70,7 @@ export const useTopFive = (userId: string) => {
         params: {
           resourceType: category,
           position: selectedPosition,
-          ...(isEditing ? { returnToEdit: 'true' } : {}),
+          ...(returnRoute ? { returnRoute } : {}),
         },
       });
     }
