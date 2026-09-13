@@ -90,7 +90,8 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
 
   return (
     <TouchableOpacity
-	  onPress={onPress}
+      activeOpacity={0.7}
+	    onPress={onPress}
       className=" mb-4 overflow-hidden rounded-2xl shadow-xl"
       style={{ borderWidth: 0, borderColor: colors.borderButton }}>
       {/* Imagen de fonde */}
