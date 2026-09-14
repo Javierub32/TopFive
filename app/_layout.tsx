@@ -225,7 +225,12 @@ function InitialLayout() {
           fullScreenGestureEnabled: false,
           animation: 'fade_from_bottom',
         }}
-      />
+        >
+        <Stack.Screen
+          name="(tabs)"
+          options={{gestureEnabled: false}}
+        />
+      </Stack>
       <NotificationModal
         visible={visible}
         title={config.title}
