@@ -3,6 +3,7 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 import { supabase } from './supabase';
+import i18n from 'i18n';
 
 // Comportamiento de la notificación cuando la app está en primer plano
 Notifications.setNotificationHandler({
@@ -48,9 +49,14 @@ export async function registerForPushNotificationsAsync(userId: string) {
         await Notifications.getExpoPushTokenAsync({ projectId })
       ).data;
       if (pushTokenString && userId) {
+        const currentLang = i18n.language || 'es';
+        
         await supabase
           .from('usuario')
-          .update({ push_token: pushTokenString })
+          .update({ 
+            push_token: pushTokenString,
+            language: currentLang,
+           })
           .eq('id', userId);
       }
     } catch (e: unknown) {

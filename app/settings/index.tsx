@@ -20,8 +20,9 @@ import { useTranslation } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFontSize } from 'context/FontSizeContext';
 import { AppText } from 'components/AppText';
+import { supabase } from 'lib/supabase';
 export default function SettingsScreen() {
-  const { signOut, deleteAccount } = useAuth();
+  const { signOut, deleteAccount, user } = useAuth();
 
   const { colors, changeTheme, themePreference } = useTheme();
   const { username, description } = useLocalSearchParams();
@@ -37,6 +38,17 @@ export default function SettingsScreen() {
   const changeLanguage = async (lng: string) => {
     await i18n.changeLanguage(lng); // Cambia el idioma en tiempo real
     await AsyncStorage.setItem('user_language_preference', lng); // Lo guarda para la próxima vez
+
+    if(user?.id){
+      try{
+        await supabase
+          .from('usuario')
+          .update({language: lng})
+          .eq('id', user.id);
+      } catch(err){
+        console.error('Error guardando idioma en Supabase:', err);
+      }
+    }
   };
 
   const handleRevokeConsent = async () => {
