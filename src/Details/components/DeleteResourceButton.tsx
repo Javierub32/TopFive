@@ -19,9 +19,10 @@ interface Props {
   resources?: any[];
   type: ResourceType;
   onCustomDelete?: () => Promise<void> | void; 
+  isList?: boolean;
 }
 
-export const DeleteResourceButton = ({ resource, resources, type, onCustomDelete }: Props) => {
+export const DeleteResourceButton = ({ resource, resources, type, onCustomDelete, isList }: Props) => {
   const { colors } = useTheme();
   const { borrarRecurso } = useResource();
   const { refreshData } = useCollection();
@@ -58,17 +59,23 @@ const categoryKey = categoryTranslationMap[type];
 
     let descText = '';
     if (isMultiple) {
-      descText = t('details.deleteResource.multipleDescription', {
+      descText = !isList ? t('details.deleteResource.multipleDescription', {
         count: count,
         type: categoryKey.toLocaleLowerCase(),
+      }) : t('list.deleteItemFromListNotification.multipleDescription', {
+        count: count,
       });
     } else if (hasSelection && resources.length === 1) {
-      descText = t('details.deleteResource.description', {
+      descText = !isList ? t('details.deleteResource.description', {
         titulo: resources[0]?.contenido?.titulo || t('details.deleteResource.thisResource'),
+      }) : t('list.deleteItemFromListNotification.description', {
+        titulo: resources[0]?.contenido?.titulo ,
       });
     } else {
-      descText = t('details.deleteResource.description', {
+      descText = !isList ? t('details.deleteResource.description', {
         titulo: resource?.contenido?.titulo || t('details.deleteResource.thisResource'),
+      }) : t('list.deleteItemFromListNotification.description', {
+        titulo: resource?.contenido?.titulo ,
       });
     }
 
@@ -102,20 +109,35 @@ const categoryKey = categoryTranslationMap[type];
         }
 
         setTimeout(() => {
+          const currentTitle = resource?.contenido?.titulo || resources?.[0]?.contenido?.titulo || '';
+          if (!isList) {
           showNotification({
-            title: t('details.deleteResource.successTitle'),
+            title:  t('details.deleteResource.successTitle'),
             description: isMultiple
               ? t('details.deleteResource.multipleSuccessDescription', {
                   count: count,
                   type: categoryKey.toLocaleLowerCase(),
                 })
               : t('details.deleteResource.resourceDeletedDescription', {
-                  titulo: resource?.contenido?.titulo || t('details.deleteResource.theResource'),
+                  titulo: currentTitle || t('details.deleteResource.theResource'),
                 }),
             isChoice: false,
             delete: false,
             success: true,
           });
+        } else {
+          showNotification({
+            title: t('list.deleteItemFromListNotification.title'),
+            description: isMultiple
+              ? t('list.deleteItemFromListNotification.multipleConfirmationDescription')
+              : t('list.deleteItemFromListNotification.confirmationDescription', {
+                  titulo: currentTitle ,
+                }),
+            isChoice: false,
+            delete: false,
+            success: true,
+          });
+        }
         }, 100);
       },
     });

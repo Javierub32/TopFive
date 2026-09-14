@@ -68,7 +68,7 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
       } else {
         showNotification({
           title: t('common.success'),
-          description: results[0] === 'Recurso añadido a la lista exitosamente.' ? t('list.addItemToListNotification.confirmationDescription'): t('list.deleteItemFromListNotification.multipleConfirmationDescription') ,
+          description: results[0] === 'Recurso añadido a la lista exitosamente.' ? t('list.addItemToListNotification.confirmationDescription', { titulo: 'This item' }): t('list.deleteItemFromListNotification.confirmationDescription', { titulo: 'The item' }) ,
           isChoice: false,
           delete: false,
           success: true,

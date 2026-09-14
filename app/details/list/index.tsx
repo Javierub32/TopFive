@@ -70,6 +70,7 @@ export default function ListDetails() {
           resources={selectedItems}
           type={categoriaActual as ResourceType}
           onCustomDelete={handleDelete}
+          isList={true}
         />
       )}
     </View>

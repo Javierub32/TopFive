@@ -260,8 +260,9 @@
         "couldntCreateError": "Could not create the list. Please try again.",
         "deleteItemFromListNotification": {
             "title": "Delete from list",
-            "description": "Are you sure you want to remove this item from the list?",
-            "confirmationDescription": "The item has been deleted from the list.",
+            "description": "Are you sure you want to remove {{titulo}} from the list?",
+            "multipleDescription": "Are you sure you want to remove these items from the list?",
+            "confirmationDescription": "{{titulo}} has been deleted from the list.",
             "multipleConfirmationDescription": "The items have been deleted from the list."
         },
         "addItemToListNotification": {
