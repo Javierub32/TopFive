@@ -18,9 +18,10 @@ export default function TopFiveSelectorScreen() {
     videojuego: t('categories.videogames'),
     pelicula: t('categories.films'),
   };
-  const { resourceType, position, returnToEdit } = useLocalSearchParams<{
+  const { resourceType, position, returnRoute, returnToEdit } = useLocalSearchParams<{
     resourceType: ResourceType;
     position: string;
+    returnRoute?: string;
     returnToEdit?: string;
   }>();
 
@@ -48,9 +49,11 @@ export default function TopFiveSelectorScreen() {
         onLeftPress: () => hideNotification(),
         onRightPress: async () => {
           hideNotification();
-          if (returnToEdit === 'true') {  //si viene del edit profile, para que no se actualice a tiempo real => dismissTo, de otra manera se actualizaba
+
+          const target = returnRoute || (returnToEdit === 'true' ? '/editProfile' : null);
+          if (target) {  //si viene del edit profile, para que no se actualice a tiempo real => dismissTo, de otra manera se actualizaba
             router.dismissTo({
-              pathname: '/editProfile',
+              pathname: target as any,
               params: {
                 addedItem: JSON.stringify(item),
                 targetPosition: position,
