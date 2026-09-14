@@ -6,7 +6,7 @@ import { ProfileData } from '@/User/components/ProfileData';
 import { UserAvatar } from '@/User/components/UserAvatar';
 import { FollowButton } from '@/User/components/FollowButton';
 import { LoadingIndicator } from 'components/LoadingIndicator';
-import { ScalableLockIcon } from 'components/Icons';
+import { ScalableLockIcon, ScalableMaterialCommunityIcons } from 'components/Icons';
 import {
   View,
   ScrollView,
@@ -22,11 +22,13 @@ import { CategorySelector } from '@/Profile/components/CategorySelector';
 import { useTranslation } from 'react-i18next';
 import { TabView } from 'react-native-tab-view';
 import { ResourceType } from 'hooks/useResource';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { AppText } from 'components/AppText';
 import { useTheme } from 'context/ThemeContext';
 import { useNotification } from 'context/NotificationContext';
+import { useAuth } from 'context/AuthContext';
+import { supabase } from 'lib/supabase';
 
 export default function UserDetailsScreen() {
   const { colors } = useTheme();
@@ -35,12 +37,14 @@ export default function UserDetailsScreen() {
   const layout = useWindowDimensions();
   const [isChanging, setIsChanging] = useState(false);
   const { showNotification, hideNotification } = useNotification();
+  const { session } = useAuth();
 
   const {
     loading,
     userData,
     handleFollow,
     cancelRequest,
+    handleToggleAlertsDB,
     selectedCategory,
     setSelectedCategory,
     selectedYear,
@@ -54,6 +58,14 @@ export default function UserDetailsScreen() {
   const isFollowing = userData?.following_status === 'accepted';
   const profilePublic = userData?.is_private === false;
   const canViewStats = isFollowing || profilePublic;
+
+  const [alertsEnabled, setAlertsEnabled] = useState(false);  /* alertas de reviews */
+  useEffect(() => {
+    if(userData?.alerts_enabled !== undefined){
+      setAlertsEnabled(userData?.alerts_enabled);
+    }
+  }, [userData?.alerts_enabled])
+
   const getPath = () => {
     if (from === 'home') return 'back';
     if (from === 'link') return '/Home';
@@ -115,6 +127,55 @@ export default function UserDetailsScreen() {
       },
     });
   };
+
+const handleToggleAlerts = () => {
+    const newState = !alertsEnabled;
+
+    if (newState) {
+      // Notificación para ACTIVAR
+      showNotification({
+        title: t('profile.alerts.activateChoiceTitle', { username: userData?.username || '' }),
+        description: t('profile.alerts.activateChoiceDesc', { username: userData?.username || '' }),
+        isChoice: true,
+        leftButtonText: t('common.cancel', 'Cancelar'),
+        rightButtonText: t('common.activate', 'Activar'),
+        success: true, 
+        delete: false,
+        onLeftPress: () => hideNotification(),
+        onRightPress: async () => {
+          hideNotification();
+          setAlertsEnabled(true); // Actualizamos la UI
+          try {
+            await handleToggleAlertsDB(true); // Llamada a BD
+          } catch (error) {
+            setAlertsEnabled(false); // Revertimos si falla
+          }
+        },
+      });
+    } else {
+      // Notificación para DESACTIVAR
+      showNotification({
+        title: t('profile.alerts.deactivateChoiceTitle', { username: userData?.username || '' }),
+        description: t('profile.alerts.deactivateChoiceDesc', { username: userData?.username || '' }),
+        isChoice: true,
+        leftButtonText: t('common.cancel', 'Cancelar'),
+        rightButtonText: t('common.deactivate', 'Desactivar'),
+        success: false,
+        delete: true, 
+        onLeftPress: () => hideNotification(),
+        onRightPress: async () => {
+          hideNotification();
+          setAlertsEnabled(false); // Actualizamos la UI
+          try {
+            await handleToggleAlertsDB(false); // Llamada a BD
+          } catch (error) {
+            setAlertsEnabled(true); // Revertimos si falla
+          }
+        },
+      });
+    }
+  };
+
 
   const renderScene = ({ route: tabRoute }: any) => {
     if (isChanging || tabRoute.key !== selectedCategory) {
@@ -182,7 +243,24 @@ export default function UserDetailsScreen() {
 
   return (
     <Screen>
-      <ReturnButton route={route} title={userData?.username || t('details.userDetails')} />
+      <View className='relative justify-content'>
+        <ReturnButton route={route} title={userData?.username || t('details.userDetails')} />
+        {isFollowing && (
+          <View className='absolute right-4 top-0 bottom-0 justify-center pt-3'>
+            <TouchableOpacity
+              onPress={handleToggleAlerts} 
+              activeOpacity={0.5}
+              className='p-2 rounded-full'
+            >
+              <ScalableMaterialCommunityIcons
+                name={alertsEnabled ? 'bell-check' : 'bell-outline'}
+                size={20}
+                color={colors.primaryText}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}

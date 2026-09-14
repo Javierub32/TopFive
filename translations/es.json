@@ -366,6 +366,12 @@
         "privateProfile": {
             "title": "Perfil privado",
             "description": "Este perfil es privado. No puedes ver su contenido."
+        },
+        "alerts": {
+            "activateChoiceTitle": "Activar Notificaciones",
+            "activateChoiceDesc": "¿Quieres recibir un aviso cuando {{username}} publique algo nuevo?",
+            "deactivateChoiceTitle": "Desactivar Notificaciones",
+            "deactivateChoiceDesc": "¿Seguro que quieres dejar de recibir alertas de {{username}}?"
         }
     },
     "aboutUs": {

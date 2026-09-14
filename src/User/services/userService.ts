@@ -22,7 +22,7 @@ export const userService = {
 				.single(),
 			supabase
 				.from('relationships')
-				.select('status')
+				.select('status, alerts_enabled')
 				.eq('follower_id', currentUserId)
 				.eq('following_id', userId)
 				.maybeSingle() // Usamos maybeSingle para que no de error si no hay relación
@@ -38,7 +38,8 @@ export const userService = {
 			frame: (user as any).frame?.codigo || 'none',
 			is_requested: !!relationship, // true si existe, false si es null
 			following_status: relationship?.status || null, // 'pending', 'accepted' o null
-			profile_type: user.is_private ? 'private' : 'public' // Añadimos el tipo de perfil
+			alerts_enabled: relationship?.alerts_enabled, //Alertas de reviews
+			profile_type: user.is_private ? 'private' : 'public', // Añadimos el tipo de perfil
 		};
 	},
 
@@ -113,5 +114,15 @@ export const userService = {
 
 		if (error) return false;
 		return data?.isRegistered === true;
-	}
+	},
+
+	async toggleAlerts(currentUserId: string, targetUserId: string, alertsEnabled: boolean) {
+        const { error } = await supabase
+            .from('relationships')
+            .update({ alerts_enabled: alertsEnabled })
+            .eq('follower_id', currentUserId)
+            .eq('following_id', targetUserId);
+        
+        if (error) throw error;
+    }
 };
