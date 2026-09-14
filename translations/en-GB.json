@@ -261,7 +261,15 @@
         "deleteItemFromListNotification": {
             "title": "Delete from list",
             "description": "Are you sure you want to remove this item from the list?",
-            "confirmationDescription": "The item has been deleted from the list."
+            "confirmationDescription": "The item has been deleted from the list.",
+            "multipleConfirmationDescription": "The items have been deleted from the list."
+        },
+        "addItemToListNotification": {
+            "title": "Add to list",
+            "description": "Do you want to add this item to the list?",
+            "multipleDescription": "Do you want to add these {{count}} items to the list?",
+            "confirmationDescription": "The item has been added successfully to the list.",
+            "multipleConfirmationDescription": "The items have been added successfully to the list."
         },
         "createNewList": "+ Create new list"
     },

@@ -8,8 +8,11 @@ import { useGroupData } from 'src/Collection/hooks/useGroupData';
 import { ReturnButton } from 'components/ReturnButton';
 import { useEffect } from 'react';
 import { ResourceType, StateType, useResource } from 'hooks/useResource';
-import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton'; // <-- Mismo botón
-
+import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
+import { AddToListButton } from 'components/AddToListButton';
+import { CollectionType, listServices } from '@/Collection/services/listServices';
+import { useNotification } from 'context/NotificationContext';
+import { useTranslation } from 'react-i18next';
 const stateMap: Record<string, StateType> = {
   enCurso: 'EN_CURSO',
   pendientes: 'PENDIENTE',
@@ -25,6 +28,7 @@ export default function GroupScreen() {
   const targetUserId = params.targetUserId as string;
 
   const { borrarRecurso } = useResource();
+  const { addItemToList } = listServices;
   const {
     handleItemPress,
     setIsSearchVisible,
@@ -78,11 +82,17 @@ export default function GroupScreen() {
           </View>
 
           {hasSelection && (
+            <>
             <DeleteResourceButton
               resources={selectedItems}
               type={category as ResourceType}
               onCustomDelete={handleDelete}
             />
+            <AddToListButton
+              resourceCategory={category as ResourceType}
+              resourceId={selectedItems.map((item: any) => item.id)}
+            />
+           </> 
           )}
         </View>
 

@@ -18,37 +18,7 @@ const categoryMap: Record<string, CollectionType> = {
   'cancion': 'MUSICA',
 };
 
-const ModalListItem = ({ list, onSelect, colors, t, isSaved }: any) => (
-  <TouchableOpacity
-    className="active:bg-surfaceButton/80 flex-row items-center justify-between rounded-lg p-3"
-    onPress={() => onSelect(list.id, list.tipo)}>
-    <View className="flex-1 flex-row items-center pr-4">
-      <View
-        className="mr-3 h-12 w-12 items-center justify-center rounded-lg"
-        style={{ backgroundColor: list.color || colors.primary }}>
-        <ScalableMaterialCommunityIcons
-          name={(list.icono as any) || 'folder-outline'}
-          size={28}
-          color={colors.primaryText}
-        />
-      </View>
-      <View className="flex-1">
-        <AppText
-          className="text-base font-semibold"
-          style={{ color: colors.primaryText, fontSize: 16 }}
-          numberOfLines={1}>
-          {list.nombre}
-        </AppText>
-        <AppText className="text-xs" style={{ color: colors.secondaryText, fontSize: 14 }} numberOfLines={1}>
-          {list.descripcion || t('common.noDescription')}
-        </AppText>
-      </View>
-    </View>
-    <ScalableIonicons name={isSaved ? "bookmark" : "bookmark-outline"} size={24} color={colors.secondaryText} />
-  </TouchableOpacity>
-);
-
-export function AddToListModal({ visible, onClose, resourceCategory, resourceId, onSelect }: any) {
+export function AddToListModal({ visible, onClose, resourceCategory, resourceId, itemIds = [], isMultiple, onSelect }: any) {
   const { colors } = useTheme();
   const { categoriaActual } = useCollection();
   const { lists, loading } = useLists(categoriaActual);
@@ -57,7 +27,7 @@ export function AddToListModal({ visible, onClose, resourceCategory, resourceId,
   const [checkingLists, setCheckingLists] = useState(false);
 
   useEffect(() => {
-    if (visible && resourceId && categoriaActual) {
+    if (visible && itemIds.length === 1 && categoriaActual && !isMultiple) {
       const checkSavedLists = async () => {
         setCheckingLists(true);
         try {
@@ -67,7 +37,7 @@ export function AddToListModal({ visible, onClose, resourceCategory, resourceId,
             exactType = categoriaActual === 'serie' ? 'SERIE' : 'PELICULA';
           }
 
-          const ids = await listServices.getListContainingItem(resourceId, exactType as CollectionType);
+          const ids = await listServices.getListContainingItem(itemIds[0], exactType as CollectionType);
           setSavedListIds(ids);
         } catch (error) {
           console.error('Error al verificar las listas guardadas:', error);
@@ -80,7 +50,41 @@ export function AddToListModal({ visible, onClose, resourceCategory, resourceId,
     } else {
       setSavedListIds([]);
     }
-  }, [visible, resourceId, categoriaActual]);
+  }, [visible, itemIds, categoriaActual]);
+
+  const ModalListItem = ({ list, onSelect, colors, t, isSaved }: any) => (
+    <TouchableOpacity
+      className="active:bg-surfaceButton/80 flex-row items-center justify-between rounded-lg p-3"
+      onPress={() => onSelect(list.id, list.tipo)}>
+      <View className="flex-1 flex-row items-center pr-4">
+        <View
+          className="mr-3 h-12 w-12 items-center justify-center rounded-lg"
+          style={{ backgroundColor: list.color || colors.primary }}>
+          <ScalableMaterialCommunityIcons
+            name={(list.icono as any) || 'folder-outline'}
+            size={28}
+            color={colors.primaryText}
+          />
+        </View>
+        <View className="flex-1">
+          <AppText
+            className="text-base font-semibold"
+            style={{ color: colors.primaryText, fontSize: 16 }}
+            numberOfLines={1}>
+            {list.nombre}
+          </AppText>
+          <AppText className="text-xs" style={{ color: colors.secondaryText, fontSize: 14 }} numberOfLines={1}>
+            {list.descripcion || t('common.noDescription')}
+          </AppText>
+        </View>
+      </View>
+      <ScalableIonicons name={isSaved ? "bookmark" : "bookmark-outline"} size={24} color={colors.secondaryText} />
+    </TouchableOpacity>
+  );
+
+  const handleSelect = (listId: String, listType: CollectionType) => {
+    onSelect(listId, listType, itemIds);
+  }
 
   const getCategoryName = (category: string) => {
     switch (category) {
@@ -128,7 +132,12 @@ export function AddToListModal({ visible, onClose, resourceCategory, resourceId,
               extraData={savedListIds}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
-                <ModalListItem list={item} onSelect={onSelect} colors={colors} t={t} isSaved={savedListIds.includes(item.id)} />
+                <ModalListItem
+                  list={item}
+                  onSelect={handleSelect}
+                  colors={colors}
+                  t={t}
+                  isSaved={!isMultiple && savedListIds.includes(item.id)} />
               )}
               contentContainerStyle={{ paddingBottom: 20 }}
               ListEmptyComponent={() => (
