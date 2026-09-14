@@ -54,7 +54,7 @@ export const CollectionStructure = ({
           posterWidth={itemWidth}
           posterHeight={itemHeight}
           showStatus={showStatus}
-          onLongPress={() =>handleLongPress(item)}
+          onLongPress={() =>handleLongPress?.(item)}
         />
       )}
     />
