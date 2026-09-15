@@ -570,5 +570,10 @@
         "thirdPartyAd": "Anunciante Externo",
         "sponsored": "PATROCINADO",
         "recommendedForYou": "Recomendado para ti"
-    }
+    },
+	"searchRecent": {
+		"usersTitle": "Usuarios",
+		"recentSearches": "Recientes",
+		"deleteRecentSearch": "Eliminar a {{username}} de recientes"
+	}
 }
