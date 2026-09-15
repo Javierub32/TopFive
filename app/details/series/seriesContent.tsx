@@ -24,7 +24,7 @@ export default function SeriesDetail() {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const getPath = () => {
-    if (from === 'home') return 'back';
+    if (from === 'home' || from === 'details') return 'back';
     return '/Add?initialCategory=serie';
   };
   const path = getPath();

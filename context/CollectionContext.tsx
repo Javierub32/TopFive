@@ -223,6 +223,8 @@ export const CollectionProvider = ({ children }: any) => {
   };
 
   const handleItemPress = (item: any, categoria?: ResourceType, from?: string) => {
+    console.log('CLAVES DE ITEM EN COLLECTION:', Object.keys(item));
+    console.log('ITEM COMPLETO:', item);
     const resourceTypeMap: Record<ResourceType, string> = {
       pelicula: 'film',
       serie: 'series',
@@ -231,6 +233,7 @@ export const CollectionProvider = ({ children }: any) => {
       cancion: 'song',
     };
     const type = resourceTypeMap[categoria || categoriaActual];
+    
     router.push({
       pathname: `/details/${type}/${type}Resource`,
       params: { item: JSON.stringify(item), from: from || 'collection' },

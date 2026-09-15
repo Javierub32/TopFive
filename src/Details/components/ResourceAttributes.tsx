@@ -7,15 +7,25 @@ import {
 } from 'app/types/Resources';
 import { ScalableDificultyIcon, ScalableFavoriteIcon, ScalableTimesWatchedIcon } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { AddToListButton } from 'components/AddToListButton';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+import { ResourceType } from 'hooks/useResource';
+
 interface Props {
   resource: BookResource | FilmResource | SeriesResource | SongResource | GameResource;
   isOwner?: boolean;
 }
+
+const typeMap: Record<ResourceType, string> = {
+    libro: 'book',
+    pelicula: 'film',
+    serie: 'series',
+    videojuego: 'game',
+    cancion: 'song',
+};
 
 export const ResourceAttributes = ({ resource, isOwner }: Props) => {
   const { colors } = useTheme();
@@ -102,12 +112,43 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
     }
   };
 
+  const handleTitlePress = () => {
+    const rawType = (resource.tiporecurso || '').toLowerCase();
+    let type: string | undefined;
+
+    if (rawType === 'audiovisual') {
+      type = 'temporadaActual' in resource ? 'series' : 'film';
+    }
+    else if(rawType === "musica") {
+      type = 'song';
+    } else {
+      type = typeMap[rawType as ResourceType];
+    }
+
+    const targetId = resource.contenido?.apiId ?? (resource.contenido as any)?.idApi;
+
+    console.log(targetId);
+    console.log(type)
+
+    router.push({
+      pathname: `/details/${type}/${type}Content`,
+      params: { from: 'details', id: targetId },
+    });
+  };  
   return (
     <View className="mb-4">
       <View className="flex-1 flex-row items-center justify-between">
-        <AppText className="flex-1 font-bold" style={{ color: colors.primaryText, fontSize: 24}}>
-          {contenido.titulo || t('common.noTitle')}
-        </AppText>
+
+        <TouchableOpacity
+          className='flex-1 mr-2'
+          activeOpacity={0.7}
+          onPress={handleTitlePress}
+        >
+          <AppText className="flex-1 font-bold" style={{ color: colors.primaryText, fontSize: 24}}>
+            {contenido.titulo || t('common.noTitle')}
+          </AppText>
+        </TouchableOpacity>
+
         {isOwner && (
           <AddToListButton resourceCategory={resource.tiporecurso} resourceId={resource.id} />
         )}

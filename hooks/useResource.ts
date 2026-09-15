@@ -105,6 +105,8 @@ export const useResource = () => {
           `
             *, 
             ${config.contentJoin}${joinModifier} (
+                id,
+                idApi,
                 titulo,
                 imagenUrl,
                 fechaLanzamiento
@@ -165,7 +167,10 @@ export const useResource = () => {
       if (data && !profile) {
         const normalizedData = data.map((item: any) => {
           if (item[config.contentJoin]) {
-            item.contenido = item[config.contentJoin];
+            item.contenido = {
+              ...item[config.contentJoin],
+              apiId: item[config.contentJoin].idApi, // normalizo la apiid tb
+            };
             delete item[config.contentJoin];
           }
           return item;
