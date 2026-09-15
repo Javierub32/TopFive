@@ -43,6 +43,10 @@ export default function BookDetail() {
   const isPending = bookResource?.estado === 'PENDIENTE';
   const isCompleted = bookResource?.estado === 'COMPLETADO';
 
+  const displayUsername = (bookResource as any)?.username;
+  const displayAvatarUrl = (bookResource as any)?.avatar_url;
+
+
   if (!bookResource) {
     return (
       <Screen>
@@ -91,7 +95,7 @@ export default function BookDetail() {
                   />
                 )}
               </View>
-              <ReviewCard review={bookResource.reseña} />
+              <ReviewCard review={bookResource.reseña}  username={displayUsername} avatarUrl={displayAvatarUrl}/>
               <DateCard
                 startDate={bookResource.fechaInicio}
                 endDate={bookResource.fechaFin}

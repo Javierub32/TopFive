@@ -41,6 +41,10 @@ export default function SongDetail() {
 
   const isPending = songResource?.estado === 'PENDIENTE';
 
+  const displayUsername = (songResource as any)?.username;
+  const displayAvatarUrl = (songResource as any)?.avatar_url;
+
+
   if (!songResource) {
     return (
       <Screen>
@@ -82,7 +86,7 @@ export default function SongDetail() {
                 )}
                 <DateCard startDate={songResource.fechaEscucha} isRange={false} />
               </View>
-              <ReviewCard review={songResource.reseña} />
+              <ReviewCard review={songResource.reseña}  username={displayUsername} avatarUrl={displayAvatarUrl}/>
             </View>
           )}
         </View>

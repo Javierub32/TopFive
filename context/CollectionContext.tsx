@@ -223,8 +223,6 @@ export const CollectionProvider = ({ children }: any) => {
   };
 
   const handleItemPress = (item: any, categoria?: ResourceType, from?: string) => {
-    console.log('CLAVES DE ITEM EN COLLECTION:', Object.keys(item));
-    console.log('ITEM COMPLETO:', item);
     const resourceTypeMap: Record<ResourceType, string> = {
       pelicula: 'film',
       serie: 'series',

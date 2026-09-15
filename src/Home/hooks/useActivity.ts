@@ -115,6 +115,9 @@ export const useActivity = () => {
             ...resourceData.contenido,
             apiId: activity.idapi as any,
           };
+
+          (resourceData as any).username = activity.username;
+          (resourceData as any).avatar_url = activity.avatar_url;
         }
 
       router.push({

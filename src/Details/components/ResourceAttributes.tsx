@@ -127,9 +127,6 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
 
     const targetId = resource.contenido?.apiId ?? (resource.contenido as any)?.idApi;
 
-    console.log(targetId);
-    console.log(type)
-
     router.push({
       pathname: `/details/${type}/${type}Content`,
       params: { from: 'details', id: targetId },

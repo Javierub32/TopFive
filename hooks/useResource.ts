@@ -104,6 +104,10 @@ export const useResource = () => {
         .select(
           `
             *, 
+            usuario (
+              username,
+              avatar_url
+            ),
             ${config.contentJoin}${joinModifier} (
                 id,
                 idApi,
@@ -165,17 +169,25 @@ export const useResource = () => {
 
       // Normalizamos los datos para tenerlos en el mismo formato
       if (data && !profile) {
-        const normalizedData = data.map((item: any) => {
-          if (item[config.contentJoin]) {
-            item.contenido = {
-              ...item[config.contentJoin],
-              apiId: item[config.contentJoin].idApi, // normalizo la apiid tb
-            };
-            delete item[config.contentJoin];
-          }
-          return item;
-        });
-        return { data: normalizedData, count } as unknown as FetchResourcesResponse<K>;
+      const normalizedData = data.map((item: any) => {
+        
+        if (item.usuario) {
+          item.username = item.usuario.username;
+          item.avatar_url = item.usuario.avatar_url;
+          delete item.usuario;
+        }
+
+        // contenido
+        if (item[config.contentJoin]) {
+          item.contenido = {
+            ...item[config.contentJoin],
+            apiId: item[config.contentJoin].idApi,
+          };
+          delete item[config.contentJoin];
+        }
+        return item;
+      });
+      return { data: normalizedData, count } as unknown as FetchResourcesResponse<K>;
       }
 
       // Si es modo profile o no hay data, devolvemos tal cual
