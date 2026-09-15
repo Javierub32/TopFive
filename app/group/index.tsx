@@ -13,6 +13,7 @@ import { AddToListButton } from 'components/AddToListButton';
 import { CollectionType, listServices } from '@/Collection/services/listServices';
 import { useNotification } from 'context/NotificationContext';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from 'context/AuthContext';
 const stateMap: Record<string, StateType> = {
   enCurso: 'EN_CURSO',
   pendientes: 'PENDIENTE',
@@ -27,6 +28,7 @@ export default function GroupScreen() {
   const from = params.from as string;
   const targetUserId = params.targetUserId as string;
 
+  const { user } = useAuth();
   const { borrarRecurso } = useResource();
   const { addItemToList } = listServices;
   const {
@@ -56,6 +58,7 @@ export default function GroupScreen() {
     from === 'Profile' || targetUserId ? {} : { initialResource: category as ResourceType };
 
   const hasSelection = selectedItems && selectedItems.length > 0;
+  const isOwner = targetUserId ? targetUserId === user?.id : true;
 
   const handleDelete = async () => {
     await Promise.all(
@@ -106,8 +109,8 @@ export default function GroupScreen() {
               handleItemPress(item, category as ResourceType, 'group')
             }
             showStatus={false}
-            handleLongPress={(item: any) =>
-              handleLongPress(item, category as ResourceType, 'group')
+            handleLongPress={isOwner ?(item: any) =>
+              handleLongPress(item, category as ResourceType, 'group') : undefined
             }
             handleSearchPagination={handleLoadMore}
             loading={loading}
