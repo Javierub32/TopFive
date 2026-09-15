@@ -68,7 +68,7 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
       } else {
         showNotification({
           title: t('common.success'),
-          description: results[0] === 'Recurso añadido a la lista exitosamente.' ? t('list.addItemToListNotification.confirmationDescription', { titulo: 'This item' }): t('list.deleteItemFromListNotification.confirmationDescription', { titulo: 'The item' }) ,
+          description: results[0] === 'Recurso añadido a la lista exitosamente.' ? t('list.addItemToListNotification.confirmationDescription'): t('list.deleteItemFromListNotification.confirmationDescription') ,
           isChoice: false,
           delete: false,
           success: true,
@@ -90,7 +90,7 @@ export function AddToListButton({ resourceCategory, resourceId }: any) {
     <>
       <TouchableOpacity
         onPress={() => setModalVisible(true)}
-        disabled={!resourceId || resourceId.length === 0}
+        disabled={!resourceId || resourceId.length === 0 || addToListMutation.isPending}
         className="mr-2 h-10 w-10 items-center justify-center rounded-full"
         style={{ backgroundColor: `${colors.accent}99` }}
         activeOpacity={0.7}>

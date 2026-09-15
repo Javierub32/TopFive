@@ -235,7 +235,7 @@ export const CollectionProvider = ({ children }: any) => {
   };
   const type = resourceTypeMap[categoria || categoriaActual];
 
-  if(selectedItems.length <= 0) {
+  if(selectedItems.length === 0) {
     router.push({
       pathname: `/details/${type}/${type}Resource`,
       params: { item: JSON.stringify(item), from: from || 'collection' },

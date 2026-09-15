@@ -67,7 +67,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
   return (
     <TouchableOpacity
       key={list.id}
-      className="mb-4 rounded-2 xl p-4 shadow-sm"
+      className="mb-4 rounded-2xl p-4 shadow-sm"
       onPress={() =>
         router.push({ pathname: '/details/list', params: { listData: JSON.stringify(list) } })
       }

@@ -27,14 +27,14 @@ export function AddToListModal({ visible, onClose, resourceCategory, resourceId,
   const [checkingLists, setCheckingLists] = useState(false);
 
   useEffect(() => {
-    if (visible && itemIds.length === 1 && categoriaActual && !isMultiple) {
+    if (visible && itemIds.length === 1 && resourceCategory && !isMultiple) {
       const checkSavedLists = async () => {
         setCheckingLists(true);
         try {
           // Como tanto peliculas como series se definen como AUDIOVISUAL, hay que diferenciarlos
-          let exactType = categoriaActual.toUpperCase();
+          let exactType = resourceCategory.toUpperCase();
           if (exactType === 'AUDIOVISUAL') {
-            exactType = categoriaActual === 'serie' ? 'SERIE' : 'PELICULA';
+            exactType = resourceCategory === 'serie' ? 'SERIE' : 'PELICULA';
           }
 
           const ids = await listServices.getListContainingItem(itemIds[0], exactType as CollectionType);
@@ -50,7 +50,7 @@ export function AddToListModal({ visible, onClose, resourceCategory, resourceId,
     } else {
       setSavedListIds([]);
     }
-  }, [visible, itemIds, categoriaActual]);
+  }, [visible, itemIds, resourceCategory]);
 
   const ModalListItem = ({ list, onSelect, colors, t, isSaved }: any) => (
     <TouchableOpacity

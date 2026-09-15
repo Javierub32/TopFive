@@ -93,7 +93,7 @@ export const CollectionGroup = ({
             </View>
           ) : null}
 
-            {selectedItems<=0 ? (null) : isSelected ?(
+            {selectedItems===0 ? (null) : isSelected ?(
             <View className="absolute top-1 right-1 z-10">
               <ScalableFontAwesome5
                 name="check-circle"
