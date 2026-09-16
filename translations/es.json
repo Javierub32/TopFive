@@ -239,7 +239,8 @@
         "status": "Estado",
         "onlyFavorites": "Solo favoritos",
         "noContent": "No hay contenido disponible",
-        "searchInPlaceholder": "Buscar en {{category}}..."
+        "searchInPlaceholder": "Buscar en {{category}}...",
+        "noContentDescription": "No hay {{category}} {{status}}"
     },
     "list": {
         "deleteListNotification": {
@@ -272,7 +273,8 @@
             "confirmationDescription": "El elemento ha sido añadido exitosamente a la lista.",
             "multipleConfirmationDescription": "Los elementos han sido añadidos exitosamente a la lista."
         },
-        "createNewList": "+ Nueva lista"
+        "createNewList": "+ Nueva lista",
+        "onThisList": "en esta lista"
     },
     "home": {
         "pressAgainToExit": "Vuelve a tocar para salir.",
@@ -288,6 +290,7 @@
     "profile": {
         "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}",
         "shareUserMessage": "¡Echa un vistazo a este perfil en TopFive!\n{{url}}",
+        "shareTopFive": "Compartir mi TopFive",
         "user": "Usuario",
         "reviews": "Reseñas",
         "selectYear": "Seleccionar año",
@@ -334,15 +337,27 @@
         "removeFromTopFiveNotification": {
             "title": "Eliminar de TopFive",
             "description": "¿Estás seguro de que deseas eliminar este elemento de tu TopFive?",
-            "confirmationDescription": "El elemento ha sido eliminado de tu TopFive."
+            "confirmationDescription": "El elemento ha sido eliminado de tu TopFive.",
+            "error": "Error al eliminar item del TopFive."
         },
         "editProfile": {
             "title": "Editar perfil",
             "username": "Nombre de usuario",
             "usernamePlaceholder": "Escribe tu nombre de usuario...",
             "description": "Descripción",
-            "descriptionPlaceholder": "Escribe algo sobre ti..."
+            "descriptionPlaceholder": "Escribe algo sobre ti...",
+            "profileType": "Perfil",
+            "profilePublic": "Público",
+            "profilePrivate": "Privado",
+            "profileUpdated": "Tu perfil ha sido actualizado correctamente.",
+            "usernameExists": "Este nombre de usuario ya está en uso. Por favor, elige otro.",
+            "profileUpdateError": "Hubo un error al actualizar tu perfil. Por favor, intenta de nuevo.",
+            "topfiveUpdateError": "Error al guardar el Top 5 completo. Por favor, intenta de nuevo.",
+            "topfive": "Editar mi TopFive",
+            "topfiveDescription": "Mantén pulsado para ordenar. Pulsa la X para eliminar."
         },
+        "follow" : "Seguir",
+        "followApplied": "Solicitud enviada",
         "followers": "Seguidores",
         "following": "Seguidos",
         "deleteFollowers": {
@@ -356,6 +371,16 @@
             "description": "¿Deseas dejar de seguir a {{username}}?",
             "successDescription": "Has dejado de seguir a {{username}}.",
             "errorDescription": "No se pudo dejar de seguir a {{username}}. Por favor, inténtalo de nuevo."
+        },
+        "privateProfile": {
+            "title": "Perfil privado",
+            "description": "Este perfil es privado. No puedes ver su contenido."
+        },
+        "alerts": {
+            "activateChoiceTitle": "Activar Notificaciones",
+            "activateChoiceDesc": "¿Quieres recibir un aviso cuando {{username}} publique algo nuevo?",
+            "deactivateChoiceTitle": "Desactivar Notificaciones",
+            "deactivateChoiceDesc": "¿Seguro que quieres dejar de recibir alertas de {{username}}?"
         }
     },
     "aboutUs": {
@@ -507,7 +532,7 @@
        
     },
     "frameSelector": {
-        "title": "Selecciona un marco",
+        "title": "Selecciona foto y marco",
         "loadingAd": "Cargando anuncio...",
         "adNotReady": "El anuncio aún no está listo. Por favor, espera unos segundos e inténtalo de nuevo.",
         "updatedNotification": "Tu marco de perfil ha sido actualizado.",

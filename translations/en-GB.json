@@ -239,7 +239,8 @@
         "status": "Status",
         "onlyFavorites": "Only favorites",
         "noContent": "No content available",
-        "searchInPlaceholder": "Search in {{category}}..."
+        "searchInPlaceholder": "Search in {{category}}...",
+        "noContentDescription": "There are no {{category}} {{status}}"
     },
     "list": {
         "deleteListNotification": {
@@ -272,7 +273,8 @@
             "confirmationDescription": "The item has been added successfully to the list.",
             "multipleConfirmationDescription": "The items have been added successfully to the list."
         },
-        "createNewList": "+ Create new list"
+        "createNewList": "+ Create new list",
+        "onThisList": "on this list"
     },
     "home": {
         "pressAgainToExit": "Press again to exit.",
@@ -288,6 +290,7 @@
     "profile": {
         "shareMessage": "Check out my profile on TopFive!\n{{url}}",
         "shareUserMessage": "Check out this profile on TopFive!\n{{url}}",
+        "shareTopFive": "Share my TopFive",
         "user": "User",
         "reviews": "Reviews",
         "selectYear": "Select year",
@@ -334,15 +337,27 @@
         "removeFromTopFiveNotification": {
             "title": "Delete from TopFive",
             "description": "Are you sure you want to remove this item from your TopFive?",
-            "confirmationDescription": "The item has been deleted from your TopFive."
+            "confirmationDescription": "The item has been deleted from your TopFive.",
+            "error": "There was an error trying to delete the item from your TopFive."
         },
         "editProfile": {
             "title": "Edit profile",
             "username": "Username",
             "usernamePlaceholder": "Write your username...",
             "description": "Description",
-            "descriptionPlaceholder": "Tell us about yourself..."
+            "descriptionPlaceholder": "Tell us about yourself...",
+            "profileType": "Profile",
+            "profilePublic": "Public",
+            "profilePrivate": "Private",
+            "profileUpdated": "Your profile has been updated successfully.",
+            "usernameExists": "This username is already in use. Please choose another.",
+            "profileUpdateError": "There was an error updating your profile. Please try again.",
+            "topfiveUpdateError": "Error trying to update your TopFive. Please try again.",
+            "topfive":  "Edit my TopFive",
+            "topfiveDescription": "Press and hold to sort. Press X to delete."
         },
+        "follow" : "Follow",
+        "followApplied": "Follow request sent",
         "followers": "Followers",
         "following": "Following",
         "deleteFollowers": {
@@ -356,6 +371,16 @@
             "description": "Do you want to unfollow {{username}}?",
             "successDescription": "You've unfollowed {{username}}.",
             "errorDescription": "Could not unfollow {{username}}. Please, try again."
+        },
+        "privateProfile": {
+            "title": "Private Profile",
+            "description": "This profile is private. You cannot view its content."
+        },
+        "alerts": {
+            "activateChoiceTitle": "Enable Notifications",
+            "activateChoiceDesc": "Do you want to receive an alert when {{username}} publishes something new?",
+            "deactivateChoiceTitle": "Disable Notifications",
+            "deactivateChoiceDesc": "Are you sure you want to stop receiving alerts from {{username}}?"
         }
     },
     "aboutUs": {
@@ -507,7 +532,7 @@
        
     },
     "frameSelector": {
-        "title": "Choose a frame",
+        "title": "Choose photo and frame",
         "loadingAd": "Loading ad...",
         "adNotReady": "The ad is not ready yet. Please wait a few seconds and try again.",
         "updatedNotification": "Your profile frame has been updated.",

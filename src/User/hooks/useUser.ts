@@ -15,8 +15,10 @@ export interface User {
   following_count: number;
   is_requested: boolean;
   following_status: 'pending' | 'accepted' | null;
+  alerts_enabled: boolean;
   frame: string;
   reviews_count: number;
+  is_private: boolean;
 }
 
 // Estructura inicial de estadísticas
@@ -159,6 +161,24 @@ export const useUser = (username: string) => {
     }
   };
 
+  const toggleAlertsMutation = useMutation({
+    mutationFn: async (alertsEnabled: boolean) => {
+      if (!user || !userData?.id) throw new Error('Missing user data');
+      await userService.toggleAlerts(user.id, userData.id, alertsEnabled);
+    },
+    // recarga los datos para que todo esté sincronizado
+    onSuccess: invalidateUserData, 
+  });
+
+  const handleToggleAlertsDB = async (newState: boolean) => {
+    try {
+      await toggleAlertsMutation.mutateAsync(newState);
+    } catch (error) {
+      console.error('Error updating alerts state:', error);
+      throw error;
+    }
+  };
+
   return {
     userData,
     loading: isLoading || followMutation.isPending || cancelRequestMutation.isPending,
@@ -166,6 +186,7 @@ export const useUser = (username: string) => {
     refreshUserData,
     handleFollow,
     cancelRequest,
+    handleToggleAlertsDB,
     selectedCategory,
     setSelectedCategory,
     selectedYear,

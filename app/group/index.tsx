@@ -53,9 +53,8 @@ export default function GroupScreen() {
     };
   }, []);
 
-  const returnRoute = targetUserId ? 'back' : from === 'Profile' ? '/Profile' : '/Collection';
-  const returnParams =
-    from === 'Profile' || targetUserId ? {} : { initialResource: category as ResourceType };
+  const returnRoute = (from === 'Profile' || targetUserId) ? 'back' : '/Collection'; /* Hago back en lugar de volver a cargar el perfil, asi guarda de donde venia y no recarga el perfil innecesariamente */
+  const returnParams = (from === 'Profile' || targetUserId) ? {} : { initialResource: category as ResourceType };
 
   const hasSelection = selectedItems && selectedItems.length > 0;
   const isOwner = targetUserId ? targetUserId === user?.id : true;
@@ -109,7 +108,7 @@ export default function GroupScreen() {
               handleItemPress(item, category as ResourceType, 'group')
             }
             showStatus={false}
-            handleLongPress={isOwner ?(item: any) =>
+            handleLongPress={isOwner ? (item: any) =>
               handleLongPress(item, category as ResourceType, 'group') : undefined
             }
             handleSearchPagination={handleLoadMore}

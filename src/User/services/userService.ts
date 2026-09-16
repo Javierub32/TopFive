@@ -17,12 +17,12 @@ export const userService = {
 		const [userRes, relRes] = await Promise.all([
 			supabase
 				.from('usuario')
-				.select('id, username, description, avatar_url, followers_count, following_count, reviews_count, frame!fk_usuario_frame_id(codigo)')
+				.select('id, username, description, avatar_url, followers_count, following_count, reviews_count, is_private, frame!fk_usuario_frame_id(codigo)')
 				.eq('id', userId)
 				.single(),
 			supabase
 				.from('relationships')
-				.select('status')
+				.select('status, alerts_enabled')
 				.eq('follower_id', currentUserId)
 				.eq('following_id', userId)
 				.maybeSingle() // Usamos maybeSingle para que no de error si no hay relación
@@ -37,17 +37,28 @@ export const userService = {
 			...user,
 			frame: (user as any).frame?.codigo || 'none',
 			is_requested: !!relationship, // true si existe, false si es null
-			following_status: relationship?.status || null // 'pending', 'accepted' o null
+			following_status: relationship?.status || null, // 'pending', 'accepted' o null
+			alerts_enabled: relationship?.alerts_enabled, //Alertas de reviews
+			profile_type: user.is_private ? 'private' : 'public', // Añadimos el tipo de perfil
 		};
 	},
 
 	async requestFollow(userId: string, targetUserId: string) {
+		const {data: targetData} = await supabase
+			.from('usuario')
+			.select('is_private')
+			.eq('id', targetUserId)
+			.single();
+
+		const isTargetPrivate = targetData?.is_private;
+		const finalStatus = isTargetPrivate ? 'pending' : 'accepted';
+
 		const { data, error } = await supabase
 			.from('relationships')
 			.insert([{
 				follower_id: userId,
 				following_id: targetUserId,
-				status: 'pending'
+				status: finalStatus
 			}]);
 		if (error) throw error;
 
@@ -103,5 +114,15 @@ export const userService = {
 
 		if (error) return false;
 		return data?.isRegistered === true;
-	}
+	},
+
+	async toggleAlerts(currentUserId: string, targetUserId: string, alertsEnabled: boolean) {
+        const { error } = await supabase
+            .from('relationships')
+            .update({ alerts_enabled: alertsEnabled })
+            .eq('follower_id', currentUserId)
+            .eq('following_id', targetUserId);
+        
+        if (error) throw error;
+    }
 };

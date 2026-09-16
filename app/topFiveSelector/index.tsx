@@ -18,10 +18,13 @@ export default function TopFiveSelectorScreen() {
     videojuego: t('categories.videogames'),
     pelicula: t('categories.films'),
   };
-  const { resourceType, position } = useLocalSearchParams<{
+  const { resourceType, position, returnRoute, returnToEdit } = useLocalSearchParams<{
     resourceType: ResourceType;
     position: string;
+    returnRoute?: string;
+    returnToEdit?: string;
   }>();
+
   const { data, loading, fetchTopFiveSelector, insertToTopFive } = useTopFiveSelector(resourceType);
   const { showNotification, hideNotification } = useNotification();
 
@@ -46,28 +49,43 @@ export default function TopFiveSelectorScreen() {
         onLeftPress: () => hideNotification(),
         onRightPress: async () => {
           hideNotification();
-          try {
-            const posicion = parseInt(position);
-            await insertToTopFive(posicion, resourceType, item.id);
-            router.replace('/Profile');
-            showNotification({
-              title: t('common.success'),
-              description: t('topFiveSelector.addedToTopFive', { title: item.contenido.titulo }),
-              isChoice: false,
-              delete: false,
-              success: true,
+
+          const target = returnRoute || (returnToEdit === 'true' ? '/editProfile' : null);
+          if (target) {  //si viene del edit profile, para que no se actualice a tiempo real => dismissTo, de otra manera se actualizaba
+            router.dismissTo({
+              pathname: target as any,
+              params: {
+                addedItem: JSON.stringify(item),
+                targetPosition: position,
+                addedItemType: resourceType,
+              },
             });
-          } catch (error: any) {
-            showNotification({
-              title: t('common.error'),
-              description:
-                error?.message === 'TOP_FIVE_DUPLICATE_RESOURCE'
-                  ? t('topFiveSelector.duplicateResource')
-                  : t('topFiveSelector.addToTopFiveError'),
-              isChoice: false,
-              delete: false,
-              success: false,
-            });
+          }
+          else{
+            try {
+              const posicion = parseInt(position);
+              await insertToTopFive(posicion, resourceType, item.id);
+              router.replace('/Profile');
+              showNotification({
+                title: t('common.success'),
+                description: t('topFiveSelector.addedToTopFive', { title: item.contenido.titulo }),
+                isChoice: false,
+                delete: false,
+                success: true,
+              });
+            } catch (error: any) {
+              showNotification({
+                title: t('common.error'),
+                description:
+                  error?.message === 'TOP_FIVE_DUPLICATE_RESOURCE'
+                    ? t('topFiveSelector.duplicateResource')
+                    : t('topFiveSelector.addToTopFiveError'),
+                isChoice: false,
+                delete: false,
+                success: false,
+              });
+            }
+
           }
         },
       });
@@ -77,7 +95,7 @@ export default function TopFiveSelectorScreen() {
   return (
     <Screen>
       <ReturnButton
-        route="/Profile"
+        route={returnToEdit === 'true' ? 'back' : '/Profile'}
         title={t('topFiveSelector.categoryOfYourCollectionTitle', {
           category: ContentTitle[resourceType],
         })}

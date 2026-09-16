@@ -131,4 +131,43 @@ export const topFiveService = {
 
 	if (deleteError) throw deleteError;
   },
+
+
+  async saveCompleteTopFive(userId: string, slots: { position: number; item: any | null }[]) { //Tras muchas pruebas, la unica manera es asi
+    const { data: topFive, error: listError } = await supabase
+      .from('estadistica_topfive')
+      .upsert({ usuarioid: userId }, { onConflict: 'usuarioid' })
+      .select('id')
+      .single();
+
+    if (listError) throw listError;
+
+    // Borramos todo lo anterior de esta lista para evitar conflictos
+    const { error: deleteError } = await supabase
+      .from('estadistica_topfive_item')
+      .delete()
+      .eq('topfiveid', topFive.id);
+
+    if (deleteError) throw deleteError;
+
+    // Filtramos solo los slots que tienen contenido y los insertamos limpios
+    const itemsToInsert = slots
+      .filter((slot) => slot.item !== null)
+      .map((slot) => ({
+        topfiveid: topFive.id,
+        posicion: slot.position,
+        tipo_recurso: slot.item.type,
+        recurso_id: slot.item.resourceData?.id || slot.item.id,
+      }));
+
+    if (itemsToInsert.length > 0) {
+      const { error: insertError } = await supabase
+        .from('estadistica_topfive_item')
+        .insert(itemsToInsert);
+
+      if (insertError) throw insertError;
+    }
+
+    return true;
+  }
 };

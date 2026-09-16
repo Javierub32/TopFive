@@ -220,12 +220,17 @@ function InitialLayout() {
     <View style={{ flex: 1 }}>
       <Stack
         screenOptions={{
-          headerShown: false, // Seguimos ocultando la cabecera fea por defecto
-          gestureEnabled: true, // ¡Magia activada para iOS!
-          fullScreenGestureEnabled: true,
-          animation: 'fade_from_bottom', // Transición nativa fluida para Android/iOS
+          headerShown: false,
+          gestureEnabled: true, 
+          fullScreenGestureEnabled: false,
+          animation: 'fade_from_bottom',
         }}
-      />
+        >
+        <Stack.Screen
+          name="(tabs)"
+          options={{gestureEnabled: false}}
+        />
+      </Stack>
       <NotificationModal
         visible={visible}
         title={config.title}

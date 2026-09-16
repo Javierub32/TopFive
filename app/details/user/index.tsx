@@ -6,6 +6,7 @@ import { ProfileData } from '@/User/components/ProfileData';
 import { UserAvatar } from '@/User/components/UserAvatar';
 import { FollowButton } from '@/User/components/FollowButton';
 import { LoadingIndicator } from 'components/LoadingIndicator';
+import { ScalableLockIcon, ScalableMaterialCommunityIcons } from 'components/Icons';
 import {
   View,
   ScrollView,
@@ -21,11 +22,13 @@ import { CategorySelector } from '@/Profile/components/CategorySelector';
 import { useTranslation } from 'react-i18next';
 import { TabView } from 'react-native-tab-view';
 import { ResourceType } from 'hooks/useResource';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { AppText } from 'components/AppText';
 import { useTheme } from 'context/ThemeContext';
 import { useNotification } from 'context/NotificationContext';
+import { useAuth } from 'context/AuthContext';
+import { supabase } from 'lib/supabase';
 
 export default function UserDetailsScreen() {
   const { colors } = useTheme();
@@ -34,12 +37,14 @@ export default function UserDetailsScreen() {
   const layout = useWindowDimensions();
   const [isChanging, setIsChanging] = useState(false);
   const { showNotification, hideNotification } = useNotification();
+  const { session } = useAuth();
 
   const {
     loading,
     userData,
     handleFollow,
     cancelRequest,
+    handleToggleAlertsDB,
     selectedCategory,
     setSelectedCategory,
     selectedYear,
@@ -50,11 +55,21 @@ export default function UserDetailsScreen() {
     refreshUserData,
   } = useUser(username as string);
 
-  const canViewStats = userData?.following_status === 'accepted';
+  const isFollowing = userData?.following_status === 'accepted';
+  const profilePublic = userData?.is_private === false;
+  const canViewStats = isFollowing || profilePublic;
+
+  const [alertsEnabled, setAlertsEnabled] = useState(false);  /* alertas de reviews */
+  useEffect(() => {
+    if(userData?.alerts_enabled !== undefined){
+      setAlertsEnabled(userData?.alerts_enabled);
+    }
+  }, [userData?.alerts_enabled])
+
   const getPath = () => {
     if (from === 'home') return 'back';
     if (from === 'link') return '/Home';
-    return '/Home';
+    return 'back';
   };
   const route = getPath();
 
@@ -112,6 +127,55 @@ export default function UserDetailsScreen() {
       },
     });
   };
+
+const handleToggleAlerts = () => {
+    const newState = !alertsEnabled;
+
+    if (newState) {
+      // Notificación para ACTIVAR
+      showNotification({
+        title: t('profile.alerts.activateChoiceTitle', { username: userData?.username || '' }),
+        description: t('profile.alerts.activateChoiceDesc', { username: userData?.username || '' }),
+        isChoice: true,
+        leftButtonText: t('common.cancel', 'Cancelar'),
+        rightButtonText: t('common.activate', 'Activar'),
+        success: true, 
+        delete: false,
+        onLeftPress: () => hideNotification(),
+        onRightPress: async () => {
+          hideNotification();
+          setAlertsEnabled(true); // Actualizamos la UI
+          try {
+            await handleToggleAlertsDB(true); // Llamada a BD
+          } catch (error) {
+            setAlertsEnabled(false); // Revertimos si falla
+          }
+        },
+      });
+    } else {
+      // Notificación para DESACTIVAR
+      showNotification({
+        title: t('profile.alerts.deactivateChoiceTitle', { username: userData?.username || '' }),
+        description: t('profile.alerts.deactivateChoiceDesc', { username: userData?.username || '' }),
+        isChoice: true,
+        leftButtonText: t('common.cancel', 'Cancelar'),
+        rightButtonText: t('common.deactivate', 'Desactivar'),
+        success: false,
+        delete: true, 
+        onLeftPress: () => hideNotification(),
+        onRightPress: async () => {
+          hideNotification();
+          setAlertsEnabled(false); // Actualizamos la UI
+          try {
+            await handleToggleAlertsDB(false); // Llamada a BD
+          } catch (error) {
+            setAlertsEnabled(true); // Revertimos si falla
+          }
+        },
+      });
+    }
+  };
+
 
   const renderScene = ({ route: tabRoute }: any) => {
     if (isChanging || tabRoute.key !== selectedCategory) {
@@ -179,7 +243,24 @@ export default function UserDetailsScreen() {
 
   return (
     <Screen>
-      <ReturnButton route={route} title={userData?.username || t('details.userDetails')} />
+      <View className='relative justify-content'>
+        <ReturnButton route={route} title={userData?.username || t('details.userDetails')} />
+        {isFollowing && (
+          <View className='absolute right-4 top-0 bottom-0 justify-center pt-3'>
+            <TouchableOpacity
+              onPress={handleToggleAlerts} 
+              activeOpacity={0.5}
+              className='p-2 rounded-full'
+            >
+              <ScalableMaterialCommunityIcons
+                name={alertsEnabled ? 'bell-check' : 'bell-outline'}
+                size={20}
+                color={colors.primaryText}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
@@ -203,27 +284,71 @@ export default function UserDetailsScreen() {
               frame={userData?.frame || 'none'}
             />
           </ProfileData>
+          {!isFollowing && !profilePublic
+            && (
+              <FollowButton
+                isFollowed={userData?.following_status === 'accepted' || false}
+                isRequested={userData?.is_requested || false}
+                handleFollow={handleFollow}
+                cancelRequest={cancelRequest}
+              />
+            )
+          }
 
-          <FollowButton
-            isFollowed={userData?.following_status === 'accepted' || false}
-            isRequested={userData?.is_requested || false}
-            handleFollow={handleFollow}
-            cancelRequest={cancelRequest}
-          />
-          {canViewStats && userData?.id && (
+          {(canViewStats) && userData?.id && (
             <>
               <View className="mt-6 flex-row gap-x-2">
-                <TouchableOpacity
-                  className="flex-1 items-center justify-center rounded-xl px-3 py-2"
-                  style={{ backgroundColor: `${colors.accent}33` }}
-                  activeOpacity={0.4}
-                  onPress={handleUnfollowPress}>
-                  <AppText
-                    className="text-base font-semibold"
-                    style={{ fontSize: 14, color: colors.primaryText }}>
-                    {t('profile.deleteFollowing.title')}
-                  </AppText>
-                </TouchableOpacity>
+                {(() => {
+                  // Si se ha enviado solicitud y está pendiente
+                  if (userData?.following_status === 'pending') {
+                    return (
+                      <TouchableOpacity
+                        className="flex-1 items-center justify-center rounded-xl px-3 py-2"
+                        style={{ backgroundColor: `${colors.surfaceButton}` }}
+                        activeOpacity={0.4}
+                        onPress={cancelRequest || handleUnfollowPress}>
+                        <AppText
+                          className="text-base font-semibold"
+                          style={{ color: colors.primaryText, fontSize: 14 }}>
+                          {t('profile.followApplied')}
+                        </AppText>
+                      </TouchableOpacity>
+                    );
+                  }
+                  // Si no se sigue al usuario o es un perfil privado
+                  if (!userData?.following_status ) {
+                    return (
+                      <TouchableOpacity
+                        className="flex-1 items-center justify-center rounded-xl px-3 py-2"
+                        style={{ backgroundColor: colors.accent }}
+                        activeOpacity={0.4}
+                        onPress={handleFollow}>
+                        <AppText
+                          className="text-base font-semibold"
+                          style={{ fontSize: 14, color: colors.primaryText }}>
+                          {t('profile.follow')}
+                        </AppText>
+                      </TouchableOpacity>
+                    );
+                  }
+                  if(userData?.following_status === 'accepted') {
+                  return (
+                    // Si se sigue al usuario
+                    <TouchableOpacity
+                      className="flex-1 items-center justify-center rounded-xl px-3 py-2"
+                      style={{ backgroundColor: `${colors.accent}33` }}
+                      activeOpacity={0.4}
+                      onPress={handleUnfollowPress}>
+                      <AppText
+                        className="text-base font-semibold"
+                        style={{ fontSize: 14, color: colors.primaryText }}>
+                        {t('profile.deleteFollowing.title')}
+                      </AppText>
+                    </TouchableOpacity>
+                  );
+                }
+                })()}
+
 
                 <TouchableOpacity
                   className="flex-1 items-center justify-center rounded-xl px-3 py-2"
@@ -261,8 +386,36 @@ export default function UserDetailsScreen() {
               </View>
             </>
           )}
+          {(!canViewStats) && (
+
+            <View className='flex-1 items-center justify-center py-20'>
+                  {/* Contenedor del Icono  */}
+                  <View
+                    className="mb-6 h-32 w-32 items-center justify-center rounded-full"
+                    style={{ backgroundColor: `${colors.primaryText}1A` }}>
+                    <View
+                      className="h-28 w-28 items-center justify-center rounded-full"
+                      style={{ backgroundColor: colors.secondary }}>
+                      <ScalableLockIcon size={80} color={colors.primaryText} />
+                    </View>
+                  </View>
+            
+                  {/* Texto Principal (Nombre de la categoría) */}
+                  <AppText
+                    className="mb-3 text-center font-bold"
+                    style={{ color: colors.primaryText, fontSize: 28 }}>
+                    {t('profile.privateProfile.title')}
+                  </AppText>
+            
+                  {/* Texto Secundario (Instrucciones) */}
+                  <AppText className="px-4 text-center" style={{ color: colors.secondaryText, fontSize: 14 }}>
+                    {t('profile.privateProfile.description')}
+                  </AppText>
+                </View>
+
+          )}
         </View>
       </ScrollView>
-    </Screen>
+    </Screen >
   );
 }
