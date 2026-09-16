@@ -104,6 +104,7 @@ export default function GroupScreen() {
           <CollectionStructure
             data={data}
             categoriaActual={category}
+            estadoActual={title}
             handleItemPress={(item: any) =>
               handleItemPress(item, category as ResourceType, 'group')
             }
