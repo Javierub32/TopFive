@@ -38,7 +38,14 @@ export const ReturnButton = ({ route, title, style, params, deleteSearchResults,
       clearSelectedItems();
     }
     return true
-  }, [clearSelectedItems, clearUserSearch, deleteSearchResults, params, route])
+  }, [
+    clearSelectedItems,
+    clearUserSearch,
+    deleteSearchResults,
+    params,
+    route,
+    selection,
+  ])
 
 
   useEffect(
