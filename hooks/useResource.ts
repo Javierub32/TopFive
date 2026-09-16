@@ -258,6 +258,31 @@ export const useResource = () => {
     }
   };
 
+  const fetchTotalResourceCount = async (
+    tipoRecurso: ResourceType,
+    targetUserId?: string
+    ) : Promise<number> => {
+      try{
+        if(!user) throw new Error("User not authenticated");
+
+        const userIdToQuery = targetUserId || user.id;
+        const config = RESOURCE_CONFIG[tipoRecurso];
+
+        const { count, error } = await supabase
+          .from(config.table)
+          .select("*", { count: "exact", head: true})
+          .eq("usuarioId", userIdToQuery)
+          .eq("estado", "COMPLETADO");
+        
+        if(error) throw error;
+        return count ?? 0;
+
+      } catch(error){
+        console.error(`Error al obtener el total de ${tipoRecurso}:`, error);
+        return 0;
+      }
+    };
+
   const checkIfResourceExists = async (apiId: string | number | null, type: ResourceType) => {
     if (!apiId) return null;
     try {
@@ -298,5 +323,6 @@ export const useResource = () => {
     borrarRecurso,
     checkIfResourceExists,
     fetchMonthlyStats,
+    fetchTotalResourceCount,
   };
 };

@@ -198,6 +198,17 @@ const handleToggleAlerts = () => {
               title={currentStats.title}
               total={currentStats.total}
               average={currentStats.average}
+              onPress={() =>
+                router.push({
+                  pathname: '/group',
+                  params: {
+                    title: t('status.completed') as string,
+                    state: 'completados',
+                    category: selectedCategory,
+                    targetUserId: userData?.id,
+                  },
+                })
+              }
             />
             <StatsChart
               data={currentStats.chartData}

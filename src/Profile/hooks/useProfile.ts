@@ -57,7 +57,7 @@ interface User {
 
 export const useProfile = () => {
   const { user, refreshProfile } = useAuth();
-  const { fetchMonthlyStats } = useResource();
+  const { fetchMonthlyStats, fetchTotalResourceCount } = useResource();
   const { showNotification } = useNotification();
   const queryClient = useQueryClient();
   const { t } = useTranslation();
@@ -74,6 +74,14 @@ export const useProfile = () => {
   } = useQuery<User | null>({
     queryKey: queryKeys.profile(user?.id),
     queryFn: () => userService.fetchUserProfile(user!.id) as Promise<User>,
+    enabled: !!user?.id,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 60,
+  });
+
+  const { data: allTimeTotal = 0 } = useQuery<number>({
+    queryKey: ['profile-all-time-total', user?.id, selectedCategory],
+    queryFn: () => fetchTotalResourceCount(selectedCategory, user!.id),
     enabled: !!user?.id,
     staleTime: 1000 * 60 * 10,
     gcTime: 1000 * 60 * 60,
@@ -99,7 +107,7 @@ export const useProfile = () => {
     return {
       ...INITIAL_CATEGORY_DATA[selectedCategory],
       chartData: stats,
-      total,
+      total: allTimeTotal,                /* aqui el total de siempre */
       average,
     };
   }, [selectedCategory, stats]);
