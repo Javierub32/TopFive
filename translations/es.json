@@ -261,8 +261,17 @@
         "couldntCreateError": "No se pudo crear la lista. Por favor, inténtalo de nuevo.",
         "deleteItemFromListNotification": {
             "title": "Eliminar de la lista",
-            "description": "¿Estás seguro de que deseas eliminar este elemento de la lista?",
-            "confirmationDescription": "El elemento ha sido eliminado exitosamente de la lista."
+            "description": "¿Estás seguro de que deseas eliminar {{titulo}} de la lista?",
+            "multipleDescription": "¿Estás seguro de que deseas eliminar estos {{count}} elementos de la lista?",
+            "confirmationDescription": "El elemento ha sido eliminado exitosamente de la lista.",
+            "multipleConfirmationDescription": "Los elementos han sido eliminados exitosamente de la lista."
+        },
+        "addItemToListNotification": {
+            "title": "Añadir a la lista",
+            "description": "¿Deseas añadir este elemento a la lista?",
+            "multipleDescription": "¿Deseas añadir estos {{count}} elementos a la lista?",
+            "confirmationDescription": "El elemento ha sido añadido exitosamente a la lista.",
+            "multipleConfirmationDescription": "Los elementos han sido añadidos exitosamente a la lista."
         },
         "createNewList": "+ Nueva lista",
         "onThisList": "en esta lista"
@@ -418,6 +427,9 @@
         "deleteResource": {
             "title": "Confirmar eliminación",
             "description": "¿Estás seguro de que deseas eliminar {{titulo}} de tu colección?",
+            "multipleDescription": "¿Estás seguro de que deseas eliminar {{count}} {{type}} de tu colección?",
+            "multipleSuccessTitle": "Recursos eliminados",
+            "multipleSuccessDescription": "Has eliminado {{count}} {{type}} de tu colección exitosamente.",
             "successTitle": "Recurso eliminado",
             "resourceDeletedDescription": "Has eliminado {{titulo}} de tu colección exitosamente.",
             "failedToDelete": "No se pudo eliminar el recurso. Inténtalo de nuevo más tarde.",

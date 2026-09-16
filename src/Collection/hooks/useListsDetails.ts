@@ -74,6 +74,14 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
     },
   });
 
+  const removeMultipleFromList = async (items: any[]) => {
+    await Promise.all(
+      items.map((item) =>
+        deleteItemMutation.mutateAsync({ itemId: item.id, type: collectionType })
+      )
+    );
+  };
+
   const handleDeleteItem = async (itemId: string, type: CollectionType) => {
     showNotification({
       title: t('list.deleteItemFromListNotification.title'),
@@ -104,5 +112,6 @@ export const useListsDetails = (categoriaActual: ResourceType, listId: string) =
     handleLoadMore,
     hasMore: !!hasNextPage,
     handleDeleteItem,
+    removeMultipleFromList,
   };
 };

@@ -2,20 +2,10 @@ import { CollectionGroup } from '@/Collection/components/CollectionGroup';
 import { FlatList, useWindowDimensions, View } from 'react-native';
 import { LoadingIndicator } from './LoadingIndicator';
 import { ResourceType } from 'hooks/useResource';
-import { CollectionType } from '@/Collection/services/listServices';
 import { useFontSize } from 'context/FontSizeContext';
 import { AppText } from './AppText';
 import { useTranslation } from 'react-i18next';
-import colors from 'tailwindcss/colors';
 import { useTheme } from 'context/ThemeContext';
-
-const categoryMap: Record<ResourceType, CollectionType> = {
-  pelicula: 'PELICULA',
-  serie: 'SERIE',
-  videojuego: 'VIDEOJUEGO',
-  libro: 'LIBRO',
-  cancion: 'CANCION',
-};
 
 export const CollectionStructure = ({
   data,
@@ -26,6 +16,7 @@ export const CollectionStructure = ({
   showStatus,
   loading,
   handleLongPress,
+  selectedItems
 }: any) => {
   const { width } = useWindowDimensions();
   const { fontSizeMultiplier } = useFontSize();
@@ -70,8 +61,7 @@ export const CollectionStructure = ({
           posterWidth={itemWidth}
           posterHeight={itemHeight}
           showStatus={showStatus}
-          status={estadoActual}
-          onLongPress={handleLongPress ? () => handleLongPress(item.id, categoryMap[categoriaActual as ResourceType]) : null}
+          onLongPress={() => handleLongPress?.(item)}
         />
       )}
       ListEmptyComponent={
