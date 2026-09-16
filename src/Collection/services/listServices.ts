@@ -360,6 +360,7 @@ export const listServices = {
         `
 			id,
 			fechaagregado,
+      orden,
 			recurso: ${resourceTable} (
 				*,
 				contenido: ${contentTable} (*)
@@ -367,6 +368,7 @@ export const listServices = {
 			`
       )
       .eq('coleccionid', listId)
+      .order('orden', {ascending: true, nullsFirst: false}) // Ordenamos según el orden que se guarda
       .order('fechaagregado', { ascending: false })
 	  .range(from, to);
 
@@ -393,6 +395,7 @@ export const listServices = {
 
         // 3. (Opcional) Guardamos el ID de la relación con la lista por si acaso
         listItemId: item.id,
+        orden: item.orden,
       };
     });
 
@@ -442,5 +445,27 @@ export const listServices = {
       return [];
     }
     return data.map((item: any) => item.coleccionid);
+  },
+
+  async updateListOrder(listType: CollectionType, items: { listItemId: number, orden: number }[]) {
+    let tableName = '';
+    switch (listType) {
+      case 'LIBRO': tableName = 'itemcoleccion_libro'; break;
+      case 'PELICULA': tableName = 'itemcoleccion_pelicula'; break;
+      case 'SERIE': tableName = 'itemcoleccion_serie'; break;
+      case 'VIDEOJUEGO': tableName = 'itemcoleccion_videojuego'; break;
+      case 'ALBUM': tableName = 'itemcoleccion_album'; break;
+      case 'CANCION': tableName = 'itemcoleccion_cancion'; break;
+      default: throw new Error('Tipo de lista no soportado');
+    }
+
+    // Se actualiza el orden de cada elemento
+    const promises = items.map(item => 
+      supabase.from(tableName).update({ orden: item.orden }).eq('id', item.listItemId)
+    );
+
+    const results = await Promise.all(promises);
+    const errors = results.filter(r => r.error);
+    if (errors.length > 0) throw new Error('Error guardando el orden');
   },
 };
