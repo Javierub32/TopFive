@@ -3,7 +3,6 @@ import { ScalableIonicons, ScalableMaterialCommunityIcons } from 'components/Ico
 import { useTheme } from 'context/ThemeContext';
 import { useLists } from '../hooks/useLists';
 import { LoadingIndicator } from 'components/LoadingIndicator';
-import { useCollection } from 'context/CollectionContext';
 import { router } from 'expo-router';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
@@ -20,8 +19,7 @@ const categoryMap: Record<string, CollectionType> = {
 
 export function AddToListModal({ visible, onClose, resourceCategory, resourceId, itemIds = [], isMultiple, onSelect }: any) {
   const { colors } = useTheme();
-  const { categoriaActual } = useCollection();
-  const { lists, loading } = useLists(categoriaActual);
+  const { lists, loading } = useLists(resourceCategory);
   const { t } = useTranslation();
   const [savedListIds, setSavedListIds] = useState<string[]>([]);
   const [checkingLists, setCheckingLists] = useState(false);
