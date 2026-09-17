@@ -583,5 +583,11 @@
         "thirdPartyAd": "External Ad",
         "sponsored": "SPONSORED",
         "recommendedForYou": "Recommended for you"
-    }
+    },
+	"searchRecent": {
+		"usersTitle": "Users",
+		"recentSearches": "Recent searches",
+		"deleteRecentSearch": "Remove {{username}} from recent searches",
+		"deleteRecentContent": "Remove {{title}} from recent searches"
+	}
 }

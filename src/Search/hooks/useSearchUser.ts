@@ -5,6 +5,8 @@ import { Keyboard } from 'react-native';
 import { useSearch } from 'context/SearchContext';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/query/queryKeys';
+import { useRecentSearches } from './useRecentSearches';
+import { RecentUserSearch } from '../services/recentSearchStorage';
 
 interface UserSearchPage {
   items: any[];
@@ -21,7 +23,11 @@ export const useSearchUser = () => {
     setUserResults: setResultados,
     activeUserSearch: activeSearch,
     setActiveUserSearch: setActiveSearch,
+	clearUserSearch
   } = useSearch();
+
+  const { recentSearches, loading: loadingRecentUsers, addRecentSearch, deleteRecentSearch } 
+  	= useRecentSearches<RecentUserSearch>('user', user?.id || null);
 
   const PAGE_SIZE = 9;
 
@@ -51,16 +57,22 @@ export const useSearchUser = () => {
   }, [data, setResultados]);
 
   // Se ejecuta SOLO al dar Enter o pulsar la lupa
-  const handleSearch = () => {
-    const term = busqueda.trim();
-    if (term) {
-      Keyboard.dismiss(); // Ocultar teclado
-      setActiveSearch(term); // Guardamos el término activo
-      if (term === activeSearch) {
-        refetch();
-      }
-    }
-  };
+	const handleSearch = () => {
+		const term = busqueda.trim();
+		Keyboard.dismiss();
+
+		if (!term) {
+			clearUserSearch();
+			return;
+		}
+
+		if (term === activeSearch) {
+			refetch();
+			return;
+		}
+
+		setActiveSearch(term);
+	};
 
   // Se ejecuta al bajar en la lista
   const handleLoadMore = () => {
@@ -76,5 +88,12 @@ export const useSearchUser = () => {
     handleLoadMore,
     loading: isFetching || isFetchingNextPage,
     handleSearch,
+	activeSearch,
+
+
+	recentSearches,
+	addRecentSearch,
+	deleteRecentSearch,
+	loadingRecentUsers
   };
 };
