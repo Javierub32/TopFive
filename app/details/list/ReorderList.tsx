@@ -97,14 +97,15 @@ export default function ReorderListScreen() {
             renderItem={({ item, drag, isActive, getIndex }) => {
               const currentIndex = getIndex() !== undefined ? getIndex()! + 1 : 0;
               return (
-                <ScaleDecorator>
+                <ScaleDecorator
+                activeScale={0.95}>
                   <TouchableOpacity
                     onLongPress={drag}
                     disabled={isActive}
                     activeOpacity={0.9}
                     className="mb-3 flex-row items-center overflow-hidden rounded-xl p-3 shadow-sm"
                     style={{
-                      backgroundColor: isActive ? colors.borderButton : colors.primaryBackground,
+                      backgroundColor: isActive ? colors.accent : colors.primaryBackground,
                       elevation: isActive ? 5 : 0,
                     }}>
                     <View className="w-8 items-center justify-center">

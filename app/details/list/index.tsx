@@ -51,7 +51,7 @@ export default function ListDetails() {
           className="mx-2 mb-4 mt-2 flex-row items-start rounded-2xl border p-4 shadow-sm"
           style={{
             backgroundColor: colors.surfaceButton,
-            borderColor: colors.borderButton,
+            borderColor: colors.accent,
           }}>
           {/* Icono con fondo de color */}
           <View
