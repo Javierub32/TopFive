@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { ScalableMaterialCommunityIcons } from 'components/Icons';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import * as Haptics from 'expo-haptics';
 import { useLocalSearchParams, router } from 'expo-router';
 import { listServices, CollectionType } from '@/Collection/services/listServices';
 import { LoadingIndicator } from 'components/LoadingIndicator';
@@ -50,8 +49,12 @@ export default function ReorderListScreen() {
       }));
 
       await listServices.updateListOrder(listType, newOrderPayload);
-      await queryClient.invalidateQueries({ queryKey: queryKeys.listDetails(listId, listType) });
-      
+      // Con esto, actualizamos el orden en la cache para que se muestre el nuevo tras guardar
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.listDetails(listId, listType) }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.listsPrefix() }),
+      ]);
+
       showNotification({
         title: t('common.success'),
         description: 'El orden de la lista se ha guardado correctamente.',
@@ -69,8 +72,14 @@ export default function ReorderListScreen() {
     }
   };
 
-  if (loading) return <Screen><ReturnButton route="back" title={listName} /><LoadingIndicator /></Screen>;
-
+  if (loading) {
+    return (
+      <Screen>
+        <ReturnButton route="back" title={listName} />
+        <LoadingIndicator />
+      </Screen>
+    );
+  }
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Screen>
@@ -84,12 +93,7 @@ export default function ReorderListScreen() {
           <DraggableFlatList
             data={items}
             keyExtractor={(item) => item.listItemId.toString()}
-            onDragBegin={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
-            onPlaceholderIndexChange={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)}
-            onDragEnd={({ data }) => {
-              setItems(data);
-              Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-            }}
+            onDragEnd={({ data }) => setItems(data)}
             renderItem={({ item, drag, isActive, getIndex }) => {
               const currentIndex = getIndex() !== undefined ? getIndex()! + 1 : 0;
               return (

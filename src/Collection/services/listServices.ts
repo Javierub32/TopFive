@@ -279,7 +279,7 @@ export const listServices = {
           { count: 'exact', head: false }
         )
         .eq('coleccionid', list.id)
-        .order('fechaagregado', { ascending: false })
+        .order('orden', { ascending: true, nullsFirst: false })
         .limit(5);
     });
 
@@ -460,8 +460,10 @@ export const listServices = {
     }
 
     // Se actualiza el orden de cada elemento
-    const promises = items.map(item => 
-      supabase.from(tableName).update({ orden: item.orden }).eq('id', item.listItemId)
+    const promises = items.map(item => supabase
+      .from(tableName)
+      .update({ orden: item.orden })
+      .eq('id', item.listItemId)
     );
 
     const results = await Promise.all(promises);

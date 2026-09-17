@@ -19,7 +19,7 @@ export default function ListDetails() {
   const parsedListData = listData ? JSON.parse(listData) : null;
   const { loading, data, handleLoadMore, handleDeleteItem } = useListsDetails(
     categoriaActual,
-    parsedListData?.id!
+    String(parsedListData?.id!)
   );
   const { colors } = useTheme();
   const { t } = useTranslation();
