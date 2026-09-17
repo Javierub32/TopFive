@@ -57,14 +57,14 @@ export default function ReorderListScreen() {
 
       showNotification({
         title: t('common.success'),
-        description: 'El orden de la lista se ha guardado correctamente.',
+        description: t('list.reorderList.reorderNotification.success'),
         isChoice: false, delete: false, success: true,
       });
       router.back();
     } catch (error) {
       showNotification({
         title: t('common.error'),
-        description: 'Hubo un error al guardar el orden.',
+        description: t('list.reorderList.reorderNotification.error'),
         isChoice: false, delete: false, success: false,
       });
     } finally {
@@ -75,7 +75,7 @@ export default function ReorderListScreen() {
   if (loading) {
     return (
       <Screen>
-        <ReturnButton route="back" title={listName} />
+        <ReturnButton route="back" title={t('list.reorderList.Title') + ` ${listName}`} />
         <LoadingIndicator />
       </Screen>
     );
@@ -83,11 +83,11 @@ export default function ReorderListScreen() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Screen>
-        <ReturnButton route="back" title={`Ordenar: ${listName}`} />
+        <ReturnButton route="back" title={ t('list.reorderList.Title') + ` ${listName}` } />
 
         <View className="flex-1 px-4 pt-4">
           <AppText className="mb-4 text-center text-sm" style={{ color: colors.secondaryText }}>
-            Mantén pulsado y arrastra para organizar tu lista.
+            {t('list.reorderList.Description')}
           </AppText>
 
           <DraggableFlatList

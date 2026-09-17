@@ -165,7 +165,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
             }}>
             <ScalableReorderIcon style={{ marginRight: 8 }} color={colors.primaryText} />
             <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
-              ordenar elementos
+              {t('list.orderList')}
             </AppText>
           </TouchableOpacity>
 
