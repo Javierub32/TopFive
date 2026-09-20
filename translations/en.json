@@ -294,7 +294,8 @@
             "today": "Today",
             "oneDayAgo": "One day ago",
             "daysAgo": "{{days}} days ago"
-        }
+        },
+        "contentAlreadyInCollection": "This content is already in your collection"
     }, 
     "profile": {
         "shareMessage": "Check out my profile on TopFive!\n{{url}}",

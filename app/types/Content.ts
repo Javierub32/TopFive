@@ -20,6 +20,8 @@ export interface Book {
   autorId: string | null;
   imageFull: string | null;
   description: string | null;
+  rating: number | null;
+  imagenUrl?: string | null;
 }
 
 export interface Series {

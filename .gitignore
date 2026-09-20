@@ -43,3 +43,5 @@ GoogleService-Info.plist
 
 .codebase-memory/
 .npmrc
+
+.vscode/
