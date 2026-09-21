@@ -77,7 +77,7 @@ export const useUser = (username: string) => {
     }, [refetchUser, username])
   );
 
-  const { data: allTimeTotal = 0, refetch: refetchTotal } = useQuery<number>({
+  const { data: allTimeTotal = 0, refetch: refetchTotal, isFetching: totalFetching } = useQuery<number>({
     queryKey: queryKeys.profileTotal(userData?.id, selectedCategory),
     queryFn: () => fetchTotalResourceCount(selectedCategory, userData!.id),
     enabled: !!userData?.id,
@@ -193,7 +193,7 @@ export const useUser = (username: string) => {
   return {
     userData,
     loading: isLoading || followMutation.isPending || cancelRequestMutation.isPending,
-    refreshing: isFetching || statsFetching,
+    refreshing: isFetching || statsFetching || totalFetching,
     refreshUserData,
     handleFollow,
     cancelRequest,
