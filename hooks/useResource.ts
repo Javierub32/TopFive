@@ -198,7 +198,6 @@ export const useResource = () => {
     }
   };
 
-  // Mantenemos la lógica de borrarRecurso
   const borrarRecurso = async (recursoId: any, tipoRecurso: ResourceType, estado: string) => {
     try {
       if (!user) throw new Error('User not authenticated');
