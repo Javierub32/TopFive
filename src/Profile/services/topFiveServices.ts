@@ -80,6 +80,10 @@ export const topFiveService = {
           .from(config.table)
           .select(`
             *,
+            usuario (
+              username,
+              avatar_url
+            ),
             ${config.contentJoin} (*)
           `)
           .eq('id', item.recurso_id)
@@ -89,14 +93,14 @@ export const topFiveService = {
 	
         const rawData = resourceRaw as Record<string, any>;
         const contentData = rawData[config.contentJoin];
-        const { [config.contentJoin]: _, ...restOfResource } = rawData;
+        const { [config.contentJoin]: _, usuario: rawUser, ...restOfResource } = rawData;
 
-        // Construimos el objeto final
         const normalizedResource = {
-            ...restOfResource,
-            contenido: contentData
-        } as ResourceMap[typeof type]; 
-
+          ...restOfResource,
+          username: rawUser?.username,
+          avatar_url: rawUser?.avatar_url,
+          contenido: contentData,
+        } as unknown as ResourceMap[typeof type];
 
         return {
           id: item.id,

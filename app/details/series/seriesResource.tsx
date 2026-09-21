@@ -43,6 +43,10 @@ export default function SeriesDetail() {
   const isPending = seriesResource?.estado === 'PENDIENTE';
   const isCompleted = seriesResource?.estado === 'COMPLETADO';
 
+  const displayUsername = (seriesResource as any)?.username;
+  const displayAvatarUrl = (seriesResource as any)?.avatar_url;
+
+
   if (!seriesResource) {
     return (
       <Screen>
@@ -88,7 +92,7 @@ export default function SeriesDetail() {
                 )}
                 {!isCompleted && <ProgressCard progress={getProgress()} />}
               </View>
-              <ReviewCard review={seriesResource.reseña} />
+              <ReviewCard review={seriesResource.reseña}  username={displayUsername} avatarUrl={displayAvatarUrl}/>
               <DateCard
                 startDate={seriesResource.fechaInicio}
                 endDate={seriesResource.fechaFin}

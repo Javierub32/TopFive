@@ -226,33 +226,33 @@ export const CollectionProvider = ({ children }: any) => {
   };
 
   const handleItemPress = (item: any, categoria?: ResourceType, from?: string) => {
-  const resourceTypeMap: Record<ResourceType, string> = {
-    pelicula: 'film',
-    serie: 'series',
-    videojuego: 'game',
-    libro: 'book',
-    cancion: 'song',
-  };
-  const type = resourceTypeMap[categoria || categoriaActual];
+    const resourceTypeMap: Record<ResourceType, string> = {
+      pelicula: 'film',
+      serie: 'series',
+      videojuego: 'game',
+      libro: 'book',
+      cancion: 'song',
+    };
+    const type = resourceTypeMap[categoria || categoriaActual];
 
-  if(selectedItems.length === 0) {
-    router.push({
-      pathname: `/details/${type}/${type}Resource`,
-      params: { item: JSON.stringify(item), from: from || 'collection' },
-    });
-    setIsSearchVisible(false);
-  } else {
-    setSelectedItems((prevSelectedItems) => {
-      const isSelected = prevSelectedItems.some((selectedItem) => selectedItem.id === item.id);
-      
-      if(isSelected){
-        return prevSelectedItems.filter((selectedItem) => selectedItem.id !== item.id);
-      } else {
-        return [...prevSelectedItems, item];
-      }
-    });
-  }
-};
+    if (selectedItems.length === 0) {
+      router.push({
+        pathname: `/details/${type}/${type}Resource`,
+        params: { item: JSON.stringify(item), from: from || 'collection' },
+      });
+      setIsSearchVisible(false);
+    } else {
+      setSelectedItems((prevSelectedItems) => {
+        const isSelected = prevSelectedItems.some((selectedItem) => selectedItem.id === item.id);
+
+        if (isSelected) {
+          return prevSelectedItems.filter((selectedItem) => selectedItem.id !== item.id);
+        } else {
+          return [...prevSelectedItems, item];
+        }
+      });
+    }
+  };
 
   const handleLongPress = (item: any, categoria?: ResourceType, from?: string) => {  
       setSelectedItems([item]);

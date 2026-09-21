@@ -38,6 +38,10 @@ export default function FilmDetail() {
 
   const isOwner = filmResource?.usuarioId === user?.id;
   const isPending = filmResource?.estado === 'PENDIENTE';
+  
+  // username y avatar
+  const displayUsername = (filmResource as any)?.username;
+  const displayAvatarUrl = (filmResource as any)?.avatar_url;
 
   if (!filmResource) {
     return (
@@ -83,7 +87,7 @@ export default function FilmDetail() {
                 )}
                 <DateCard startDate={filmResource.fechaVisionado} isRange={false} />
               </View>
-              <ReviewCard review={filmResource.reseña} />
+              <ReviewCard review={filmResource.reseña} username={displayUsername} avatarUrl={displayAvatarUrl}/>
             </View>
           )}
         </View>
