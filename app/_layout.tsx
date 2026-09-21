@@ -1,5 +1,6 @@
 import '../global.css';
 import '../i18n';
+import 'react-native-gesture-handler';
 import { SplashScreen, Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';

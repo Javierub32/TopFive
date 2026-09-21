@@ -278,3 +278,6 @@ export const EditIcon = (props) => <RNAntDesign name="edit" size={16} color="bla
 
 export const ScalableTrashIcon = (props) => <ScalableAntDesign name="delete" size={16} color="black" {...props} />;
 export const TrashIcon = (props) => <RNAntDesign name="delete" size={16} color="black" {...props} />;
+
+export const ScalableReorderIcon = (props) => <ScalableMaterialCommunityIcons name="reorder-horizontal" size={24} color="black" {...props} />;
+export const ReorderIcon = (props) => <RNMaterialCommunityIcons name="reorder-horizontal" size={24} color="black" {...props} />;

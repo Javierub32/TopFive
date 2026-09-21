@@ -252,6 +252,7 @@
         "elements": "elementos", 
         "editList": "Editar lista",
         "addToList": "Añadir a lista",
+        "orderList": "Ordenar lista",
         "deleteList": "Eliminar lista",
         "noLists": "No tienes listas de {{category}}.",
         "listCreatedNotification": {
@@ -274,7 +275,15 @@
             "multipleConfirmationDescription": "Los elementos han sido añadidos exitosamente a la lista."
         },
         "createNewList": "+ Nueva lista",
-        "onThisList": "en esta lista"
+        "onThisList": "en esta lista",
+        "reorderList": {
+            "Title": "Ordenar ",
+            "Description": "Mantén pulsado y arrastra para organizar tu lista",
+            "reorderNotification": {
+                "success": "El orden de la lista ha sido actualizado exitosamente.",
+                "error": "El orden de la lista no se ha podido actualizar."
+            }
+        }
     },
     "home": {
         "pressAgainToExit": "Vuelve a tocar para salir.",

@@ -42,3 +42,4 @@ google-services.json
 GoogleService-Info.plist
 
 .codebase-memory/
+.npmrc

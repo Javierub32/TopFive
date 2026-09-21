@@ -252,6 +252,7 @@
         "elements": "elements", 
         "editList": "Edit list",
         "addToList": "Add to list",
+        "orderList": "Order list",
         "deleteList": "Delete list",
         "noLists": "You don't have any {{category}} lists.",
         "listCreatedNotification": {
@@ -274,7 +275,15 @@
             "multipleConfirmationDescription": "The items have been added successfully to the list."
         },
         "createNewList": "+ Create new list",
-        "onThisList": "on this list"
+        "onThisList": "on this list",
+        "reorderList": {
+            "Title": "Order ",
+            "Description": "Hold and drag to change the order of the items in your list.",
+            "reorderNotification": {
+                "success": "The order of the list has been updated successfully.",
+                "error": "The order of the list could not be updated."
+            }
+        }
     },
     "home": {
         "pressAgainToExit": "Press again to exit.",

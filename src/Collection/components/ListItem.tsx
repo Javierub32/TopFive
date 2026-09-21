@@ -4,7 +4,7 @@ import { ListInfo } from '../services/listServices';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { useNotification } from 'context/NotificationContext';
-import { ScalablePlusIcon, ScalableEditIcon, ScalableTrashIcon, ScalableMaterialCommunityIcons } from 'components/Icons';
+import { ScalablePlusIcon, ScalableEditIcon, ScalableTrashIcon, ScalableMaterialCommunityIcons, ScalableReorderIcon } from 'components/Icons';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
 interface ListItemProps {
@@ -51,6 +51,15 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
       router.push({
         pathname: '/form/list',
         params: { listData: JSON.stringify(list) },
+      });
+    }
+  };
+
+  const handleOrder = () => {
+    if (list) {
+      router.push({
+        pathname: '/details/list/ReorderList',
+        params: { listId: list.id, listType: list.tipo, listName: list.nombre },
       });
     }
   };
@@ -148,6 +157,19 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
           </TouchableOpacity>
 
           <TouchableOpacity
+            className="flex-row items-center border-b px-4 py-2"
+            style={{ borderColor: `${colors.secondaryText}4D` }}
+            onPress={() => {
+              setMenuListasAbierto(false);
+              handleOrder();
+            }}>
+            <ScalableReorderIcon style={{ marginRight: 8 }} color={colors.primaryText} />
+            <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
+              {t('list.orderList')}
+            </AppText>
+          </TouchableOpacity>
+
+          <TouchableOpacity
             className="flex-row items-center px-4 py-2"
             style={{ borderColor: `${colors.secondaryText}4D` }}
             onPress={() => {
@@ -159,6 +181,7 @@ export const ListItem = ({ list, onDelete }: ListItemProps) => {
               {t('list.deleteList')}
             </AppText>
           </TouchableOpacity>
+
         </View>
       )}
 
