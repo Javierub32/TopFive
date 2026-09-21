@@ -1,14 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { searchContentService } from '../services/searchContentService';
-import { searchAdapter } from '../../Add/adapters/searchResultsAdapter';
+import { searchAdapter, type SearchResult } from '../../Add/adapters/searchResultsAdapter';
 import { ResourceType } from 'hooks/useResource';
 import { useSearch } from 'context/SearchContext';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/query/queryKeys';
+import { RecentContentSearch } from '@/Search/services/recentSearchStorage';
+import { useRecentSearches } from '@/Search/hooks/useRecentSearches';
+import { useAuth } from 'context/AuthContext';
 
 export const useSearchContent = () => {
+  const { user } = useAuth();
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
@@ -25,16 +29,40 @@ export const useSearchContent = () => {
     clearContentSearch,
   } = useSearch();
 
+  const {
+    recentSearches,
+    loading: loadingRecentContent,
+    addRecentSearch,
+    deleteRecentSearch,
+  } = useRecentSearches<RecentContentSearch>(recursoBusqueda, user?.id || null);
+
   const params = useLocalSearchParams<{ initialCategory?: string }>();
+  const appliedInitialCategory = useRef<ResourceType | undefined>(undefined);
+  const initialCategory =
+    typeof params.initialCategory === 'string'
+      ? (params.initialCategory as ResourceType)
+      : undefined;
 
   // Aplicar la categoría inicial si viene en la URL
   useEffect(() => {
-    if (params.initialCategory && params.initialCategory !== recursoBusqueda) {
-      setContentCategory(params.initialCategory as ResourceType);
-      clearContentSearch();
+    if (!initialCategory) {
+      appliedInitialCategory.current = undefined;
+      return;
+    }
+
+    if (appliedInitialCategory.current === initialCategory) return;
+
+    appliedInitialCategory.current = initialCategory;
+    setContentCategory(initialCategory);
+    clearContentSearch();
+    setHasSearched(false);
+  }, [clearContentSearch, initialCategory, setContentCategory]);
+
+  useEffect(() => {
+    if (!busqueda.trim() && resultados.length === 0) {
       setHasSearched(false);
     }
-  }, [params.initialCategory]);
+  }, [busqueda, resultados]);
 
   const handleSearch = async (categoria?: ResourceType) => {
     if (!busqueda.trim()) {
@@ -68,7 +96,7 @@ export const useSearchContent = () => {
     }
   };
 
-  const navigateToDetails = (index: number) => {
+  const navigateToDetails = (id: string | number, category: ResourceType) => {
     const typeMap: Record<ResourceType, string> = {
       libro: 'book',
       pelicula: 'film',
@@ -77,12 +105,32 @@ export const useSearchContent = () => {
       cancion: 'song',
     };
 
-    const type = typeMap[recursoBusqueda];
+    const type = typeMap[category];
 
     router.push({
       pathname: `/details/${type}/${type}Content`,
-      params: { id: resultados[index].id, from: 'search', searchCover: resultados[index].cover },
+      params: {
+        id: String(id),
+        from: 'search',
+      },
     });
+  };
+
+  const openContent = async (item: SearchResult) => {
+    await addRecentSearch({
+      id: item.id,
+      category: recursoBusqueda,
+      term: busqueda.trim(),
+      title: item.title,
+      cover: item.cover,
+      createdAt: Date.now(),
+    });
+
+    navigateToDetails(item.id, recursoBusqueda);
+  };
+
+  const openRecentContent = (item: RecentContentSearch) => {
+    navigateToDetails(item.id, item.category);
   };
 
   const setRecursoBusqueda = async (categoria: ResourceType) => {
@@ -101,7 +149,11 @@ export const useSearchContent = () => {
     loading,
     resultados,
     handleSearch,
-    navigateToDetails,
+    openContent,
+    openRecentContent,
+    recentSearches,
+    loadingRecentContent,
+    deleteRecentSearch,
     setResultados,
   };
 };
