@@ -212,6 +212,7 @@ export const useResource = () => {
         queryClient.invalidateQueries({ queryKey: queryKeys.profile(user.id) }),
         queryClient.invalidateQueries({ queryKey: queryKeys.publicProfilePrefix() }),
         queryClient.invalidateQueries({ queryKey: queryKeys.profileStatsPrefix(user.id) }),
+        queryClient.invalidateQueries({ queryKey: queryKeys.profileTotalPrefix(user.id) }),
         queryClient.invalidateQueries({ queryKey: queryKeys.topFive(user.id) }),
         queryClient.invalidateQueries({ queryKey: queryKeys.topFiveSelectorPrefix(user.id) }),
       ]);

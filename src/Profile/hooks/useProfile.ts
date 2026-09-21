@@ -80,7 +80,7 @@ export const useProfile = () => {
   });
 
   const { data: allTimeTotal = 0 } = useQuery<number>({
-    queryKey: ['profile-all-time-total', user?.id, selectedCategory],
+    queryKey: queryKeys.profileTotal(user?.id, selectedCategory),
     queryFn: () => fetchTotalResourceCount(selectedCategory, user!.id),
     enabled: !!user?.id,
     staleTime: 1000 * 60 * 10,
@@ -110,7 +110,7 @@ export const useProfile = () => {
       total: allTimeTotal,                /* aqui el total de siempre */
       average,
     };
-  }, [selectedCategory, stats]);
+  }, [selectedCategory, stats, allTimeTotal]);
 
   useEffect(() => {
     if (profileError) {

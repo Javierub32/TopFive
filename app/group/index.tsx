@@ -1,12 +1,12 @@
 import { View, Text} from 'react-native';
-import { useLocalSearchParams } from 'expo-router'; 
+import { useFocusEffect, useLocalSearchParams } from 'expo-router'; 
 import { Screen } from 'components/Screen'; 
 import { useCollection } from 'context/CollectionContext';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { CollectionStructure } from 'components/CollectionStructure';
 import { useGroupData } from 'src/Collection/hooks/useGroupData';
 import { ReturnButton } from 'components/ReturnButton';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { ResourceType, StateType } from 'hooks/useResource';
 
 const stateMap: Record<string, StateType> = {
@@ -24,11 +24,17 @@ export default function GroupScreen() {
   const targetUserId = params.targetUserId as string;
 
   const { handleItemPress, setIsSearchVisible } = useCollection();
-  const { loading, data, handleLoadMore } = useGroupData(category as ResourceType, stateMap[state], targetUserId);
+  const { loading, data, handleLoadMore, refetch } = useGroupData(category as ResourceType, stateMap[state], targetUserId);
 
   useEffect(() => {
 		setIsSearchVisible(false);
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch])
+  );
 
   const returnRoute = (from === 'Profile' || targetUserId) ? 'back' : '/Collection'; /* Hago back en lugar de volver a cargar el perfil, asi guarda de donde venia y no recarga el perfil innecesariamente */
   const returnParams = (from === 'Profile' || targetUserId) ? {} : { initialResource: category as ResourceType };

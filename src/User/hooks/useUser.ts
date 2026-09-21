@@ -77,8 +77,8 @@ export const useUser = (username: string) => {
     }, [refetchUser, username])
   );
 
-  const { data: allTimeTotal = 0 } = useQuery<number>({
-    queryKey: ['profile-all-time-total', userData?.id, selectedCategory],
+  const { data: allTimeTotal = 0, refetch: refetchTotal } = useQuery<number>({
+    queryKey: queryKeys.profileTotal(userData?.id, selectedCategory),
     queryFn: () => fetchTotalResourceCount(selectedCategory, userData!.id),
     enabled: !!userData?.id,
     staleTime: 1000 * 60 * 10,
@@ -108,7 +108,7 @@ export const useUser = (username: string) => {
       total: allTimeTotal,
       average,
     };
-  }, [selectedCategory, stats]);
+  }, [selectedCategory, stats, allTimeTotal]);
 
   const invalidateUserData = async () => {
     await Promise.all([
@@ -165,7 +165,10 @@ export const useUser = (username: string) => {
   const refreshUserData = async () => {
     await refetchUser();
     if (userData?.id) {
-      await refetchStats();
+      await Promise.all([
+        refetchStats(),
+        refetchTotal(), 
+      ]);
     }
   };
 
