@@ -210,6 +210,7 @@ export const CollectionProvider = ({ children }: any) => {
     queryClient.invalidateQueries({
       queryKey: queryKeys.profileStatsPrefix(user.id),
     });
+    queryClient.invalidateQueries({ queryKey: queryKeys.profileTotalPrefix(user.id) });
     queryClient.invalidateQueries({
       queryKey: queryKeys.topFive(user.id),
     });

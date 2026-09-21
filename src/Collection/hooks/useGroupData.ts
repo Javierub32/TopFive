@@ -23,6 +23,7 @@ export const useGroupData = (category: ResourceType, state: StateType, targetUse
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
+    refetch,
   } = useInfiniteQuery({
     queryKey: queryKeys.collectionGroup(queryKeyId, category, state),
     queryFn: async ({ pageParam = 0 }) => {
@@ -69,5 +70,6 @@ export const useGroupData = (category: ResourceType, state: StateType, targetUse
     loading: isLoading || isFetching || isFetchingNextPage,
     data,
     handleLoadMore,
+    refetch,
   };
 };

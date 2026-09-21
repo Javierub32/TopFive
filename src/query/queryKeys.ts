@@ -9,6 +9,9 @@ export const queryKeys = {
   profileStats: (userId?: string | null, type?: ResourceType, year?: number) =>
     ['profile', 'stats', userId, type, year] as const,
   profileStatsPrefix: (userId?: string | null) => ['profile', 'stats', userId] as const,
+  profileTotal: (userId?: string | null, type?: ResourceType) =>
+    ['profile', 'total', userId, type] as const,
+  profileTotalPrefix: (userId?: string | null) => ['profile', 'total', userId] as const,
   resources: (userId?: string | null, type?: ResourceType, filters?: Record<string, unknown>) =>
     ['resources', userId, type, filters] as const,
   resourcesPrefix: (userId?: string | null, type?: ResourceType) =>
