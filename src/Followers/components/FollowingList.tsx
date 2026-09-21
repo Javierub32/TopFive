@@ -5,7 +5,6 @@ import { LoadingIndicator } from "components/LoadingIndicator";
 import { useFollowing } from "../hooks/useFollowing";
 import { ScalableCancelIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext";
-import { useCollection } from "context/CollectionContext";
 import { useMemo, useState } from "react";
 import { UserSearchBar } from "@/Search/components/UserSearchBar";
 
