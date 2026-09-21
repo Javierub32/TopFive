@@ -13,7 +13,6 @@ export default function FollowersList() {
 	const { username } = useLocalSearchParams<{ username: string }>();
 	const { loading, followers, handleRemovePress, ownList } = useFollowers(username);
 	const { colors } = useTheme();
-	const { isSearchVisible, toggleSearch } = useCollection();
 	const [busqueda, setBusqueda] = useState('');
 
 	//Con esto, filtramos de la lista de los seguidores y se actualiza directamente
