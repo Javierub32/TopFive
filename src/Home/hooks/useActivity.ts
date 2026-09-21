@@ -107,9 +107,22 @@ export const useActivity = () => {
         targetUserId: activity.usuarioId,
       });
 
+        const resourceData = item?.data ? item.data[0] : null;
+
+      // para tener el apiId correcto ya que para el resource attributes no lo puedo coger de otra manera
+        if (resourceData && activity.idapi != null) {
+          resourceData.contenido = {
+            ...resourceData.contenido,
+            apiId: activity.idapi as any,
+          };
+
+          (resourceData as any).username = activity.username;
+          (resourceData as any).avatar_url = activity.avatar_url;
+        }
+
       router.push({
         pathname: `/details/${type}/${type}Resource`,
-        params: { item: JSON.stringify(item?.data ? item.data[0] : null), from: 'home' },
+        params: { item: JSON.stringify(resourceData), from: 'home' },
       });
     } catch (error) {
       console.error('Error navigating to activity details:', error);

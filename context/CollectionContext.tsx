@@ -35,6 +35,9 @@ export const CollectionProvider = ({ children }: any) => {
   const [totalEnCurso, setTotalEnCurso] = useState<number>(0);
   const [totalCompletados, setTotalCompletados] = useState<number>(0);
 
+  // Multiple selección
+  const [selectedItems, setSelectedItems] = useState<any[]>([]);
+
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const pageSize = 9;
@@ -232,12 +235,32 @@ export const CollectionProvider = ({ children }: any) => {
       cancion: 'song',
     };
     const type = resourceTypeMap[categoria || categoriaActual];
-    router.push({
-      pathname: `/details/${type}/${type}Resource`,
-      params: { item: JSON.stringify(item), from: from || 'collection' },
-    });
-    setIsSearchVisible(false);
+
+    if (selectedItems.length === 0) {
+      router.push({
+        pathname: `/details/${type}/${type}Resource`,
+        params: { item: JSON.stringify(item), from: from || 'collection' },
+      });
+      setIsSearchVisible(false);
+    } else {
+      setSelectedItems((prevSelectedItems) => {
+        const isSelected = prevSelectedItems.some((selectedItem) => selectedItem.id === item.id);
+
+        if (isSelected) {
+          return prevSelectedItems.filter((selectedItem) => selectedItem.id !== item.id);
+        } else {
+          return [...prevSelectedItems, item];
+        }
+      });
+    }
   };
+
+  const handleLongPress = (item: any, categoria?: ResourceType, from?: string) => {  
+      setSelectedItems([item]);
+  }
+  const clearSelectedItems = () => {
+    setSelectedItems([]);
+  }
 
   return (
     <CollectionContext.Provider
@@ -258,6 +281,8 @@ export const CollectionProvider = ({ children }: any) => {
         totalCompletados,
         navigateToGrid,
         handleItemPress,
+        handleLongPress,
+        selectedItems,
         busqueda,
         setBusqueda,
         data,
@@ -266,6 +291,7 @@ export const CollectionProvider = ({ children }: any) => {
         toggleSearch,
         handleSearchPagination,
         setIsSearchVisible,
+        clearSelectedItems,
       }}>
       {children}
     </CollectionContext.Provider>

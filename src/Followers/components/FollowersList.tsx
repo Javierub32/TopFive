@@ -5,18 +5,36 @@ import { router, useLocalSearchParams } from "expo-router";
 import { LoadingIndicator } from "components/LoadingIndicator";
 import { ScalableCancelIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext";
+import { useCollection } from "context/CollectionContext";
+import { useMemo, useState } from "react";
+import { UserSearchBar } from "@/Search/components/UserSearchBar";
 
 export default function FollowersList() {
 	const { username } = useLocalSearchParams<{ username: string }>();
 	const { loading, followers, handleRemovePress, ownList } = useFollowers(username);
 	const { colors } = useTheme();
+	const [busqueda, setBusqueda] = useState('');
+
+	//Con esto, filtramos de la lista de los seguidores y se actualiza directamente
+	const userFiltered = useMemo(() => {
+		if(!busqueda.trim()) return followers;
+		return followers.filter(user => user.username.toLowerCase().includes(busqueda.toLowerCase()));
+	}, [busqueda, followers]);
 
 	if (loading) {
 		return <LoadingIndicator />;
 	}
 	return (
+		<>
+		<View className="mt-4 px-4">
+		<UserSearchBar
+			value={busqueda}
+			onChangeText={setBusqueda}
+			onSearch={() => {}}
+		/>
+		</View>
 		<FlatList 
-			data={followers}
+			data={userFiltered}
 			keyExtractor={(user) => user.id.toString()}
 			renderItem={({ item }) => 
 			<View className="flex flex-row items-center space-x-4 pl-4 pr-8 py-3">
@@ -37,5 +55,7 @@ export default function FollowersList() {
 			contentContainerStyle={{ paddingBottom: 20 }}
 			showsVerticalScrollIndicator={false}
 		/>
+		
+		</>
 	);
 } 

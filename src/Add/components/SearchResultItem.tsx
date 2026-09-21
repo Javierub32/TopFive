@@ -9,9 +9,15 @@ interface SearchResultItemProps {
   item: SearchResult;
   onPress: () => void;
   type: ResourceType;
+  showArrow?: boolean;
 }
 
-export const SearchResultItem = ({ item, onPress, type }: SearchResultItemProps) => {
+export const SearchResultItem = ({
+  item,
+  onPress,
+  type,
+  showArrow = true,
+}: SearchResultItemProps) => {
   const { colors } = useTheme();
 
   return (
@@ -50,7 +56,10 @@ export const SearchResultItem = ({ item, onPress, type }: SearchResultItemProps)
           {item.title}
         </AppText>
 
-        <AppText className="mb-2 text-sm" style={{ color: colors.secondaryText, fontSize: 14 }} numberOfLines={1}>
+        <AppText
+          className="mb-2 text-sm"
+          style={{ color: colors.secondaryText, fontSize: 14 }}
+          numberOfLines={1}>
           {item.artist}
         </AppText>
 
@@ -60,7 +69,8 @@ export const SearchResultItem = ({ item, onPress, type }: SearchResultItemProps)
             className="mb-2 "
             style={{ color: colors.secondaryText, fontSize: 12 }}
             numberOfLines={1}>
-            {item.date} | <ScalableFontAwesome5 name="star" size={16} color={colors.rating} solid={true} />{' '}
+            {item.date} |{' '}
+            <ScalableFontAwesome5 name="star" size={16} color={colors.rating} solid={true} />{' '}
             {item.rating}
           </AppText>
         )}
@@ -77,7 +87,8 @@ export const SearchResultItem = ({ item, onPress, type }: SearchResultItemProps)
             className="mb-2"
             style={{ color: colors.secondaryText, fontSize: 12 }}
             numberOfLines={1}>
-            <ScalableFontAwesome5 name="star" size={12} color={colors.rating} solid={true} /> {item.rating}
+            <ScalableFontAwesome5 name="star" size={12} color={colors.rating} solid={true} />{' '}
+            {item.rating}
           </AppText>
         )}
 
@@ -96,10 +107,15 @@ export const SearchResultItem = ({ item, onPress, type }: SearchResultItemProps)
         ) : null}
       </View>
 
-      {/* Icono de flecha lateral */}
-      <View className="justify-center pr-3 opacity-50">
-        <ScalableMaterialCommunityIcons name="chevron-right" size={24} color={colors.secondaryText} />
-      </View>
+      {showArrow && (
+        <View className="justify-center pr-3 opacity-50">
+          <ScalableMaterialCommunityIcons
+            name="chevron-right"
+            size={24}
+            color={colors.secondaryText}
+          />
+        </View>
+      )}
     </TouchableOpacity>
   );
 };
