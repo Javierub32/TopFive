@@ -75,7 +75,7 @@ export const listServices = {
     return true;
   },
 
-  async addItemToList(listId: string, itemId: string | number, itemType: CollectionType) {
+  async addItemToList(listId: string, itemId: string | number, itemType: CollectionType, isMultiple: boolean = false) {
     let tableName = '';
     let resourceColumn = '';
 
@@ -116,6 +116,7 @@ export const listServices = {
       .maybeSingle();
 
     if (existingCheck.data) {
+      if(!isMultiple){
       const { error, count } = await supabase
         .from(tableName)
         .delete({ count: 'exact' })
@@ -127,6 +128,10 @@ export const listServices = {
       if (error) throw error;
       if (count === 0) throw new Error('No se encontró el ítem o no tienes permisos');
       return 'Recurso eliminado de la lista exitosamente.';
+    }else{
+      // Como el recurso ya está en la lista, no lo eliminamos no añadimos de nuevo.
+      return 'El recurso ya está en la lista.';
+    }
     }
 
     const { error } = await supabase

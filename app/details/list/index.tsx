@@ -12,17 +12,33 @@ import { ScalableMaterialCommunityIcons } from 'components/Icons';
 import { ResourceType } from 'hooks/useResource';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
 
 export default function ListDetails() {
-  const { categoriaActual, handleItemPress } = useCollection();
+  const { categoriaActual, handleItemPress, handleLongPress, selectedItems, clearSelectedItems } =
+    useCollection();
   const { listData } = useLocalSearchParams<{ listData: any }>();
   const parsedListData = listData ? JSON.parse(listData) : null;
-  const { loading, data, handleLoadMore, handleDeleteItem } = useListsDetails(
+  const { loading, data, handleLoadMore, removeMultipleFromList } = useListsDetails(
     categoriaActual,
     String(parsedListData?.id!)
   );
   const { colors } = useTheme();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    return () => {
+      clearSelectedItems();
+    };
+  }, []);
+
+  const hasSelection = selectedItems && selectedItems.length > 0;
+
+  const handleDelete = async () => {
+    await removeMultipleFromList(selectedItems);
+    clearSelectedItems();
+  };
 
   if (loading && data.length === 0) {
     return (
@@ -31,6 +47,7 @@ export default function ListDetails() {
           title={t('forms.lists.listDetails')}
           route="/(tabs)/Lists"
           params={{ initialResource: categoriaActual as ResourceType }}
+          selection={hasSelection}
         />
         <LoadingIndicator />
       </Screen>
@@ -39,11 +56,25 @@ export default function ListDetails() {
 
   return (
     <Screen>
-      <ReturnButton
-        title={t('forms.lists.listDetails')}
-        route="/(tabs)/Lists"
-        params={{ initialResource: categoriaActual as ResourceType }}
-      />
+      <View className="flex-row items-center justify-between px-4 pt-4">
+        <View className="flex-1">
+          <ReturnButton
+            title={t('forms.lists.listDetails')}
+            route="/(tabs)/Lists"
+            params={{ initialResource: categoriaActual as ResourceType }}
+            selection={hasSelection}
+          />
+        </View>
+
+        {hasSelection && (
+          <DeleteResourceButton
+            resources={selectedItems}
+            type={categoriaActual as ResourceType}
+            onCustomDelete={handleDelete}
+            isList={true}
+          />
+        )}
+      </View>
 
       {/* CABECERA DE LA LISTA */}
       {parsedListData?.nombre && (
@@ -89,7 +120,7 @@ export default function ListDetails() {
           data={data}
           categoriaActual={categoriaActual}
           handleItemPress={(item: any) => handleItemPress(item, categoriaActual, 'list')}
-          handleLongPress={handleDeleteItem}
+          handleLongPress={(item: any) => handleLongPress(item, categoriaActual, 'list')}
           handleSearchPagination={handleLoadMore}
           showStatus={true}
           loading={loading}

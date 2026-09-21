@@ -1,11 +1,12 @@
 import { TouchableOpacity, Image, View } from 'react-native';
-import { ScalableMaterialCommunityIcons } from 'components/Icons';
+import { ScalableFontAwesome5, ScalableIonicons, ScalableMaterialCommunityIcons, ScalableMaterialIcons } from 'components/Icons';
 import { collectionAdapter } from '../adapters/collectionAdapter';
 import { FallbackCover } from 'components/FallbackCover';
 import { useTheme } from 'context/ThemeContext';
 import { AppText } from 'components/AppText';
 import { useFontSize } from 'context/FontSizeContext';
 import { useTranslation } from 'react-i18next';
+import { useCollection } from 'context/CollectionContext';
 export const CollectionGroup = ({
   item,
   category,
@@ -17,6 +18,9 @@ export const CollectionGroup = ({
 }: any) => {
   const { colors } = useTheme();
   const { t } = useTranslation();
+
+  const { selectedItems } = useCollection();
+  const isSelected = selectedItems?.some((selected: any) => selected.id === item.id);
 
   const title = collectionAdapter.getTitle(item, category, t);
   const image = collectionAdapter.getImage(item, category);
@@ -37,77 +41,103 @@ export const CollectionGroup = ({
   return (
     <TouchableOpacity
       className="mb-2 flex-col"
-      style={{ width: finalWidth, marginRight: marginRight, marginBottom: 24, marginTop: 10 }}
+      style={{ width: finalWidth, marginRight: marginRight, marginBottom: 48, marginTop: 20 }}
       onPress={onPress}
       onLongPress={onLongPress}
       activeOpacity={0.8}>
-      {/* Imagen */}
       <View
-        className="relative w-full overflow-hidden rounded-lg bg-surfaceButton shadow-sm"
+        className="relative w-full rounded-lg"
         style={{
           height: finalHeight,
-          backgroundColor: colors.surfaceButton,
         }}>
-        {image ? (
-          <Image
-            source={{ uri: image }}
-            className="h-full w-full bg-background"
-            resizeMode="cover"
-            style={{ height: finalHeight }}
-          />
-        ) : (
-          <FallbackCover
-            type={category}
-            fullSize={false}
-            style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}
-          />
-        )}
 
-        {/* Año de Completado (Arriba Izquierda) */}
-        {year ? (
-          <View className="absolute left-2 top-2 rounded bg-black/50 px-1.5 py-0.5">
-            <AppText className="font-bold text-white" style={{ fontSize: 10 }}>
-              {year}
-            </AppText>
-          </View>
-        ) : null}
+        {/* Imagen */}
+        <View
+          className="relative w-full overflow-hidden rounded-lg bg-surfaceButton shadow-sm"
+          style={{
+            transform: isSelected ? [{ scale: 0.88 }] : [{ scale: 1 }],
+            height: finalHeight,
+            backgroundColor: colors.surfaceButton,
+          }}>
+          {image ? (
+            <Image
+              source={{ uri: image }}
+              className="h-full w-full bg-background"
+              resizeMode="cover"
+              style={{ height: finalHeight }}
+            />
+          ) : (
+            <FallbackCover
+              type={category}
+              fullSize={false}
+              style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}
+            />
+          )}
 
-        {/* Rating (Arriba Derecha) */}
-        {item.estado !== 'PENDIENTE' && item.calificacion > 0 ? (
-          <View className="absolute right-2 top-2 flex-row items-center rounded-sm bg-black/50 px-1">
-            <ScalableMaterialCommunityIcons name="star" size={10} color={colors.rating} />
-            <AppText className="ml-1  font-bold text-white" style={{ fontSize: 10 }}>
-              {item.calificacion || '0'}
-            </AppText>
-          </View>
-        ) : null}
+          {/* Año de Completado (Arriba Izquierda) */}
+          {year && selectedItems.length <= 0 ? (
+            <View className="absolute left-2 top-2 rounded bg-black/50 px-1.5 py-0.5">
+              <AppText className="font-bold text-white" style={{ fontSize: 10 }}>
+                {year}
+              </AppText>
+            </View>
+          ) : null}
 
-        {item.favorito && (
-          <View className="absolute bottom-2 right-2 items-center rounded-sm bg-black/50 px-1">
-            <ScalableMaterialCommunityIcons name="heart" size={16} color={colors.error} />
-          </View>
-        )}
+          {/* Rating (Arriba Derecha) */}
+          {(item.estado !== 'PENDIENTE' && item.calificacion > 0) && selectedItems.length <=0 ? (
+            <View className="absolute right-2 top-2 flex-row items-center rounded-sm bg-black/50 px-1">
+              <ScalableMaterialCommunityIcons name="star" size={10} color={colors.rating} />
+              <AppText className="ml-1  font-bold text-white" style={{ fontSize: 10 }}>
+                {item.calificacion || '0'}
+              </AppText>
+            </View>
+          ) : null}
 
-        {/* Estado (Abajo Derecha) - Solo en búsqueda */}
-        {showStatus && statusText ? (
-          <View
-            className="absolute bottom-2 right-2 rounded px-2 py-1"
-            style={{ backgroundColor: statusColor + '90' }}>
-            <AppText className=" font-bold text-white" style={{ fontSize: 10 }}>
-              {statusText}
-            </AppText>
-          </View>
-        ) : null}
-      </View>
+            {selectedItems.length ===0 ? (null) : isSelected ?(
+            <View className="absolute top-1 right-1 z-10">
+              <ScalableFontAwesome5
+                name="check-circle"
+                size={20}
+                color={colors.primary}
+                backgroundColor={colors.primary}
+              />
+            </View>
+          ): (<View className="absolute top-1 right-1 z-10 ">
+              <ScalableFontAwesome5
+                name="circle"
+                size={20}
+                color={colors.surfaceButton}
+                backgroundColor={colors.surfaceButton}
+              />
+            </View>)}
 
-      {/* Título */}
-      <View className="mt-2 pl-1">
-        <AppText
-          className=" font-semibold leading-4"
-          numberOfLines={2}
-          style={{ color: colors.primaryText, fontSize: 14 }}>
-          {title}
-        </AppText>
+          {item.favorito && selectedItems.length <= 0 && (
+            <View className="absolute bottom-2 right-2 items-center rounded-sm bg-black/50 px-1">
+              <ScalableMaterialCommunityIcons name="heart" size={16} color={colors.error} />
+            </View>
+          )}
+
+          {/* Estado (Abajo Derecha) - Solo en búsqueda */}
+          {showStatus && statusText ? (
+            <View
+              className="absolute bottom-2 right-2 rounded px-2 py-1"
+              style={{ backgroundColor: statusColor + '90' }}>
+              <AppText className=" font-bold text-white" style={{ fontSize: 10 }}>
+                {statusText}
+              </AppText>
+            </View>
+          ) : null}
+        </View>
+
+        {/* Título */}
+        <View className="mt-2 pl-1">
+          <AppText
+            className=" font-semibold leading-4"
+            numberOfLines={2}
+            style={{ color: colors.primaryText, fontSize: 14 }}>
+            {title}
+          </AppText>
+        </View>
       </View>
     </TouchableOpacity>
   );

@@ -42,7 +42,7 @@ const INITIAL_CATEGORY_DATA = {
 
 export const useUser = (username: string) => {
   const { user } = useAuth();
-  const { fetchMonthlyStats } = useResource();
+  const { fetchMonthlyStats, fetchTotalResourceCount } = useResource();
   const queryClient = useQueryClient();
 
   const [selectedCategory, setSelectedCategory] = useState<ResourceType>('pelicula');
@@ -77,6 +77,14 @@ export const useUser = (username: string) => {
     }, [refetchUser, username])
   );
 
+  const { data: allTimeTotal = 0, refetch: refetchTotal, isFetching: totalFetching } = useQuery<number>({
+    queryKey: queryKeys.profileTotal(userData?.id, selectedCategory),
+    queryFn: () => fetchTotalResourceCount(selectedCategory, userData!.id),
+    enabled: !!userData?.id,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 60,
+  });
+
   const {
     data: stats = new Array(12).fill(0),
     isLoading: statsLoading,
@@ -97,10 +105,10 @@ export const useUser = (username: string) => {
     return {
       ...INITIAL_CATEGORY_DATA[selectedCategory],
       chartData: stats,
-      total,
+      total: allTimeTotal,
       average,
     };
-  }, [selectedCategory, stats]);
+  }, [selectedCategory, stats, allTimeTotal]);
 
   const invalidateUserData = async () => {
     await Promise.all([
@@ -157,7 +165,10 @@ export const useUser = (username: string) => {
   const refreshUserData = async () => {
     await refetchUser();
     if (userData?.id) {
-      await refetchStats();
+      await Promise.all([
+        refetchStats(),
+        refetchTotal(), 
+      ]);
     }
   };
 
@@ -182,7 +193,7 @@ export const useUser = (username: string) => {
   return {
     userData,
     loading: isLoading || followMutation.isPending || cancelRequestMutation.isPending,
-    refreshing: isFetching || statsFetching,
+    refreshing: isFetching || statsFetching || totalFetching,
     refreshUserData,
     handleFollow,
     cancelRequest,

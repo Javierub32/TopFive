@@ -24,7 +24,7 @@ export default function GameDetail() {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const getPath = () => {
-    if (from === 'home') return 'back';
+    if (from === 'home' || from === 'details') return 'back';
     return '/Add?initialCategory=videojuego';
   };
   const path = getPath();

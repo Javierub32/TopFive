@@ -117,6 +117,17 @@ export default function ProfileScreen() {
               title={t(currentStats.titleKey as any)}
               total={currentStats.total}
               average={currentStats.average}
+              onPress={() =>
+                router.push({
+                  pathname: '/group',
+                  params: {
+                    title: t('status.completed') as string,
+                    state: 'completados',
+                    category: selectedCategory,
+                    from: 'Profile',
+                  },
+                })
+              }
             />
 
             <StatsChart

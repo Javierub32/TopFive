@@ -4,7 +4,8 @@ import { ScalableLeftArrowIcon } from './Icons';
 import { useTheme } from 'context/ThemeContext';
 import { useSearch } from 'context/SearchContext';
 import { useCallback, useEffect, useRef } from "react";
-import {AppText} from 'components/AppText';
+import { AppText } from 'components/AppText';
+import { useCollection } from 'context/CollectionContext';
 interface ReturnButtonProps {
   route: string;
   title: string;
@@ -12,33 +13,47 @@ interface ReturnButtonProps {
   params?: Record<string, any>;
   deleteSearchResults?: boolean;
   returnStyle?: boolean;
+  selection?: boolean;
 }
 
-export const ReturnButton = ({ route, title, style, params, deleteSearchResults, returnStyle }: ReturnButtonProps) => {
+export const ReturnButton = ({ route, title, style, params, deleteSearchResults, returnStyle, selection }: ReturnButtonProps) => {
   const { colors } = useTheme();
-  const { clearUserSearch} = useSearch();
+  const { clearUserSearch } = useSearch();
   const navigation = useNavigation();
   const isNavigating = useRef(false);
+  const { clearSelectedItems } = useCollection();
 
 
   const onBackPress = useCallback(() => {
     isNavigating.current = true
-    if(route === 'back') {
+    if (route === 'back') {
       router.back();
     } else {
-      router.navigate({pathname: route, params})
+      router.navigate({ pathname: route, params })
     }
-    if(deleteSearchResults) {
+    if (deleteSearchResults) {
       clearUserSearch();
     }
+    if (selection) {
+      clearSelectedItems();
+    }
     return true
-  }, [clearUserSearch, deleteSearchResults, params, route])
+  }, [
+    clearSelectedItems,
+    clearUserSearch,
+    deleteSearchResults,
+    params,
+    route,
+    selection,
+  ])
+
 
   useEffect(
     useCallback(() => {
+
       const action = BackHandler.addEventListener('hardwareBackPress', onBackPress);
       const unsuscribe = navigation.addListener('beforeRemove', (e) => {
-        if(!isNavigating.current && e.data.action.type === 'GO_BACK') {
+        if (!isNavigating.current && e.data.action.type === 'GO_BACK') {
           e.preventDefault();
           onBackPress();
         }
@@ -47,14 +62,14 @@ export const ReturnButton = ({ route, title, style, params, deleteSearchResults,
       return () => {
         action.remove();
         unsuscribe()
-      } 
+      }
     }, [onBackPress, navigation])
   );
-  
+
   style = style ? style : 'px-4 pt-5 pb-2';
 
   let backgroundStyle = {}
-  backgroundStyle = returnStyle ? {backgroundColor: colors.accent} : {}
+  backgroundStyle = returnStyle ? { backgroundColor: colors.accent } : {}
 
   return (
     <View className={`flex-row items-center ${style}`}>
@@ -65,7 +80,7 @@ export const ReturnButton = ({ route, title, style, params, deleteSearchResults,
         activeOpacity={0.7}>
         <ScalableLeftArrowIcon color={colors.primaryText} />
       </TouchableOpacity>
-      <AppText className="flex-1 font-bold" style={{ color: colors.primaryText, fontSize: 20}} numberOfLines={1}>
+      <AppText className="flex-1 font-bold" style={{ color: colors.primaryText, fontSize: 20 }} numberOfLines={1}>
         {title}
       </AppText>
     </View>

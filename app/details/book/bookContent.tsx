@@ -29,7 +29,7 @@ export default function BookDetail() {
   }
 
   const getPath = () => {
-    if (from === 'home') return 'back';
+    if (from === 'home' || from === 'details') return 'back';
     return '/Add?initialCategory=libro';
   };
   const path = getPath();

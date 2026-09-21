@@ -40,6 +40,10 @@ export default function GameDetail() {
   const isOwner = gameResource?.usuarioId === user?.id;
   const isPending = gameResource?.estado === 'PENDIENTE';
 
+  const displayUsername = (gameResource as any)?.username;
+  const displayAvatarUrl = (gameResource as any)?.avatar_url;
+
+
   if (!gameResource) {
     return (
       <Screen>
@@ -88,7 +92,7 @@ export default function GameDetail() {
                   unit={t('details.progressUnits.videogames')}
                 />
               </View>
-              <ReviewCard review={gameResource.reseña} />
+              <ReviewCard review={gameResource.reseña}  username={displayUsername} avatarUrl={displayAvatarUrl} />
               <DateCard
                 startDate={gameResource.fechaInicio}
                 endDate={gameResource.fechaFin}
