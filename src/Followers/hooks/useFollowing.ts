@@ -3,27 +3,56 @@ import { followersServices } from '../services/followersServices';
 import { User } from '@/User/hooks/useUser';
 import { useNotification } from 'context/NotificationContext';
 import { useTranslation } from 'react-i18next';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/query/queryKeys';
 
-export const useFollowing = (username: string) => {
+interface FollowingPage {
+  items: User[];
+  nextPage?: number;
+}
+
+export const useFollowing = (username: string, activeSearch = '') => {
   const { user } = useAuth();
   const { showNotification, hideNotification } = useNotification();
   const queryClient = useQueryClient();
   const ownList = user?.user_metadata.username === username;
   const { t } = useTranslation();
+  const PAGE_SIZE = 9;
 
   const {
-    data: following = [],
+    data: pagedData,
     isLoading,
     isFetching,
-  } = useQuery<User[]>({
-    queryKey: queryKeys.following(username),
-    queryFn: () => followersServices.fetchFollowing(username),
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
+    queryKey: queryKeys.following(username, activeSearch),
+    queryFn: async ({ pageParam = 0 }) => {
+      const from = pageParam * PAGE_SIZE;
+      const to = from + PAGE_SIZE - 1;
+      const items = await followersServices.fetchFollowing(username, from, to, activeSearch);
+
+      return {
+        items,
+        nextPage: items.length === PAGE_SIZE ? pageParam + 1 : undefined,
+      };
+    },
     enabled: !!username,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage: FollowingPage) => lastPage.nextPage,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
+    maxPages: 5,
   });
+
+  const following = pagedData?.pages.flatMap((page: FollowingPage) => page.items) ?? [];
+
+  const handleLoadMore = () => {
+    if (hasNextPage && !isFetchingNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  };
 
   const removeFollowingMutation = useMutation({
     mutationFn: (deleteId: string) => followersServices.removeFollowing(user.id, deleteId),
@@ -84,6 +113,8 @@ export const useFollowing = (username: string) => {
   return {
     following,
     loading: isLoading || isFetching || removeFollowingMutation.isPending,
+    loadingMore: isFetchingNextPage,
+    handleLoadMore,
     handleRemovePress,
     ownList,
   };

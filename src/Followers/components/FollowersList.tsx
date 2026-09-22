@@ -1,27 +1,21 @@
-import { Alert, FlatList, TouchableOpacity, View } from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 import { useFollowers } from "../hooks/useFollowers";
 import { UserResultItem } from "@/Search/components/UserResultItem";
 import { router, useLocalSearchParams } from "expo-router";
 import { LoadingIndicator } from "components/LoadingIndicator";
 import { ScalableCancelIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext";
-import { useCollection } from "context/CollectionContext";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { UserSearchBar } from "@/Search/components/UserSearchBar";
 
 export default function FollowersList() {
 	const { username } = useLocalSearchParams<{ username: string }>();
-	const { loading, followers, handleRemovePress, ownList } = useFollowers(username);
 	const { colors } = useTheme();
 	const [busqueda, setBusqueda] = useState('');
+	const [activeSearch, setActiveSearch] = useState('');
+	const { loading, loadingMore, followers, handleLoadMore, handleRemovePress, ownList } = useFollowers(username, activeSearch);
 
-	//Con esto, filtramos de la lista de los seguidores y se actualiza directamente
-	const userFiltered = useMemo(() => {
-		if(!busqueda.trim()) return followers;
-		return followers.filter(user => user.username.toLowerCase().includes(busqueda.toLowerCase()));
-	}, [busqueda, followers]);
-
-	if (loading) {
+	if (loading && followers.length === 0) {
 		return <LoadingIndicator />;
 	}
 	return (
@@ -30,11 +24,11 @@ export default function FollowersList() {
 		<UserSearchBar
 			value={busqueda}
 			onChangeText={setBusqueda}
-			onSearch={() => {}}
+			onSearch={() => setActiveSearch(busqueda.trim())}
 		/>
 		</View>
 		<FlatList 
-			data={userFiltered}
+			data={followers}
 			keyExtractor={(user) => user.id.toString()}
 			renderItem={({ item }) => 
 			<View className="flex flex-row items-center space-x-4 pl-4 pr-8 py-3">
@@ -53,6 +47,9 @@ export default function FollowersList() {
 			</View>
 			}
 			contentContainerStyle={{ paddingBottom: 20 }}
+			onEndReached={handleLoadMore}
+			onEndReachedThreshold={0.5}
+			ListFooterComponent={() => (loadingMore ? <LoadingIndicator /> : null)}
 			showsVerticalScrollIndicator={false}
 		/>
 		
