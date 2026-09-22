@@ -13,6 +13,7 @@ export const diaryService = {
       .eq('estado', 'COMPLETADO')
       .order('fecha_orden', { ascending: false })
       .order('fechacreacion', { ascending: false })
+	   .not("fecha_fin", "is", null)
       .range(from, to);
 
     if (error) throw error;
