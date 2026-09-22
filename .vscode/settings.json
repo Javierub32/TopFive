@@ -1,0 +1,16 @@
+{
+  "editor.autoClosingTags": "always",
+  "typescript.suggest.autoImports": true,
+  "javascript.suggest.autoImports": true,
+  "emmet.triggerExpansionOnTab": true,
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "typescript": "typescriptreact"
+  },
+  "[javascriptreact]": {
+    "editor.suggest.showWords": true
+  },
+  "[typescriptreact]": {
+    "editor.suggest.showWords": true
+  }
+}

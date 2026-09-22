@@ -58,8 +58,8 @@ export const UserIcon = (props) => <RNMaterialCommunityIcons name="account" size
 export const ScalableHomeIcon = (props) => <ScalableMaterialCommunityIcons name="home" size={24} color="black" {...props} />;
 export const HomeIcon = (props) => <RNMaterialCommunityIcons name="home" size={24} color="black" {...props} />;
 
-export const ScalableAddIcon = (props) => <ScalableFontAwesome name="search-plus" size={24} color="black" {...props} />;
-export const AddIcon = (props) => <RNFontAwesome name="search-plus" size={24} color="black" {...props} />;
+export const ScalableAddIcon = (props) => <ScalableMaterialIcons name="add-circle" size={24} color="black" {...props} />;
+export const AddIcon = (props) => <RNMaterialIcons name="add-circle" size={24} color="black" {...props} />;
 
 export const ScalableSettingsIcon = (props) => <ScalableFeather name="settings" size={24} color="black" {...props} />;
 export const SettingsIcon = (props) => <RNFeather name="settings" size={24} color="black" {...props} />;

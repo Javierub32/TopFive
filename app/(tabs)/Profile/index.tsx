@@ -29,10 +29,13 @@ import { ResourceType } from 'hooks/useResource';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useAuth } from 'context/AuthContext';
 import { useTopFive } from '@/Profile/hooks/useTopFive';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
   const layout = useWindowDimensions();
+  const insets = useSafeAreaInsets();
+  const tabBarHeight = 52 + insets.bottom;
 
   const {
     userData,
@@ -189,7 +192,7 @@ export default function ProfileScreen() {
         <ScrollView
           className="flex-1"
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 20 }}>
+          contentContainerStyle={{ paddingBottom: tabBarHeight + 20 }}>
           <ProfileData
             username={userData?.username || t('profile.user')}
             description={userData?.description}
