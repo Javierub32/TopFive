@@ -134,11 +134,22 @@ export const listServices = {
     }
     }
 
+    const { data: maxOrdenData } = await supabase
+    .from(tableName)
+    .select('orden')
+    .eq('coleccionid', listId)
+    .order('orden', { ascending: false, nullsFirst: false })
+    .limit(1)
+    .maybeSingle();
+
+    const nextOrden = (maxOrdenData?.orden ?? -1) + 1;
+
     const { error } = await supabase
       .from(tableName)
       .insert({
         coleccionid: listId,
         [resourceColumn]: itemId,
+        orden: nextOrden,
       })
       .single();
 
