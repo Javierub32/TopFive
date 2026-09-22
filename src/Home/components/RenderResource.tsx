@@ -19,13 +19,14 @@ import RenderHtml from 'react-native-render-html';
 import { useFontSize } from 'context/FontSizeContext';
 import { useTranslation } from 'react-i18next';
 import { useAddToCollection } from "../hooks/useAddToCollection";
+import { violet } from "tailwindcss/colors";
 
 export default function ActivityItem({ item, onPress }: { item: Activity; onPress: () => void }) {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
   const { fontSizeMultiplier } = useFontSize();
   const { t } = useTranslation();
-  const { watchLaterBook, loading: isSaving } = useAddToCollection();
+  const { watchLaterBook, watchLaterSerie, watchLaterFilm, watchLaterGame, watchLaterAlbum, loading: isSaving } = useAddToCollection();
 
   const getRelativeTime = (date: string | Date) => {
     const now = new Date();
@@ -91,10 +92,24 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
   };
 
   const handleWatchLater = () => {
-    if(item.tipo_contenido !== 'LIBRO' || item.idapi == null) {
+    if (item.idapi == null) {
       return
-    };
-    void watchLaterBook(item.idapi);
+    }
+
+    switch(item.tipo_contenido) {
+      case 'LIBRO': 
+        return void watchLaterBook(item.idapi)
+      case 'PELICULA': 
+        return void watchLaterFilm(item.idapi)
+      case 'SERIE': 
+        return void watchLaterSerie(item.idapi)
+      case 'CANCION': 
+        return void watchLaterAlbum(item.idapi)
+      case 'VIDEOJUEGO': 
+        return void watchLaterGame(item.idapi)
+      default:
+        return
+    }
   }
 
   return (
@@ -285,20 +300,18 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
               </AppText>
             </View>
           </View>
-          {item.tipo_contenido === 'LIBRO' && (
-            <View>
-              <Pressable
-                onPress={(event) => {
-                  event.stopPropagation();
-                  handleWatchLater();
-                }}
-                disabled = {isSaving}
-                className="ml-2">
-                  <ScalableWatchLaterIcon color={isSaving ? colors.secondaryText : colors.primaryText}
-                  style={{padding:4}} />
-              </Pressable>
-            </View>  
-          )}
+          <View>
+            <Pressable
+              onPress={(event) => {
+                event.stopPropagation();
+                handleWatchLater();
+              }}
+              disabled = {isSaving}
+              className="ml-2">
+                <ScalableWatchLaterIcon color={isSaving ? colors.secondaryText : colors.primaryText}
+                style={{padding:4}} />
+            </Pressable>
+          </View>  
         </View>
       </ImageBackground>
     </TouchableOpacity>
