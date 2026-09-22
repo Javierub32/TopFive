@@ -28,21 +28,11 @@ import { AdBanner } from 'components/AdBanner';
 import { FallbackCover } from 'components/FallbackCover';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+import { Book } from 'app/types/Content';
 
-interface Book {
-  id: number | null;
-  title: string | null;
-  autor: string | null;
-  image: string | null;
-  releaseDate: string | null;
-  genre: string[] | null;
-  reference: string | null;
-  autorId: number | null;
-  imageFull: string | null;
-  description: string | null;
-  rating: number | null;
-  imagenUrl?: string | null;
-}
+/* Se ha eliminado una interfaz que definía el tipo Book de manera local
+donde id y autorId eran tipo number | null en vez de string | null */
+
 
 export default function BookForm() {
   const { bookData, item, from } = useLocalSearchParams();
@@ -203,7 +193,7 @@ export default function BookForm() {
             .insert({
               titulo: book.title,
               idApi: book.id,
-              imagenUrl: book.imageFull || book.image,
+              imagenUrl: book.imageFull || book.image || book.imagenUrl,
               fechaLanzamiento: book.releaseDate,
             })
             .select('id')

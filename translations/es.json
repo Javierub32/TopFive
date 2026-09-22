@@ -294,7 +294,8 @@
             "today": "Hoy",
             "oneDayAgo": "Hace 1 día",
             "daysAgo": "Hace {{days}} días"
-        }
+        },
+        "contentAlreadyInCollection": "Este recurso ya está en tu colección"
     }, 
     "profile": {
         "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}",
@@ -504,12 +505,14 @@
             "updatingErrorDescription": "Hubo un problema al actualizar la serie. Inténtalo de nuevo.",
             "alreadyInCollection": "Esta serie ya está en tu colección.",
             "savingErrorDescription": "Hubo un problema al guardar la serie. Inténtalo de nuevo.",
+            "theSerie": "la serie",
             "serieDetails": "Detalles de la serie"
         },
         "albums": {
             "updatingErrorDescription": "Hubo un problema al actualizar el álbum. Inténtalo de nuevo.",
             "alreadyInCollection": "Este álbum ya está en tu colección.",
             "savingErrorDescription": "Hubo un problema al guardar el álbum. Inténtalo de nuevo.",
+            "theAlbum": "el álbum",
             "albumDetails": "Detalles del álbum"
         },
         "addToList": "Añadir a {{listName}}",
