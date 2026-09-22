@@ -20,11 +20,11 @@ interface Props {
 }
 
 const typeMap: Record<ResourceType, string> = {
-    libro: 'book',
-    pelicula: 'film',
-    serie: 'series',
-    videojuego: 'game',
-    cancion: 'song',
+  libro: 'book',
+  pelicula: 'film',
+  serie: 'series',
+  videojuego: 'game',
+  cancion: 'song',
 };
 
 export const ResourceAttributes = ({ resource, isOwner }: Props) => {
@@ -112,6 +112,17 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
     }
   };
 
+  const getResourceType = (resource: any): ResourceType => {
+    const rawType = (resource.tiporecurso || '').toLowerCase();
+    if (rawType === 'audiovisual') {
+      return 'temporadaActual' in resource ? 'serie' : 'pelicula';
+    }
+    if (rawType === 'musica') {
+      return 'cancion';
+    }
+    return rawType as ResourceType;
+  };
+
   const handleTitlePress = () => {
     const rawType = (resource.tiporecurso || '').toLowerCase();
     let type: string | undefined;
@@ -119,7 +130,7 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
     if (rawType === 'audiovisual') {
       type = 'temporadaActual' in resource ? 'series' : 'film';
     }
-    else if(rawType === "musica") {
+    else if (rawType === "musica") {
       type = 'song';
     } else {
       type = typeMap[rawType as ResourceType];
@@ -131,7 +142,7 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
       pathname: `/details/${type}/${type}Content`,
       params: { from: 'details', id: targetId },
     });
-  };  
+  };
   return (
     <View className="mb-4">
       <View className="flex-1 flex-row items-center justify-between">
@@ -141,13 +152,13 @@ export const ResourceAttributes = ({ resource, isOwner }: Props) => {
           activeOpacity={0.7}
           onPress={handleTitlePress}
         >
-          <AppText className="flex-1 font-bold" style={{ color: colors.primaryText, fontSize: 24}}>
+          <AppText className="flex-1 font-bold" style={{ color: colors.primaryText, fontSize: 24 }}>
             {contenido.titulo || t('common.noTitle')}
           </AppText>
         </TouchableOpacity>
 
         {isOwner && (
-          <AddToListButton resourceCategory={resource.tiporecurso} resourceId={resource.id} />
+          <AddToListButton resourceCategory={getResourceType(resource)} resourceId={resource.id} />
         )}
       </View>
 
