@@ -28,7 +28,7 @@ export const useAddToCollection = () => {
       if (contentError) throw contentError;
       if (!book) throw new Error('No se encontró el contenido del libro');
 
-      const reviewed = await checkIfResourceExists(idapi, 'libro');
+      const reviewed = await checkIfResourceExists(idapi, 'libro', { throwOnError: true });
 
       if (reviewed) {
         showNotification({
@@ -108,7 +108,7 @@ export const useAddToCollection = () => {
       if (contentError) throw contentError;
       if (!film) throw new Error('No se encontró el contenido de la película');
 
-      const reviewed = await checkIfResourceExists(idapi, 'pelicula');
+      const reviewed = await checkIfResourceExists(idapi, 'pelicula', { throwOnError: true });
 
       if(reviewed) {
         showNotification({
@@ -186,7 +186,7 @@ export const useAddToCollection = () => {
       if (contentError) throw contentError;
       if (!serie) throw new Error('No se encontró el contenido de la serie');
 
-      const reviewed = await checkIfResourceExists(idapi, 'serie');
+      const reviewed = await checkIfResourceExists(idapi, 'serie', { throwOnError: true });
 
       if(reviewed) {
         showNotification({
@@ -267,7 +267,7 @@ export const useAddToCollection = () => {
       if (contentError) throw contentError;
       if (!videogame) throw new Error('No se encontró el contenido del videojuego');
 
-      const reviewed = await checkIfResourceExists(idapi, 'videojuego');
+      const reviewed = await checkIfResourceExists(idapi, 'videojuego', { throwOnError: true });
 
       if(reviewed) {
         showNotification({
@@ -347,7 +347,7 @@ export const useAddToCollection = () => {
       if (contentError) throw contentError;
       if (!album) throw new Error('No se encontró el contenido del álbum');
 
-      const reviewed = await checkIfResourceExists(idapi, 'cancion');
+      const reviewed = await checkIfResourceExists(idapi, 'cancion', { throwOnError: true });
 
       if(reviewed) {
         showNotification({
