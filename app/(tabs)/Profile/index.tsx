@@ -106,7 +106,7 @@ export default function ProfileScreen() {
       <Animated.View
         entering={FadeIn.duration(300)}
         exiting={FadeOut.duration(300)}
-        style={{ flex: 1, paddingTop: 16 }}>
+        style={{ flex: 1, paddingTop: 10 }}>
         {statsLoading ? (
           <View className="flex-1 items-center justify-center py-1">
             <LoadingIndicator />
@@ -135,7 +135,7 @@ export default function ProfileScreen() {
               selectedYear={selectedYear}
               setSelectedYear={setSelectedYear}
             />
-
+			
             <TouchableOpacity
               className="mx-1 mb-6 rounded-xl p-4"
               style={{ backgroundColor: colors.accent, marginTop: -10 }}
@@ -230,6 +230,23 @@ export default function ProfileScreen() {
           </View>
 
           {userData?.id && <TopFiveSelector userId={userData.id} />}
+
+		<View className="mt-6"/>
+		  <TouchableOpacity
+              className=" mb-6 rounded-xl p-4"
+              style={{ backgroundColor: colors.accent, marginTop: -10 }}
+              activeOpacity={0.7}
+              onPress={() =>
+                router.push({
+                  pathname: '/diary',
+                })
+              }>
+              <AppText
+                className="text-center font-semibold"
+                style={{ color: colors.primaryText, fontSize: 16 }}>
+                {"Entrar al diario"}
+              </AppText>
+            </TouchableOpacity>
 
           {/* TabView implementado para poder deslizar horizontalmente */}
           <TabView
