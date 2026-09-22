@@ -2,13 +2,13 @@ import { userService } from "@/User/services/userService";
 import { supabase } from "lib/supabase";
 
 export const followersServices = {
-	async fetchFollowers(username: string) {
+	async fetchFollowers(username: string, from: number, to: number, search = '') {
 		const userId = await userService.getUserIdByUsername(username);
 		if (!userId) return [];
-		const { data, error } = await supabase
+		let query = supabase
 		.from('relationships')
 		.select(`
-			follower:usuario!relationships_follower_fkey (
+			follower:usuario!relationships_follower_fkey!inner (
 			id,
 			username,
 			avatar_url,
@@ -16,7 +16,14 @@ export const followersServices = {
 			)
 		`)
 		.eq('following_id', userId) // Yo soy el que está siendo seguido
-		.eq('status', 'accepted')  // Solo traemos seguidores aceptados
+		.eq('status', 'accepted');  // Solo traemos seguidores aceptados
+
+		if (search.trim()) {
+			query = query.ilike('follower.username', `%${search.trim()}%`);
+		}
+
+		const { data, error } = await query
+		.range(from, to)
 		.order('created_at', {ascending: false});// Ordenamos de RECIENTE a ANTIGUO
 
 		if (error) {
@@ -27,13 +34,13 @@ export const followersServices = {
 		return data.map((item: any) => item.follower);
 	},
 
-	async fetchFollowing(username: string) {
+	async fetchFollowing(username: string, from: number, to: number, search = '') {
 		const userId = await userService.getUserIdByUsername(username);
 		if (!userId) return [];
-		const { data, error } = await supabase
+		let query = supabase
 		.from('relationships')
 		.select(`
-			following:usuario!relationships_following_fkey (
+			following:usuario!relationships_following_fkey!inner (
 			id,
 			username,
 			avatar_url,
@@ -41,7 +48,14 @@ export const followersServices = {
 			)
 		`)
 		.eq('follower_id', userId) // Yo soy el seguidor
-		.eq('status', 'accepted')
+		.eq('status', 'accepted');
+
+		if (search.trim()) {
+			query = query.ilike('following.username', `%${search.trim()}%`);
+		}
+
+		const { data, error } = await query
+		.range(from, to)
 		.order('created_at', {ascending: false}); //Ordenamos de RECIENTE a ANTIGUO
 
 		if (error) {
