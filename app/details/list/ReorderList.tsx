@@ -43,18 +43,22 @@ export default function ReorderListScreen() {
   const handleSaveOrder = async () => {
     setSaving(true);
     try {
-      const newOrderPayload = items.map((item, index) => ({
+      const newOrderPayload = items
+      .map((item, index) => ({
         listItemId: item.listItemId,
-        orden: index + 1
-      }));
+        orden: index + 1,
+        cambiado: (index + 1) !== item.orden, 
+      }))
+      .filter((item) => item.cambiado)
+      .map(({ listItemId, orden }) => ({ listItemId, orden }));
 
+    if (newOrderPayload.length > 0) {
       await listServices.updateListOrder(listType, newOrderPayload);
-      // Con esto, actualizamos el orden en la cache para que se muestre el nuevo tras guardar
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: queryKeys.listDetails(listId, listType) }),
         queryClient.invalidateQueries({ queryKey: queryKeys.listsPrefix() }),
       ]);
-
+    }
       showNotification({
         title: t('common.success'),
         description: t('list.reorderList.reorderNotification.success'),
