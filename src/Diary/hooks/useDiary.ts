@@ -4,6 +4,8 @@ import { useAuth } from 'context/AuthContext';
 import { queryKeys } from 'src/query/queryKeys';
 import { diaryService } from '../services/diaryService';
 import DiaryEntity from '../entity/diaryEntity';
+import { ResourceType, useResource } from 'hooks/useResource';
+import { router } from 'expo-router';
 
 const PAGE_SIZE = 10;
 
@@ -14,6 +16,7 @@ interface DiaryPage {
 
 export const useDiary = (targetUserId?: string) => {
   const userId = targetUserId;
+  const { fetchResources } = useResource();
 
   const query = useInfiniteQuery<DiaryPage>({
     queryKey: queryKeys.diary(userId),
@@ -25,26 +28,46 @@ export const useDiary = (targetUserId?: string) => {
 
       return {
         items,
-        nextPage: items.length === PAGE_SIZE ? pageParam as number + 1 : undefined,
+        nextPage: items.length === PAGE_SIZE ? (pageParam as number) + 1 : undefined,
       };
     },
 
     getNextPageParam: (lastPage) => lastPage.nextPage,
   });
 
-  const items = useMemo(
-    () => query.data?.pages.flatMap((page) => page.items) ?? [],
-    [query.data]
-  );
+  const items = useMemo(() => query.data?.pages.flatMap((page) => page.items) ?? [], [query.data]);
 
   const loadMore = () => {
-    if (
-      query.hasNextPage &&
-      !query.isFetchingNextPage &&
-      !query.isFetching
-    ) {
+    if (query.hasNextPage && !query.isFetchingNextPage && !query.isFetching) {
       void query.fetchNextPage();
     }
+  };
+
+  const openReview = async (entry: DiaryEntity) => {
+    const resourceType = entry.tipo_contenido.toLowerCase() as ResourceType;
+    const routes: Record<ResourceType, string> = {
+      pelicula: 'film',
+      serie: 'series',
+      videojuego: 'game',
+      libro: 'book',
+      cancion: 'song',
+    };
+
+    const type = routes[resourceType];
+    if (!type) return;
+
+    const result = await fetchResources({
+      type: resourceType,
+      recursoId: Number(entry.recurso_id),
+      targetUserId: entry.usuarioId,
+    });
+    const resource = result.data?.[0];
+    if (!resource) return;
+
+    router.push({
+      pathname: `/details/${type}/${type}Resource`,
+      params: { item: JSON.stringify(resource), from: 'diary' },
+    });
   };
 
   return {
@@ -54,5 +77,6 @@ export const useDiary = (targetUserId?: string) => {
     loadingMore: query.isFetchingNextPage,
     hasNextPage: query.hasNextPage,
     refresh: query.refetch,
+	openReview,
   };
 };
