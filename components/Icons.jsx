@@ -7,6 +7,7 @@ import RNEntypo from '@expo/vector-icons/Entypo';
 import RNAntDesign from '@expo/vector-icons/AntDesign';
 import RNMaterialIcons from '@expo/vector-icons/MaterialIcons';
 import RNEvilIcons from '@expo/vector-icons/EvilIcons';
+import RNFontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 import { useTheme } from 'context/ThemeContext';
 import { useFontSize } from 'context/FontSizeContext';
@@ -29,6 +30,7 @@ export const ScalableEntypo = withScalableSize(RNEntypo);
 export const ScalableAntDesign = withScalableSize(RNAntDesign);
 export const ScalableMaterialIcons = withScalableSize(RNMaterialIcons);
 export const ScalableEvilIcons = withScalableSize(RNEvilIcons);
+export const ScalableFontAwesome6 = withScalableSize(RNFontAwesome6);
 
 // Exportamos las bases originales para uso directo si es necesario
 export const FontAwesome = RNFontAwesome;
@@ -40,6 +42,7 @@ export const Entypo = RNEntypo;
 export const AntDesign = RNAntDesign;
 export const MaterialIcons = RNMaterialIcons;
 export const EvilIcons = RNEvilIcons;
+export const FontAwesom6 = RNFontAwesome6;
 
 //-----ICONOS-----//
 
@@ -58,8 +61,8 @@ export const UserIcon = (props) => <RNMaterialCommunityIcons name="account" size
 export const ScalableHomeIcon = (props) => <ScalableMaterialCommunityIcons name="home" size={24} color="black" {...props} />;
 export const HomeIcon = (props) => <RNMaterialCommunityIcons name="home" size={24} color="black" {...props} />;
 
-export const ScalableAddIcon = (props) => <ScalableMaterialIcons name="add-circle" size={24} color="black" {...props} />;
-export const AddIcon = (props) => <RNMaterialIcons name="add-circle" size={24} color="black" {...props} />;
+export const ScalableAddIcon = (props) => <ScalableFontAwesome5 name="plus" size={24} color="black" {...props} />;
+export const AddIcon = (props) => <RNFontAwesome5 name="plus" size={24} color="black" {...props} />;
 
 export const ScalableSettingsIcon = (props) => <ScalableFeather name="settings" size={24} color="black" {...props} />;
 export const SettingsIcon = (props) => <RNFeather name="settings" size={24} color="black" {...props} />;

@@ -11,8 +11,8 @@ import Svg, { Path } from "react-native-svg";
 import { useAuth } from "context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/query/queryKeys";
-import { supabase } from "lib/supabase";
 import { userService } from "@/Profile/services/profileService";
+import { Platform } from 'react-native';
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
@@ -33,8 +33,8 @@ export default function TabLayout() {
   const tabBarHeight = 52 + insets.bottom;
 
   const centerX = width /2;
-  const notchHalfWidth = 52;
-  const notchDepth = 44;
+  const notchHalfWidth = 48;
+  const notchDepth = 42;
 
   const notchPath = [
   'M 0 0',
@@ -110,28 +110,36 @@ export default function TabLayout() {
           name="Add/index"
           options={{
             title: 'Add',
-            tabBarIcon: ({ color, size }) => (
+            tabBarIcon: ({ color, focused }) => (
               <View
                 style={{
+                  backgroundColor: colors.accent,
                   padding: 6,
                   borderRadius: 100,
-                  transform: [{ translateY: -20 }],
-                  width: 72,
-                  height: 72,
+                  transform: [{ translateY: -16 }],
+                  width: 48,
+                  height: 48,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  ...Platform.select({
+                  web: {
+                    boxShadow: '0px -4px 34px rgba(0, 0, 0, 0.8)',
+                  },
+                  ios: {
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: -4 },
+                    shadowOpacity: 0.8,
+                    shadowRadius: 6,
+                  },
+                  android: {
+                    elevation: 10,
+                  }
+                })
                 }}>
-                <View
-                  style={{
-                    backgroundColor: colors.accent,
-                    padding: 12,
-                    borderRadius: 100,
-                    
-                  }}>
-                  <AddIcon
-                    color={colors.background}
-                    size={28}
-                    style={{ padding: 4 }}
-                  />
-                </View>
+                <AddIcon
+                  color={colors.primaryText}
+                  size={24}
+                />
               </View>
             ),
           }}
