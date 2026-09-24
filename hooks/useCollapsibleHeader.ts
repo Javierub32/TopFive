@@ -25,6 +25,10 @@ export const useCollapsibleHeader = (headerHeight: number = 80) => {
         },
     }, [headerHeight]);
 
+    const resetLastScroll = (y: number) => {
+        lastScrollY.value = y;
+    };
+
     const headerStyle = useAnimatedStyle(() => {
         return {
             transform: [{ translateY: translateY.value }],
@@ -42,5 +46,5 @@ export const useCollapsibleHeader = (headerHeight: number = 80) => {
         return { opacity };
     });
 
-    return { scrollHandler, headerStyle, headerHeight, headerOpacityStyle, translateY };
+    return { scrollHandler, headerStyle, headerHeight, headerOpacityStyle, translateY, resetLastScroll };
 };

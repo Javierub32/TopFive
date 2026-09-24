@@ -1,6 +1,5 @@
-import { View, TouchableOpacity, BackHandler, useWindowDimensions } from 'react-native';
+import { View, TouchableOpacity, BackHandler } from 'react-native';
 import { router, useFocusEffect, useNavigation } from 'expo-router';
-import { TabView } from 'react-native-tab-view';
 import { Screen } from 'components/Screen';
 import { useTheme } from 'context/ThemeContext';
 import SiguiendoFeed from '@/Home/components/SiguiendoFeed';
@@ -10,20 +9,15 @@ import { NotificationButton } from '@/Notifications/components/NotificationButto
 import { useCallback, useRef, useState } from 'react';
 import { useNotification } from 'context/NotificationContext';
 import { AppText } from 'components/AppText';
-import Animated from 'react-native-reanimated';
-import { useCollapsibleHeader } from 'hooks/useCollapsibleHeader';
 import { useTranslation } from 'react-i18next';
+import { Tabs } from 'react-native-collapsible-tab-view'; 
 
 export default function HomeScreen() {
   const { colors } = useTheme();
   const { t } = useTranslation();
-  const layout = useWindowDimensions();
   const navigation = useNavigation();
   const lastBackPress = useRef(0);
   const { showNotification } = useNotification();
-
-  const [headerHeight, setHeaderHeight] = useState(80);
-  const { scrollHandler, headerStyle, headerOpacityStyle, translateY } = useCollapsibleHeader(headerHeight);
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
@@ -61,92 +55,74 @@ export default function HomeScreen() {
     }, [navigation, showNotification, t])
   );
 
-  const renderScene = ({ route }: { route: { key: string } }) => {
-    switch (route.key) {
-      case 'paraTi':
-        return <ForYouFeed headerHeight={headerHeight} scrollHandler={scrollHandler} isActive={index === 0} translateY={translateY}/>;
-      case 'siguiendo':
-        return <SiguiendoFeed headerHeight={headerHeight} scrollHandler={scrollHandler} isActive={index === 1} translateY={translateY}/>;
-      default:
-        return null;
-    }
-  };
+  const renderHeader = () => (
+    <View style={{ backgroundColor: colors.background }} className="px-4 pt-0 pb-4">
+      <View className="flex-row items-center justify-between">
+        <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 28 }}>
+          {t('tabs.home')}
+        </AppText>
+        <View className="flex-row gap-x-4">
+          <NotificationButton from="Home" />
+          <TouchableOpacity onPress={() => router.push('/search')} className="rounded-full p-3">
+            <SearchIcon2 size={22} color={colors.primaryText} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+
+  const renderTabBar = (props: any) => (
+    <View className="flex-row justify-center px-4 pb-2" style={{ backgroundColor: colors.background }}>
+      {routes.map((route, i) => (
+        <TouchableOpacity
+          key={route.key}
+          onPress={() => {
+            setIndex(i); 
+            props.onTabPress(route.key); 
+          }}
+          className="mx-4 items-center"
+          activeOpacity={0.7}>
+          <AppText
+            className="font-bold"
+            style={{
+              fontSize: 16,
+              color: index === i ? colors.primaryText : colors.placeholderText,
+            }}>
+            {route.title}
+          </AppText>
+          {index === i && (
+            <View
+              style={{
+                marginTop: 4,
+                height: 2,
+                width: 24,
+                borderRadius: 2,
+                backgroundColor: colors.primaryText,
+              }}
+            />
+          )}
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
 
   return (
     <Screen>
-      <Animated.View
-        onLayout={(event) => {
-          const { height } = event.nativeEvent.layout;
-          if (Math.abs(headerHeight - height) > 1) {
-            setHeaderHeight(height);
-          }
-        }}
-        style={[
-          headerStyle,
-          {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 10,
-            backgroundColor: colors.background,
-          },
-        ]}>
-        <Animated.View style={headerOpacityStyle} className="px-4 pt-6">
-          <View className="mb-4 flex-row items-center justify-between">
-            <AppText className=" font-bold" style={{ color: colors.primaryText, fontSize: 28 }}>
-              {t('tabs.home')}
-            </AppText>
-            <View className="flex-row gap-x-2">
-              <NotificationButton from="Home" />
-              <TouchableOpacity onPress={() => router.push('/search')} className="rounded-full p-3">
-                <SearchIcon2 size={22} color={colors.primaryText} />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-        {/* Pestañas Parati y Siguiendo */}
-        <View className="flex-row justify-center px-2 pb-3">
-          {routes.map((route, i) => (
-            <TouchableOpacity
-              key={route.key}
-              onPress={() => setIndex(i)}
-              className="mx-4 items-center"
-              activeOpacity={0.7}>
-              <AppText
-                className="font-bold"
-                style={{
-                  fontSize: 16,
-                  color: index === i ? colors.primaryText : colors.placeholderText,
-                }}>
-                {route.title}
-              </AppText>
-              {index === i && (
-                <View
-                  style={{
-                    marginTop: 4,
-                    height: 2,
-                    width: 24,
-                    borderRadius: 2,
-                    backgroundColor: colors.primaryText,
-                  }}
-                />
-              )}
-            </TouchableOpacity>
-          ))}
-        </View>
-        </Animated.View>
-      </Animated.View>
-
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        renderTabBar={() => null}
-        initialLayout={{ width: layout.width }}
-        swipeEnabled
-        lazy
-      />
+      <Tabs.Container
+        renderHeader={renderHeader}
+        renderTabBar={renderTabBar} 
+        onIndexChange={setIndex}   
+        headerContainerStyle={{ elevation: 0, shadowOpacity: 0 }}
+        headerHeight={60}
+        revealHeaderOnScroll={true}
+      >
+        <Tabs.Tab name="siguiendo">
+          <SiguiendoFeed />
+        </Tabs.Tab>
+        <Tabs.Tab name="paraTi">
+          <ForYouFeed />
+        </Tabs.Tab>
+      </Tabs.Container>
     </Screen>
   );
 }
