@@ -540,7 +540,9 @@
         "currentSeason": "Temporada Actual",
         "currentEpisode": "Episodio Actual",
         "reviewPlaceholder": "Escribe tu opinión...",
-        "views": "Vistas"
+        "views": "Vistas",
+        "comment":"comentarios",
+        "commentPlaceholder": "Añade un comentario..."
        
     },
     "frameSelector": {

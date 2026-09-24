@@ -541,7 +541,9 @@
         "currentSeason": "Current season",
         "currentEpisode": "Current episode",
         "reviewPlaceholder": "Write your opinion...",
-        "views": "Views"
+        "views": "Views",
+        "comment":"comments",
+        "commentPlaceholder": "Write a comment..."
        
     },
     "frameSelector": {

@@ -106,6 +106,9 @@ export const WrenchIcon = (props) => <RNMaterialCommunityIcons name="hammer-wren
 export const ScalableLockIcon = (props) => <ScalableEvilIcons name="lock" size={24} color="white" {...props} />;
 export const LockIcon = (props) => <RNEvilIcons name="lock" size={24} color="white" {...props} />;
 
+export const ScalableSendIcon = (props) => <ScalableIonicons name="send" size={24} color="white" {...props} />;
+export const SendIcon = (props) => <RNIonicons name="send" size={24} color="white" {...props} />;
+
 // Iconos con contexto (Theme)
 export const ScalableRatingIcon = (props) => {
   const { colors } = useTheme();
