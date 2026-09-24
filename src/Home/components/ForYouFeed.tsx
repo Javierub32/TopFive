@@ -1,7 +1,6 @@
-import { View, FlatList, RefreshControl, TouchableOpacity } from 'react-native';
-import { router } from 'expo-router';
+import { View, FlatList, RefreshControl } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
-import { useActivity } from '@/Home/hooks/useActivity';
+import { useForYou } from '@/Home/hooks/useForYou';
 import ActivityItem from '@/Home/components/RenderResource';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { SocialBubblesIcon } from 'components/Icons';
@@ -9,29 +8,44 @@ import { NativeAdCard } from 'components/NativeAdCard';
 import { AppText } from 'components/AppText';
 import Animated from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
+import { useEffect, useRef } from 'react';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 interface Props {
   headerHeight: number;
   scrollHandler: any;
+  isActive: boolean;
+  translateY: any;
 }
 
-export default function SiguiendoFeed({ headerHeight, scrollHandler }: Props) {
+export default function ForYouFeed({ headerHeight, scrollHandler, isActive, translateY }: Props) {
   const { colors } = useTheme();
   const { t } = useTranslation();
-  const { activities, loading, refreshing, fetchActivities, refreshActivities, handleItemPress } =
-    useActivity();
+  const { activities, loading, handleLoadMore, handleItemPress, refreshing, refreshForYou } = useForYou();
+  const listRef = useRef<any>(null);
 
+  useEffect(() => {
+    if (isActive && translateY && translateY.value < 0) {
+      const headerHidden = Math.abs(translateY.value)
+      setTimeout(() => {
+        listRef.current?.scrollToOffset({
+          offset: headerHidden,
+          animated: false,
+        });
+      }, 0);
+    }
+  }, [isActive, translateY]);
   if (loading && activities.length === 0) return <LoadingIndicator />;
 
   return (
     <AnimatedFlatList
+      ref={listRef}
       data={activities}
       onScroll={scrollHandler}
       scrollEventThrottle={16}
-      keyExtractor={(item: any) =>
-        [item.usuarioId, item.tipo_contenido, item.recurso_id, item.fecha_actividad ?? item.fechacreacion].join('-')
+      keyExtractor={(item: any, index: number) =>
+        [item.usuarioId, item.tipo_contenido, item.recurso_id, index].join('-')
       }
       renderItem={({ item, index }: { item: any; index: number }) => (
         <>
@@ -44,12 +58,12 @@ export default function SiguiendoFeed({ headerHeight, scrollHandler }: Props) {
           ? { flex: 1, paddingHorizontal: 16, paddingVertical: 150, paddingTop: headerHeight + 20 }
           : { paddingHorizontal: 16, paddingBottom: 16, paddingTop: headerHeight + 10 }
       }
-      onEndReached={fetchActivities}
+      onEndReached={handleLoadMore}
       onEndReachedThreshold={0.5}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
-          onRefresh={refreshActivities}
+          onRefresh={refreshForYou}
           tintColor={colors.primaryText}
           progressViewOffset={headerHeight}
         />
@@ -58,17 +72,8 @@ export default function SiguiendoFeed({ headerHeight, scrollHandler }: Props) {
         <View className="flex-1 items-center px-4 ">
           <SocialBubblesIcon className="mb-4" size={100} color={colors.primaryText} />
           <AppText className="mb-4 text-center text-2xl font-bold" style={{ color: colors.primaryText }}>
-            {t('home.noCompletedReviewsFromFriends')}
+            {'No hay contenido para mostrar en este momento. Vuelve más tarde o sigue a más usuarios para ver sus actividades.'}
           </AppText>
-          <AppText className="text-md mb-6 text-center" style={{ color: colors.primaryText }}>
-            {t('home.addFriendsToSeeReviews')}
-          </AppText>
-          <TouchableOpacity
-            onPress={() => router.push('/search')}
-            className="rounded-3xl px-6 py-3"
-            style={{ backgroundColor: colors.primary }}>
-            <AppText className="text-base font-bold text-white">{t('home.searchFriends')}</AppText>
-          </TouchableOpacity>
         </View>
       )}
       ListFooterComponent={() => (loading ? <LoadingIndicator /> : null)}

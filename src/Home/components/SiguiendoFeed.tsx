@@ -9,24 +9,41 @@ import { NativeAdCard } from 'components/NativeAdCard';
 import { AppText } from 'components/AppText';
 import Animated from 'react-native-reanimated';
 import { useTranslation } from 'react-i18next';
+import { useEffect, useRef } from 'react';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 interface Props {
   headerHeight: number;
   scrollHandler: any;
+  isActive: boolean;
+  translateY: any;
 }
 
-export default function SiguiendoFeed({ headerHeight, scrollHandler }: Props) {
+export default function SiguiendoFeed({ headerHeight, scrollHandler, isActive, translateY }: Props) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const { activities, loading, refreshing, fetchActivities, refreshActivities, handleItemPress } =
     useActivity();
+  const listRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (isActive && translateY && translateY.value < 0) {
+      const headerHidden = Math.abs(translateY.value)
+      setTimeout(() => {
+        listRef.current?.scrollToOffset({
+          offset: headerHidden,
+          animated: false,
+        });
+      }, 0);
+    }
+  }, [isActive, translateY]);
 
   if (loading && activities.length === 0) return <LoadingIndicator />;
 
   return (
     <AnimatedFlatList
+      ref={listRef}
       data={activities}
       onScroll={scrollHandler}
       scrollEventThrottle={16}

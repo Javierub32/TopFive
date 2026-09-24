@@ -4,7 +4,7 @@ import { TabView } from 'react-native-tab-view';
 import { Screen } from 'components/Screen';
 import { useTheme } from 'context/ThemeContext';
 import SiguiendoFeed from '@/Home/components/SiguiendoFeed';
-import ParaTiFeed from '@/Home/components/ForYouFeed';
+import ForYouFeed from '@/Home/components/ForYouFeed';
 import { SearchIcon2 } from 'components/Icons';
 import { NotificationButton } from '@/Notifications/components/NotificationButton';
 import { useCallback, useRef, useState } from 'react';
@@ -23,13 +23,12 @@ export default function HomeScreen() {
   const { showNotification } = useNotification();
 
   const [headerHeight, setHeaderHeight] = useState(80);
-  const { scrollHandler, headerStyle, headerOpacityStyle } = useCollapsibleHeader(headerHeight);
+  const { scrollHandler, headerStyle, headerOpacityStyle, translateY } = useCollapsibleHeader(headerHeight);
 
-  // índice 0 = Para ti (por defecto), 1 = Siguiendo
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'paraTi', title: t('home.forYou') },
-    { key: 'siguiendo', title: t('home.following') },
+    { key: 'siguiendo', title: 'Siguiendo' },
+    { key: 'paraTi', title: 'Para ti' },
   ]);
 
   useFocusEffect(
@@ -65,9 +64,9 @@ export default function HomeScreen() {
   const renderScene = ({ route }: { route: { key: string } }) => {
     switch (route.key) {
       case 'paraTi':
-        return <ParaTiFeed headerHeight={headerHeight} scrollHandler={scrollHandler} />;
+        return <ForYouFeed headerHeight={headerHeight} scrollHandler={scrollHandler} isActive={index === 0} translateY={translateY}/>;
       case 'siguiendo':
-        return <SiguiendoFeed headerHeight={headerHeight} scrollHandler={scrollHandler} />;
+        return <SiguiendoFeed headerHeight={headerHeight} scrollHandler={scrollHandler} isActive={index === 1} translateY={translateY}/>;
       default:
         return null;
     }
@@ -105,10 +104,9 @@ export default function HomeScreen() {
               </TouchableOpacity>
             </View>
           </View>
-        </Animated.View>
 
-        {/* Pestañas Para ti / Siguiendo, estilo TikTok */}
-        <View className="flex-row justify-center px-8 pb-3">
+        {/* Pestañas Parati y Siguiendo */}
+        <View className="flex-row justify-center px-2 pb-3">
           {routes.map((route, i) => (
             <TouchableOpacity
               key={route.key}
@@ -126,7 +124,7 @@ export default function HomeScreen() {
               {index === i && (
                 <View
                   style={{
-                    marginTop: 6,
+                    marginTop: 4,
                     height: 2,
                     width: 24,
                     borderRadius: 2,
@@ -137,6 +135,7 @@ export default function HomeScreen() {
             </TouchableOpacity>
           ))}
         </View>
+        </Animated.View>
       </Animated.View>
 
       <TabView

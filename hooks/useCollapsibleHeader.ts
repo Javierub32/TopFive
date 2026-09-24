@@ -42,5 +42,5 @@ export const useCollapsibleHeader = (headerHeight: number = 80) => {
         return { opacity };
     });
 
-    return { scrollHandler, headerStyle, headerHeight, headerOpacityStyle };
+    return { scrollHandler, headerStyle, headerHeight, headerOpacityStyle, translateY };
 };
