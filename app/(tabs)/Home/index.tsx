@@ -11,6 +11,7 @@ import { useNotification } from 'context/NotificationContext';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
 import { Tabs } from 'react-native-collapsible-tab-view'; 
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 export default function HomeScreen() {
   const { colors } = useTheme();
@@ -18,7 +19,6 @@ export default function HomeScreen() {
   const navigation = useNavigation();
   const lastBackPress = useRef(0);
   const { showNotification } = useNotification();
-
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: 'siguiendo', title: 'Siguiendo' },
@@ -56,7 +56,7 @@ export default function HomeScreen() {
   );
 
   const renderHeader = () => (
-    <View style={{ backgroundColor: colors.background }} className="px-4 pt-0 pb-4">
+    <View style={{ backgroundColor: colors.background, height: 82}} className="px-4 pt-4">
       <View className="flex-row items-center justify-between">
         <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 28 }}>
           {t('tabs.home')}
@@ -71,50 +71,70 @@ export default function HomeScreen() {
     </View>
   );
 
-  const renderTabBar = (props: any) => (
-    <View className="flex-row justify-center px-4 pb-2" style={{ backgroundColor: colors.background }}>
-      {routes.map((route, i) => (
-        <TouchableOpacity
-          key={route.key}
-          onPress={() => {
-            setIndex(i); 
-            props.onTabPress(route.key); 
-          }}
-          className="mx-4 items-center"
-          activeOpacity={0.7}>
-          <AppText
-            className="font-bold"
-            style={{
-              fontSize: 16,
-              color: index === i ? colors.primaryText : colors.placeholderText,
-            }}>
-            {route.title}
-          </AppText>
-          {index === i && (
-            <View
-              style={{
-                marginTop: 4,
+const renderTabBar = (props: any) => {
+    const { indexDecimal } = props;
+
+    const indicatorStyle = useAnimatedStyle(() => {
+      return {
+        transform: [{ translateX: (indexDecimal?.value ?? 0) * 110 }],
+      };
+    }, [indexDecimal]);
+
+    return (
+      <View className="flex-row justify-center px-2 pb-4" >
+        
+        <View className="flex-row relative">
+          
+          {routes.map((route, i) => (
+            <TouchableOpacity
+              key={route.key}
+              onPress={() => {
+                setIndex(i); 
+                props.onTabPress(route.key); 
+              }}
+              style={{ width: 110 }}
+              className="items-center"
+              activeOpacity={0.7}>
+              <AppText
+                className="font-bold"
+                style={{
+                  fontSize: 16,
+                  color: index === i ? colors.primaryText : colors.placeholderText,
+                }}>
+                {route.title}
+              </AppText>
+            </TouchableOpacity>
+          ))}
+
+          <Animated.View
+            style={[
+              {
+                position: 'absolute',
+                bottom: -6,
+                left: 43, 
                 height: 2,
-                width: 24,
+                width: 24, 
                 borderRadius: 2,
                 backgroundColor: colors.primaryText,
-              }}
-            />
-          )}
-        </TouchableOpacity>
-      ))}
-    </View>
-  );
-
+              },
+              indicatorStyle, 
+            ]}
+          />
+          
+        </View>
+      </View>
+    );
+  };
   return (
     <Screen>
       <Tabs.Container
         renderHeader={renderHeader}
         renderTabBar={renderTabBar} 
         onIndexChange={setIndex}   
-        headerContainerStyle={{ elevation: 0, shadowOpacity: 0 }}
-        headerHeight={60}
-        revealHeaderOnScroll={true}
+        headerContainerStyle={{ elevation: 0, shadowOpacity: 0,backgroundColor: 'transparent' }}
+        headerHeight={82}
+        minHeaderHeight={0}
+        revealHeaderOnScroll={false}
       >
         <Tabs.Tab name="siguiendo">
           <SiguiendoFeed />

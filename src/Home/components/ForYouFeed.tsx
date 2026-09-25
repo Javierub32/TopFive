@@ -12,7 +12,7 @@ export default function ForYouFeed() {
   const { colors } = useTheme();
   const { activities, loading, handleLoadMore, handleItemPress, refreshing, refreshForYou } = useForYou();
 
-  if (loading && activities.length === 0) return <LoadingIndicator />;
+  if (loading && activities.length === 0 ) return <LoadingIndicator />;
 
   return (
     <Tabs.FlatList

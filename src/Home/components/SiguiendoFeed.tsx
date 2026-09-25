@@ -12,7 +12,7 @@ export default function SiguiendoFeed() {
   const { colors } = useTheme();
   const { activities, loading, fetchActivities, handleItemPress, refreshing, refreshActivities } = useActivity();
 
-  if (loading && activities.length === 0) return <LoadingIndicator />;
+  if (loading && activities.length === 0 ) return <LoadingIndicator />;
 
   return (
     <Tabs.FlatList

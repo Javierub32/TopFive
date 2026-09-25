@@ -79,8 +79,6 @@ export const useForYou = () => {
     try {
       setSeed(Math.random()); // Cuando refrescamos, generamos una nueva semilla aleatoria
 
-      queryClient.removeQueries({ queryKey, exact: true });
-
       const firstPage = await fetchForYouPage(0);
 
       queryClient.setQueryData<InfiniteData<ForYouPage, number>>(queryKey, {

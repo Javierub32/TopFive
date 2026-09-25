@@ -74,7 +74,6 @@ export const useActivity = () => {
     setIsRefreshing(true);
 
     try {
-      queryClient.removeQueries({ queryKey, exact: true });
 
       const firstPage = await fetchActivityPage(0);
 
