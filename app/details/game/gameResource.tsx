@@ -15,6 +15,7 @@ import { AdBanner } from 'components/AdBanner';
 import { ResourceHeader } from '@/Details/components/ResourceHeader';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+import { CommentSection } from '@/Details/components/CommentSection';
 
 export default function GameDetail() {
   const { item, from } = useLocalSearchParams();
@@ -100,6 +101,8 @@ export default function GameDetail() {
               />
             </View>
           )}
+
+          <CommentSection resourceId={gameResource.id} resourceType={gameResource.tiporecurso}></CommentSection>
         </View>
         {!isPending && (
           <View className="flex-1">

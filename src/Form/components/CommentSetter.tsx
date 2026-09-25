@@ -10,21 +10,26 @@ const MAX_LENGTH = 250;
 interface Props {
   comment: string;
   setComment: (comment: string) => void;
-  onSend?: (comment: string) => void;
-  commentCount?: number;
+  onSend?: (comment: string) => void | Promise<void>;
+  sending?: boolean;
 }
 
-export const CommentSetter = ({ comment, setComment, onSend }: Props) => {
+export const CommentSetter = ({ comment, setComment, onSend, sending = false }: Props) => {
   const { colors } = useTheme();
   const { t } = useTranslation();
 
   const trimmedComment = comment.trim();
-  const canSend = trimmedComment.length > 0;
+  const canSend = trimmedComment.length > 0 && !sending;
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!canSend) return;
-    onSend?.(trimmedComment);
-    setComment('');
+    try {
+      await onSend?.(trimmedComment);
+      setComment('');
+    } catch (error) {
+      // Mantenemos el texto para que el usuario pueda reintentar
+      console.error('Error sending comment:', error);
+    }
   };
 
   return (
@@ -41,7 +46,7 @@ export const CommentSetter = ({ comment, setComment, onSend }: Props) => {
             onChangeText={setComment}
             multiline
             className="p-2 text-base"
-            style={{ color: colors.primaryText, fontSize: 14, minHeight: 60, maxHeight: 140 }}
+            style={{ color: colors.primaryText, fontSize: 14 }}
             textAlignVertical="top"
           />
           <AppText
@@ -56,7 +61,7 @@ export const CommentSetter = ({ comment, setComment, onSend }: Props) => {
           disabled={!canSend}
           activeOpacity={0.7}
           className="mb-1 ml-2 h-10 w-10 items-center justify-center rounded-full"
-          style={{ backgroundColor: colors.primary, opacity: canSend ? 1 : 0.4 }}>
+          style={{ backgroundColor: colors.primary, opacity: canSend ? 1 : 0.2 }}>
           <SendIcon size={18} color="white" />
         </TouchableOpacity>
       </View>

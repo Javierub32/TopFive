@@ -15,6 +15,7 @@ import { ResourceHeader } from '@/Details/components/ResourceHeader';
 import { useTheme } from 'context/ThemeContext';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+import { CommentSection } from '@/Details/components/CommentSection';
 
 export default function SongDetail() {
   const { item, from } = useLocalSearchParams();
@@ -89,6 +90,8 @@ export default function SongDetail() {
               <ReviewCard review={songResource.reseña}  username={displayUsername} avatarUrl={displayAvatarUrl}/>
             </View>
           )}
+
+          <CommentSection resourceId={songResource.id} resourceType={songResource.tiporecurso}></CommentSection>
         </View>
         {!isPending && (
           <View className="flex-1">

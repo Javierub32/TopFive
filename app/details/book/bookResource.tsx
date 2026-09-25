@@ -107,7 +107,7 @@ export default function BookDetail() {
 
           <TimeCard resource={bookResource} />
 
-          <CommentSection></CommentSection>
+          <CommentSection resourceId={bookResource.id} resourceType={bookResource.tiporecurso}></CommentSection>
         </View>
         {!isPending && (
           <View className="flex-1">
