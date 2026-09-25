@@ -6,7 +6,7 @@ import SiguiendoFeed from '@/Home/components/SiguiendoFeed';
 import ForYouFeed from '@/Home/components/ForYouFeed';
 import { SearchIcon2 } from 'components/Icons';
 import { NotificationButton } from '@/Notifications/components/NotificationButton';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useNotification } from 'context/NotificationContext';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
@@ -109,7 +109,7 @@ function CollapsibleTabBar({
         },
         animatedTabBarStyle,
       ]}
-      className="flex-row justify-center px-2 pb-5"
+      className="flex-row justify-center px-2 pb-4"
     >
       <View className="relative flex-row">
         {routes.map((route, i) => (
@@ -161,10 +161,10 @@ export default function HomeScreen() {
   const lastBackPress = useRef(0);
   const { showNotification } = useNotification();
   const [index, setIndex] = useState(0);
-  const [routes] = useState([
-    { key: 'siguiendo', title: 'Siguiendo' },
-    { key: 'paraTi', title: 'Para ti' },
-  ]);
+  const routes = useMemo<{ key: string; title: string }[]>(() => [
+    { key: 'siguiendo', title: t('home.siguiendo') as string },
+    { key: 'paraTi', title: t('home.paraTi') as string },
+  ], [t]);
 
   useFocusEffect(
     useCallback(() => {

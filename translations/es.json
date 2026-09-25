@@ -294,7 +294,9 @@
             "today": "Hoy",
             "oneDayAgo": "Hace 1 día",
             "daysAgo": "Hace {{days}} días"
-        }
+        },
+        "siguiendo": "Siguiendo",
+        "paraTi": "Para ti"
     }, 
     "profile": {
         "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}",
