@@ -162,8 +162,8 @@ export default function HomeScreen() {
   const { showNotification } = useNotification();
   const [index, setIndex] = useState(0);
   const routes = useMemo<{ key: string; title: string }[]>(() => [
-    { key: 'siguiendo', title: t('home.siguiendo') as string },
     { key: 'paraTi', title: t('home.paraTi') as string },
+    { key: 'siguiendo', title: t('home.siguiendo') as string },
   ], [t]);
 
   useFocusEffect(
@@ -219,11 +219,11 @@ export default function HomeScreen() {
         minHeaderHeight={0}
         revealHeaderOnScroll={true}
       >
-        <Tabs.Tab name="siguiendo">
-          <SiguiendoFeed />
-        </Tabs.Tab>
         <Tabs.Tab name="paraTi">
           <ForYouFeed />
+        </Tabs.Tab>
+        <Tabs.Tab name="siguiendo">
+          <SiguiendoFeed />
         </Tabs.Tab>
       </Tabs.Container>
     </Screen>
