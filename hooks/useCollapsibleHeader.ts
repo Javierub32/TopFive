@@ -1,6 +1,6 @@
 import { useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, interpolate, Extrapolation } from 'react-native-reanimated';
 
-export const useCollapsibleHeader = (headerHeight: number = 80) => {
+export const useCollapsibleHeader = (headerHeight: number = 200) => {
     const translateY = useSharedValue(0); //posicion de la cabecera ahora mismo
     const lastScrollY = useSharedValue(0); //para saber si estabamos subiendo o bajando
 
@@ -25,6 +25,10 @@ export const useCollapsibleHeader = (headerHeight: number = 80) => {
         },
     }, [headerHeight]);
 
+    const resetLastScroll = (y: number) => {
+        lastScrollY.value = y;
+    };
+
     const headerStyle = useAnimatedStyle(() => {
         return {
             transform: [{ translateY: translateY.value }],
@@ -42,5 +46,11 @@ export const useCollapsibleHeader = (headerHeight: number = 80) => {
         return { opacity };
     });
 
-    return { scrollHandler, headerStyle, headerHeight, headerOpacityStyle };
+    const spacerStyle = useAnimatedStyle(() => {
+        return {
+            height: headerHeight + translateY.value, 
+        };
+    });
+
+    return { scrollHandler, headerStyle, headerHeight, headerOpacityStyle, translateY, resetLastScroll, spacerStyle };
 };
