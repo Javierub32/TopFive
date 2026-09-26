@@ -4,6 +4,7 @@ import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 import { supabase } from './supabase';
 import i18n from 'i18n';
+import { normalizeLocale } from 'lib/locale';
 
 // Comportamiento de la notificación cuando la app está en primer plano
 Notifications.setNotificationHandler({
@@ -49,7 +50,7 @@ export async function registerForPushNotificationsAsync(userId: string) {
         await Notifications.getExpoPushTokenAsync({ projectId })
       ).data;
       if (pushTokenString && userId) {
-        const currentLang = i18n.language || 'es';
+        const currentLang = normalizeLocale(i18n.language);
         
         await supabase
           .from('usuario')
