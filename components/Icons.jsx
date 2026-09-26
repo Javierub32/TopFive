@@ -285,5 +285,5 @@ export const TrashIcon = (props) => <RNAntDesign name="delete" size={16} color="
 export const ScalableReorderIcon = (props) => <ScalableMaterialCommunityIcons name="reorder-horizontal" size={24} color="black" {...props} />;
 export const ReorderIcon = (props) => <RNMaterialCommunityIcons name="reorder-horizontal" size={24} color="black" {...props} />;
 
-export const ScalableWatchLaterIcon = (props) => <ScalableMaterialCommunityIcons name="progress-clock" size={24} color="black" {...props}/>
-export const WatchLaterIcon = (props) => <RNMaterialCommunityIcons name="progress-clock" size={24} color="black" {...props}/>
+export const ScalableWatchLaterIcon = (props) => <ScalableMaterialCommunityIcons name="clock-plus-outline" size={24} color="black" {...props}/>
+export const WatchLaterIcon = (props) => <RNMaterialCommunityIcons name="clock-plus-outline" size={24} color="black" {...props}/>

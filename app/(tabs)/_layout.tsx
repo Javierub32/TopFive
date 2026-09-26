@@ -127,9 +127,9 @@ export default function TabLayout() {
                   },
                   ios: {
                     shadowColor: '#000',
-                    shadowOffset: { width: 0, height: -4 },
+                    shadowOffset: { width: 0, height: 0 },
                     shadowOpacity: 0.8,
-                    shadowRadius: 6,
+                    shadowRadius: 10,
                   },
                   android: {
                     elevation: 10,

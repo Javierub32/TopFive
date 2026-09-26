@@ -295,7 +295,8 @@
             "oneDayAgo": "Hace 1 día",
             "daysAgo": "Hace {{days}} días"
         },
-        "contentAlreadyInCollection": "Este recurso ya está en tu colección"
+        "contentAlreadyInCollection": "Este recurso ya está en tu colección. ¿Deseas eliminarlo?",
+        "successAddingAsPending": "Has añadido {{titulo}} como pendiente a tu colección."
     }, 
     "profile": {
         "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}",
