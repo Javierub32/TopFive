@@ -29,10 +29,14 @@ import { ResourceType } from 'hooks/useResource';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useAuth } from 'context/AuthContext';
 import { useTopFive } from '@/Profile/hooks/useTopFive';
+import { DiaryPreview } from '@/Profile/components/DiaryPreview';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
   const layout = useWindowDimensions();
+  const insets = useSafeAreaInsets();
+  const tabBarHeight = 52 + insets.bottom;
 
   const {
     userData,
@@ -106,7 +110,7 @@ export default function ProfileScreen() {
       <Animated.View
         entering={FadeIn.duration(300)}
         exiting={FadeOut.duration(300)}
-        style={{ flex: 1, paddingTop: 16 }}>
+        style={{ flex: 1, paddingTop: 10 }}>
         {statsLoading ? (
           <View className="flex-1 items-center justify-center py-1">
             <LoadingIndicator />
@@ -135,28 +139,7 @@ export default function ProfileScreen() {
               selectedYear={selectedYear}
               setSelectedYear={setSelectedYear}
             />
-
-            <TouchableOpacity
-              className="mx-1 mb-6 rounded-xl p-4"
-              style={{ backgroundColor: colors.accent, marginTop: -10 }}
-              activeOpacity={0.7}
-              onPress={() =>
-                router.push({
-                  pathname: '/group',
-                  params: {
-                    title: t('status.completed') as string,
-                    state: 'completados',
-                    category: selectedCategory,
-                    from: 'Profile',
-                  },
-                })
-              }>
-              <AppText
-                className="text-center font-semibold"
-                style={{ color: colors.primaryText, fontSize: 16 }}>
-                {t(categoryMap[selectedCategory] as any)}
-              </AppText>
-            </TouchableOpacity>
+			
           </>
         )}
       </Animated.View>
@@ -189,7 +172,7 @@ export default function ProfileScreen() {
         <ScrollView
           className="flex-1"
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 20 }}>
+          contentContainerStyle={{ paddingBottom: tabBarHeight + 20 }}>
           <ProfileData
             username={userData?.username || t('profile.user')}
             description={userData?.description}
@@ -231,6 +214,10 @@ export default function ProfileScreen() {
 
           {userData?.id && <TopFiveSelector userId={userData.id} />}
 
+		  {userData?.id && <DiaryPreview userId={userData.id}/>}
+          <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18, marginBottom: 20 }}>
+            {(t('profile.statistics'))}
+          </AppText>
           {/* TabView implementado para poder deslizar horizontalmente */}
           <TabView
             navigationState={{ index: safeIndex, routes }}

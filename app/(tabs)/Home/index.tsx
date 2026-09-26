@@ -14,6 +14,7 @@ import { AppText } from 'components/AppText';
 import Animated from 'react-native-reanimated';
 import { useCollapsibleHeader } from 'hooks/useCollapsibleHeader';
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
@@ -28,6 +29,8 @@ export default function HomeScreen() {
 
   const [headerHeight, setHeaderHeight] = useState(80);
   const { scrollHandler, headerStyle, headerOpacityStyle } = useCollapsibleHeader(headerHeight);
+
+  const insets = useSafeAreaInsets();
 
   useFocusEffect(
     useCallback(() => {
@@ -127,7 +130,7 @@ export default function HomeScreen() {
                   paddingVertical: 150,
                   paddingTop: headerHeight + 20,
                 }
-              : { paddingHorizontal: 16, paddingBottom: 16, paddingTop: headerHeight + 10 }
+              : { paddingHorizontal: 16, paddingBottom: 52 + insets.bottom, paddingTop: headerHeight + 10 }
           }
           onEndReached={fetchActivities}
           onEndReachedThreshold={0.5}
