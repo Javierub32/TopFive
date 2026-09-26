@@ -29,11 +29,8 @@ import { ResourceType } from 'hooks/useResource';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useAuth } from 'context/AuthContext';
 import { useTopFive } from '@/Profile/hooks/useTopFive';
-<<<<<<< HEAD
 import { DiaryPreview } from '@/Profile/components/DiaryPreview';
-=======
 import { useSafeAreaInsets } from "react-native-safe-area-context";
->>>>>>> origin/main
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
