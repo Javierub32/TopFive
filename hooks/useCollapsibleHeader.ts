@@ -48,7 +48,7 @@ export const useCollapsibleHeader = (headerHeight: number = 200) => {
 
     const spacerStyle = useAnimatedStyle(() => {
         return {
-            height: headerHeight + translateY.value, 
+            height: headerHeight + translateY.value,
         };
     });
 

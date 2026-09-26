@@ -1,4 +1,4 @@
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { ScalableMaterialCommunityIcons } from 'components/Icons';
@@ -16,12 +16,15 @@ import { AdBanner } from 'components/AdBanner';
 import { ResourceHeader } from '@/Details/components/ResourceHeader';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+import { CommentSection } from '@/Details/components/CommentSection';
+import { useRef } from 'react';
 
 export default function BookDetail() {
-  const { item, from } = useLocalSearchParams();
+  const { item, from, focus } = useLocalSearchParams();
   const { colors } = useTheme();
   const { user } = useAuth();
   const { t } = useTranslation();
+  const scrollRef = useRef<ScrollView>(null);
 
   const getPath = () => {
     if (from === 'profile') return '/(tabs)/Profile';
@@ -72,7 +75,10 @@ export default function BookDetail() {
   return (
     <Screen>
       <ThemedStatusBar />
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}>
+      <ScrollView ref={scrollRef} className="flex-1" showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         <ResourceHeader
           imageUrl={contenido.imagenUrl}
           resource={bookResource}
@@ -105,6 +111,13 @@ export default function BookDetail() {
           )}
 
           <TimeCard resource={bookResource} />
+
+          <CommentSection
+            resourceId={bookResource.id}
+            resourceType={bookResource.tiporecurso}
+            focusComment={focus === 'comment'}
+            scrollRef={scrollRef}
+          ></CommentSection>
         </View>
         {!isPending && (
           <View className="flex-1">
@@ -112,6 +125,7 @@ export default function BookDetail() {
           </View>
         )}
       </ScrollView>
+      </KeyboardAvoidingView>
       {isPending && <AdBanner />}
     </Screen>
   );

@@ -109,6 +109,9 @@ export const WrenchIcon = (props) => <RNMaterialCommunityIcons name="hammer-wren
 export const ScalableLockIcon = (props) => <ScalableEvilIcons name="lock" size={24} color="white" {...props} />;
 export const LockIcon = (props) => <RNEvilIcons name="lock" size={24} color="white" {...props} />;
 
+export const ScalableSendIcon = (props) => <ScalableIonicons name="send" size={24} color="white" {...props} />;
+export const SendIcon = (props) => <RNIonicons name="send" size={24} color="white" {...props} />;
+
 // Iconos con contexto (Theme)
 export const ScalableRatingIcon = (props) => {
   const { colors } = useTheme();
@@ -287,3 +290,6 @@ export const ReorderIcon = (props) => <RNMaterialCommunityIcons name="reorder-ho
 
 export const ScalableWatchLaterIcon = (props) => <ScalableMaterialCommunityIcons name="clock-plus-outline" size={24} color="black" {...props}/>
 export const WatchLaterIcon = (props) => <RNMaterialCommunityIcons name="clock-plus-outline" size={24} color="black" {...props}/>
+
+export const ScalableCommentIcon = (props) => <ScalableMaterialCommunityIcons name="comment-text-multiple-outline" size={24} color="black" {...props}/>
+export const CommentIcon = (props) => <RNMaterialCommunityIcons name="comment-text-multiple-outline" size={24} color="black" {...props}/>

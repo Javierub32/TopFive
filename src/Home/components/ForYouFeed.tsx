@@ -23,7 +23,7 @@ export default function ForYouFeed() {
       }
       renderItem={({ item, index }: { item: any; index: number }) => (
         <>
-          <ActivityItem item={item} onPress={() => handleItemPress(item)} />
+          <ActivityItem item={item} onPress={(params) => handleItemPress(item, params)} />
           {(index + 1) % 4 === 0 && <NativeAdCard />}
         </>
       )}

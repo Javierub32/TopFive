@@ -44,7 +44,7 @@ export const ReviewCard = ({ review, username, avatarUrl }: Props) => {
 
   return (
     <View
-      className="flex flex-1 justify-between gap-2 rounded-2xl border-l-4 p-4"
+      className="justify-between gap-2 rounded-2xl border-l-4 p-4"
       style={{ backgroundColor: colors.surfaceButton, borderColor: colors.borderButton }}>
       
       <View className="flex-row items-center justify-between">

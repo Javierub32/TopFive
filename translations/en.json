@@ -238,7 +238,12 @@
         "currentSeason": "Current season",
         "currentEpisode": "Current episode",
         "reviewPlaceholder": "Write your opinion...",
-        "views": "Views"
+        "views": "Views",
+        "comment":"comments",
+        "commentPlaceholder": "Write a comment...",
+        "noComments": "No comments yet",
+        "loadMoreComments": "Load more comments",
+        "commentsLoadingError": "Error loading comments"
        
     },
     "email": {

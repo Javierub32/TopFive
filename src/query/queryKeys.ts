@@ -52,5 +52,7 @@ export const queryKeys = {
   collectionGroup: (userId?: string | null, type?: ResourceType, state?: StateType) =>
     ['collection', 'group', userId, type, state] as const,
   frames: (userId?: string | null) => ['frames', userId] as const,
+  comments: (resourceId?: number | null, resourceType?: string | null) =>
+    ['comments', resourceType, resourceId] as const,
   diary: (userId?: string | null) => ['diary', userId] as const,
 };

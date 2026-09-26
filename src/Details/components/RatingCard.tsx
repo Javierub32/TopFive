@@ -24,7 +24,7 @@ export const RatingCard = ({ rating }: Props) => {
           {t('details.rating')}
         </AppText>
       </View>
-      <View className="flex-1 flex-row items-center justify-center">
+      <View className="flex-row items-center justify-center grow">
         {[1, 2, 3, 4, 5].map((star) => {
           let iconName = 'star';
           let isSolid = true;

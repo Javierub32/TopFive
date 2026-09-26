@@ -1,4 +1,4 @@
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { ScalableMaterialCommunityIcons } from 'components/Icons';
@@ -15,12 +15,15 @@ import { AdBanner } from 'components/AdBanner';
 import { ResourceHeader } from '@/Details/components/ResourceHeader';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+import { CommentSection } from '@/Details/components/CommentSection';
+import { useRef } from 'react';
 
 export default function GameDetail() {
-  const { item, from } = useLocalSearchParams();
+  const { item, from, focus } = useLocalSearchParams();
   const { colors } = useTheme();
   const { user } = useAuth();
   const { t } = useTranslation();
+  const scrollRef = useRef<ScrollView>(null);
 
   const getPath = () => {
     if (from === 'profile') return '/(tabs)/Profile';
@@ -70,7 +73,10 @@ export default function GameDetail() {
     <Screen>
       <ThemedStatusBar />
 
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}>
+      <ScrollView ref={scrollRef} className="flex-1" showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         <ResourceHeader
           imageUrl={contenido.imagenUrl}
           type="videojuego"
@@ -100,6 +106,13 @@ export default function GameDetail() {
               />
             </View>
           )}
+
+          <CommentSection
+            resourceId={gameResource.id}
+            resourceType={gameResource.tiporecurso}
+            focusComment={focus === 'comment'}
+            scrollRef={scrollRef}
+          ></CommentSection>
         </View>
         {!isPending && (
           <View className="flex-1">
@@ -107,6 +120,7 @@ export default function GameDetail() {
           </View>
         )}
       </ScrollView>
+      </KeyboardAvoidingView>
       {isPending && <AdBanner />}
     </Screen>
   );

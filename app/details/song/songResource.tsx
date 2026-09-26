@@ -1,4 +1,4 @@
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
@@ -15,12 +15,15 @@ import { ResourceHeader } from '@/Details/components/ResourceHeader';
 import { useTheme } from 'context/ThemeContext';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+import { CommentSection } from '@/Details/components/CommentSection';
+import { useRef } from 'react';
 
 export default function SongDetail() {
-  const { item, from } = useLocalSearchParams();
+  const { item, from, focus } = useLocalSearchParams();
   const { user } = useAuth();
   const { colors } = useTheme();
   const { t } = useTranslation();
+  const scrollRef = useRef<ScrollView>(null);
 
   const getPath = () => {
     if (from === 'profile') return '/(tabs)/Profile';
@@ -68,7 +71,10 @@ export default function SongDetail() {
   return (
     <Screen>
       <ThemedStatusBar />
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}>
+      <ScrollView ref={scrollRef} className="flex-1" showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         <ResourceHeader
           imageUrl={contenido.imagenUrl}
           resource={songResource}
@@ -89,6 +95,13 @@ export default function SongDetail() {
               <ReviewCard review={songResource.reseña}  username={displayUsername} avatarUrl={displayAvatarUrl}/>
             </View>
           )}
+
+          <CommentSection
+            resourceId={songResource.id}
+            resourceType={songResource.tiporecurso}
+            focusComment={focus === 'comment'}
+            scrollRef={scrollRef}
+          ></CommentSection>
         </View>
         {!isPending && (
           <View className="flex-1">
@@ -96,6 +109,7 @@ export default function SongDetail() {
           </View>
         )}
       </ScrollView>
+      </KeyboardAvoidingView>
       {isPending && <AdBanner />}
     </Screen>
   );

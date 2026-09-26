@@ -237,7 +237,12 @@
         "currentSeason": "Temporada Actual",
         "currentEpisode": "Episodio Actual",
         "reviewPlaceholder": "Escribe tu opinión...",
-        "views": "Vistas"
+        "views": "Vistas",
+        "comment":"comentarios",
+        "commentPlaceholder": "Añade un comentario...",
+        "noComments": "No hay comentarios todavía",
+        "loadMoreComments": "Ver más comentarios",
+        "commentsLoadingError": "Error al cargar los comentarios"
        
     },
     "email": {
