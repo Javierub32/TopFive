@@ -35,7 +35,7 @@ export const CommentSection = ({ resourceId, resourceType, focusComment = false,
     return (
         <View className="mt-8 gap-1">
             <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
-                    {commentCount}{' '}{t('forms.comment')}
+                    {commentCount}{' '}{t('login.forms.comment')}
             </AppText>
                 <CommentSetter
                     comment={comment}
@@ -54,11 +54,11 @@ export const CommentSection = ({ resourceId, resourceType, focusComment = false,
                     <ActivityIndicator color={colors.primary} className="py-4" />
                 ) : isError ? (
                     <AppText className="py-4 text-center" style={{ color: colors.error, fontSize: 14 }}>
-                        {t('forms.commentsLoadingError')}
+                        {t('login.forms.commentsLoadingError')}
                     </AppText>
                 ) : comments.length === 0 ? (
                     <AppText className="py-4 text-center" style={{ color: colors.secondaryText, fontSize: 14 }}>
-                        {t('forms.noComments')}
+                        {t('login.forms.noComments')}
                     </AppText>
                 ) : (
                     comments.map((item) => <CommentItem key={item.id} comment={item} />)
@@ -74,7 +74,7 @@ export const CommentSection = ({ resourceId, resourceType, focusComment = false,
                             <ActivityIndicator color={colors.primary} />
                         ) : (
                             <AppText className="font-semibold" style={{ color: colors.primary, fontSize: 14 }}>
-                                {t('forms.loadMoreComments')}
+                                {t('login.forms.loadMoreComments')}
                             </AppText>
                         )}
                     </TouchableOpacity>

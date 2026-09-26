@@ -372,7 +372,10 @@
       "oneDayAgo": "One day ago",
       "daysAgo": "{{days}} days ago"
     },
-    "contentAlreadyInCollection": "This content is already in your collection"
+    "contentAlreadyInCollection": "This content is already in your collection. Do you want to delete it?",
+    "siguiendo": "Following",
+    "paraTi": "For you",
+    "successAddingAsPending": "You have added {{titulo}} as pending to your collection."
   },
   "profile": {
     "shareMessage": "Check out my profile on TopFive!\n{{url}}",

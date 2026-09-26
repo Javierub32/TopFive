@@ -1,83 +1,87 @@
 import { useMemo, useState } from 'react';
-import {
-  useInfiniteQuery,
-  useQueryClient,
-  type InfiniteData,
-  type QueryFunctionContext,
-} from '@tanstack/react-query';
-import { Activity, activityService } from '../services/activityServices';
+import { useInfiniteQuery, useQueryClient, InfiniteData, QueryFunctionContext } from '@tanstack/react-query';
+import { forYouService } from '../services/forYouService';
+import { Activity } from '../services/activityServices';
 import { useAuth } from 'context/AuthContext';
 import { router } from 'expo-router';
 import { ResourceType, useResource } from 'hooks/useResource';
 
-export type { Activity } from '../services/activityServices';
+const BATCH_SIZE = 9;
 
-interface ActivityPage {
+interface ForYouPage {
   items: Activity[];
   nextPage?: number;
 }
 
-type ActivityFeedQueryKey = ['activity-feed', string | undefined];
+type ForYouFeedQueryKey = ['forYouFeed', string | undefined, number];
 
-export const useActivity = () => {
+export const useForYou = () => {
   const { user } = useAuth();
   const { fetchResources } = useResource();
   const queryClient = useQueryClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const pageSize = 5;
-  const queryKey: ActivityFeedQueryKey = ['activity-feed', user?.id];
 
-  const fetchActivityPage = async (pageParam: number) => {
-    const from = pageParam * pageSize;
-    const to = from + pageSize - 1;
-    const activities = await activityService.getUltimosRecursosActivos(from, to, user?.id || '');
+  const [seed, setSeed] = useState<number>(() => Math.random());
+
+  const queryKey: ForYouFeedQueryKey = ['forYouFeed', user?.id, seed];
+
+  const fetchForYouPage = async (pageParam: number) => {
+    const offset = pageParam * BATCH_SIZE;
+
+    const activities = await forYouService.fetchRandomactivities(
+      user?.id || '',
+      seed,
+      BATCH_SIZE,
+      offset
+    );
 
     return {
       items: activities,
-      nextPage: activities.length === pageSize ? pageParam + 1 : undefined,
-    } satisfies ActivityPage;
+      nextPage: activities.length === BATCH_SIZE ? pageParam + 1 : undefined,
+    } satisfies ForYouPage;
   };
 
   const { data, isLoading, isFetching, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useInfiniteQuery<
-      ActivityPage,
+      ForYouPage,
       Error,
-      InfiniteData<ActivityPage, number>,
-      ActivityFeedQueryKey,
+      InfiniteData<ForYouPage, number>,
+      ForYouFeedQueryKey,
       number
     >({
       queryKey,
-      queryFn: async ({ pageParam = 0 }: QueryFunctionContext<ActivityFeedQueryKey, number>) => {
-        return fetchActivityPage(pageParam);
+      queryFn: async ({ pageParam = 0 }: QueryFunctionContext<ForYouFeedQueryKey, number>) => {
+        return fetchForYouPage(pageParam);
       },
       enabled: !!user?.id,
       initialPageParam: 0,
-      getNextPageParam: (lastPage: ActivityPage) => lastPage.nextPage,
-      staleTime: 1000 * 60 * 2,
+      getNextPageParam: (lastPage: ForYouPage) => lastPage.nextPage,
+      staleTime: 1000 * 60 * 5,
       gcTime: 1000 * 60 * 30,
     });
 
   const activities = useMemo<Activity[]>(
-    () => data?.pages.flatMap((page: ActivityPage) => page.items) ?? [],
+    () => data?.pages.flatMap((page: ForYouPage) => page.items) ?? [],
     [data]
   );
 
-  const fetchActivities = async () => {
+  const handleLoadMore = async () => {
     if (hasNextPage && !isFetchingNextPage && !isFetching) {
       await fetchNextPage();
     }
   };
 
-  const refreshActivities = async () => {
+  const refreshForYou = async () => {
     if (!user?.id) return;
 
     setIsRefreshing(true);
 
     try {
+      setSeed(Math.random()); // Cuando refrescamos, generamos una nueva semilla aleatoria
 
-      const firstPage = await fetchActivityPage(0);
+      const firstPage = await fetchForYouPage(0);
 
-      queryClient.setQueryData<InfiniteData<ActivityPage, number>>(queryKey, {
+      queryClient.setQueryData<InfiniteData<ForYouPage, number>>(queryKey, {
         pages: [firstPage],
         pageParams: [0],
       });
@@ -106,18 +110,17 @@ export const useActivity = () => {
         targetUserId: activity.usuarioId,
       });
 
-        const resourceData = item?.data ? item.data[0] : null;
+      const resourceData = item?.data ? item.data[0] : null;
 
-      // para tener el apiId correcto ya que para el resource attributes no lo puedo coger de otra manera
-        if (resourceData && activity.idapi != null) {
-          resourceData.contenido = {
-            ...resourceData.contenido,
-            apiId: activity.idapi as any,
-          };
+      if (resourceData && activity.idapi != null) {
+        resourceData.contenido = {
+          ...resourceData.contenido,
+          apiId: activity.idapi as any,
+        };
 
-          (resourceData as any).username = activity.username;
-          (resourceData as any).avatar_url = activity.avatar_url;
-        }
+        (resourceData as any).username = activity.username;
+        (resourceData as any).avatar_url = activity.avatar_url;
+      }
 
       router.push({
         pathname: `/details/${type}/${type}Resource`,
@@ -132,8 +135,8 @@ export const useActivity = () => {
     activities,
     refreshing: isRefreshing || (isFetching && !isFetchingNextPage),
     loading: isLoading || isFetchingNextPage,
-    fetchActivities,
-    refreshActivities,
+    handleLoadMore,
+    refreshForYou,
     handleItemPress,
   };
 };
