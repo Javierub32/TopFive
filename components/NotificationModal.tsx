@@ -3,7 +3,18 @@ import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native
 import { useTheme } from 'context/ThemeContext';
 import { ScalableMaterialCommunityIcons } from 'components/Icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Animated, { FadeIn, FadeOut, SlideInDown, SlideOutDown } from 'react-native-reanimated';
+import Animated, {
+  FadeIn,
+  FadeOut,
+  SlideInDown,
+  SlideOutDown,
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+  runOnJS,
+} from 'react-native-reanimated';
+import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import {AppText} from 'components/AppText';
 interface NotificationModalProps {
   visible: boolean;
@@ -42,6 +53,9 @@ export const NotificationModal = ({
   // Determinar el color del botón resaltado basado en si es una eliminación
   const highlightColor = isDelete ? colors.error : colors.primary;
 
+  // valor para la altura pa deslizar el modal
+  const translateY = useSharedValue(0);
+
   // Auto-cerrar el modal pequeño después de 3 segundos
   useEffect(() => {
     if (visible && !isChoice) {
@@ -51,6 +65,35 @@ export const NotificationModal = ({
       return () => clearTimeout(timer);
     }
   }, [visible, isChoice, onClose]);
+
+  // Gesto de deslizar hacia abajo el modal
+  const panGesture = Gesture.Pan()
+    .onUpdate((event) => {
+      // Solo permitir arrastrar hacia abajo
+      if (event.translationY > 0) {
+        translateY.value = event.translationY;
+      }
+    })
+    .onEnd((event) => {
+      // Si se desliza más de 60px o se hace un deslizo rápido hacia abajo
+      if (event.translationY > 60 || event.velocityY > 500) {
+        translateY.value = withTiming(200, { duration: 200 }, () => {
+          if (onClose) {
+            runOnJS(onClose)();
+          }
+          setTimeout(() => {
+            translateY.value = 0;
+          }, 350);
+        });
+      } else {
+        // Regresa a la posición original con efecto muelle
+        translateY.value = withSpring(0, { damping: 15 });
+      }
+    });
+
+  const animatedSwipeStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: translateY.value }],
+  }));
 
   if (!visible) return null;
 
@@ -134,89 +177,95 @@ export const NotificationModal = ({
         exiting={SlideOutDown.duration(300)}
         style={[StyleSheet.absoluteFill, { zIndex: 1000, justifyContent: 'flex-end' }]}
         pointerEvents="box-none">
-        <View
-          className="mx-4 rounded-2xl p-4 shadow-lg"
-          style={{
-            backgroundColor: colors.surfaceButton,
-            marginBottom: Math.max(insets.bottom + 16, 60),
-            shadowColor: colors.backgroundColor,
-            shadowOpacity: 0.5,
-            shadowRadius: 10,
-            shadowOffset: {
-              width: 0,
-              height: 0,
-            },
-            elevation: 100,
-            borderTopWidth: Platform.OS === 'ios' ? 0 : 3.5,
-            borderLeftWidth: Platform.OS === 'ios' ? 0 : 0.5,
-            borderRightWidth: Platform.OS === 'ios' ? 0 : 0.5,
-            borderColor: `${colors.secondaryText}1A`,
-          }}
-          pointerEvents="auto">
-          <View className="flex-row items-start justify-between">
-            <View className="flex-1 pr-2">
-              {/* Título */}
-              <AppText
-                className="mb-2 text-lg font-bold"
-                style={{
-                  color: info ? colors.primaryText : success ? colors.success : colors.error,
-                  fontSize: 16,
-                }}>
-                {title}
-              </AppText>
+        <GestureDetector gesture={panGesture}>
+          <Animated.View
+            className="mx-4 rounded-2xl p-4 shadow-lg"
+            style={[{
+              backgroundColor: colors.surfaceButton,
+              marginBottom: Platform.OS === 'ios' ? Math.max(insets.bottom + 57, 102) : Math.max(insets.bottom + 16, 60),
+              shadowColor: colors.backgroundColor,
+              shadowOpacity: 0.5,
+              shadowRadius: 10,
+              shadowOffset: {
+                width: 0,
+                height: 0,
+              },
+              elevation: 100,
+              borderTopWidth: Platform.OS === 'ios' ? 0 : 3.5,
+              borderLeftWidth: Platform.OS === 'ios' ? 0 : 0.5,
+              borderRightWidth: Platform.OS === 'ios' ? 0 : 0.5,
+              borderColor: `${colors.secondaryText}1A`,
+            }, animatedSwipeStyle]
+            }
+            pointerEvents="auto">
 
-              {/* Descripción */}
-              <AppText className="leading-5" style={{ color: colors.secondaryText, fontSize: 14 }}>
-                {description}
-              </AppText>
+            
 
-              {/* Botón de cerrar */}
-              {(leftButtonText || rightButtonText) && (
-                <View className="mt-4 flex-row gap-2">
-                  {leftButtonText && (
-                    <TouchableOpacity
-                      className="flex-1 rounded-lg py-2"
-                      style={{
-                        backgroundColor: !highlightRight ? highlightColor : 'transparent',
-                        borderWidth: !highlightRight ? 0 : 1.5,
-                        borderColor: !highlightRight ? 'transparent' : colors.borderButton,
-                      }}
-                      onPress={onLeftPress}
-                      activeOpacity={0.7}>
-                      <AppText
-                        className="text-center font-semibold"
-                        style={{ color: !highlightRight ? colors.background : colors.primaryText, fontSize: 14 }}>
-                        {leftButtonText}
-                      </AppText>
-                    </TouchableOpacity>
-                  )}
+            <View className="flex-row items-start justify-between">
+              <View className="flex-1 pr-2">
+                {/* Título */}
+                <AppText
+                  className="mb-2 text-lg font-bold"
+                  style={{
+                    color: info ? colors.primaryText : success ? colors.success : colors.error,
+                    fontSize: 16,
+                  }}>
+                  {title}
+                </AppText>
 
-                  {rightButtonText && (
-                    <TouchableOpacity
-                      className="flex-1 rounded-lg py-2"
-                      style={{
-                        backgroundColor: highlightRight ? highlightColor : 'transparent',
-                        borderWidth: highlightRight ? 0 : 1.5,
-                        borderColor: highlightRight ? 'transparent' : colors.borderButton,
-                      }}
-                      onPress={onRightPress}
-                      activeOpacity={0.7}>
-                      <AppText
-                        className="text-center font-semibold"
-                        style={{ color: highlightRight ? colors.background : colors.primaryText, fontSize: 14 }}>
-                        {rightButtonText}
-                      </AppText>
-                    </TouchableOpacity>
-                  )}
-                </View>
-              )}
+                {/* Descripción */}
+                <AppText className="leading-5" style={{ color: colors.secondaryText, fontSize: 14 }}>
+                  {description}
+                </AppText>
+
+                {/* Botón de cerrar */}
+                {(leftButtonText || rightButtonText) && (
+                  <View className="mt-4 flex-row gap-2">
+                    {leftButtonText && (
+                      <TouchableOpacity
+                        className="flex-1 rounded-lg py-2"
+                        style={{
+                          backgroundColor: !highlightRight ? highlightColor : 'transparent',
+                          borderWidth: !highlightRight ? 0 : 1.5,
+                          borderColor: !highlightRight ? 'transparent' : colors.borderButton,
+                        }}
+                        onPress={onLeftPress}
+                        activeOpacity={0.7}>
+                        <AppText
+                          className="text-center font-semibold"
+                          style={{ color: !highlightRight ? colors.background : colors.primaryText, fontSize: 14 }}>
+                          {leftButtonText}
+                        </AppText>
+                      </TouchableOpacity>
+                    )}
+
+                    {rightButtonText && (
+                      <TouchableOpacity
+                        className="flex-1 rounded-lg py-2"
+                        style={{
+                          backgroundColor: highlightRight ? highlightColor : 'transparent',
+                          borderWidth: highlightRight ? 0 : 1.5,
+                          borderColor: highlightRight ? 'transparent' : colors.borderButton,
+                        }}
+                        onPress={onRightPress}
+                        activeOpacity={0.7}>
+                        <AppText
+                          className="text-center font-semibold"
+                          style={{ color: highlightRight ? colors.background : colors.primaryText, fontSize: 14 }}>
+                          {rightButtonText}
+                        </AppText>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                )}
+              </View>
+
+              <TouchableOpacity onPress={onClose} className="p-1" activeOpacity={0.7}>
+                <ScalableMaterialCommunityIcons name="close" size={24} color={colors.secondaryText} />
+              </TouchableOpacity>
             </View>
-
-            <TouchableOpacity onPress={onClose} className="p-1" activeOpacity={0.7}>
-              <ScalableMaterialCommunityIcons name="close" size={24} color={colors.secondaryText} />
-            </TouchableOpacity>
-          </View>
-        </View>
+          </Animated.View>
+        </GestureDetector>
       </Animated.View>
     );
   }

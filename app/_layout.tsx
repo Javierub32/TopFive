@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/query/queryClient';
 import { useAppVersion } from '@/AppVersion/hooks/useAppVersion';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -253,20 +254,22 @@ function InitialLayout() {
 
 export default function RootLayout() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <FontSizeProvider>
-          <ThemeProvider>
-            <CollectionProvider>
-              <NotificationProvider>
-                <SearchProvider>
-                  <InitialLayout />
-                </SearchProvider>
-              </NotificationProvider>
-            </CollectionProvider>
-          </ThemeProvider>
-        </FontSizeProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <FontSizeProvider>
+            <ThemeProvider>
+              <CollectionProvider>
+                <NotificationProvider>
+                  <SearchProvider>
+                    <InitialLayout />
+                  </SearchProvider>
+                </NotificationProvider>
+              </CollectionProvider>
+            </ThemeProvider>
+          </FontSizeProvider>
+        </AuthProvider>
+      </QueryClientProvider>
+    </GestureHandlerRootView>
   );
 }
