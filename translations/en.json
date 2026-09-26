@@ -367,7 +367,8 @@
       "today": "Today",
       "oneDayAgo": "One day ago",
       "daysAgo": "{{days}} days ago"
-    }
+    },
+    "contentAlreadyInCollection": "This content is already in your collection"
   },
   "profile": {
     "shareMessage": "Check out my profile on TopFive!\n{{url}}",
@@ -577,13 +578,15 @@
       "updatingErrorDescription": "There was a problem updating the series. Please try again.",
       "alreadyInCollection": "This series is already in your collection.",
       "savingErrorDescription": "There was a problem saving the series. Please try again.",
-      "serieDetails": "Series details"
+      "serieDetails": "Series details",
+      "theSerie": "the series"
     },
     "albums": {
       "updatingErrorDescription": "There was a problem updating the album. Please try again.",
       "alreadyInCollection": "This album is already in your collection.",
       "savingErrorDescription": "There was a problem saving the album. Please try again.",
-      "albumDetails": "Album details"
+      "albumDetails": "Album details",
+      "theAlbum": "the album"
     },
     "addToList": "Add to {{listName}}",
     "list": "list",
