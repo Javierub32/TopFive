@@ -1,477 +1,173 @@
 {
-    "common":{
-        "appName": "TopFive",
-        "save": "Save",
-        "cancel": "Cancel",
-        "loading": "Loading...",
-        "loadingCreating": "Creating...",
-        "saving": "Saving...",
-        "saveChanges": "Save changes",
-        "warning": "Warning",
-        "attention": "Attention",
-        "error": "Error",
-        "success": "Success!",
-        "send": "Send",
-        "accept": "Accept",
-        "noTitle": "No title",
-        "noDescription": "No description",
-        "unknown": "Unknown",
-        "content": "Content",
-        "all": "All",
-        "confirm": "Confirm",
-        "delete": "Delete",
-        "readMore": "Read more",
-        "readLess": "Read less",
-        "icon": "Icon",
-        "colour": "Color",
-        "obtain": "Obtain",
-        "update": "Update",
-        "edit": "Edit"
+  "common": {
+    "appName": "TopFive",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "loadingCreating": "Creating...",
+    "saving": "Saving...",
+    "saveChanges": "Save changes",
+    "warning": "Warning",
+    "attention": "Attention",
+    "error": "Error",
+    "success": "Success!",
+    "send": "Send",
+    "accept": "Accept",
+    "noTitle": "No title",
+    "noDescription": "No description",
+    "unknown": "Unknown",
+    "content": "Content",
+    "all": "All",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "readMore": "Read more",
+    "readLess": "Read less",
+    "icon": "Icon",
+    "colour": "Color",
+    "obtain": "Obtain",
+    "update": "Update",
+    "edit": "Edit"
+  },
+  "status": {
+    "title": "Status",
+    "pending": "Pending",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "reading": "Reading",
+    "watching": "Watching",
+    "listening": "Listening",
+    "playing": "Playing"
+  },
+  "categories": {
+    "books": "Books",
+    "series": "Series",
+    "films": "Movies",
+    "videogames": "Video Games",
+    "albums": "Albums"
+  },
+  "category": {
+    "book": "Book",
+    "serie": "Series",
+    "film": "Movie",
+    "videogame": "Video Game",
+    "album": "Album"
+  },
+  "languages": {
+    "es": "Spanish",
+    "en": "English"
+  },
+  "fontsizes": {
+    "small": "Small",
+    "medium": "Medium",
+    "large": "Large"
+  },
+  "themes": {
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System"
+  },
+  "tabs": {
+    "home": "Home",
+    "users": "Users",
+    "lists": "Lists",
+    "search": "Search",
+    "library": "My Library"
+  },
+  "settings": {
+    "title": "Settings",
+    "personalization": {
+      "title": "Customize",
+      "editProfile": {
+        "title": "Edit profile",
+        "username": "Username",
+        "description": "Description"
+      },
+      "changeTheme": {
+        "title": "Change theme",
+        "darkMode": "Dark",
+        "lightMode": "Light",
+        "systemMode": "System"
+      },
+      "changeLanguage": "Change language",
+      "changeFontSize": "Change font size",
+      "editPhoto": "Edit photo and avatar"
     },
-    "status": {
-        "title": "Status",
-        "pending": "Pending",
-        "inProgress": "In Progress",
-        "completed": "Completed",
-        "reading": "Reading",
-        "watching": "Watching",
-        "listening": "Listening",
-        "playing": "Playing"
-    },
-    "categories": {
-        "books": "Books",
-        "series": "Series",
-        "films": "Movies",
-        "videogames": "Video Games",
-        "albums": "Albums"
-    },
-    "category": {
-        "book": "Book",
-        "serie": "Series",
-        "film": "Movie",
-        "videogame": "Video Game",
-        "album": "Album"
-    },
-    "languages":{
-        "es": "Spanish",
-        "en": "English"
-    },
-    "fontsizes":{
-        "small": "Small",
-        "medium": "Medium",
-        "large": "Large"
-    },
-    "themes":{
-        "dark": "Dark",
-        "light": "Light",
-        "system": "System"
-    },
-    "tabs":{
-        "home": "Home",
-        "users": "Users",
-        "lists": "Lists",
-        "search": "Search",
-        "library": "My Library"
-    },
-    "settings":{
-        "title": "Settings",
-        "personalization": {
-            "title":"Customize",
-            "editProfile": {
-                "title": "Edit profile",
-                "username": "Username",
-                "description": "Description"
-            },
-            "changeTheme": {
-                "title": "Change theme",
-                "darkMode": "Dark",
-                "lightMode": "Light",
-                "systemMode": "System"
-            },
-            "changeLanguage": "Change language",
-            "changeFontSize": "Change font size",
-            "editPhoto" : "Edit photo and avatar"
+    "account": {
+      "title": "Account",
+      "share": {
+        "title": "Share profile",
+        "shareMessage": "Check out my profile on TopFive!\n{{url}}"
+      },
+      "logOut": {
+        "title": "Log out",
+        "alertTitle": "Confirm logout",
+        "alertDescription": "Are you sure you want to log out?",
+        "alertConfirmation": "Log out"
+      },
+      "deleteAccount": {
+        "title": "Delete account",
+        "firstAlert": {
+          "alertTitle": "Confirm deletion",
+          "alertDescription": "Are you sure you want to delete your account? This action cannot be undone.",
+          "alertConfirmation": "Delete"
         },
-        "account": {
-            "title": "Account",
-            "share": {
-                "title": "Share profile",
-                "shareMessage": "Check out my profile on TopFive!\n{{url}}"
-            },
-            "logOut": {
-                "title": "Log out",
-                "alertTitle": "Confirm logout",
-                "alertDescription": "Are you sure you want to log out?",
-                "alertConfirmation": "Log out"
-            },
-            "deleteAccount": {
-                "title": "Delete account",
-                "firstAlert":{
-                    "alertTitle": "Confirm deletion",
-                    "alertDescription": "Are you sure you want to delete your account? This action cannot be undone.",
-                    "alertConfirmation": "Delete"
-                },
-                "secondAlert":{
-                    "alertTitle": "Last confirmation",
-                    "alertDescription": "This is your last chance to cancel. Do you really want to delete your account?",
-                    "alertConfirmation": "Delete"
-                } 
-            }
-        }, 
-        "legal": {
-            "title": "Support and legal",
-            "sendFeed": "Send feedback",
-            "aboutUs": {
-                "title": "About us",
-                "creditsTitle": "Credits and Licenses",
-                "creditsDescription": "This application uses data from the following sources",
-                "filmsCard":{
-                    "description": "This product uses the TMDB API but is not endorsed or certified by TMDB.",
-                    "link": "Visit TMDB"
-                },
-                "seriesCard": {
-                    "description": "Data provided by TVMaze. Licensed under CC BY-SA 4.0.",
-                    "link": "Visit TVMaze"
-                },
-                "videogamesCard": {
-                    "description": "Video game information provided by IGDB.",
-                    "link": "Visit IGDB"
-                }, 
-                "albumsCard":{
-                    "description": "Data provided by Discogs. This product uses the Discogs API but is not endorsed or certified by Discogs.",
-                    "link": "Visit Discogs"
-                },
-                "booksCard":{
-                    "description": "Data provided by OpenLibrary.",
-                    "link": "Visit OpenLibrary"
-                }
-            },
-            "privacy": "Privacy policy",
-            "adsPriv": "Advertisement privacy"
-        },
-        "errors": {
-            "privacyError":{
-                "description": "The privacy form is not available in your region."
-            }
+        "secondAlert": {
+          "alertTitle": "Last confirmation",
+          "alertDescription": "This is your last chance to cancel. Do you really want to delete your account?",
+          "alertConfirmation": "Delete"
         }
-
+      }
     },
-    "login":{
-        "loginSentences": {
-            "1": "  There's a seat waiting for you.",
-            "2": "  Your entertainment inventory, in one place.",
-            "3": "  Mark your page. Save your world.",
-            "4": "  Your life, your ranking, your TopFive.",
-            "5": "  Your definitive mixtape is here."
-        },
-        "loginNotification": {
-            "title": "Welcome!",
-            "description": "You have been logged in successfully."
-        },
-        "email": {
-            "title": "Email",
-            "placeholder": "you@email.com"
-        },
-        "password": "Password",
-        "forgotPassword": {
-            "title": "Forgot your password?",
-            "subtitle": "Enter your email to reset your password.",
-            "emailNotRegistered": "The email is not registered. Create an account or verify the email entered.",
-            "emailSent": "You will receive an email with instructions to reset your password.",
-            "errorEmailSent": "Could not send the reset email. Please try again."
-        },
-        "loginButton": "Sign in",
-        "loginWithGoogle": "Sign in with Google",
-        "loginWithApple": "Sign in with Apple",
-        "noAccount": "Don't have an account?",
-        "signUpButton": "Sign up here",
-        "signUp": {
-            "subtitle": "Create your account",
-            "username": "Username",
-            "usernamePlaceholder": "Your username",
-            "email": "Email",
-            "emailPlaceholder": "you@email.com",
-            "password": "Password",
-            "confirmPassword": "Confirm Password",
-            "signUpButton": "Sign up",
-            "alreadyHaveAccount": "Already have an account?",
-            "loginButton": "Back to login",
-            "success": {
-                "title": "Account created",
-                "description": "Your account has been created successfully. \n Check your email and confirm your account."
-            },
-            "errors": {
-                "passwordMismatch": "The passwords do not match. Please try again.",
-                "general": "There was an error creating your account."
-            }
-        },
-        "resetPassword": {
-            "error": {
-                "denied": "Permission denied",
-                "errorLink": "The link has expired or is incomplete. Please, request a new one.",
-                "passwordMismatch": "The passwords do not match. Please try again.",
-                "general": "The password could not be updated. The link might have expired.",
-                "differentPassword": "The new password must be different from the previous one.",
-                "rateLimit": "You have exceeded the limit for password change. Please, wait a couple of minutes.",
-                "default": "Error changing the password."
-            },
-            "successDescription": "The password was changed successfully. You can sign in now.",
-            "newPassword": "New password",
-            "confirmPassword": "Confirm password",
-            "changePassword": "Change password"
-        }
-    },
-    "search": {
-        "usersTitle": "Users",
-        "placeholder": "Search {{category}}...",
-        "noResults": "No results.",
-        "description": "Perform a search to see results for {{category}}.",
-        "userSearchBarPlaceholder": "Search for a user...",
-        "usersScreenTitle": "Users",
-        "usersScreenDescription": "Perform a search to find users."
-    },
-    "collection": {
-        "saveIn": "Save in...",
-        "noLists": "You don't have any {{category}} lists created.",
-        "orderBy": "Order by",
-        "recentsFirst": "Most recent",
-        "oldestFirst": "Oldest first",
-        "status": "Status",
-        "onlyFavorites": "Only favorites",
-        "noContent": "No content available",
-        "searchInPlaceholder": "Search in {{category}}...",
-        "noContentDescription": "There are no {{category}} {{status}}"
-    },
-    "list": {
-        "deleteListNotification": {
-            "title": "Delete list",
-            "description": "Are you sure you want to remove this list from your collection?",
-            "confirmationTitle": "List deleted",
-            "confirmationDescription": "The list {{listName}} has been deleted successfully."
-        },
-        "elements": "elements", 
-        "editList": "Edit list",
-        "addToList": "Add to list",
-        "orderList": "Order list",
-        "deleteList": "Delete list",
-        "noLists": "You don't have any {{category}} lists.",
-        "listCreatedNotification": {
-            "title": "List created",
-            "description": "The list {{listName}} has been created successfully."
-        },
-        "couldntCreateError": "Could not create the list. Please try again.",
-        "deleteItemFromListNotification": {
-            "title": "Delete from list",
-            "description": "Are you sure you want to remove {{titulo}} from the list?",
-            "multipleDescription": "Are you sure you want to remove these {{count}} items from the list?",
-            "confirmationDescription": "The item has been deleted from the list.",
-            "multipleConfirmationDescription": "The items have been deleted from the list."
-        },
-        "addItemToListNotification": {
-            "title": "Add to list",
-            "description": "Do you want to add this item to the list?",
-            "multipleDescription": "Do you want to add these {{count}} items to the list?",
-            "confirmationDescription": "The item has been added successfully to the list.",
-            "multipleConfirmationDescription": "The items have been added successfully to the list."
-        },
-        "createNewList": "+ Create new list",
-        "onThisList": "on this list",
-        "reorderList": {
-            "Title": "Order ",
-            "Description": "Hold and drag to change the order of the items in your list",
-            "reorderNotification": {
-                "success": "The order of the list has been updated successfully.",
-                "error": "The order of the list could not be updated."
-            }
-        }
-    },
-    "home": {
-        "pressAgainToExit": "Press again to exit.",
-        "noCompletedReviewsFromFriends": "You don't have any friends with reviews.",
-        "addFriendsToSeeReviews": "Add friends to read their reviews.",
-        "searchFriends": "Search for friends",
-        "renderResource": {
-            "today": "Today",
-            "oneDayAgo": "One day ago",
-            "daysAgo": "{{days}} days ago"
-        },
-        "contentAlreadyInCollection": "This content is already in your collection. Do you want to delete it?",
-        "successAddingAsPending": "You have added {{titulo}} as pending to your collection."
-    }, 
-    "profile": {
-        "shareMessage": "Check out my profile on TopFive!\n{{url}}",
-        "shareUserMessage": "Check out this profile on TopFive!\n{{url}}",
-        "shareTopFive": "Share my TopFive",
-        "user": "User",
-        "reviews": "Reviews",
-        "selectYear": "Select year",
-        "monthsAbbreviation": {
-            "january": "Jan",
-            "february": "Feb",
-            "march": "Mar",
-            "april": "Apr",
-            "may": "May",
-            "june": "Jun",
-            "july": "Jul",
-            "august": "Aug",
-            "september": "Sep",
-            "october": "Oct",
-            "november": "Nov",
-            "december": "Dec"
-        },
-        "activity" : "Activity",
-        "total": "Total",
-        "average": "Average",
-        "monthly": "Monthly",
-        "myTopFive": "My TopFive",
-        "categoriesConsumed": {
-            "books": "Books read",
-            "films": "Movies watched",
-            "series": "Series watched",
-            "videogames": "Video games played",
-            "albums": "Albums listened"
-        },
-        "viewCompleted": {
-            "books": "View Read Books",
-            "series": "View Watched Series",
-            "films": "View Watched Movies",
-            "videogames": "View Played Games",
-            "albums": "View Listened Albums"
-        },
-        "loadingStatsError": "Could not load the stats. Try again later.",
-        "noPermissionError": {
-            "title": "Permission denied",
-            "description": "We need access to your gallery."
-        },
-        "profilePhotoUpdated": "Profile picture updated",
-        "noProfilePhoto": "Could not update your profile picture.",
-        "removeFromTopFiveNotification": {
-            "title": "Delete from TopFive",
-            "description": "Are you sure you want to remove this item from your TopFive?",
-            "confirmationDescription": "The item has been deleted from your TopFive.",
-            "error": "There was an error trying to delete the item from your TopFive."
-        },
-        "editProfile": {
-            "title": "Edit profile",
-            "username": "Username",
-            "usernamePlaceholder": "Write your username...",
-            "description": "Description",
-            "descriptionPlaceholder": "Tell us about yourself...",
-            "profileType": "Profile",
-            "profilePublic": "Public",
-            "profilePrivate": "Private",
-            "profileUpdated": "Your profile has been updated successfully.",
-            "usernameExists": "This username is already in use. Please choose another.",
-            "profileUpdateError": "There was an error updating your profile. Please try again.",
-            "topfiveUpdateError": "Error trying to update your TopFive. Please try again.",
-            "topfive": "Edit my TopFive",
-            "topfiveDescription": "Press and hold to sort. Press X to delete."
-        },
-        "follow" : "Follow",
-        "followApplied": "Follow request sent",
-        "followers": "Followers",
-        "following": "Following",
-        "deleteFollowers": {
-            "title": "Remove follower",
-            "description": "Do you want to remove {{username}} from your followers?",
-            "successDescription": "{{username}} has been removed from your followers.",
-            "errorDescription": "Could not delete {{username}} from your followers. Please, try again."
-        },
-        "deleteFollowing": {
-            "title": "Unfollow",
-            "description": "Do you want to unfollow {{username}}?",
-            "successDescription": "You've unfollowed {{username}}.",
-            "errorDescription": "Could not unfollow {{username}}. Please, try again."
-        },
-        "privateProfile": {
-            "title": "Private Profile",
-            "description": "This profile is private. You cannot view its content."
-        },
-        "alerts": {
-            "activateChoiceTitle": "Enable Notifications",
-            "activateChoiceDesc": "Do you want to receive an alert when {{username}} publishes something new?",
-            "deactivateChoiceTitle": "Disable Notifications",
-            "deactivateChoiceDesc": "Are you sure you want to stop receiving alerts from {{username}}?"
-        }
-    },
-    "aboutUs": {
-        "creditsAndLicenses": "Credits and Licenses",
+    "legal": {
+      "title": "Support and legal",
+      "sendFeed": "Send feedback",
+      "aboutUs": {
+        "title": "About us",
+        "creditsTitle": "Credits and Licenses",
         "creditsDescription": "This application uses data from the following sources",
-        "filmsCard":{
-            "description": "This product uses the TMDB API but is not endorsed or certified by TMDB.",
-            "link": "Visit TMDB"
+        "filmsCard": {
+          "description": "This product uses the TMDB API but is not endorsed or certified by TMDB.",
+          "link": "Visit TMDB"
         },
         "seriesCard": {
-            "description": "Data provided by TVMaze. Licensed under CC BY-SA 4.0.",
-            "link": "Visit TVMaze"
+          "description": "Data provided by TVMaze. Licensed under CC BY-SA 4.0.",
+          "link": "Visit TVMaze"
         },
         "videogamesCard": {
-            "description": "Video game information provided by IGDB.",
-            "link": "Visit IGDB"
-        }, 
-        "albumsCard":{
-            "description": "Data provided by Discogs. This product uses the Discogs API but is not endorsed or certified by Discogs.",
-            "link": "Visit Discogs"
+          "description": "Video game information provided by IGDB.",
+          "link": "Visit IGDB"
         },
-        "booksCard":{
-            "description": "Data provided by OpenLibrary.",
-            "link": "Visit OpenLibrary"
+        "albumsCard": {
+          "description": "Data provided by Discogs. This product uses the Discogs API but is not endorsed or certified by Discogs.",
+          "link": "Visit Discogs"
+        },
+        "booksCard": {
+          "description": "Data provided by OpenLibrary.",
+          "link": "Visit OpenLibrary"
         }
+      },
+      "privacy": "Privacy policy",
+      "adsPriv": "Advertisement privacy"
     },
-    "details": {
-        "loadingError": {
-            "title": "Error",
-            "books": "Could not load the book information.",
-            "series": "Could not load the series information.",
-            "films": "Could not load the movie information.",
-            "videogames": "Could not load the video game information.",
-            "albums": "Could not load the album information."
-        },
-        "gameModes": "Game modes",
-        "addToCollection": "Add to collection",
-        "author": "Author",
-        "released": "Released",
-        "generalRating": "General rating",
-        "lastTime": "Last time",
-        "start": "Start",
-        "end": "End",
-        "deleteResource": {
-            "title": "Confirm deletion",
-            "description": "Are you sure you want to delete {{titulo}} from your collection?",
-            "successTitle": "Resource deleted",
-            "multipleDescription": "Are you sure you want to delete {{count}} {{type}} from your collection?",
-            "multipleSuccessTitle": "Resources deleted",
-            "multipleSuccessDescription": "You have successfully deleted {{count}} {{type}} from your collection.",
-            "resourceDeletedDescription": "You have successfully deleted {{titulo}} from your collection.",
-            "failedToDelete": "Could not delete the resource. Please try again later.",
-            "thisResource": "this resource",
-            "theResource": "the resource"
-        },
-        "sinopsis": "Synopsis",
-        "progress": "Progress",
-        "seasonAbbreviation": "S",
-        "episodeAbbreviation": "E",
-        "progressUnits": {
-            "books": "pages",
-            "videogames": "hours"
-        },
-        "rating": "Rating",
-        "dificulty": {
-            "easy": "Easy",
-            "medium": "Normal",
-            "hard": "Difficult",
-            "extreme": "Extreme"
-        },
-        "review": "Review",
-        "zeroDays": "0 days",
-        "oneDay": "1 day",
-        "days": "{{days}} days",
-        "totalReadingTime": "Total reading time",
-        "userDetails": "User details",
-        "user": "User",
-        "resourceAlreadyInCollection": "This content is already in your collection. Do you want to edit it?"
+    "errors": {
+      "privacyError": {
+        "description": "The privacy form is not available in your region."
+      }
+    }
+  },
+  "login": {
+    "loginSentences": {
+      "1": "  There's a seat waiting for you.",
+      "2": "  Your entertainment inventory, in one place.",
+      "3": "  Mark your page. Save your world.",
+      "4": "  Your life, your ranking, your TopFive.",
+      "5": "  Your definitive mixtape is here."
     },
-    "forms": {
+    "loginNotification": {
+      "title": "Welcome!",
+      "description": "You have been logged in successfully."
+    },
+"forms": {
         "updatingError": "Error updating.",
         "savingError": "Error saving.",
         "updatingSuccessDescription": "You have updated {{titulo}} in your collection.",
@@ -545,62 +241,447 @@
         "views": "Views"
        
     },
-    "frameSelector": {
-        "title": "Choose photo and frame",
-        "loadingAd": "Loading ad...",
-        "adNotReady": "The ad is not ready yet. Please wait a few seconds and try again.",
-        "updatedNotification": "Your profile frame has been updated.",
-        "errorUpdatingNotification": "Could not update the frame. Please try again.",
-        "errorLoadingNotification": "Could not load the user's frames. Please try again.",
-        "unlockedNotificationTitle": "Frame unlocked!",
-        "unlockedNotificationDescription": "You have obtained a new frame for your profile.",
-        "errorUnlockingNotification": "Could not unlock the frame. Please try again."
+    "email": {
+      "title": "Email",
+      "placeholder": "you@email.com"
     },
-    "notifications": {
-        "title": "User Notifications",
-        "noNotifications": "No Notifications",
-        "noNotificationsDescription": "You have no pending notifications at this moment. Come back later!",
-        "followingRequest": "has requested to follow you",
-        "followingConfirmation": "has started following you",
-        "pending": "Pending",
-        "followBack": "Follow back",
-        "requestAccepted": "Request accepted!",
-        "requestAcceptedDescription": "{{username}} has accepted your follow request"
+    "password": "Password",
+    "forgotPassword": {
+      "title": "Forgot your password?",
+      "subtitle": "Enter your email to reset your password.",
+      "emailNotRegistered": "The email is not registered. Create an account or verify the email entered.",
+      "emailSent": "You will receive an email with instructions to reset your password.",
+      "errorEmailSent": "Could not send the reset email. Please try again."
     },
-    "topFiveSelector": {
-        "confirmSelection": "Confirm selection",
-        "confirmSelectionDescription": "Do you want to add {{title}} to your TopFive?",
-        "addedToTopFive": "{{title}} has been added to your TopFive",
-        "categoryOfYourCollectionTitle": "{{category}} of your collection",
-        "noContentTitle": "No {{category}}",
-        "noContentDescription": "First add to your collection for them to be part of your TopFive",
-        "searchButton": "Search",
-        "duplicateResource": "This resource is already in your TopFive. Choose another resource or remove the existing one first.",
-        "addToTopFiveError": "The resource could not be added to your TopFive. Please try again."
+    "loginButton": "Sign in",
+    "loginWithGoogle": "Sign in with Google",
+    "loginWithApple": "Sign in with Apple",
+    "noAccount": "Don't have an account?",
+    "signUpButton": "Sign up here",
+    "signUp": {
+      "subtitle": "Create your account",
+      "username": "Username",
+      "usernamePlaceholder": "Your username",
+      "email": "Email",
+      "emailPlaceholder": "you@email.com",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "signUpButton": "Sign up",
+      "alreadyHaveAccount": "Already have an account?",
+      "loginButton": "Back to login",
+      "success": {
+        "title": "Account created",
+        "description": "Your account has been created successfully. \n Check your email and confirm your account."
+      },
+      "errors": {
+        "passwordMismatch": "The passwords do not match. Please try again.",
+        "general": "There was an error creating your account."
+      }
     },
-    "layout": {
-        "updateAvailableTitle": "Update available",
-        "updateAvailableDescription": "There is a new version of the application available. Please update it to continue enjoying all the latest features."
+    "resetPassword": {
+      "error": {
+        "denied": "Permission denied",
+        "errorLink": "The link has expired or is incomplete. Please, request a new one.",
+        "passwordMismatch": "The passwords do not match. Please try again.",
+        "general": "The password could not be updated. The link might have expired.",
+        "differentPassword": "The new password must be different from the previous one.",
+        "rateLimit": "You have exceeded the limit for password change. Please, wait a couple of minutes.",
+        "default": "Error changing the password."
+      },
+      "successDescription": "The password was changed successfully. You can sign in now.",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "changePassword": "Change password"
+    }
+  },
+  "search": {
+    "usersTitle": "Users",
+    "placeholder": "Search {{category}}...",
+    "noResults": "No results.",
+    "description": "Perform a search to see results for {{category}}.",
+    "userSearchBarPlaceholder": "Search for a user...",
+    "usersScreenTitle": "Users",
+    "usersScreenDescription": "Perform a search to find users."
+  },
+  "collection": {
+    "saveIn": "Save in...",
+    "noLists": "You don't have any {{category}} lists created.",
+    "orderBy": "Order by",
+    "recentsFirst": "Most recent",
+    "oldestFirst": "Oldest first",
+    "status": "Status",
+    "onlyFavorites": "Only favorites",
+    "noContent": "No content available",
+    "searchInPlaceholder": "Search in {{category}}...",
+    "noContentDescription": "There are no {{category}} {{status}}"
+  },
+  "list": {
+    "deleteListNotification": {
+      "title": "Delete list",
+      "description": "Are you sure you want to remove this list from your collection?",
+      "confirmationTitle": "List deleted",
+      "confirmationDescription": "The list {{listName}} has been deleted successfully."
     },
-    "components": {
-        "errorAddToList": "Could not add to list.",
-        "whatToAdd": "What do you want to add?",
-        "noImage": {
-            "title": "No image available",
-            "book": "This book has no image",
-            "serie": "This series has no image",
-            "film": "This movie has no image",
-            "videogame": "This game has no image",
-            "album": "This album has no image"
-        },
-        "thirdPartyAd": "External Ad",
-        "sponsored": "SPONSORED",
-        "recommendedForYou": "Recommended for you"
+    "elements": "elements",
+    "editList": "Edit list",
+    "addToList": "Add to list",
+    "orderList": "Order list",
+    "deleteList": "Delete list",
+    "noLists": "You don't have any {{category}} lists.",
+    "listCreatedNotification": {
+      "title": "List created",
+      "description": "The list {{listName}} has been created successfully."
     },
-	"searchRecent": {
-		"usersTitle": "Users",
-		"recentSearches": "Recent searches",
-		"deleteRecentSearch": "Remove {{username}} from recent searches",
-		"deleteRecentContent": "Remove {{title}} from recent searches"
-	}
+    "couldntCreateError": "Could not create the list. Please try again.",
+    "deleteItemFromListNotification": {
+      "title": "Delete from list",
+      "description": "Are you sure you want to remove {{titulo}} from the list?",
+      "multipleDescription": "Are you sure you want to remove these {{count}} items from the list?",
+      "confirmationDescription": "The item has been deleted from the list.",
+      "multipleConfirmationDescription": "The items have been deleted from the list."
+    },
+    "addItemToListNotification": {
+      "title": "Add to list",
+      "description": "Do you want to add this item to the list?",
+      "multipleDescription": "Do you want to add these {{count}} items to the list?",
+      "confirmationDescription": "The item has been added successfully to the list.",
+      "multipleConfirmationDescription": "The items have been added successfully to the list."
+    },
+    "createNewList": "+ Create new list",
+    "onThisList": "on this list",
+    "reorderList": {
+      "Title": "Order ",
+      "Description": "Hold and drag to change the order of the items in your list",
+      "reorderNotification": {
+        "success": "The order of the list has been updated successfully.",
+        "error": "The order of the list could not be updated."
+      }
+    }
+  },
+  "home": {
+    "pressAgainToExit": "Press again to exit.",
+    "noCompletedReviewsFromFriends": "You don't have any friends with reviews.",
+    "addFriendsToSeeReviews": "Add friends to read their reviews.",
+    "searchFriends": "Search for friends",
+    "renderResource": {
+      "today": "Today",
+      "oneDayAgo": "One day ago",
+      "daysAgo": "{{days}} days ago"
+    },
+    "contentAlreadyInCollection": "This content is already in your collection. Do you want to delete it?",
+    "siguiendo": "Following",
+    "paraTi": "For you",
+    "successAddingAsPending": "You have added {{titulo}} as pending to your collection."
+  },
+  "profile": {
+    "shareMessage": "Check out my profile on TopFive!\n{{url}}",
+    "shareUserMessage": "Check out this profile on TopFive!\n{{url}}",
+    "shareTopFive": "Share my TopFive",
+    "user": "User",
+    "reviews": "Reviews",
+    "selectYear": "Select year",
+    "monthsAbbreviation": {
+      "january": "Jan",
+      "february": "Feb",
+      "march": "Mar",
+      "april": "Apr",
+      "may": "May",
+      "june": "Jun",
+      "july": "Jul",
+      "august": "Aug",
+      "september": "Sep",
+      "october": "Oct",
+      "november": "Nov",
+      "december": "Dec"
+    },
+    "activity": "Activity",
+    "statistics": "Statistics",
+    "total": "Total",
+    "average": "Average",
+    "monthly": "Monthly",
+    "myTopFive": "My TopFive",
+    "categoriesConsumed": {
+      "books": "Books read",
+      "films": "Movies watched",
+      "series": "Series watched",
+      "videogames": "Video games played",
+      "albums": "Albums listened"
+    },
+    "viewCompleted": {
+      "books": "View Read Books",
+      "series": "View Watched Series",
+      "films": "View Watched Movies",
+      "videogames": "View Played Games",
+      "albums": "View Listened Albums"
+    },
+    "loadingStatsError": "Could not load the stats. Try again later.",
+    "noPermissionError": {
+      "title": "Permission denied",
+      "description": "We need access to your gallery."
+    },
+    "profilePhotoUpdated": "Profile picture updated",
+    "noProfilePhoto": "Could not update your profile picture.",
+    "removeFromTopFiveNotification": {
+      "title": "Delete from TopFive",
+      "description": "Are you sure you want to remove this item from your TopFive?",
+      "confirmationDescription": "The item has been deleted from your TopFive.",
+      "error": "There was an error trying to delete the item from your TopFive."
+    },
+    "editProfile": {
+      "title": "Edit profile",
+      "username": "Username",
+      "usernamePlaceholder": "Write your username...",
+      "description": "Description",
+      "descriptionPlaceholder": "Tell us about yourself...",
+      "profileType": "Profile",
+      "profilePublic": "Public",
+      "profilePrivate": "Private",
+      "profileUpdated": "Your profile has been updated successfully.",
+      "usernameExists": "This username is already in use. Please choose another.",
+      "profileUpdateError": "There was an error updating your profile. Please try again.",
+      "topfiveUpdateError": "Error trying to update your TopFive. Please try again.",
+      "topfive": "Edit my TopFive",
+      "topfiveDescription": "Press and hold to sort. Press X to delete."
+    },
+    "follow": "Follow",
+    "followApplied": "Follow request sent",
+    "followers": "Followers",
+    "following": "Following",
+    "deleteFollowers": {
+      "title": "Remove follower",
+      "description": "Do you want to remove {{username}} from your followers?",
+      "successDescription": "{{username}} has been removed from your followers.",
+      "errorDescription": "Could not delete {{username}} from your followers. Please, try again."
+    },
+    "deleteFollowing": {
+      "title": "Unfollow",
+      "description": "Do you want to unfollow {{username}}?",
+      "successDescription": "You've unfollowed {{username}}.",
+      "errorDescription": "Could not unfollow {{username}}. Please, try again."
+    },
+    "privateProfile": {
+      "title": "Private Profile",
+      "description": "This profile is private. You cannot view its content."
+    },
+    "alerts": {
+      "activateChoiceTitle": "Enable Notifications",
+      "activateChoiceDesc": "Do you want to receive an alert when {{username}} publishes something new?",
+      "deactivateChoiceTitle": "Disable Notifications",
+      "deactivateChoiceDesc": "Are you sure you want to stop receiving alerts from {{username}}?"
+    }
+  },
+  "aboutUs": {
+    "creditsAndLicenses": "Credits and Licenses",
+    "creditsDescription": "This application uses data from the following sources",
+    "filmsCard": {
+      "description": "This product uses the TMDB API but is not endorsed or certified by TMDB.",
+      "link": "Visit TMDB"
+    },
+    "seriesCard": {
+      "description": "Data provided by TVMaze. Licensed under CC BY-SA 4.0.",
+      "link": "Visit TVMaze"
+    },
+    "videogamesCard": {
+      "description": "Video game information provided by IGDB.",
+      "link": "Visit IGDB"
+    },
+    "albumsCard": {
+      "description": "Data provided by Discogs. This product uses the Discogs API but is not endorsed or certified by Discogs.",
+      "link": "Visit Discogs"
+    },
+    "booksCard": {
+      "description": "Data provided by OpenLibrary.",
+      "link": "Visit OpenLibrary"
+    }
+  },
+  "details": {
+    "loadingError": {
+      "title": "Error",
+      "books": "Could not load the book information.",
+      "series": "Could not load the series information.",
+      "films": "Could not load the movie information.",
+      "videogames": "Could not load the video game information.",
+      "albums": "Could not load the album information."
+    },
+    "gameModes": "Game modes",
+    "addToCollection": "Add to collection",
+    "author": "Author",
+    "released": "Released",
+    "generalRating": "General rating",
+    "lastTime": "Last time",
+    "start": "Start",
+    "end": "End",
+    "deleteResource": {
+      "title": "Confirm deletion",
+      "description": "Are you sure you want to delete {{titulo}} from your collection?",
+      "successTitle": "Resource deleted",
+      "multipleDescription": "Are you sure you want to delete {{count}} {{type}} from your collection?",
+      "multipleSuccessTitle": "Resources deleted",
+      "multipleSuccessDescription": "You have successfully deleted {{count}} {{type}} from your collection.",
+      "resourceDeletedDescription": "You have successfully deleted {{titulo}} from your collection.",
+      "failedToDelete": "Could not delete the resource. Please try again later.",
+      "thisResource": "this resource",
+      "theResource": "the resource"
+    },
+    "sinopsis": "Synopsis",
+    "progress": "Progress",
+    "seasonAbbreviation": "S",
+    "episodeAbbreviation": "E",
+    "progressUnits": {
+      "books": "pages",
+      "videogames": "hours"
+    },
+    "rating": "Rating",
+    "dificulty": {
+      "easy": "Easy",
+      "medium": "Normal",
+      "hard": "Difficult",
+      "extreme": "Extreme"
+    },
+    "review": "Review",
+    "zeroDays": "0 days",
+    "oneDay": "1 day",
+    "days": "{{days}} days",
+    "totalReadingTime": "Total reading time",
+    "userDetails": "User details",
+    "user": "User",
+    "resourceAlreadyInCollection": "This content is already in your collection. Do you want to edit it?"
+  },
+  "forms": {
+    "updatingError": "Error updating.",
+    "savingError": "Error saving.",
+    "updatingSuccessDescription": "You have updated {{titulo}} in your collection.",
+    "savingSuccessDescription": "You have added {{titulo}} to your collection.",
+    "book": {
+      "invalidPages": "Invalid number of pages.",
+      "invalidPagesDescription": "The number of pages cannot be greater than 3031. Please enter a valid number.",
+      "updatingErrorDescription": "There was a problem updating the book. Please try again.",
+      "thisBook": "this book",
+      "alreadyInCollection": "This book is already in your collection.",
+      "savingErrorDescription": "There was a problem saving the book. Please try again.",
+      "theBook": "the book",
+      "bookDetails": "Book details"
+    },
+    "film": {
+      "updatingErrorDescription": "There was a problem updating the movie. Please try again.",
+      "thisFilm": "this movie",
+      "alreadyInCollection": "This movie is already in your collection.",
+      "savingErrorDescription": "There was a problem saving the movie. Please try again.",
+      "theFilm": "the movie",
+      "filmDetails": "Movie details"
+    },
+    "game": {
+      "updatingErrorDescription": "There was a problem updating the game. Please try again.",
+      "thisGame": "this game",
+      "alreadyInCollection": "This game is already in your collection.",
+      "savingErrorDescription": "There was a problem saving the game. Please try again.",
+      "theGame": "the game",
+      "gameDetails": "Game details"
+    },
+    "serie": {
+      "updatingErrorDescription": "There was a problem updating the series. Please try again.",
+      "alreadyInCollection": "This series is already in your collection.",
+      "savingErrorDescription": "There was a problem saving the series. Please try again.",
+      "serieDetails": "Series details",
+      "theSerie": "the series"
+    },
+    "albums": {
+      "updatingErrorDescription": "There was a problem updating the album. Please try again.",
+      "alreadyInCollection": "This album is already in your collection.",
+      "savingErrorDescription": "There was a problem saving the album. Please try again.",
+      "albumDetails": "Album details",
+      "theAlbum": "the album"
+    },
+    "addToList": "Add to {{listName}}",
+    "list": "list",
+    "lists": {
+      "listNameCantBeEmpty": "The list name cannot be empty.",
+      "listHasBeenUpdated": "The list {{listName}} has been updated successfully.",
+      "listLoadingError": "Could not load the list details. Please try again.",
+      "updateList": "Update your list",
+      "createList": "Create your list",
+      "listName": "List name",
+      "listNamePlaceholder": "E.g.: Essential movies",
+      "description": "Description",
+      "descriptionPlaceholder": "Describe the content of this list...",
+      "listDetails": "List details",
+      "onThisList": "on this list"
+    },
+    "ready": "Ready",
+    "lastTime": "Last time",
+    "noDate": "No date",
+    "clearDate": "Clear date",
+    "startingDate": "Starting date",
+    "endingDate": "Ending date",
+    "hoursPlayedPlaceholder": "Hours played...",
+    "pagesReadedPlaceholder": "Pages read...",
+    "currentSeason": "Current season",
+    "currentEpisode": "Current episode",
+    "reviewPlaceholder": "Write your opinion...",
+    "views": "Views"
+  },
+  "frameSelector": {
+    "title": "Choose photo and frame",
+    "loadingAd": "Loading ad...",
+    "adNotReady": "The ad is not ready yet. Please wait a few seconds and try again.",
+    "updatedNotification": "Your profile frame has been updated.",
+    "errorUpdatingNotification": "Could not update the frame. Please try again.",
+    "errorLoadingNotification": "Could not load the user's frames. Please try again.",
+    "unlockedNotificationTitle": "Frame unlocked!",
+    "unlockedNotificationDescription": "You have obtained a new frame for your profile.",
+    "errorUnlockingNotification": "Could not unlock the frame. Please try again."
+  },
+  "notifications": {
+    "title": "User Notifications",
+    "noNotifications": "No Notifications",
+    "noNotificationsDescription": "You have no pending notifications at this moment. Come back later!",
+    "followingRequest": "has requested to follow you",
+    "followingConfirmation": "has started following you",
+    "pending": "Pending",
+    "followBack": "Follow back",
+    "requestAccepted": "Request accepted!",
+    "requestAcceptedDescription": "{{username}} has accepted your follow request"
+  },
+  "topFiveSelector": {
+    "confirmSelection": "Confirm selection",
+    "confirmSelectionDescription": "Do you want to add {{title}} to your TopFive?",
+    "addedToTopFive": "{{title}} has been added to your TopFive",
+    "categoryOfYourCollectionTitle": "{{category}} of your collection",
+    "noContentTitle": "No {{category}}",
+    "noContentDescription": "First add to your collection for them to be part of your TopFive",
+    "searchButton": "Search",
+    "duplicateResource": "This resource is already in your TopFive. Choose another resource or remove the existing one first.",
+    "addToTopFiveError": "The resource could not be added to your TopFive. Please try again."
+  },
+  "layout": {
+    "updateAvailableTitle": "Update available",
+    "updateAvailableDescription": "There is a new version of the application available. Please update it to continue enjoying all the latest features."
+  },
+  "components": {
+    "errorAddToList": "Could not add to list.",
+    "whatToAdd": "What do you want to add?",
+    "noImage": {
+      "title": "No image available",
+      "book": "This book has no image",
+      "serie": "This series has no image",
+      "film": "This movie has no image",
+      "videogame": "This game has no image",
+      "album": "This album has no image"
+    },
+    "thirdPartyAd": "External Ad",
+    "sponsored": "SPONSORED",
+    "recommendedForYou": "Recommended for you"
+  },
+  "searchRecent": {
+    "usersTitle": "Users",
+    "recentSearches": "Recent searches",
+    "deleteRecentSearch": "Remove {{username}} from recent searches",
+    "deleteRecentContent": "Remove {{title}} from recent searches"
+  },
+  "diary": {
+    "title": "Diary",
+    "empty": "No items",
+    "noImage": "No image",
+    "profileTitle": "Recent activity"
+  }
 }

@@ -37,7 +37,7 @@ export const useAddToCollection = () => {
           .eq('idContenido', book.id)
           .eq('usuarioId', user.id)
           .single();
-        
+
         if (resourceError) throw resourceError;
         if (!recurso) throw new Error('No se encontró el recurso del libro');
 
@@ -62,7 +62,7 @@ export const useAddToCollection = () => {
               success: true,
             });
           },
-          
+
         });
         setLoading(false);
         return;
@@ -377,7 +377,7 @@ export const useAddToCollection = () => {
               success: true,
             });
           }
-          
+
         });
         setLoading(false);
         return;
