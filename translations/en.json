@@ -368,6 +368,9 @@
       "oneDayAgo": "One day ago",
       "daysAgo": "{{days}} days ago"
     },
+    "contentAlreadyInCollection": "This content is already in your collection",
+    "siguiendo": "Following",
+    "paraTi": "For you"
     "contentAlreadyInCollection": "This content is already in your collection"
   },
   "profile": {

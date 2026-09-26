@@ -1,34 +1,171 @@
-import { View, FlatList, RefreshControl, TouchableOpacity, BackHandler } from 'react-native';
+import { View, TouchableOpacity, BackHandler } from 'react-native';
 import { router, useFocusEffect, useNavigation } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { useTheme } from 'context/ThemeContext';
-import { useActivity } from '@/Home/hooks/useActivity';
-import ActivityItem from '@/Home/components/RenderResource';
-import { LoadingIndicator } from 'components/LoadingIndicator';
-import { SearchIcon2, SocialBubblesIcon } from 'components/Icons';
+import SiguiendoFeed from '@/Home/components/SiguiendoFeed';
+import ForYouFeed from '@/Home/components/ForYouFeed';
+import { SearchIcon2 } from 'components/Icons';
 import { NotificationButton } from '@/Notifications/components/NotificationButton';
-import { NativeAdCard } from 'components/NativeAdCard';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useNotification } from 'context/NotificationContext';
 import { AppText } from 'components/AppText';
-import Animated from 'react-native-reanimated';
-import { useCollapsibleHeader } from 'hooks/useCollapsibleHeader';
 import { useTranslation } from 'react-i18next';
+import { Tabs, useHeaderMeasurements } from 'react-native-collapsible-tab-view';
+import Animated, {
+  useAnimatedStyle,
+  interpolate,
+  Extrapolation,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+const HEADER_HEIGHT = 70;
+const TAB_BAR_HEIGHT = 44;
+
+function CollapsibleHeader() {
+  const { colors } = useTheme();
+  const { t } = useTranslation();
+  const { top } = useHeaderMeasurements();
+
+  const animatedHeaderStyle = useAnimatedStyle(() => {
+    const currentTop = top?.value ?? 0;
+    // he puesto la opacidad sincronizada con el TabBar
+    const opacity = interpolate(
+      currentTop,
+      [-HEADER_HEIGHT, 0],
+      [0, 1],
+      Extrapolation.CLAMP
+    );
+
+    return { opacity };
+  });
+
+  return (
+    <Animated.View
+      style={[
+        { backgroundColor: colors.background, height: HEADER_HEIGHT },
+        animatedHeaderStyle,
+      ]}
+      className="px-4 pt-4"
+    >
+      <View className="flex-row items-center justify-between">
+        <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 28 }}>
+          {t('tabs.home')}
+        </AppText>
+        <View className="flex-row gap-x-4">
+          <NotificationButton from="Home" />
+          <TouchableOpacity onPress={() => router.push('/search')} className="rounded-full p-3">
+            <SearchIcon2 size={22} color={colors.primaryText} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Animated.View>
+  );
+}
+
+function CollapsibleTabBar({
+  props,
+  routes,
+  index,
+  setIndex,
+  colors,
+}: {
+  props: any;
+  routes: { key: string; title: string }[];
+  index: number;
+  setIndex: (i: number) => void;
+  colors: any;
+}) {
+  const { top } = useHeaderMeasurements();
+  const { indexDecimal } = props;
+
+  // la raya del swipe
+  const indicatorStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: (indexDecimal?.value ?? 0) * 110 }],
+    };
+  }, [indexDecimal]);
+
+  // curva y rango exacto de la cabecera superior
+  const animatedTabBarStyle = useAnimatedStyle(() => {
+    const currentTop = top?.value ?? 0;
+
+    const opacity = interpolate(
+      currentTop,
+      [-HEADER_HEIGHT, 0],
+      [0, 1],
+      Extrapolation.CLAMP
+    );
+
+    return {
+      opacity,
+    };
+  });
+
+  return (
+    <Animated.View
+      style={[
+        {
+          backgroundColor: colors.background,
+          height: TAB_BAR_HEIGHT-7,
+        },
+        animatedTabBarStyle,
+      ]}
+      className="flex-row justify-center px-2 pb-4"
+    >
+      <View className="relative flex-row">
+        {routes.map((route, i) => (
+          <TouchableOpacity
+            key={route.key}
+            onPress={() => {
+              setIndex(i);
+              props.onTabPress(route.key);
+            }}
+            style={{ width: 110 }}
+            className="items-center"
+            activeOpacity={0.7}
+          >
+            <AppText
+              className="font-bold"
+              style={{
+                fontSize: 16,
+                color: index === i ? colors.primaryText : colors.placeholderText,
+              }}
+            >
+              {route.title}
+            </AppText>
+          </TouchableOpacity>
+        ))}
+
+        <Animated.View
+          style={[
+            {
+              position: 'absolute',
+              bottom: -6,
+              left: 43,
+              height: 2,
+              width: 24,
+              borderRadius: 2,
+              backgroundColor: colors.primaryText,
+            },
+            indicatorStyle,
+          ]}
+        />
+      </View>
+    </Animated.View>
+  );
+}
 
 export default function HomeScreen() {
   const { colors } = useTheme();
   const { t } = useTranslation();
-  const { activities, loading, refreshing, fetchActivities, refreshActivities, handleItemPress } =
-    useActivity();
   const navigation = useNavigation();
   const lastBackPress = useRef(0);
   const { showNotification } = useNotification();
-
-  const [headerHeight, setHeaderHeight] = useState(80);
-  const { scrollHandler, headerStyle, headerOpacityStyle } = useCollapsibleHeader(headerHeight);
+  const [index, setIndex] = useState(0);
+  const routes = useMemo<{ key: string; title: string }[]>(() => [
+    { key: 'paraTi', title: t('home.paraTi') as string },
+    { key: 'siguiendo', title: t('home.siguiendo') as string },
+  ], [t]);
 
   const insets = useSafeAreaInsets();
 
@@ -64,109 +201,34 @@ export default function HomeScreen() {
 
   return (
     <Screen>
-      <Animated.View
-        //  onLayout PARA CAPTURAR LA ALTURA EXACTA sin hacerlo a mano
-        onLayout={(event) => {
-          const { height } = event.nativeEvent.layout;
-          // solo actualizamos si la diferencia es notable con la por defecto
-          if (Math.abs(headerHeight - height) > 1) {
-            setHeaderHeight(height);
-          }
+      <Tabs.Container
+        renderHeader={() => <CollapsibleHeader />}
+        renderTabBar={(props) => (
+          <CollapsibleTabBar
+            props={props}
+            routes={routes}
+            index={index}
+            setIndex={setIndex}
+            colors={colors}
+          />
+        )}
+        onIndexChange={setIndex}
+        headerContainerStyle={{
+          elevation: 0,
+          shadowOpacity: 0,
+          backgroundColor: 'transparent',
         }}
-        style={[
-          headerStyle,
-          {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: headerHeight,
-            zIndex: 10,
-            backgroundColor: colors.background,
-          },
-        ]}>
-        <Animated.View style={headerOpacityStyle} className="px-4 pt-6">
-          <View className="mb-4 flex-row items-center justify-between">
-            <AppText className=" font-bold" style={{ color: colors.primaryText, fontSize: 28 }}>
-              {t('tabs.home')}
-            </AppText>
-
-            <View className="flex-row gap-x-2">
-              <NotificationButton from="Home" />
-              <TouchableOpacity onPress={() => router.push('/search')} className="rounded-full p-3">
-                <SearchIcon2 size={22} color={colors.primaryText} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Animated.View>
-      </Animated.View>
-
-      {loading && activities.length === 0 ? (
-        <LoadingIndicator />
-      ) : (
-        <AnimatedFlatList
-          data={activities}
-          onScroll={scrollHandler}
-          scrollEventThrottle={16}
-          keyExtractor={(item: any) =>
-            [
-              item.usuarioId,
-              item.tipo_contenido,
-              item.recurso_id,
-              item.fecha_actividad ?? item.fechacreacion,
-            ].join('-')
-          } //hay que tiparlos explicitamente por el ANIMATED
-          renderItem={({ item, index }: { item: any; index: number }) => (
-            <>
-              <ActivityItem item={item} onPress={() => handleItemPress(item)} />
-              {(index + 1) % 4 === 0 && <NativeAdCard />}
-            </>
-          )}
-          contentContainerStyle={
-            activities.length === 0
-              ? {
-                  flex: 1,
-                  paddingHorizontal: 16,
-                  paddingVertical: 150,
-                  paddingTop: headerHeight + 20,
-                }
-              : { paddingHorizontal: 16, paddingBottom: 52 + insets.bottom, paddingTop: headerHeight + 10 }
-          }
-          onEndReached={fetchActivities}
-          onEndReachedThreshold={0.5}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={refreshActivities}
-              tintColor={colors.primaryText}
-              progressViewOffset={headerHeight}
-            />
-          }
-          ListEmptyComponent={() => (
-            <View className="flex-1 items-center px-4 ">
-              <SocialBubblesIcon className="mb-4" size={100} color={colors.primaryText} />
-              <AppText
-                className="mb-4 text-center text-2xl font-bold"
-                style={{ color: colors.primaryText }}>
-                {t('home.noCompletedReviewsFromFriends')}
-              </AppText>
-              <AppText className="text-md mb-6 text-center" style={{ color: colors.primaryText }}>
-                {t('home.addFriendsToSeeReviews')}
-              </AppText>
-              <TouchableOpacity
-                onPress={() => router.push('/search')}
-                className="rounded-3xl px-6 py-3"
-                style={{ backgroundColor: colors.primary }}>
-                <AppText className="text-base font-bold text-white">
-                  {t('home.searchFriends')}
-                </AppText>
-              </TouchableOpacity>
-            </View>
-          )}
-          ListFooterComponent={() => (loading ? <LoadingIndicator /> : null)}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
+        headerHeight={HEADER_HEIGHT}
+        minHeaderHeight={0}
+        revealHeaderOnScroll={true}
+      >
+        <Tabs.Tab name="paraTi">
+          <ForYouFeed />
+        </Tabs.Tab>
+        <Tabs.Tab name="siguiendo">
+          <SiguiendoFeed />
+        </Tabs.Tab>
+      </Tabs.Container>
     </Screen>
   );
 }

@@ -367,6 +367,9 @@
       "oneDayAgo": "Hace 1 día",
       "daysAgo": "Hace {{days}} días"
     },
+    "contentAlreadyInCollection": "Este recurso ya está en tu colección",
+    "siguiendo": "Siguiendo",
+    "paraTi": "Para ti"
     "contentAlreadyInCollection": "Este recurso ya está en tu colección"
   },
   "profile": {
