@@ -371,6 +371,7 @@
     "contentAlreadyInCollection": "This content is already in your collection",
     "siguiendo": "Following",
     "paraTi": "For you"
+    "contentAlreadyInCollection": "This content is already in your collection"
   },
   "profile": {
     "shareMessage": "Check out my profile on TopFive!\n{{url}}",
