@@ -99,7 +99,7 @@ const renderHeader = ({ section, colors }: { section: { title: string }; colors:
         borderTopColor: colors.borderButton,
       }}>
       <AppText
-        className="font-light tracking-widest"
+        className="tracking-widest"
         style={{ color: colors.primaryText, fontSize: 16 }}>
         {section.title.toLocaleUpperCase()}
       </AppText>
