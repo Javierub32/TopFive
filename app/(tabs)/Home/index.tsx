@@ -16,6 +16,7 @@ import Animated, {
   interpolate,
   Extrapolation,
 } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HEADER_HEIGHT = 70;
 const TAB_BAR_HEIGHT = 44;
@@ -165,6 +166,8 @@ export default function HomeScreen() {
     { key: 'paraTi', title: t('home.paraTi') as string },
     { key: 'siguiendo', title: t('home.siguiendo') as string },
   ], [t]);
+
+  const insets = useSafeAreaInsets();
 
   useFocusEffect(
     useCallback(() => {

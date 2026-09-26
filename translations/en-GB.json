@@ -296,7 +296,8 @@
             "daysAgo": "{{days}} days ago"
         },
         "siguiendo": "Following",
-        "paraTi": "For you"
+        "paraTi": "For you",
+        "contentAlreadyInCollection": "This content is already in your collection"
     }, 
     "profile": {
         "shareMessage": "Check out my profile on TopFive!\n{{url}}",
@@ -506,12 +507,14 @@
             "updatingErrorDescription": "There was a problem updating the series. Please try again.",
             "alreadyInCollection": "This series is already in your collection.",
             "savingErrorDescription": "There was a problem saving the series. Please try again.",
+            "theSerie": "the series",
             "serieDetails": "Series details"
         },
         "albums": {
             "updatingErrorDescription": "There was a problem updating the album. Please try again.",
             "alreadyInCollection": "This album is already in your collection.",
             "savingErrorDescription": "There was a problem saving the album. Please try again.",
+            "theAlbum": "the album",
             "albumDetails": "Album details"
         },
         "addToList": "Add to {{listName}}",

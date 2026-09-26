@@ -5,21 +5,17 @@ import { LoadingIndicator } from "components/LoadingIndicator";
 import { useFollowing } from "../hooks/useFollowing";
 import { ScalableCancelIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { UserSearchBar } from "@/Search/components/UserSearchBar";
 
 export default function FollowingList() {
 	const {username } = useLocalSearchParams<{ username: string }>();
-	const { loading, following, handleRemovePress, ownList } = useFollowing(username);
 	const { colors } = useTheme();
 	const [busqueda, setBusqueda] = useState('');
+	const [activeSearch, setActiveSearch] = useState('');
+	const { loading, loadingMore, following, handleLoadMore, handleRemovePress, ownList } = useFollowing(username, activeSearch);
 
-	//Con esto, filtramos de la lista de los seguidos y se actualiza directamente
-	const userFiltered = useMemo(() => {
-		if(!busqueda.trim()) return following;
-		return following.filter(user => user.username.toLowerCase().includes(busqueda.toLowerCase()));
-	}, [busqueda, following]);
-	if (loading) {
+	if (loading && following.length === 0) {
 		return <LoadingIndicator />;
 	}
 	return (
@@ -28,11 +24,11 @@ export default function FollowingList() {
 		<UserSearchBar
 			value={busqueda}
 			onChangeText={setBusqueda}
-			onSearch={() => {}}
+			onSearch={() => setActiveSearch(busqueda.trim())}
 		/>
 		</View>
 		<FlatList 
-			data={userFiltered}
+			data={following}
 			keyExtractor={(user) => user.id.toString()}
 			renderItem={({ item }) => 
 			<View className="flex flex-row items-center space-x-4 pl-4 pr-8 py-3">
@@ -51,6 +47,9 @@ export default function FollowingList() {
 			</View>
 			}
 			contentContainerStyle={{ paddingBottom: 20 }}
+			onEndReached={handleLoadMore}
+			onEndReachedThreshold={0.5}
+			ListFooterComponent={() => (loadingMore ? <LoadingIndicator /> : null)}
 			showsVerticalScrollIndicator={false}
 		/>
 		</>

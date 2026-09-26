@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Activity } from '../hooks/useActivity';
-import { ScalableBookIcon, ScalableFilmIcon, ScalableGameIcon, ScalableMusicIcon, ScalableShowIcon } from 'components/Icons';
+import { ScalableBookIcon, ScalableFilmIcon, ScalableGameIcon, ScalableMusicIcon, ScalableShowIcon, ScalableWatchLaterIcon } from 'components/Icons';
 import { router } from 'expo-router';
 import { ResourceType } from 'hooks/useResource';
 import { useState } from 'react';
@@ -18,12 +18,15 @@ import { AppText } from 'components/AppText';
 import RenderHtml from 'react-native-render-html';
 import { useFontSize } from 'context/FontSizeContext';
 import { useTranslation } from 'react-i18next';
+import { useAddToCollection } from "../hooks/useAddToCollection";
+import { violet } from "tailwindcss/colors";
 
 export default function ActivityItem({ item, onPress }: { item: Activity; onPress: () => void }) {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
   const { fontSizeMultiplier } = useFontSize();
   const { t } = useTranslation();
+  const { watchLaterBook, watchLaterSerie, watchLaterFilm, watchLaterGame, watchLaterAlbum, loading: isSaving } = useAddToCollection();
 
   const getRelativeTime = (date: string | Date) => {
     const now = new Date();
@@ -87,6 +90,27 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
     ul: { marginVertical: 2 },
     ol: { marginVertical: 2 },
   };
+
+  const handleWatchLater = () => {
+    if (item.idapi == null) {
+      return
+    }
+
+    switch(item.tipo_contenido) {
+      case 'LIBRO': 
+        return void watchLaterBook(item.idapi)
+      case 'PELICULA': 
+        return void watchLaterFilm(item.idapi)
+      case 'SERIE': 
+        return void watchLaterSerie(item.idapi)
+      case 'CANCION': 
+        return void watchLaterAlbum(item.idapi)
+      case 'VIDEOJUEGO': 
+        return void watchLaterGame(item.idapi)
+      default:
+        return
+    }
+  }
 
   return (
     <TouchableOpacity
@@ -219,7 +243,7 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
         </LinearGradient>
 
         {/* Header: Usuario e info */}
-        <View className="p-4" style={{ backgroundColor: colors.surfaceButton }}>
+        <View className="flex-row items-center justify-between p-4 align-middle" style={{ backgroundColor: colors.surfaceButton }}>
           <View className="flex-row items-center gap-3">
             {item.avatar_url ? (
               <TouchableOpacity
@@ -276,6 +300,18 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
               </AppText>
             </View>
           </View>
+          <View>
+            <Pressable
+              onPress={(event) => {
+                event.stopPropagation();
+                handleWatchLater();
+              }}
+              disabled = {isSaving}
+              className="ml-2">
+                <ScalableWatchLaterIcon color={isSaving ? colors.secondaryText : colors.primaryText}
+                style={{padding:4}} />
+            </Pressable>
+          </View>  
         </View>
       </ImageBackground>
     </TouchableOpacity>

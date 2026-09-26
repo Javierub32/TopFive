@@ -41,8 +41,10 @@ export const queryKeys = {
     ['lists', 'details', listId, type] as const,
   listContainingItem: (itemId?: string | number | null, type?: string | null) =>
     ['lists', 'containing-item', itemId, type] as const,
-  followers: (username?: string | null) => ['followers', username] as const,
-  following: (username?: string | null) => ['following', username] as const,
+  followers: (username?: string | null, search?: string) =>
+    search ? (['followers', username, search] as const) : (['followers', username] as const),
+  following: (username?: string | null, search?: string) =>
+    search ? (['following', username, search] as const) : (['following', username] as const),
   collectionOverview: (userId?: string | null, type?: ResourceType) =>
     ['collection', 'overview', userId, type] as const,
   collectionGroupPrefix: (userId?: string | null, type?: ResourceType) =>
