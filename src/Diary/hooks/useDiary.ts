@@ -77,6 +77,7 @@ export const useDiary = (targetUserId?: string) => {
     loadingMore: query.isFetchingNextPage,
     hasNextPage: query.hasNextPage,
     refresh: query.refetch,
+	refreshing: query.isRefetching && !query.isFetchingNextPage,
 	openReview,
   };
 };

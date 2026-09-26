@@ -29,6 +29,7 @@ import { useTheme } from 'context/ThemeContext';
 import { useNotification } from 'context/NotificationContext';
 import { useAuth } from 'context/AuthContext';
 import { supabase } from 'lib/supabase';
+import { DiaryPreview } from '@/Profile/components/DiaryPreview';
 
 export default function UserDetailsScreen() {
   const { colors } = useTheme();
@@ -375,6 +376,8 @@ const handleToggleAlerts = () => {
               </View>
 
               <TopFiveSelector userId={userData.id} />
+
+			  <DiaryPreview userId={userData.id} />
 
               <View className="mt-4">
                 <TabView

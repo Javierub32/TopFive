@@ -1,40 +1,44 @@
 import DiaryEntity from '@/Diary/entity/diaryEntity';
 import { useDiary } from '@/Diary/hooks/useDiary';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { ScalableFavoriteIcon, ScalableMaterialCommunityIcons } from 'components/Icons';
+import { AppText } from 'components/AppText';
+import {
+  FontAwesome5,
+  ScalableFavoriteIcon,
+  ScalableMaterialCommunityIcons,
+} from 'components/Icons';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { ReturnButton } from 'components/ReturnButton';
 import { Screen } from 'components/Screen';
 import { useAuth } from 'context/AuthContext';
 import { useTheme } from 'context/ThemeContext';
+import { useLocalSearchParams } from 'expo-router';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, SectionList, Text, TouchableOpacity, View } from 'react-native';
+import { Image, SectionList, TouchableOpacity, View } from 'react-native';
 
 export default function DiaryScreen() {
   const { colors } = useTheme();
   const { user } = useAuth();
   const { t, i18n } = useTranslation();
+  const { userId } = useLocalSearchParams<{ userId?: string }>();
 
-  const { items, loadMore, loading, loadingMore, hasNextPage, refresh, openReview } = useDiary(
-    user?.id
+  const { items, loadMore, loading, loadingMore, refresh, openReview, refreshing } = useDiary(
+    userId || user?.id
   );
+  const locale = i18n.resolvedLanguage ?? 'es';
 
   const sections = useMemo(() => {
-    const groups = new Map<string, { title: string; data: any[] }>();
+    const groups = new Map<string, { title: string; data: DiaryEntity[] }>();
 
     items.forEach((item) => {
-      const [year, month, day] = item.fecha_fin!.split('-').map(Number);
-
-      const date = new Date(year, month - 1, day);
+      const [year, month] = item.fecha_fin!.split('-').map(Number);
+      const date = new Date(year, month - 1, 1);
 
       const key = `${year}-${String(month)}`;
 
-      const locale = i18n.resolvedLanguage ?? 'es';
-
-      const title = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' })
-        .format(date)
-        .toLocaleUpperCase(locale);
+      const title = new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(
+        date
+      );
 
       if (!groups.has(key)) {
         groups.set(key, { title, data: [] });
@@ -44,7 +48,7 @@ export default function DiaryScreen() {
     });
 
     return Array.from(groups.values());
-  }, [items]);
+  }, [items, locale]);
 
   if (loading) {
     return (
@@ -59,24 +63,27 @@ export default function DiaryScreen() {
       <ReturnButton route="back" title={`${t('diary.title')}`} />
       <SectionList
         sections={sections}
-        keyExtractor={(item) => item.recurso_id.toString()}
+        keyExtractor={(item) => item.recurso_id.toString() + item.fecha_fin}
         renderSectionHeader={({ section }) => renderHeader({ section, colors })}
         renderItem={({ item, index, section }) => (
           <TouchableOpacity onPress={() => openReview(item)} activeOpacity={0.8}>
-            {renderItem({ item, colors, t, isLast: index === section.data.length - 1 })}
+            {renderItem({ item, colors, t, locale, isLast: index === section.data.length - 1 })}
           </TouchableOpacity>
         )}
         onEndReached={loadMore}
         onEndReachedThreshold={0.5}
         ListFooterComponent={loadingMore ? <LoadingIndicator /> : <View className="h-20" />}
-        refreshing={loading}
+        refreshing={refreshing}
         onRefresh={refresh}
         ListEmptyComponent={
           <View className="flex-1 items-center justify-center">
-            <Text style={{ color: colors.placeholderText }}>{t('diary.empty')}</Text>
+            <AppText style={{ color: colors.placeholderText, fontSize: 14 }}>
+              {t('diary.empty')}
+            </AppText>
           </View>
         }
-        style={{ flex: 1 }}
+        style={{ flex: 1, marginTop: 5 }}
+        showsVerticalScrollIndicator={false}
       />
     </Screen>
   );
@@ -85,83 +92,79 @@ export default function DiaryScreen() {
 const renderHeader = ({ section, colors }: { section: { title: string }; colors: any }) => {
   return (
     <View
-      className="px-4 py-2"
+      className="px-5 py-3"
       style={{
         backgroundColor: colors.surfaceButton,
         borderTopWidth: 1,
         borderTopColor: colors.borderButton,
       }}>
-      <Text className="text-xl font-light tracking-widest" style={{ color: colors.primaryText }}>
-        {section.title.toUpperCase()}
-      </Text>
+      <AppText
+        className="font-light tracking-widest"
+        style={{ color: colors.primaryText, fontSize: 16 }}>
+        {section.title.toLocaleUpperCase()}
+      </AppText>
     </View>
   );
 };
+
 const renderItem = ({
   item,
   colors,
   t,
+  locale,
   isLast,
 }: {
   item: DiaryEntity;
   colors: any;
   t: any;
+  locale: string;
   isLast: boolean;
 }) => {
-  const day = new Date(`${item.fecha_fin}T00:00:00`).getDate();
-  const year = new Date(`${item.anio_lanzamiento}T00:00:00`).getFullYear();
-
   const posterUrl = item.imagen_url;
-
   const rating = Number(item.calificacion ?? 0);
-
-  const titulo = item.titulo.slice(0, 35) + (item.titulo.length > 35 ? ' ...' : '');
-
+  const title = item.titulo.slice(0, 70) + (item.titulo.length > 70 ? ' ...' : '');
   const hasReview = item.comentario !== null && item.comentario !== '';
+  const date = item.fecha_fin
+    ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(
+        new Date(`${item.fecha_fin}T00:00:00`)
+      )
+    : null;
 
   return (
     <View
-      className="flex-row border-b px-5 py-5"
+      className="mx-4 flex-row px-1 py-4"
       style={{
         backgroundColor: colors.background,
         borderBottomWidth: isLast ? 0 : 1,
         borderBottomColor: colors.placeholderText,
       }}>
-      {/* Día */}
-      <View
-        className="mr-5 h-14 w-14 items-center justify-center self-center rounded-xl border "
-        style={{ borderColor: colors.placeholderText }}>
-        <Text className="text-2xl font-light" style={{ color: colors.secondaryText }}>
-          {day}
-        </Text>
-      </View>
-
-      {/* Póster */}
-      <View
-        className="mr-5 overflow-hidden border"
-        style={{ width: 55, aspectRatio: 2 / 3, borderColor: colors.surfaceButton }}>
+      <View className="mr-4 overflow-hidden rounded-sm" style={{ width: 55, aspectRatio: 2 / 3 }}>
         {posterUrl ? (
           <Image source={{ uri: posterUrl }} className="h-full w-full" resizeMode="cover" />
         ) : (
           <View className="h-full w-full items-center justify-center">
-            <Text className="text-center text-xs" style={{ color: colors.placeholderText }}>
+            <AppText
+              className="text-center"
+              style={{ color: colors.placeholderText, fontSize: 12 }}>
               {t('diary.noImage')}
-            </Text>
+            </AppText>
           </View>
         )}
       </View>
 
-      {/* Información */}
       <View className="flex-1 justify-center">
-        <Text
-          className="text-lg font-light"
-          style={{ color: colors.primaryText }}
+        <AppText
+          className="font-light"
+          style={{ color: colors.primaryText, fontSize: 16 }}
           numberOfLines={2}>
-          {titulo}{' '}
-          <Text className="text-base font-normal" style={{ color: colors.secondaryText }}>
-            {year}
-          </Text>
-        </Text>
+          {title}
+        </AppText>
+
+        {date && (
+          <AppText className="mt-1" style={{ color: colors.secondaryText, fontSize: 11 }}>
+            {date}
+          </AppText>
+        )}
 
         <View className="mt-2 flex-row flex-wrap items-center">
           <View className="flex-row gap-1">
@@ -179,7 +182,7 @@ const renderItem = ({
           {hasReview && (
             <View className="ml-3 items-center justify-center rounded-full p-1">
               <ScalableMaterialCommunityIcons
-                name="feather"
+                name="card-text-outline"
                 size={18}
                 color={colors.secondaryText}
               />
@@ -187,7 +190,7 @@ const renderItem = ({
           )}
 
           {item.favorito && (
-            <View className="ml-3 items-center justify-center rounded-full p-1" style={{}}>
+            <View className="ml-3 items-center justify-center rounded-full p-1">
               <ScalableFavoriteIcon size={20} />
             </View>
           )}

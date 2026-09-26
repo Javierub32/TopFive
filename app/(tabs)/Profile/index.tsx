@@ -29,6 +29,7 @@ import { ResourceType } from 'hooks/useResource';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useAuth } from 'context/AuthContext';
 import { useTopFive } from '@/Profile/hooks/useTopFive';
+import { DiaryPreview } from '@/Profile/components/DiaryPreview';
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
@@ -231,22 +232,7 @@ export default function ProfileScreen() {
 
           {userData?.id && <TopFiveSelector userId={userData.id} />}
 
-		<View className="mt-6"/>
-		  <TouchableOpacity
-              className=" mb-6 rounded-xl p-4"
-              style={{ backgroundColor: colors.accent, marginTop: -10 }}
-              activeOpacity={0.7}
-              onPress={() =>
-                router.push({
-                  pathname: '/diary',
-                })
-              }>
-              <AppText
-                className="text-center font-semibold"
-                style={{ color: colors.primaryText, fontSize: 16 }}>
-                {"Entrar al diario"}
-              </AppText>
-            </TouchableOpacity>
+		  {userData?.id && <DiaryPreview userId={userData.id}/>}
 
           {/* TabView implementado para poder deslizar horizontalmente */}
           <TabView

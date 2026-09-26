@@ -600,6 +600,7 @@
   "diary": {
     "title": "Diary",
     "empty": "No items",
-    "noImage": "No image"
+    "noImage": "No image",
+    "profileTitle": "Recent activity"
   }
 }
