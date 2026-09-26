@@ -118,7 +118,6 @@
         }
       }
     },
-<<<<<<< HEAD
     "legal": {
       "title": "Soporte y legal",
       "sendFeed": "Enviar feedback",
@@ -129,251 +128,6 @@
         "filmsCard": {
           "description": "Este producto utiliza la API de TMDB pero no está certificada por TMDB.",
           "link": "Visitar TMDB"
-=======
-    "login":{
-        "loginSentences": {
-            "1": "  Tu butaca reservada te espera.",
-            "2": "  Tu inventario de entretenimiento, en un solo lugar.",
-            "3": "  Marca tu página. Guarda tu mundo.",
-            "4": "  Tu vida, tu ranking, tu TopFive.",
-            "5": "  Tu mixtape definitiva está aquí."
-        },
-        "loginNotification": {
-            "title": "¡Bienvenido!",
-            "description": "Sesión iniciada correctamente."
-        },
-        "email": {
-            "title": "Correo electrónico",
-            "placeholder": "tu@correo.com"
-        },
-        "password": "Contraseña",
-        "forgotPassword": {
-            "title": "¿Olvidaste tu contraseña?",
-            "subtitle": "Ingrese su correo para restablecer su contraseña.",
-            "emailNotRegistered": "El correo no está registrado. Cree una cuenta o verifique el email ingresado.",
-            "emailSent": "Recibirás un email con instrucciones para restablecer tu contraseña.",
-            "errorEmailSent": "No se pudo enviar el correo de restablecimiento. Por favor, inténtalo de nuevo."
-        },
-        "loginButton": "Iniciar sesión",
-        "loginWithGoogle": "Iniciar sesión con Google",
-        "loginWithApple": "Iniciar sesión con Apple",
-        "noAccount": "¿No tienes una cuenta?",
-        "signUpButton": "Regístrate aquí",
-        "signUp": {
-            "subtitle": "Crea tu cuenta",
-            "username": "Nombre de usuario",
-            "usernamePlaceholder": "Tu nombre de usuario",
-            "email": "Correo electrónico",
-            "emailPlaceholder": "tu@correo.com",
-            "password": "Contraseña",
-            "confirmPassword": "Confirmar contraseña",
-            "signUpButton": "Registrarse",
-            "alreadyHaveAccount": "¿Ya tienes una cuenta?",
-            "loginButton": "Volver al inicio de sesión",
-            "success": {
-                "title": "Cuenta creada",
-                "description": "Tu cuenta ha sido creada exitosamente. \n Revisa tu correo y confirma tu cuenta."
-            },
-            "errors": {
-                "passwordMismatch": "Las contraseñas no coinciden. Por favor, inténtalo de nuevo.",
-                "general": "Hubo un error al crear tu cuenta."
-            }
-        },
-        "resetPassword": {
-            "error": {
-                "denied": "Permiso denegado",
-                "errorLink": "El enlace ha caducado o está incompleto. Por favor, solicita uno nuevo.",
-                "passwordMismatch": "Las contraseñas no coinciden. Por favor, revísalas.",
-                "general": "No se pudo actualizar la contraseña. El enlace podría haber caducado.",
-                "differentPassword": "La nueva contraseña deber ser diferente a la que estabas usando.",
-                "rateLimit": "Has intentado cambiar la contraseña demasiadas veces. Por favor, espera unos minutos.",
-                "default": "Error al cambiar la contraseña."
-            },
-            "successDescription": "Tu contraseña ha sido actualizada correctamente. Ya puedes iniciar sesión.",
-            "newPassword": "Nueva contraseña",
-            "confirmPassword": "Confirmar contraseña",
-            "changePassword": "Cambiar contraseña"
-        }
-    },
-    "search": {
-        "usersTitle": "Usuarios",
-        "placeholder": "Buscar {{category}}...",
-        "noResults": "Sin resultados.",
-        "description": "Realiza una búsqueda para ver resultados de {{category}}.",
-        "userSearchBarPlaceholder": "Busca un usuario...",
-        "usersScreenTitle": "Usuarios",
-        "usersScreenDescription": "Realiza una búsqueda para encontrar usuarios."
-    },
-    "collection": {
-        "saveIn": "Guardar en...",
-        "noLists": "No tienes listas de {{category}} creadas.",
-        "orderBy": "Ordenar por",
-        "recentsFirst": "Más recientes",
-        "oldestFirst": "Más antiguos",
-        "status": "Estado",
-        "onlyFavorites": "Solo favoritos",
-        "noContent": "No hay contenido disponible",
-        "searchInPlaceholder": "Buscar en {{category}}...",
-        "noContentDescription": "No hay {{category}} {{status}}"
-    },
-    "list": {
-        "deleteListNotification": {
-            "title": "Eliminar lista",
-            "description": "¿Estás seguro de que deseas eliminar esta lista de su colección?",
-            "confirmationTitle": "Lista eliminada",
-            "confirmationDescription": "La lista {{listName}} ha sido eliminada exitosamente."
-        },
-        "elements": "elementos", 
-        "editList": "Editar lista",
-        "addToList": "Añadir a lista",
-        "orderList": "Ordenar lista",
-        "deleteList": "Eliminar lista",
-        "noLists": "No tienes listas de {{category}}.",
-        "listCreatedNotification": {
-            "title": "Lista creada",
-            "description": "La lista {{listName}} ha sido creada exitosamente."
-        },
-        "couldntCreateError": "No se pudo crear la lista. Por favor, inténtalo de nuevo.",
-        "deleteItemFromListNotification": {
-            "title": "Eliminar de la lista",
-            "description": "¿Estás seguro de que deseas eliminar {{titulo}} de la lista?",
-            "multipleDescription": "¿Estás seguro de que deseas eliminar estos {{count}} elementos de la lista?",
-            "confirmationDescription": "El elemento ha sido eliminado exitosamente de la lista.",
-            "multipleConfirmationDescription": "Los elementos han sido eliminados exitosamente de la lista."
-        },
-        "addItemToListNotification": {
-            "title": "Añadir a la lista",
-            "description": "¿Deseas añadir este elemento a la lista?",
-            "multipleDescription": "¿Deseas añadir estos {{count}} elementos a la lista?",
-            "confirmationDescription": "El elemento ha sido añadido exitosamente a la lista.",
-            "multipleConfirmationDescription": "Los elementos han sido añadidos exitosamente a la lista."
-        },
-        "createNewList": "+ Nueva lista",
-        "onThisList": "en esta lista",
-        "reorderList": {
-            "Title": "Ordenar ",
-            "Description": "Mantén pulsado y arrastra para organizar tu lista",
-            "reorderNotification": {
-                "success": "El orden de la lista ha sido actualizado exitosamente.",
-                "error": "El orden de la lista no se ha podido actualizar."
-            }
-        }
-    },
-    "home": {
-        "pressAgainToExit": "Vuelve a tocar para salir.",
-        "noCompletedReviewsFromFriends": "No tienes ningún amigo con reseñas completadas.",
-        "addFriendsToSeeReviews": "Agrega amigos para poder ver sus reseñas.",
-        "searchFriends": "Buscar amigos",
-        "renderResource": {
-            "today": "Hoy",
-            "oneDayAgo": "Hace 1 día",
-            "daysAgo": "Hace {{days}} días"
-        },
-        "contentAlreadyInCollection": "Este recurso ya está en tu colección"
-    }, 
-    "profile": {
-        "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}",
-        "shareUserMessage": "¡Echa un vistazo a este perfil en TopFive!\n{{url}}",
-        "shareTopFive": "Compartir mi TopFive",
-        "user": "Usuario",
-        "reviews": "Reseñas",
-        "selectYear": "Seleccionar año",
-        "monthsAbbreviation": {
-            "january": "Ene",
-            "february": "Feb",
-            "march": "Mar",
-            "april": "Abr",
-            "may": "May",
-            "june": "Jun",
-            "july": "Jul",
-            "august": "Ago",
-            "september": "Sep",
-            "october": "Oct",
-            "november": "Nov",
-            "december": "Dic"
-        },
-        "activity" : "Actividad",
-        "total": "Total",
-        "average": "Media",
-        "monthly": "Mensual",
-        "myTopFive": "Mi TopFive",
-        "categoriesConsumed": {
-            "books": "Libros leídos",
-            "films": "Películas vistas",
-            "series": "Series vistas",
-            "videogames": "Videojuegos jugados",
-            "albums": "Álbumes escuchados"
-        },
-        "viewCompleted": {
-            "books": "Ver Libros Leídos",
-            "series": "Ver Series Vistas",
-            "films": "Ver Películas Vistas",
-            "videogames": "Ver Juegos Jugados",
-            "albums": "Ver Álbumes Escuchados"
-        },
-        "loadingStatsError": "No se pudieron cargar las estadísticas. Inténtalo de nuevo más tarde.",
-        "noPermissionError": {
-            "title": "Permiso denegado",
-            "description": "Necesitamos acceso a tu galería."
-        },
-        "profilePhotoUpdated": "Foto de perfil actualizada",
-        "noProfilePhoto": "No se pudo actualizar la foto de perfil.",
-        "removeFromTopFiveNotification": {
-            "title": "Eliminar de TopFive",
-            "description": "¿Estás seguro de que deseas eliminar este elemento de tu TopFive?",
-            "confirmationDescription": "El elemento ha sido eliminado de tu TopFive.",
-            "error": "Error al eliminar item del TopFive."
-        },
-        "editProfile": {
-            "title": "Editar perfil",
-            "username": "Nombre de usuario",
-            "usernamePlaceholder": "Escribe tu nombre de usuario...",
-            "description": "Descripción",
-            "descriptionPlaceholder": "Escribe algo sobre ti...",
-            "profileType": "Perfil",
-            "profilePublic": "Público",
-            "profilePrivate": "Privado",
-            "profileUpdated": "Tu perfil ha sido actualizado correctamente.",
-            "usernameExists": "Este nombre de usuario ya está en uso. Por favor, elige otro.",
-            "profileUpdateError": "Hubo un error al actualizar tu perfil. Por favor, intenta de nuevo.",
-            "topfiveUpdateError": "Error al guardar el Top 5 completo. Por favor, intenta de nuevo.",
-            "topfive": "Editar mi TopFive",
-            "topfiveDescription": "Mantén pulsado para ordenar. Pulsa la X para eliminar."
-        },
-        "follow" : "Seguir",
-        "followApplied": "Solicitud enviada",
-        "followers": "Seguidores",
-        "following": "Seguidos",
-        "deleteFollowers": {
-            "title": "Eliminar seguidor",
-            "description": "¿Deseas eliminar a {{username}} de tus seguidores?",
-            "successDescription": "{{username}} ha sido eliminado de tus seguidores.",
-            "errorDescription": "No se pudo eliminar a {{username}} de tus seguidores. Por favor, inténtalo de nuevo."
-        },
-        "deleteFollowing": {
-            "title": "Dejar de seguir",
-            "description": "¿Deseas dejar de seguir a {{username}}?",
-            "successDescription": "Has dejado de seguir a {{username}}.",
-            "errorDescription": "No se pudo dejar de seguir a {{username}}. Por favor, inténtalo de nuevo."
-        },
-        "privateProfile": {
-            "title": "Perfil privado",
-            "description": "Este perfil es privado. No puedes ver su contenido."
-        },
-        "alerts": {
-            "activateChoiceTitle": "Activar Notificaciones",
-            "activateChoiceDesc": "¿Quieres recibir un aviso cuando {{username}} publique algo nuevo?",
-            "deactivateChoiceTitle": "Desactivar Notificaciones",
-            "deactivateChoiceDesc": "¿Seguro que quieres dejar de recibir alertas de {{username}}?"
-        }
-    },
-    "aboutUs": {
-        "creditsAndLicenses": "Créditos y Licencias",
-        "creditsDescription": "Esta aplicación utiliza datos de las siguientes fuentes:",
-        "filmsCard":{
-            "description": "Este producto utiliza la API de TMDB pero no está certificada por TMDB.",
-            "link": "Visitar TMDB"
->>>>>>> origin/main
         },
         "seriesCard": {
           "description": "Datos proporcionados por TVMaze. Licenciado bajo CC BY-SA 4.0.",
@@ -409,12 +163,11 @@
       "4": "  Tu vida, tu ranking, tu TopFive.",
       "5": "  Tu mixtape definitiva está aquí."
     },
-<<<<<<< HEAD
     "loginNotification": {
       "title": "¡Bienvenido!",
       "description": "Sesión iniciada correctamente."
-=======
-    "forms": {
+    },
+"forms": {
         "updatingError": "Error al actualizar.",
         "savingError": "Error al guardar.",
         "updatingSuccessDescription": "Has actualizado {{titulo}} en tu colección.",
@@ -486,7 +239,6 @@
         "reviewPlaceholder": "Escribe tu opinión...",
         "views": "Vistas"
        
->>>>>>> origin/main
     },
     "email": {
       "title": "Correo electrónico",
