@@ -296,7 +296,11 @@ export const useResource = () => {
       }
     };
 
-  const checkIfResourceExists = async (apiId: string | number | null, type: ResourceType) => {
+  const checkIfResourceExists = async (
+    apiId: string | number | null,
+    type: ResourceType,
+    options: { throwOnError?: boolean } = {}
+  ) => {
     if (!apiId) return null;
     try {
       if (!user) throw new Error('User not authenticated');
@@ -327,6 +331,7 @@ export const useResource = () => {
       return normalizedData;
     } catch (error) {
       console.error(`Error al comprobar si existe el recurso ${type}: `, error);
+      if (options.throwOnError) throw error;
       return null;
     }
   };

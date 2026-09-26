@@ -99,7 +99,6 @@ export const CollectionGroup = ({
                 name="check-circle"
                 size={20}
                 color={colors.primary}
-                backgroundColor={colors.primary}
               />
             </View>
           ): (<View className="absolute top-1 right-1 z-10 ">
@@ -107,7 +106,6 @@ export const CollectionGroup = ({
                 name="circle"
                 size={20}
                 color={colors.surfaceButton}
-                backgroundColor={colors.surfaceButton}
               />
             </View>)}
 
