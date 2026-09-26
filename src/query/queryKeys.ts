@@ -27,7 +27,7 @@ export const queryKeys = {
     ['topFive', 'selector', userId, type] as const,
   topFiveSelectorPrefix: (userId?: string | null) => ['topFive', 'selector', userId] as const,
   activityFeed: (userId?: string | null) => ['activity-feed', userId] as const,
-  forYou: (userId?: string | null) => ['for-you', userId] as const, 
+  forYou: (userId?: string | null) => ['for-you', userId] as const,
   notifications: (userId?: string | null) => ['notifications', userId] as const,
   notificationCount: (userId?: string | null) => ['notifications', 'count', userId] as const,
   userSearch: (viewerId?: string | null, term?: string | null) =>
@@ -52,4 +52,5 @@ export const queryKeys = {
   collectionGroup: (userId?: string | null, type?: ResourceType, state?: StateType) =>
     ['collection', 'group', userId, type, state] as const,
   frames: (userId?: string | null) => ['frames', userId] as const,
+  diary: (userId?: string | null) => ['diary', userId] as const,
 };
