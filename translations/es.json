@@ -1,478 +1,173 @@
 {
-    "common":{
-        "appName": "TopFive",
-        "save": "Guardar",
-        "cancel": "Cancelar",
-        "loading": "Cargando...",
-        "loadingCreating": "Creando...",
-        "saving": "Guardando...",
-        "saveChanges": "Guardar cambios",
-        "warning": "Aviso",
-        "attention": "Atención",
-        "error": "Error",
-        "success": "¡Éxito!",
-        "send": "Enviar",
-        "accept": "Aceptar",
-        "noTitle": "Sin título",
-        "noDescription": "Sin descripción",
-        "unknown": "Desconocido",
-        "content": "Contenido",
-        "all": "Todos",
-        "confirm": "Confirmar",
-        "delete": "Eliminar",
-        "readMore": "Leer más",
-        "readLess": "Leer menos",
-        "icon": "Icono",
-        "colour": "Color",
-        "obtain": "Obtener",
-        "update": "Actualizar",
-        "edit": "Editar"
+  "common": {
+    "appName": "TopFive",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "loading": "Cargando...",
+    "loadingCreating": "Creando...",
+    "saving": "Guardando...",
+    "saveChanges": "Guardar cambios",
+    "warning": "Aviso",
+    "attention": "Atención",
+    "error": "Error",
+    "success": "¡Éxito!",
+    "send": "Enviar",
+    "accept": "Aceptar",
+    "noTitle": "Sin título",
+    "noDescription": "Sin descripción",
+    "unknown": "Desconocido",
+    "content": "Contenido",
+    "all": "Todos",
+    "confirm": "Confirmar",
+    "delete": "Eliminar",
+    "readMore": "Leer más",
+    "readLess": "Leer menos",
+    "icon": "Icono",
+    "colour": "Color",
+    "obtain": "Obtener",
+    "update": "Actualizar",
+    "edit": "Editar"
+  },
+  "status": {
+    "title": "Estado",
+    "pending": "Pendiente",
+    "inProgress": "En curso",
+    "completed": "Completado",
+    "reading": "Leyendo",
+    "watching": "Viendo",
+    "listening": "Escuchando",
+    "playing": "Jugando"
+  },
+  "categories": {
+    "books": "Libros",
+    "series": "Series",
+    "films": "Películas",
+    "videogames": "Videojuegos",
+    "albums": "Álbumes"
+  },
+  "category": {
+    "book": "Libro",
+    "serie": "Serie",
+    "film": "Película",
+    "videogame": "Videojuego",
+    "album": "Álbum"
+  },
+  "languages": {
+    "es": "Español",
+    "en": "Inglés"
+  },
+  "fontsizes": {
+    "small": "Pequeño",
+    "medium": "Mediano",
+    "large": "Grande"
+  },
+  "themes": {
+    "dark": "Oscuro",
+    "light": "Claro",
+    "system": "Sistema"
+  },
+  "tabs": {
+    "home": "Inicio",
+    "users": "Usuarios",
+    "lists": "Listas",
+    "search": "Búsqueda",
+    "library": "Mi Biblioteca"
+  },
+  "settings": {
+    "title": "Configuración",
+    "personalization": {
+      "title": "Personalización",
+      "editProfile": {
+        "title": "Editar perfil",
+        "username": "Nombre de usuario",
+        "description": "Descripción"
+      },
+      "changeTheme": {
+        "title": "Cambiar tema",
+        "darkMode": "Oscuro",
+        "lightMode": "Claro",
+        "systemMode": "Sistema"
+      },
+      "changeLanguage": "Cambiar idioma",
+      "changeFontSize": "Cambiar tamaño de fuente",
+      "editPhoto": "Editar foto y avatar"
     },
-    "status": {
-        "title": "Estado",
-        "pending": "Pendiente",
-        "inProgress": "En curso",
-        "completed": "Completado",
-        "reading": "Leyendo",
-        "watching": "Viendo",
-        "listening": "Escuchando",
-        "playing": "Jugando"
-    },
-    "categories": {
-        "books": "Libros",
-        "series": "Series",
-        "films": "Películas",
-        "videogames": "Videojuegos",
-        "albums": "Álbumes"
-    },
-    "category": {
-        "book": "Libro",
-        "serie": "Serie",
-        "film": "Película",
-        "videogame": "Videojuego",
-        "album": "Álbum"
-    },
-    "languages":{
-        "es": "Español",
-        "en": "Inglés"
-    },
-    "fontsizes":{
-        "small": "Pequeño",
-        "medium": "Mediano",
-        "large": "Grande"
-    },
-    "themes":{
-        "dark": "Oscuro",
-        "light": "Claro",
-        "system": "Sistema"
-    },
-    "tabs":{
-        "home": "Inicio",
-        "users": "Usuarios",
-        "lists": "Listas",
-        "search": "Búsqueda",
-        "library": "Mi Biblioteca"
-    },
-    "settings":{
-        "title": "Configuración",
-        "personalization": {
-            "title":"Personalización",
-            "editProfile": {
-                "title": "Editar perfil",
-                "username": "Nombre de usuario",
-                "description": "Descripción"
-            },
-            "changeTheme": {
-                "title": "Cambiar tema",
-                "darkMode": "Oscuro",
-                "lightMode": "Claro",
-                "systemMode": "Sistema"
-            },
-            "changeLanguage": "Cambiar idioma",
-            "changeFontSize": "Cambiar tamaño de fuente",
-            "editPhoto" : "Editar foto y avatar"
+    "account": {
+      "title": "Cuenta",
+      "share": {
+        "title": "Compartir perfil",
+        "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}"
+      },
+      "logOut": {
+        "title": "Cerrar sesión",
+        "alertTitle": "Confirmar cierre de sesión",
+        "alertDescription": "¿Estás seguro de que deseas cerrar sesión?",
+        "alertConfirmation": "Cerrar sesión"
+      },
+      "deleteAccount": {
+        "title": "Eliminar cuenta",
+        "firstAlert": {
+          "alertTitle": "Confirmar eliminación",
+          "alertDescription": "¿Estás seguro de que deseas eliminar la cuenta? Esta acción no se puede deshacer",
+          "alertConfirmation": "Eliminar"
         },
-        "account": {
-            "title": "Cuenta",
-            "share": {
-                "title": "Compartir perfil",
-                "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}"
-            },
-            "logOut": {
-                "title": "Cerrar sesión",
-                "alertTitle": "Confirmar cierre de sesión",
-                "alertDescription": "¿Estás seguro de que deseas cerrar sesión?",
-                "alertConfirmation": "Cerrar sesión"
-            },
-            "deleteAccount": {
-                "title": "Eliminar cuenta",
-                "firstAlert":{
-                    "alertTitle": "Confirmar eliminación",
-                    "alertDescription": "¿Estás seguro de que deseas eliminar la cuenta? Esta acción no se puede deshacer",
-                    "alertConfirmation": "Eliminar" 
-                },
-                "secondAlert":{
-                    "alertTitle": "Última confirmación",
-                    "alertDescription": "Esta es tu última oportunidad para cancelar. ¿Realmente deseas eliminar tu cuenta?",
-                    "alertConfirmation": "Eliminar"
-                } 
-            }
-        }, 
-        "legal": {
-            "title": "Soporte y legal",
-            "sendFeed": "Enviar feedback",
-            "aboutUs": {
-                "title": "Sobre nosotros",
-                "creditsTitle": "Créditos y Licencias",
-                "creditsDescription": "Esta aplicación utiliza datos de las siguientes fuentes",
-                "filmsCard":{
-                    "description": "Este producto utiliza la API de TMDB pero no está certificada por TMDB.",
-                    "link": "Visitar TMDB"
-                },
-                "seriesCard": {
-                    "description": "Datos proporcionados por TVMaze. Licenciado bajo CC BY-SA 4.0.",
-                    "link": "Visitar TVMaze"
-                },
-                "videogamesCard": {
-                    "description": "Información de videojuegos provista por IGDB.",
-                    "link": "Visitar IGDB"
-                }, 
-                "albumsCard":{
-                    "description": "Datos proporcionados por Discogs. Este producto utiliza la API de Discogs pero no está certificada por Discogs.",
-                    "link": "Visitar Discogs"
-                },
-                "booksCard":{
-                    "description": "Datos proporcionados por OpenLibrary.",
-                    "link": "Visitar OpenLibrary"
-                }
-            },
-            "privacy": "Política de privacidad",
-            "adsPriv": "Privacidad de anuncios"
-        },
-        "errors": {
-            "privacyError":{
-                "description": "El formulario de privacidad no está disponible en tu región."
-            }
+        "secondAlert": {
+          "alertTitle": "Última confirmación",
+          "alertDescription": "Esta es tu última oportunidad para cancelar. ¿Realmente deseas eliminar tu cuenta?",
+          "alertConfirmation": "Eliminar"
         }
-
+      }
     },
-    "login":{
-        "loginSentences": {
-            "1": "  Tu butaca reservada te espera.",
-            "2": "  Tu inventario de entretenimiento, en un solo lugar.",
-            "3": "  Marca tu página. Guarda tu mundo.",
-            "4": "  Tu vida, tu ranking, tu TopFive.",
-            "5": "  Tu mixtape definitiva está aquí."
-        },
-        "loginNotification": {
-            "title": "¡Bienvenido!",
-            "description": "Sesión iniciada correctamente."
-        },
-        "email": {
-            "title": "Correo electrónico",
-            "placeholder": "tu@correo.com"
-        },
-        "password": "Contraseña",
-        "forgotPassword": {
-            "title": "¿Olvidaste tu contraseña?",
-            "subtitle": "Ingrese su correo para restablecer su contraseña.",
-            "emailNotRegistered": "El correo no está registrado. Cree una cuenta o verifique el email ingresado.",
-            "emailSent": "Recibirás un email con instrucciones para restablecer tu contraseña.",
-            "errorEmailSent": "No se pudo enviar el correo de restablecimiento. Por favor, inténtalo de nuevo."
-        },
-        "loginButton": "Iniciar sesión",
-        "loginWithGoogle": "Iniciar sesión con Google",
-        "loginWithApple": "Iniciar sesión con Apple",
-        "noAccount": "¿No tienes una cuenta?",
-        "signUpButton": "Regístrate aquí",
-        "signUp": {
-            "subtitle": "Crea tu cuenta",
-            "username": "Nombre de usuario",
-            "usernamePlaceholder": "Tu nombre de usuario",
-            "email": "Correo electrónico",
-            "emailPlaceholder": "tu@correo.com",
-            "password": "Contraseña",
-            "confirmPassword": "Confirmar contraseña",
-            "signUpButton": "Registrarse",
-            "alreadyHaveAccount": "¿Ya tienes una cuenta?",
-            "loginButton": "Volver al inicio de sesión",
-            "success": {
-                "title": "Cuenta creada",
-                "description": "Tu cuenta ha sido creada exitosamente. \n Revisa tu correo y confirma tu cuenta."
-            },
-            "errors": {
-                "passwordMismatch": "Las contraseñas no coinciden. Por favor, inténtalo de nuevo.",
-                "general": "Hubo un error al crear tu cuenta."
-            }
-        },
-        "resetPassword": {
-            "error": {
-                "denied": "Permiso denegado",
-                "errorLink": "El enlace ha caducado o está incompleto. Por favor, solicita uno nuevo.",
-                "passwordMismatch": "Las contraseñas no coinciden. Por favor, revísalas.",
-                "general": "No se pudo actualizar la contraseña. El enlace podría haber caducado.",
-                "differentPassword": "La nueva contraseña deber ser diferente a la que estabas usando.",
-                "rateLimit": "Has intentado cambiar la contraseña demasiadas veces. Por favor, espera unos minutos.",
-                "default": "Error al cambiar la contraseña."
-            },
-            "successDescription": "Tu contraseña ha sido actualizada correctamente. Ya puedes iniciar sesión.",
-            "newPassword": "Nueva contraseña",
-            "confirmPassword": "Confirmar contraseña",
-            "changePassword": "Cambiar contraseña"
-        }
-    },
-    "search": {
-        "usersTitle": "Usuarios",
-        "placeholder": "Buscar {{category}}...",
-        "noResults": "Sin resultados.",
-        "description": "Realiza una búsqueda para ver resultados de {{category}}.",
-        "userSearchBarPlaceholder": "Busca un usuario...",
-        "usersScreenTitle": "Usuarios",
-        "usersScreenDescription": "Realiza una búsqueda para encontrar usuarios."
-    },
-    "collection": {
-        "saveIn": "Guardar en...",
-        "noLists": "No tienes listas de {{category}} creadas.",
-        "orderBy": "Ordenar por",
-        "recentsFirst": "Más recientes",
-        "oldestFirst": "Más antiguos",
-        "status": "Estado",
-        "onlyFavorites": "Solo favoritos",
-        "noContent": "No hay contenido disponible",
-        "searchInPlaceholder": "Buscar en {{category}}...",
-        "noContentDescription": "No hay {{category}} {{status}}"
-    },
-    "list": {
-        "deleteListNotification": {
-            "title": "Eliminar lista",
-            "description": "¿Estás seguro de que deseas eliminar esta lista de su colección?",
-            "confirmationTitle": "Lista eliminada",
-            "confirmationDescription": "La lista {{listName}} ha sido eliminada exitosamente."
-        },
-        "elements": "elementos", 
-        "editList": "Editar lista",
-        "addToList": "Añadir a lista",
-        "orderList": "Ordenar lista",
-        "deleteList": "Eliminar lista",
-        "noLists": "No tienes listas de {{category}}.",
-        "listCreatedNotification": {
-            "title": "Lista creada",
-            "description": "La lista {{listName}} ha sido creada exitosamente."
-        },
-        "couldntCreateError": "No se pudo crear la lista. Por favor, inténtalo de nuevo.",
-        "deleteItemFromListNotification": {
-            "title": "Eliminar de la lista",
-            "description": "¿Estás seguro de que deseas eliminar {{titulo}} de la lista?",
-            "multipleDescription": "¿Estás seguro de que deseas eliminar estos {{count}} elementos de la lista?",
-            "confirmationDescription": "El elemento ha sido eliminado exitosamente de la lista.",
-            "multipleConfirmationDescription": "Los elementos han sido eliminados exitosamente de la lista."
-        },
-        "addItemToListNotification": {
-            "title": "Añadir a la lista",
-            "description": "¿Deseas añadir este elemento a la lista?",
-            "multipleDescription": "¿Deseas añadir estos {{count}} elementos a la lista?",
-            "confirmationDescription": "El elemento ha sido añadido exitosamente a la lista.",
-            "multipleConfirmationDescription": "Los elementos han sido añadidos exitosamente a la lista."
-        },
-        "createNewList": "+ Nueva lista",
-        "onThisList": "en esta lista",
-        "reorderList": {
-            "Title": "Ordenar ",
-            "Description": "Mantén pulsado y arrastra para organizar tu lista",
-            "reorderNotification": {
-                "success": "El orden de la lista ha sido actualizado exitosamente.",
-                "error": "El orden de la lista no se ha podido actualizar."
-            }
-        }
-    },
-    "home": {
-        "pressAgainToExit": "Vuelve a tocar para salir.",
-        "noCompletedReviewsFromFriends": "No tienes ningún amigo con reseñas completadas.",
-        "addFriendsToSeeReviews": "Agrega amigos para poder ver sus reseñas.",
-        "searchFriends": "Buscar amigos",
-        "renderResource": {
-            "today": "Hoy",
-            "oneDayAgo": "Hace 1 día",
-            "daysAgo": "Hace {{days}} días"
-        },
-        "siguiendo": "Siguiendo",
-        "paraTi": "Para ti",
-        "contentAlreadyInCollection": "Este recurso ya está en tu colección"
-    }, 
-    "profile": {
-        "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}",
-        "shareUserMessage": "¡Echa un vistazo a este perfil en TopFive!\n{{url}}",
-        "shareTopFive": "Compartir mi TopFive",
-        "user": "Usuario",
-        "reviews": "Reseñas",
-        "selectYear": "Seleccionar año",
-        "monthsAbbreviation": {
-            "january": "Ene",
-            "february": "Feb",
-            "march": "Mar",
-            "april": "Abr",
-            "may": "May",
-            "june": "Jun",
-            "july": "Jul",
-            "august": "Ago",
-            "september": "Sep",
-            "october": "Oct",
-            "november": "Nov",
-            "december": "Dic"
-        },
-        "activity" : "Actividad",
-        "total": "Total",
-        "average": "Media",
-        "monthly": "Mensual",
-        "myTopFive": "Mi TopFive",
-        "categoriesConsumed": {
-            "books": "Libros leídos",
-            "films": "Películas vistas",
-            "series": "Series vistas",
-            "videogames": "Videojuegos jugados",
-            "albums": "Álbumes escuchados"
-        },
-        "viewCompleted": {
-            "books": "Ver Libros Leídos",
-            "series": "Ver Series Vistas",
-            "films": "Ver Películas Vistas",
-            "videogames": "Ver Juegos Jugados",
-            "albums": "Ver Álbumes Escuchados"
-        },
-        "loadingStatsError": "No se pudieron cargar las estadísticas. Inténtalo de nuevo más tarde.",
-        "noPermissionError": {
-            "title": "Permiso denegado",
-            "description": "Necesitamos acceso a tu galería."
-        },
-        "profilePhotoUpdated": "Foto de perfil actualizada",
-        "noProfilePhoto": "No se pudo actualizar la foto de perfil.",
-        "removeFromTopFiveNotification": {
-            "title": "Eliminar de TopFive",
-            "description": "¿Estás seguro de que deseas eliminar este elemento de tu TopFive?",
-            "confirmationDescription": "El elemento ha sido eliminado de tu TopFive.",
-            "error": "Error al eliminar item del TopFive."
-        },
-        "editProfile": {
-            "title": "Editar perfil",
-            "username": "Nombre de usuario",
-            "usernamePlaceholder": "Escribe tu nombre de usuario...",
-            "description": "Descripción",
-            "descriptionPlaceholder": "Escribe algo sobre ti...",
-            "profileType": "Perfil",
-            "profilePublic": "Público",
-            "profilePrivate": "Privado",
-            "profileUpdated": "Tu perfil ha sido actualizado correctamente.",
-            "usernameExists": "Este nombre de usuario ya está en uso. Por favor, elige otro.",
-            "profileUpdateError": "Hubo un error al actualizar tu perfil. Por favor, intenta de nuevo.",
-            "topfiveUpdateError": "Error al guardar el Top 5 completo. Por favor, intenta de nuevo.",
-            "topfive": "Editar mi TopFive",
-            "topfiveDescription": "Mantén pulsado para ordenar. Pulsa la X para eliminar."
-        },
-        "follow" : "Seguir",
-        "followApplied": "Solicitud enviada",
-        "followers": "Seguidores",
-        "following": "Seguidos",
-        "deleteFollowers": {
-            "title": "Eliminar seguidor",
-            "description": "¿Deseas eliminar a {{username}} de tus seguidores?",
-            "successDescription": "{{username}} ha sido eliminado de tus seguidores.",
-            "errorDescription": "No se pudo eliminar a {{username}} de tus seguidores. Por favor, inténtalo de nuevo."
-        },
-        "deleteFollowing": {
-            "title": "Dejar de seguir",
-            "description": "¿Deseas dejar de seguir a {{username}}?",
-            "successDescription": "Has dejado de seguir a {{username}}.",
-            "errorDescription": "No se pudo dejar de seguir a {{username}}. Por favor, inténtalo de nuevo."
-        },
-        "privateProfile": {
-            "title": "Perfil privado",
-            "description": "Este perfil es privado. No puedes ver su contenido."
-        },
-        "alerts": {
-            "activateChoiceTitle": "Activar Notificaciones",
-            "activateChoiceDesc": "¿Quieres recibir un aviso cuando {{username}} publique algo nuevo?",
-            "deactivateChoiceTitle": "Desactivar Notificaciones",
-            "deactivateChoiceDesc": "¿Seguro que quieres dejar de recibir alertas de {{username}}?"
-        }
-    },
-    "aboutUs": {
-        "creditsAndLicenses": "Créditos y Licencias",
-        "creditsDescription": "Esta aplicación utiliza datos de las siguientes fuentes:",
-        "filmsCard":{
-            "description": "Este producto utiliza la API de TMDB pero no está certificada por TMDB.",
-            "link": "Visitar TMDB"
+    "legal": {
+      "title": "Soporte y legal",
+      "sendFeed": "Enviar feedback",
+      "aboutUs": {
+        "title": "Sobre nosotros",
+        "creditsTitle": "Créditos y Licencias",
+        "creditsDescription": "Esta aplicación utiliza datos de las siguientes fuentes",
+        "filmsCard": {
+          "description": "Este producto utiliza la API de TMDB pero no está certificada por TMDB.",
+          "link": "Visitar TMDB"
         },
         "seriesCard": {
-            "description": "Datos proporcionados por TVMaze. Licenciado bajo CC BY-SA 4.0.",
-            "link": "Visitar TVMaze"
+          "description": "Datos proporcionados por TVMaze. Licenciado bajo CC BY-SA 4.0.",
+          "link": "Visitar TVMaze"
         },
         "videogamesCard": {
-            "description": "Información de videojuegos provista por IGDB.",
-            "link": "Visitar IGDB"
+          "description": "Información de videojuegos provista por IGDB.",
+          "link": "Visitar IGDB"
         },
-        "albumsCard":{
-            "description": "Datos proporcionados por Discogs. Este producto utiliza la API de Discogs pero no está certificada por Discogs.",
-            "link": "Visitar Discogs"
+        "albumsCard": {
+          "description": "Datos proporcionados por Discogs. Este producto utiliza la API de Discogs pero no está certificada por Discogs.",
+          "link": "Visitar Discogs"
         },
-        "booksCard":{
-            "description": "Datos proporcionados por OpenLibrary.",
-            "link": "Visitar OpenLibrary"
+        "booksCard": {
+          "description": "Datos proporcionados por OpenLibrary.",
+          "link": "Visitar OpenLibrary"
         }
+      },
+      "privacy": "Política de privacidad",
+      "adsPriv": "Privacidad de anuncios"
     },
-    "details": {
-        "loadingError": {
-            "title": "Error al cargar",
-            "books": "No se pudo cargar la información del libro.",
-            "series": "No se pudo cargar la información de la serie.",
-            "films": "No se pudo cargar la información de la película.",
-            "videogames": "No se pudo cargar la información del videojuego.",
-            "albums": "No se pudo cargar la información del álbum."
-        },
-        "gameModes": "Modos de juego",
-        "addToCollection": "Añadir a colección",
-        "author": "Autor",
-        "released": "Publicado",
-        "generalRating": "Calificación general",
-        "lastTime": "Última vez",
-        "start": "Inicio",
-        "end": "Fin",
-        "deleteResource": {
-            "title": "Confirmar eliminación",
-            "description": "¿Estás seguro de que deseas eliminar {{titulo}} de tu colección?",
-            "multipleDescription": "¿Estás seguro de que deseas eliminar {{count}} {{type}} de tu colección?",
-            "multipleSuccessTitle": "Recursos eliminados",
-            "multipleSuccessDescription": "Has eliminado {{count}} {{type}} de tu colección exitosamente.",
-            "successTitle": "Recurso eliminado",
-            "resourceDeletedDescription": "Has eliminado {{titulo}} de tu colección exitosamente.",
-            "failedToDelete": "No se pudo eliminar el recurso. Inténtalo de nuevo más tarde.",
-            "thisResource": "este recurso",
-            "theResource": "el recurso"
-        },
-        "sinopsis": "Sinopsis",
-        "progress": "Progreso",
-        "seasonAbbreviation": "T",
-        "episodeAbbreviation": "E",
-        "progressUnits": {
-            "books": "págs",
-            "videogames": "horas"
-        },
-        "rating": "Calificación",
-        "dificulty": {
-            "easy": "Fácil",
-            "medium": "Normal",
-            "hard": "Difícil",
-            "extreme": "Extremo"
-        },
-        "review": "Reseña",
-        "zeroDays": "0 días",
-        "oneDay": "1 día",
-        "days": "{{days}} días",
-        "totalReadingTime": "Tiempo total de lectura",
-        "userDetails": "Detalles del usuario",
-        "user": "Usuario",
-        "resourceAlreadyInCollection": "Este contenido ya está en tu colección. ¿Quieres editarlo?"
+    "errors": {
+      "privacyError": {
+        "description": "El formulario de privacidad no está disponible en tu región."
+      }
+    }
+  },
+  "login": {
+    "loginSentences": {
+      "1": "  Tu butaca reservada te espera.",
+      "2": "  Tu inventario de entretenimiento, en un solo lugar.",
+      "3": "  Marca tu página. Guarda tu mundo.",
+      "4": "  Tu vida, tu ranking, tu TopFive.",
+      "5": "  Tu mixtape definitiva está aquí."
     },
-    "forms": {
+    "loginNotification": {
+      "title": "¡Bienvenido!",
+      "description": "Sesión iniciada correctamente."
+    },
+"forms": {
         "updatingError": "Error al actualizar.",
         "savingError": "Error al guardar.",
         "updatingSuccessDescription": "Has actualizado {{titulo}} en tu colección.",
@@ -545,62 +240,445 @@
         "views": "Vistas"
        
     },
-    "frameSelector": {
-        "title": "Selecciona foto y marco",
-        "loadingAd": "Cargando anuncio...",
-        "adNotReady": "El anuncio aún no está listo. Por favor, espera unos segundos e inténtalo de nuevo.",
-        "updatedNotification": "Tu marco de perfil ha sido actualizado.",
-        "errorUpdatingNotification": "No se pudo actualizar el marco. Por favor, inténtalo de nuevo.",
-        "errorLoadingNotification": "No se pudieron cargar los marcos del usuario. Por favor, inténtalo de nuevo.",
-        "unlockedNotificationTitle": "¡Marco desbloqueado!",
-        "unlockedNotificationDescription": "Has obtenido un nuevo marco para tu perfil.",
-        "errorUnlockingNotification": "No se pudo desbloquear el marco. Inténtalo de nuevo."
+    "email": {
+      "title": "Correo electrónico",
+      "placeholder": "tu@correo.com"
     },
-    "notifications": {
-        "title": "Notificaciones del Usuario",
-        "noNotifications": "Sin Notificaciones",
-        "noNotificationsDescription": "No tienes notificaciones pendientes en este momento. ¡Vuelve más tarde!",
-        "followingRequest": "ha solicitado seguirte",
-        "followingConfirmation": "ha empezado a seguirte",
-        "pending": "Pendiente",
-        "followBack": "Seguir de vuelta",
-        "requestAccepted": "¡Solicitud aceptada!",
-        "requestAcceptedDescription": "{{username}} ha aceptado tu solicitud de seguimiento"
+    "password": "Contraseña",
+    "forgotPassword": {
+      "title": "¿Olvidaste tu contraseña?",
+      "subtitle": "Ingrese su correo para restablecer su contraseña.",
+      "emailNotRegistered": "El correo no está registrado. Cree una cuenta o verifique el email ingresado.",
+      "emailSent": "Recibirás un email con instrucciones para restablecer tu contraseña.",
+      "errorEmailSent": "No se pudo enviar el correo de restablecimiento. Por favor, inténtalo de nuevo."
     },
-    "topFiveSelector": {
-        "confirmSelection": "Confirmar selección",
-        "confirmSelectionDescription": "¿Deseas agregar {{title}} a tu TopFive?",
-        "addedToTopFive": "{{title}} ha sido agregado a tu TopFive",
-        "categoryOfYourCollectionTitle": "{{category}} de tu colección",
-        "noContentTitle": "No hay {{category}}",
-        "noContentDescription": "Primero añade a tu colección para que formen parte de tu TopFive",
-        "searchButton": "Buscar",
-        "duplicateResource": "Este recurso ya está en tu TopFive. Elige otro recurso o elimina primero el existente.",
-        "addToTopFiveError": "No se pudo añadir el recurso a tu TopFive. Inténtalo de nuevo."
+    "loginButton": "Iniciar sesión",
+    "loginWithGoogle": "Iniciar sesión con Google",
+    "loginWithApple": "Iniciar sesión con Apple",
+    "noAccount": "¿No tienes una cuenta?",
+    "signUpButton": "Regístrate aquí",
+    "signUp": {
+      "subtitle": "Crea tu cuenta",
+      "username": "Nombre de usuario",
+      "usernamePlaceholder": "Tu nombre de usuario",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "tu@correo.com",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "signUpButton": "Registrarse",
+      "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+      "loginButton": "Volver al inicio de sesión",
+      "success": {
+        "title": "Cuenta creada",
+        "description": "Tu cuenta ha sido creada exitosamente. \n Revisa tu correo y confirma tu cuenta."
+      },
+      "errors": {
+        "passwordMismatch": "Las contraseñas no coinciden. Por favor, inténtalo de nuevo.",
+        "general": "Hubo un error al crear tu cuenta."
+      }
     },
-    "layout": {
-        "updateAvailableTitle": "Actualización disponible",
-        "updateAvailableDescription": "Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades."
+    "resetPassword": {
+      "error": {
+        "denied": "Permiso denegado",
+        "errorLink": "El enlace ha caducado o está incompleto. Por favor, solicita uno nuevo.",
+        "passwordMismatch": "Las contraseñas no coinciden. Por favor, revísalas.",
+        "general": "No se pudo actualizar la contraseña. El enlace podría haber caducado.",
+        "differentPassword": "La nueva contraseña deber ser diferente a la que estabas usando.",
+        "rateLimit": "Has intentado cambiar la contraseña demasiadas veces. Por favor, espera unos minutos.",
+        "default": "Error al cambiar la contraseña."
+      },
+      "successDescription": "Tu contraseña ha sido actualizada correctamente. Ya puedes iniciar sesión.",
+      "newPassword": "Nueva contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "changePassword": "Cambiar contraseña"
+    }
+  },
+  "search": {
+    "usersTitle": "Usuarios",
+    "placeholder": "Buscar {{category}}...",
+    "noResults": "Sin resultados.",
+    "description": "Realiza una búsqueda para ver resultados de {{category}}.",
+    "userSearchBarPlaceholder": "Busca un usuario...",
+    "usersScreenTitle": "Usuarios",
+    "usersScreenDescription": "Realiza una búsqueda para encontrar usuarios."
+  },
+  "collection": {
+    "saveIn": "Guardar en...",
+    "noLists": "No tienes listas de {{category}} creadas.",
+    "orderBy": "Ordenar por",
+    "recentsFirst": "Más recientes",
+    "oldestFirst": "Más antiguos",
+    "status": "Estado",
+    "onlyFavorites": "Solo favoritos",
+    "noContent": "No hay contenido disponible",
+    "searchInPlaceholder": "Buscar en {{category}}...",
+    "noContentDescription": "No hay {{category}} {{status}}"
+  },
+  "list": {
+    "deleteListNotification": {
+      "title": "Eliminar lista",
+      "description": "¿Estás seguro de que deseas eliminar esta lista de su colección?",
+      "confirmationTitle": "Lista eliminada",
+      "confirmationDescription": "La lista {{listName}} ha sido eliminada exitosamente."
     },
-    "components": {
-        "errorAddToList": "No se pudo añadir a la lista.",
-        "whatToAdd": "¿Qué quieres añadir?",
-        "noImage": {
-            "title": "Sin imagen",
-            "book":"Este libro no tiene imagen",
-            "serie": "Esta serie no tiene imagen",
-            "film": "Esta película no tiene imagen",
-            "videogame": "Este juego no tiene imagen",
-            "album": "Este álbum no tiene imagen"
-        },
-        "thirdPartyAd": "Anunciante Externo",
-        "sponsored": "PATROCINADO",
-        "recommendedForYou": "Recomendado para ti"
+    "elements": "elementos",
+    "editList": "Editar lista",
+    "addToList": "Añadir a lista",
+    "orderList": "Ordenar lista",
+    "deleteList": "Eliminar lista",
+    "noLists": "No tienes listas de {{category}}.",
+    "listCreatedNotification": {
+      "title": "Lista creada",
+      "description": "La lista {{listName}} ha sido creada exitosamente."
     },
-	"searchRecent": {
-		"usersTitle": "Usuarios",
-		"recentSearches": "Recientes",
-		"deleteRecentSearch": "Eliminar a {{username}} de recientes",
-		"deleteRecentContent": "Eliminar {{title}} de recientes"
-	}
+    "couldntCreateError": "No se pudo crear la lista. Por favor, inténtalo de nuevo.",
+    "deleteItemFromListNotification": {
+      "title": "Eliminar de la lista",
+      "description": "¿Estás seguro de que deseas eliminar {{titulo}} de la lista?",
+      "multipleDescription": "¿Estás seguro de que deseas eliminar estos {{count}} elementos de la lista?",
+      "confirmationDescription": "El elemento ha sido eliminado exitosamente de la lista.",
+      "multipleConfirmationDescription": "Los elementos han sido eliminados exitosamente de la lista."
+    },
+    "addItemToListNotification": {
+      "title": "Añadir a la lista",
+      "description": "¿Deseas añadir este elemento a la lista?",
+      "multipleDescription": "¿Deseas añadir estos {{count}} elementos a la lista?",
+      "confirmationDescription": "El elemento ha sido añadido exitosamente a la lista.",
+      "multipleConfirmationDescription": "Los elementos han sido añadidos exitosamente a la lista."
+    },
+    "createNewList": "+ Nueva lista",
+    "onThisList": "en esta lista",
+    "reorderList": {
+      "Title": "Ordenar ",
+      "Description": "Mantén pulsado y arrastra para organizar tu lista",
+      "reorderNotification": {
+        "success": "El orden de la lista ha sido actualizado exitosamente.",
+        "error": "El orden de la lista no se ha podido actualizar."
+      }
+    }
+  },
+  "home": {
+    "pressAgainToExit": "Vuelve a tocar para salir.",
+    "noCompletedReviewsFromFriends": "No tienes ningún amigo con reseñas completadas.",
+    "addFriendsToSeeReviews": "Agrega amigos para poder ver sus reseñas.",
+    "searchFriends": "Buscar amigos",
+    "renderResource": {
+      "today": "Hoy",
+      "oneDayAgo": "Hace 1 día",
+      "daysAgo": "Hace {{days}} días"
+    },
+    "contentAlreadyInCollection": "Este recurso ya está en tu colección",
+    "siguiendo": "Siguiendo",
+    "paraTi": "Para ti"
+  },
+  "profile": {
+    "shareMessage": "¡Echa un vistazo a mi perfil en TopFive!\n{{url}}",
+    "shareUserMessage": "¡Echa un vistazo a este perfil en TopFive!\n{{url}}",
+    "shareTopFive": "Compartir mi TopFive",
+    "user": "Usuario",
+    "reviews": "Reseñas",
+    "selectYear": "Seleccionar año",
+    "monthsAbbreviation": {
+      "january": "Ene",
+      "february": "Feb",
+      "march": "Mar",
+      "april": "Abr",
+      "may": "May",
+      "june": "Jun",
+      "july": "Jul",
+      "august": "Ago",
+      "september": "Sep",
+      "october": "Oct",
+      "november": "Nov",
+      "december": "Dic"
+    },
+    "activity": "Actividad",
+    "statistics": "Estadísticas",
+    "total": "Total",
+    "average": "Media",
+    "monthly": "Mensual",
+    "myTopFive": "Mi TopFive",
+    "categoriesConsumed": {
+      "books": "Libros leídos",
+      "films": "Películas vistas",
+      "series": "Series vistas",
+      "videogames": "Videojuegos jugados",
+      "albums": "Álbumes escuchados"
+    },
+    "viewCompleted": {
+      "books": "Ver Libros Leídos",
+      "series": "Ver Series Vistas",
+      "films": "Ver Películas Vistas",
+      "videogames": "Ver Juegos Jugados",
+      "albums": "Ver Álbumes Escuchados"
+    },
+    "loadingStatsError": "No se pudieron cargar las estadísticas. Inténtalo de nuevo más tarde.",
+    "noPermissionError": {
+      "title": "Permiso denegado",
+      "description": "Necesitamos acceso a tu galería."
+    },
+    "profilePhotoUpdated": "Foto de perfil actualizada",
+    "noProfilePhoto": "No se pudo actualizar la foto de perfil.",
+    "removeFromTopFiveNotification": {
+      "title": "Eliminar de TopFive",
+      "description": "¿Estás seguro de que deseas eliminar este elemento de tu TopFive?",
+      "confirmationDescription": "El elemento ha sido eliminado de tu TopFive.",
+      "error": "Error al eliminar item del TopFive."
+    },
+    "editProfile": {
+      "title": "Editar perfil",
+      "username": "Nombre de usuario",
+      "usernamePlaceholder": "Escribe tu nombre de usuario...",
+      "description": "Descripción",
+      "descriptionPlaceholder": "Escribe algo sobre ti...",
+      "profileType": "Perfil",
+      "profilePublic": "Público",
+      "profilePrivate": "Privado",
+      "profileUpdated": "Tu perfil ha sido actualizado correctamente.",
+      "usernameExists": "Este nombre de usuario ya está en uso. Por favor, elige otro.",
+      "profileUpdateError": "Hubo un error al actualizar tu perfil. Por favor, intenta de nuevo.",
+      "topfiveUpdateError": "Error al guardar el Top 5 completo. Por favor, intenta de nuevo.",
+      "topfive": "Editar mi TopFive",
+      "topfiveDescription": "Mantén pulsado para ordenar. Pulsa la X para eliminar."
+    },
+    "follow": "Seguir",
+    "followApplied": "Solicitud enviada",
+    "followers": "Seguidores",
+    "following": "Seguidos",
+    "deleteFollowers": {
+      "title": "Eliminar seguidor",
+      "description": "¿Deseas eliminar a {{username}} de tus seguidores?",
+      "successDescription": "{{username}} ha sido eliminado de tus seguidores.",
+      "errorDescription": "No se pudo eliminar a {{username}} de tus seguidores. Por favor, inténtalo de nuevo."
+    },
+    "deleteFollowing": {
+      "title": "Dejar de seguir",
+      "description": "¿Deseas dejar de seguir a {{username}}?",
+      "successDescription": "Has dejado de seguir a {{username}}.",
+      "errorDescription": "No se pudo dejar de seguir a {{username}}. Por favor, inténtalo de nuevo."
+    },
+    "privateProfile": {
+      "title": "Perfil privado",
+      "description": "Este perfil es privado. No puedes ver su contenido."
+    },
+    "alerts": {
+      "activateChoiceTitle": "Activar Notificaciones",
+      "activateChoiceDesc": "¿Quieres recibir un aviso cuando {{username}} publique algo nuevo?",
+      "deactivateChoiceTitle": "Desactivar Notificaciones",
+      "deactivateChoiceDesc": "¿Seguro que quieres dejar de recibir alertas de {{username}}?"
+    }
+  },
+  "aboutUs": {
+    "creditsAndLicenses": "Créditos y Licencias",
+    "creditsDescription": "Esta aplicación utiliza datos de las siguientes fuentes:",
+    "filmsCard": {
+      "description": "Este producto utiliza la API de TMDB pero no está certificada por TMDB.",
+      "link": "Visitar TMDB"
+    },
+    "seriesCard": {
+      "description": "Datos proporcionados por TVMaze. Licenciado bajo CC BY-SA 4.0.",
+      "link": "Visitar TVMaze"
+    },
+    "videogamesCard": {
+      "description": "Información de videojuegos provista por IGDB.",
+      "link": "Visitar IGDB"
+    },
+    "albumsCard": {
+      "description": "Datos proporcionados por Discogs. Este producto utiliza la API de Discogs pero no está certificada por Discogs.",
+      "link": "Visitar Discogs"
+    },
+    "booksCard": {
+      "description": "Datos proporcionados por OpenLibrary.",
+      "link": "Visitar OpenLibrary"
+    }
+  },
+  "details": {
+    "loadingError": {
+      "title": "Error al cargar",
+      "books": "No se pudo cargar la información del libro.",
+      "series": "No se pudo cargar la información de la serie.",
+      "films": "No se pudo cargar la información de la película.",
+      "videogames": "No se pudo cargar la información del videojuego.",
+      "albums": "No se pudo cargar la información del álbum."
+    },
+    "gameModes": "Modos de juego",
+    "addToCollection": "Añadir a colección",
+    "author": "Autor",
+    "released": "Publicado",
+    "generalRating": "Calificación general",
+    "lastTime": "Última vez",
+    "start": "Inicio",
+    "end": "Fin",
+    "deleteResource": {
+      "title": "Confirmar eliminación",
+      "description": "¿Estás seguro de que deseas eliminar {{titulo}} de tu colección?",
+      "multipleDescription": "¿Estás seguro de que deseas eliminar {{count}} {{type}} de tu colección?",
+      "multipleSuccessTitle": "Recursos eliminados",
+      "multipleSuccessDescription": "Has eliminado {{count}} {{type}} de tu colección exitosamente.",
+      "successTitle": "Recurso eliminado",
+      "resourceDeletedDescription": "Has eliminado {{titulo}} de tu colección exitosamente.",
+      "failedToDelete": "No se pudo eliminar el recurso. Inténtalo de nuevo más tarde.",
+      "thisResource": "este recurso",
+      "theResource": "el recurso"
+    },
+    "sinopsis": "Sinopsis",
+    "progress": "Progreso",
+    "seasonAbbreviation": "T",
+    "episodeAbbreviation": "E",
+    "progressUnits": {
+      "books": "págs",
+      "videogames": "horas"
+    },
+    "rating": "Calificación",
+    "dificulty": {
+      "easy": "Fácil",
+      "medium": "Normal",
+      "hard": "Difícil",
+      "extreme": "Extremo"
+    },
+    "review": "Reseña",
+    "zeroDays": "0 días",
+    "oneDay": "1 día",
+    "days": "{{days}} días",
+    "totalReadingTime": "Tiempo total de lectura",
+    "userDetails": "Detalles del usuario",
+    "user": "Usuario",
+    "resourceAlreadyInCollection": "Este contenido ya está en tu colección. ¿Quieres editarlo?"
+  },
+  "forms": {
+    "updatingError": "Error al actualizar.",
+    "savingError": "Error al guardar.",
+    "updatingSuccessDescription": "Has actualizado {{titulo}} en tu colección.",
+    "savingSuccessDescription": "Has añadido {{titulo}} a tu colección.",
+    "book": {
+      "invalidPages": "Número de páginas no válido.",
+      "invalidPagesDescription": "El número de páginas no puede ser mayor a 3031. Por favor, ingresa un número válido.",
+      "updatingErrorDescription": "Hubo un problema al actualizar el libro. Inténtalo de nuevo.",
+      "thisBook": "este libro",
+      "alreadyInCollection": "Este libro ya está en tu colección.",
+      "savingErrorDescription": "Hubo un problema al guardar el libro. Inténtalo de nuevo.",
+      "theBook": "el libro",
+      "bookDetails": "Detalles del libro"
+    },
+    "film": {
+      "updatingErrorDescription": "Hubo un problema al actualizar la película. Inténtalo de nuevo.",
+      "thisFilm": "esta película",
+      "alreadyInCollection": "Esta película ya está en tu colección.",
+      "savingErrorDescription": "Hubo un problema al guardar la película. Inténtalo de nuevo.",
+      "theFilm": "la película",
+      "filmDetails": "Detalles de la película"
+    },
+    "game": {
+      "updatingErrorDescription": "Hubo un problema al actualizar el videojuego. Inténtalo de nuevo.",
+      "thisGame": "este videojuego",
+      "alreadyInCollection": "Este videojuego ya está en tu colección.",
+      "savingErrorDescription": "Hubo un problema al guardar el videojuego. Inténtalo de nuevo.",
+      "theGame": "el videojuego",
+      "gameDetails": "Detalles del videojuego"
+    },
+    "serie": {
+      "updatingErrorDescription": "Hubo un problema al actualizar la serie. Inténtalo de nuevo.",
+      "alreadyInCollection": "Esta serie ya está en tu colección.",
+      "savingErrorDescription": "Hubo un problema al guardar la serie. Inténtalo de nuevo.",
+      "serieDetails": "Detalles de la serie",
+      "theSerie": "la serie"
+    },
+    "albums": {
+      "updatingErrorDescription": "Hubo un problema al actualizar el álbum. Inténtalo de nuevo.",
+      "alreadyInCollection": "Este álbum ya está en tu colección.",
+      "savingErrorDescription": "Hubo un problema al guardar el álbum. Inténtalo de nuevo.",
+      "albumDetails": "Detalles del álbum",
+      "theAlbum": "el álbum"
+    },
+    "addToList": "Añadir a {{listName}}",
+    "list": "lista",
+    "lists": {
+      "listNameCantBeEmpty": "El nombre de la lista no puede estar vacío.",
+      "listHasBeenUpdated": "La lista {{listName}} ha sido actualizado exitosamente.",
+      "listLoadingError": "No se pudieron cargar los detalles de la lista. Por favor, inténtalo de nuevo.",
+      "updateList": "Actualiza tu lista",
+      "createList": "Crea tu lista",
+      "listName": "Nombre de la lista",
+      "listNamePlaceholder": "Ej: Películas imprescindibles",
+      "description": "Descripción",
+      "descriptionPlaceholder": "Describe el contenido de esta lista...",
+      "listDetails": "Detalles de la lista"
+    },
+    "ready": "Listo",
+    "lastTime": "Última vez",
+    "noDate": "Sin fecha",
+    "clearDate": "Limpiar fecha",
+    "startingDate": "Fecha Inicio",
+    "endingDate": "Fecha Fin",
+    "hoursPlayedPlaceholder": "Horas jugadas...",
+    "pagesReadedPlaceholder": "Páginas leídas...",
+    "currentSeason": "Temporada Actual",
+    "currentEpisode": "Episodio Actual",
+    "reviewPlaceholder": "Escribe tu opinión...",
+    "views": "Vistas"
+  },
+  "frameSelector": {
+    "title": "Selecciona foto y marco",
+    "loadingAd": "Cargando anuncio...",
+    "adNotReady": "El anuncio aún no está listo. Por favor, espera unos segundos e inténtalo de nuevo.",
+    "updatedNotification": "Tu marco de perfil ha sido actualizado.",
+    "errorUpdatingNotification": "No se pudo actualizar el marco. Por favor, inténtalo de nuevo.",
+    "errorLoadingNotification": "No se pudieron cargar los marcos del usuario. Por favor, inténtalo de nuevo.",
+    "unlockedNotificationTitle": "¡Marco desbloqueado!",
+    "unlockedNotificationDescription": "Has obtenido un nuevo marco para tu perfil.",
+    "errorUnlockingNotification": "No se pudo desbloquear el marco. Inténtalo de nuevo."
+  },
+  "notifications": {
+    "title": "Notificaciones del Usuario",
+    "noNotifications": "Sin Notificaciones",
+    "noNotificationsDescription": "No tienes notificaciones pendientes en este momento. ¡Vuelve más tarde!",
+    "followingRequest": "ha solicitado seguirte",
+    "followingConfirmation": "ha empezado a seguirte",
+    "pending": "Pendiente",
+    "followBack": "Seguir de vuelta",
+    "requestAccepted": "¡Solicitud aceptada!",
+    "requestAcceptedDescription": "{{username}} ha aceptado tu solicitud de seguimiento"
+  },
+  "topFiveSelector": {
+    "confirmSelection": "Confirmar selección",
+    "confirmSelectionDescription": "¿Deseas agregar {{title}} a tu TopFive?",
+    "addedToTopFive": "{{title}} ha sido agregado a tu TopFive",
+    "categoryOfYourCollectionTitle": "{{category}} de tu colección",
+    "noContentTitle": "No hay {{category}}",
+    "noContentDescription": "Primero añade a tu colección para que formen parte de tu TopFive",
+    "searchButton": "Buscar",
+    "duplicateResource": "Este recurso ya está en tu TopFive. Elige otro recurso o elimina primero el existente.",
+    "addToTopFiveError": "No se pudo añadir el recurso a tu TopFive. Inténtalo de nuevo."
+  },
+  "layout": {
+    "updateAvailableTitle": "Actualización disponible",
+    "updateAvailableDescription": "Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades."
+  },
+  "components": {
+    "errorAddToList": "No se pudo añadir a la lista.",
+    "whatToAdd": "¿Qué quieres añadir?",
+    "noImage": {
+      "title": "Sin imagen",
+      "book": "Este libro no tiene imagen",
+      "serie": "Esta serie no tiene imagen",
+      "film": "Esta película no tiene imagen",
+      "videogame": "Este juego no tiene imagen",
+      "album": "Este álbum no tiene imagen"
+    },
+    "thirdPartyAd": "Anunciante Externo",
+    "sponsored": "PATROCINADO",
+    "recommendedForYou": "Recomendado para ti"
+  },
+  "searchRecent": {
+    "usersTitle": "Usuarios",
+    "recentSearches": "Recientes",
+    "deleteRecentSearch": "Eliminar a {{username}} de recientes",
+    "deleteRecentContent": "Eliminar {{title}} de recientes"
+  },
+  "diary": {
+    "title": "Diario",
+    "empty": "No hay elementos",
+    "noImage": "Sin imagen",
+    "profileTitle": "Actividad reciente"
+  }
 }
