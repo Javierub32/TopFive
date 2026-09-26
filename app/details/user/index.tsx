@@ -217,27 +217,6 @@ const handleToggleAlerts = () => {
               setSelectedYear={setSelectedYear}
             />
 
-            <TouchableOpacity
-              className="mx-1 mb-6 rounded-lg p-4" // Le he puesto un mt-4 para separarlo un poco
-              style={{ backgroundColor: colors.accent, marginTop: -10 }}
-              activeOpacity={0.7}
-              onPress={() =>
-                router.push({
-                  pathname: '/group',
-                  params: {
-                    title: t('status.completed') as string,
-                    state: 'completados',
-                    category: selectedCategory,
-                    targetUserId: userData?.id,
-                  },
-                })
-              }>
-              <AppText
-                className="text-center font-semibold"
-                style={{ color: colors.primaryText, fontSize: 16 }}>
-                {t(categoryMap[selectedCategory] as any)}
-              </AppText>
-            </TouchableOpacity>
           </>
         )}
       </Animated.View>
@@ -378,8 +357,12 @@ const handleToggleAlerts = () => {
               <TopFiveSelector userId={userData.id} />
 
 			  <DiaryPreview userId={userData.id} />
+                
 
-              <View className="mt-4">
+              <View >
+                <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18, marginBottom: 20 }}>
+                  {(t('profile.statistics'))}
+                </AppText>
                 <TabView
                   navigationState={{ index: safeIndex, routes }}
                   renderScene={renderScene}

@@ -65,9 +65,9 @@ export default function DiaryScreen() {
         sections={sections}
         keyExtractor={(item) => item.recurso_id.toString() + item.fecha_fin}
         renderSectionHeader={({ section }) => renderHeader({ section, colors })}
-        renderItem={({ item, index, section }) => (
+        renderItem={({ item }) => (
           <TouchableOpacity onPress={() => openReview(item)} activeOpacity={0.8}>
-            {renderItem({ item, colors, t, locale, isLast: index === section.data.length - 1 })}
+            {renderItem({ item, colors, t, locale })}
           </TouchableOpacity>
         )}
         onEndReached={loadMore}
@@ -92,15 +92,13 @@ export default function DiaryScreen() {
 const renderHeader = ({ section, colors }: { section: { title: string }; colors: any }) => {
   return (
     <View
-      className="px-5 py-3"
+      className="px-5 py-3 mb-2"
       style={{
-        backgroundColor: colors.surfaceButton,
-        borderTopWidth: 1,
-        borderTopColor: colors.borderButton,
+        backgroundColor: colors.background,
       }}>
       <AppText
-        className="tracking-widest"
-        style={{ color: colors.primaryText, fontSize: 16 }}>
+        className="tracking-widest font-bold"
+        style={{ color: colors.primaryText, fontSize: 15 }}>
         {section.title.toLocaleUpperCase()}
       </AppText>
     </View>
@@ -112,13 +110,11 @@ const renderItem = ({
   colors,
   t,
   locale,
-  isLast,
 }: {
   item: DiaryEntity;
   colors: any;
   t: any;
   locale: string;
-  isLast: boolean;
 }) => {
   const posterUrl = item.imagen_url;
   const rating = Number(item.calificacion ?? 0);
@@ -132,36 +128,44 @@ const renderItem = ({
 
   return (
     <View
-      className="mx-4 flex-row px-1 py-4"
+      className="mx-4 mb-3 flex-row p-3.5 rounded-2xl shadow-sm"
       style={{
-        backgroundColor: colors.background,
-        borderBottomWidth: isLast ? 0 : 1,
-        borderBottomColor: colors.placeholderText,
+        backgroundColor: colors.surfaceButton || '#1e293b',
+        borderWidth: 0,
+        borderColor: `${colors.borderButton || colors.primary}33`,
       }}>
-      <View className="mr-4 overflow-hidden rounded-sm" style={{ width: 55, aspectRatio: 2 / 3 }}>
+      {/* Póster */}
+      <View
+        className="mr-3.5 overflow-hidden rounded-xl"
+        style={{
+          width: 58,
+          aspectRatio: 2 / 3,
+          backgroundColor: colors.background,
+        }}>
         {posterUrl ? (
           <Image source={{ uri: posterUrl }} className="h-full w-full" resizeMode="cover" />
         ) : (
-          <View className="h-full w-full items-center justify-center">
+          <View className="h-full w-full items-center justify-center p-1">
             <AppText
               className="text-center"
-              style={{ color: colors.placeholderText, fontSize: 12 }}>
+              style={{ color: colors.placeholderText, fontSize: 10 }}>
               {t('diary.noImage')}
             </AppText>
           </View>
         )}
       </View>
 
+      {/* Contenido de la tarjeta */}
       <View className="flex-1 justify-center">
         <AppText
-          className="font-light"
-          style={{ color: colors.primaryText, fontSize: 16 }}
+          className="font-bold leading-tight"
+          style={{ color: colors.primaryText, fontSize: 15 }}
           numberOfLines={2}>
           {title}
         </AppText>
 
         {date && (
-          <AppText className="mt-1" style={{ color: colors.secondaryText, fontSize: 11 }}>
+          <AppText className="mt-1" style={{ color: colors.secondaryText, fontSize: 12 }}>
             {date}
           </AppText>
         )}
@@ -172,7 +176,7 @@ const renderItem = ({
               <FontAwesome5
                 key={star}
                 name={rating === star - 0.5 ? 'star-half-alt' : 'star'}
-                size={16}
+                size={13}
                 color={rating >= star - 0.5 ? colors.rating : colors.placeholderText}
                 solid={rating >= star - 0.5}
               />
@@ -180,18 +184,18 @@ const renderItem = ({
           </View>
 
           {hasReview && (
-            <View className="ml-3 items-center justify-center rounded-full p-1">
+            <View className="ml-3 items-center justify-center">
               <ScalableMaterialCommunityIcons
                 name="card-text-outline"
-                size={18}
+                size={16}
                 color={colors.secondaryText}
               />
             </View>
           )}
 
           {item.favorito && (
-            <View className="ml-3 items-center justify-center rounded-full p-1">
-              <ScalableFavoriteIcon size={20} />
+            <View className="ml-2.5 items-center justify-center">
+              <ScalableFavoriteIcon size={17} />
             </View>
           )}
         </View>

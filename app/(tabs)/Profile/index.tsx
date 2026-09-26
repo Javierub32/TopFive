@@ -140,27 +140,6 @@ export default function ProfileScreen() {
               setSelectedYear={setSelectedYear}
             />
 			
-            <TouchableOpacity
-              className="mx-1 mb-6 rounded-xl p-4"
-              style={{ backgroundColor: colors.accent, marginTop: -10 }}
-              activeOpacity={0.7}
-              onPress={() =>
-                router.push({
-                  pathname: '/group',
-                  params: {
-                    title: t('status.completed') as string,
-                    state: 'completados',
-                    category: selectedCategory,
-                    from: 'Profile',
-                  },
-                })
-              }>
-              <AppText
-                className="text-center font-semibold"
-                style={{ color: colors.primaryText, fontSize: 16 }}>
-                {t(categoryMap[selectedCategory] as any)}
-              </AppText>
-            </TouchableOpacity>
           </>
         )}
       </Animated.View>
@@ -236,7 +215,9 @@ export default function ProfileScreen() {
           {userData?.id && <TopFiveSelector userId={userData.id} />}
 
 		  {userData?.id && <DiaryPreview userId={userData.id}/>}
-
+          <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18, marginBottom: 20 }}>
+            {(t('profile.statistics'))}
+          </AppText>
           {/* TabView implementado para poder deslizar horizontalmente */}
           <TabView
             navigationState={{ index: safeIndex, routes }}
