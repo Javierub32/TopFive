@@ -18,7 +18,7 @@ export const RenderCollection = ({
 
   return (
     <View className="mb-4">
-      <TouchableOpacity activeOpacity={0.7} onPress={onPressTitle} className="mb-3 px-1">
+      <TouchableOpacity activeOpacity={0.7} onPress={onPressTitle} className="mb-1 px-1">
         <View className="mb-1 px-0">
           <AppText className="font-bold text-primaryText" style={{ fontSize: 16 }}>
             {title} <AppText className=" font-normal text-secondaryText" style={{ fontSize: 12 }}>
