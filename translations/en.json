@@ -562,9 +562,7 @@
         "followingRequest": "has requested to follow you",
         "followingConfirmation": "has started following you",
         "pending": "Pending",
-        "followBack": "Follow back",
-        "requestAccepted": "Request accepted!",
-        "requestAcceptedDescription": "{{username}} has accepted your follow request"
+        "followBack": "Follow back"
     },
     "topFiveSelector": {
         "confirmSelection": "Confirm selection",
