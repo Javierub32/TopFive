@@ -1,4 +1,4 @@
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
@@ -17,12 +17,14 @@ import { ResourceHeader } from '@/Details/components/ResourceHeader';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
 import { CommentSection } from '@/Details/components/CommentSection';
+import { useRef } from 'react';
 
 export default function SeriesDetail() {
-  const { item, from } = useLocalSearchParams();
+  const { item, from, focus } = useLocalSearchParams();
   const { colors } = useTheme();
   const { user } = useAuth();
   const { t } = useTranslation();
+  const scrollRef = useRef<ScrollView>(null);
 
   const getPath = () => {
     if (from === 'profile') return '/(tabs)/Profile';
@@ -75,7 +77,10 @@ export default function SeriesDetail() {
   return (
     <Screen>
       <ThemedStatusBar />
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}>
+      <ScrollView ref={scrollRef} className="flex-1" showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         <ResourceHeader
           imageUrl={contenido.imagenUrl}
           resource={seriesResource}
@@ -102,7 +107,12 @@ export default function SeriesDetail() {
             </View>
           )}
 
-          <CommentSection resourceId={seriesResource.id} resourceType={seriesResource.tiporecurso}></CommentSection>
+          <CommentSection
+            resourceId={seriesResource.id}
+            resourceType={seriesResource.tiporecurso}
+            focusComment={focus === 'comment'}
+            scrollRef={scrollRef}
+          ></CommentSection>
         </View>
         {isPending && (
           <View className="flex-1">
@@ -110,6 +120,7 @@ export default function SeriesDetail() {
           </View>
         )}
       </ScrollView>
+      </KeyboardAvoidingView>
       {!isPending && <AdBanner />}
     </Screen>
   );

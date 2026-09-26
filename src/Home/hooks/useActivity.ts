@@ -87,7 +87,7 @@ export const useActivity = () => {
     }
   };
 
-  const handleItemPress = async (activity: Activity) => {
+  const handleItemPress = async (activity: Activity, params?: Record<string, unknown>) => {
     try {
       const resourceType = activity.tipo_contenido.toLowerCase() as ResourceType;
       const resourceTypeMap: Record<ResourceType, string> = {
@@ -122,7 +122,7 @@ export const useActivity = () => {
 
       router.push({
         pathname: `/details/${type}/${type}Resource`,
-        params: { item: JSON.stringify(resourceData), from: 'home' },
+        params: { item: JSON.stringify(resourceData), from: 'home', ...params },
       });
     } catch (error) {
       console.error('Error navigating to activity details:', error);

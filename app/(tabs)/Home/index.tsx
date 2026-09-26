@@ -115,7 +115,7 @@ export default function HomeScreen() {
           } //hay que tiparlos explicitamente por el ANIMATED
           renderItem={({ item, index }: { item: any; index: number }) => (
             <>
-              <ActivityItem item={item} onPress={() => handleItemPress(item)} />
+              <ActivityItem item={item} onPress={(params) => handleItemPress(item, params)} />
               {(index + 1) % 4 === 0 && <NativeAdCard />}
             </>
           )}

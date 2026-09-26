@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Activity } from '../hooks/useActivity';
-import { ScalableBookIcon, ScalableFilmIcon, ScalableGameIcon, ScalableMusicIcon, ScalableShowIcon, ScalableWatchLaterIcon } from 'components/Icons';
+import { CommentIcon, ScalableBookIcon, ScalableFilmIcon, ScalableGameIcon, ScalableMusicIcon, ScalableShowIcon, WatchLaterIcon } from 'components/Icons';
 import { router } from 'expo-router';
 import { ResourceType } from 'hooks/useResource';
 import { useState } from 'react';
@@ -21,7 +21,13 @@ import { useTranslation } from 'react-i18next';
 import { useAddToCollection } from "../hooks/useAddToCollection";
 import { violet } from "tailwindcss/colors";
 
-export default function ActivityItem({ item, onPress }: { item: Activity; onPress: () => void }) {
+export default function ActivityItem({
+  item,
+  onPress,
+}: {
+  item: Activity;
+  onPress: (params?: Record<string, unknown>) => void;
+}) {
   const { colors } = useTheme();
   const { width } = useWindowDimensions();
   const { fontSizeMultiplier } = useFontSize();
@@ -115,7 +121,7 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
   return (
     <TouchableOpacity
       activeOpacity={0.7}
-	    onPress={onPress}
+	    onPress={() => onPress()}
       className=" mb-4 overflow-hidden rounded-2xl shadow-xl"
       style={{ borderWidth: 0, borderColor: colors.borderButton }}>
       {/* Imagen de fonde */}
@@ -300,7 +306,7 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
               </AppText>
             </View>
           </View>
-          <View>
+          <View className="flex-row items-center justify-end">
             <Pressable
               onPress={(event) => {
                 event.stopPropagation();
@@ -308,10 +314,26 @@ export default function ActivityItem({ item, onPress }: { item: Activity; onPres
               }}
               disabled = {isSaving}
               className="ml-2">
-                <ScalableWatchLaterIcon color={isSaving ? colors.secondaryText : colors.primaryText}
+                <WatchLaterIcon color={isSaving ? colors.secondaryText : colors.primaryText}
                 style={{padding:4}} />
             </Pressable>
-          </View>  
+            <Pressable
+            onPress={(event) => {
+              event.stopPropagation();
+              onPress({ focus: 'comment' });
+            }}
+            className="ml-2 rounded-full"
+            style={({ pressed }) => ({
+              backgroundColor: pressed ? `${colors.primary}1A` : 'transparent',
+            })}>
+            {({ pressed }) => (
+              <CommentIcon
+                color={pressed ? colors.secondaryText : colors.primaryText}
+                style={{ padding: 4 }}
+              />
+            )}
+          </Pressable>
+          </View>
         </View>
       </ImageBackground>
     </TouchableOpacity>
