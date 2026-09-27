@@ -21,6 +21,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/query/queryClient';
 import { useAppVersion } from '@/AppVersion/hooks/useAppVersion';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { StartupGate } from '@/AppVersion/components/StartupGate';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,9 +32,12 @@ function InitialLayout() {
   const [appIsReady, setAppIsReady] = useState(false);
   const { showNotification, hideNotification, visible, config } = useNotification();
   const { t } = useTranslation();
-  const { data: remoteVersion, error: appVersionError } = useAppVersion();
+  const { appVersion, error: appVersionError, compareVersions } = useAppVersion({refetchOnMount: false});
   const notifiedAppVersionRef = useRef<string | null>(null);
   const previousSessionUserIdRef = useRef<string | null>(null);
+
+  const remoteVersion =
+    Platform.OS === 'android' ? appVersion?.version_android : appVersion?.version;
 
   useEffect(() => {
     let previousAppState = AppState.currentState;
@@ -135,54 +139,39 @@ function InitialLayout() {
     if (!appIsReady || !remoteVersion || Platform.OS === 'web') return;
     if (notifiedAppVersionRef.current === remoteVersion) return;
 
-    const localVersion = Constants.expoConfig?.version || Constants.nativeAppVersion || '1.0.0';
+    const localVersion = Constants.expoConfig?.version ?? Constants.nativeAppVersion ?? '1.0.0';
 
-    // Función auxiliar para comparar versiones semánticas (X.Y.Z)
-    const cmp = (v1: string, v2: string) => {
-      const p1 = v1.split('.').map(Number);
-      const p2 = v2.split('.').map(Number);
-      for (let i = 0; i < Math.max(p1.length, p2.length); i++) {
-        const n1 = p1[i] || 0;
-        const n2 = p2[i] || 0;
-        if (n1 > n2) return 1;
-        if (n1 < n2) return -1;
-      }
-      return 0;
-    };
+    if (compareVersions(remoteVersion, localVersion) <= 0) return;
 
-    if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'android') {
-      notifiedAppVersionRef.current = remoteVersion;
-      showNotification({
-        title: t('layout.updateAvailableTitle'),
-        description: t('layout.updateAvailableDescription'),
-        isChoice: true,
-        rightButtonText: t('common.update'),
-        onRightPress: () => {
-          hideNotification();
-          Linking.openURL('https://play.google.com/store/apps/details?id=com.leftjoiners.topfive');
-        },
-        delete: false,
-        success: false,
-        info: true,
-      });
-    }
-    if (cmp(remoteVersion, localVersion) > 0 && Platform.OS === 'ios') {
-      notifiedAppVersionRef.current = remoteVersion;
-      showNotification({
-        title: t('layout.updateAvailableTitle'),
-        description: t('layout.updateAvailableDescription'),
-        isChoice: true,
-        rightButtonText: t('common.update'),
-        onRightPress: () => {
-          hideNotification();
-          Linking.openURL('https://apps.apple.com/es/app/topfive/id6761102319');
-        },
-        delete: false,
-        success: false,
-        info: true,
-      });
-    }
-  }, [appIsReady, appVersionError, hideNotification, remoteVersion, showNotification, t]);
+    const storeUrl =
+      Platform.OS === 'android'
+        ? 'https://play.google.com/store/apps/details?id=com.leftjoiners.topfive'
+        : 'https://apps.apple.com/es/app/topfive/id6761102319';
+
+    notifiedAppVersionRef.current = remoteVersion;
+
+    showNotification({
+      title: t('layout.updateAvailableTitle'),
+      description: t('layout.updateAvailableDescription'),
+      isChoice: true,
+      rightButtonText: t('common.update'),
+      onRightPress: () => {
+        hideNotification();
+        void Linking.openURL(storeUrl);
+      },
+      delete: false,
+      success: false,
+      info: true,
+    });
+  }, [
+    appIsReady,
+    appVersionError,
+    compareVersions,
+    hideNotification,
+    remoteVersion,
+    showNotification,
+    t,
+  ]);
 
   useEffect(() => {
     // Cuando las fuentes carguen (appIsReady) Y la sesión de Supabase esté lista (!loading),
@@ -228,15 +217,11 @@ function InitialLayout() {
       <Stack
         screenOptions={{
           headerShown: false,
-          gestureEnabled: true, 
+          gestureEnabled: true,
           fullScreenGestureEnabled: false,
           animation: 'fade_from_bottom',
-        }}
-        >
-        <Stack.Screen
-          name="(tabs)"
-          options={{gestureEnabled: false}}
-        />
+        }}>
+        <Stack.Screen name="(tabs)" options={{ gestureEnabled: false }} />
       </Stack>
       <NotificationModal
         visible={visible}
@@ -261,19 +246,21 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <FontSizeProvider>
-            <ThemeProvider>
-              <CollectionProvider>
-                <NotificationProvider>
-                  <SearchProvider>
-                    <InitialLayout />
-                  </SearchProvider>
-                </NotificationProvider>
-              </CollectionProvider>
-            </ThemeProvider>
-          </FontSizeProvider>
-        </AuthProvider>
+		 <FontSizeProvider>
+              <ThemeProvider>
+        <StartupGate>
+          <AuthProvider>
+                <CollectionProvider>
+                  <NotificationProvider>
+                    <SearchProvider>
+                      <InitialLayout />
+                    </SearchProvider>
+                  </NotificationProvider>
+                </CollectionProvider>
+          </AuthProvider>
+        </StartupGate>
+		  </ThemeProvider>
+  </FontSizeProvider>
       </QueryClientProvider>
     </GestureHandlerRootView>
   );
