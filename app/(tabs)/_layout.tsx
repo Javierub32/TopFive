@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Tabs, useRouter } from 'expo-router';
+import { Redirect, Tabs, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ScalableHomeIcon, ScalableCardsIcon, ScalableUserIcon, ScalableSearchIcon, AddIcon, ScalableListIcon } from 'components/Icons';
@@ -15,6 +15,9 @@ import { userService } from "@/Profile/services/profileService";
 import { Platform } from 'react-native';
 
 export default function TabLayout() {
+  if (Platform.OS === 'web') {
+    return <Redirect href="/(auth)/login" />;
+  }
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const [showAddModal, setShowAddModal] = useState(false);
