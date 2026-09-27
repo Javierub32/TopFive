@@ -25,7 +25,6 @@ export default function ForYouFeed() {
   }, []);
 
   if (loading && activities.length === 0 ) return <LoadingIndicator />;
-
   return (
     <Tabs.FlatList
       ref={listRef}

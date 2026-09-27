@@ -182,7 +182,7 @@ export const NotificationModal = ({
             className="mx-4 rounded-2xl p-4 shadow-lg"
             style={[{
               backgroundColor: colors.surfaceButton,
-              marginBottom: Platform.OS === 'ios' ? Math.max(insets.bottom + 57, 102) : Math.max(insets.bottom + 16, 60),
+              marginBottom: Platform.OS === 'ios' ? Math.max(insets.bottom + 57, 102) : Math.max(insets.bottom + 18, 65),
               shadowColor: colors.backgroundColor,
               shadowOpacity: 0.5,
               shadowRadius: 10,
