@@ -1,17 +1,20 @@
 import { ScalableFavoriteIcon, ScalableNonFavoriteIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext"
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withTiming } from "react-native-reanimated";
+import { AppText } from "components/AppText";
 
 interface Props {
     liked: boolean;
     setLiked: (liked: boolean) => void;
+    likeCount?: number;
     size?: number;
 }
 
-export const LikeSetter = ({liked, setLiked, size = 24} : Props) => {
+export const LikeSetter = ({liked, setLiked, likeCount, size = 24} : Props) => {
     const { colors } = useTheme();
     const scale = useSharedValue(1);
+    const showCount = typeof likeCount === 'number';
 
     const animatedStyle = useAnimatedStyle(() => ({
       transform: [{ scale: scale.value }],
@@ -26,17 +29,27 @@ export const LikeSetter = ({liked, setLiked, size = 24} : Props) => {
     }
 
     return (
-    <TouchableOpacity
-      activeOpacity={0.8}
-      onPress={handlePress}
-      className="items-center p-2">
-      <Animated.View style={animatedStyle}>
-        {liked ? (
-          <ScalableFavoriteIcon size={size}/>
-        ) : (
-          <ScalableNonFavoriteIcon size={size} color={colors.primaryText} />
-        )}
-      </Animated.View>
-    </TouchableOpacity>
+    <View
+      className={`flex-row items-center gap-1 rounded-full ${showCount ? 'pr-2 pl-4' : ''}`}
+      style={showCount ? { backgroundColor: `${colors.favorite}${liked ? 3 : 1}A` } : undefined}>
+      {showCount && (
+        <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
+          {likeCount}
+        </AppText>
+      )}
+      <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={handlePress}
+        className="items-center p-2">
+        <Animated.View style={animatedStyle}>
+            {liked ? (
+            <ScalableFavoriteIcon size={size}/>
+            ) : (
+            <ScalableNonFavoriteIcon size={size} color={colors.primaryText} />
+            )}
+        </Animated.View>
+      </TouchableOpacity>
+    </View>
+    
   );
 };

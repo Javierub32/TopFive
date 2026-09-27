@@ -14,7 +14,7 @@ import { AdBanner } from 'components/AdBanner';
 import { ResourceHeader } from '@/Details/components/ResourceHeader';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
-import { CommentSection } from '@/Details/components/CommentSection';
+import { SocialSection } from '@/Details/components/SocialSection';
 import { useRef } from 'react';
 
 export default function FilmDetail() {
@@ -99,12 +99,12 @@ export default function FilmDetail() {
           )}
 
           {isCompleted &&
-            <CommentSection
+            <SocialSection
               resourceId={filmResource.id}
               resourceType={filmResource.tiporecurso}
               focusComment={focus === 'comment'}
               scrollRef={scrollRef}
-            ></CommentSection>
+            ></SocialSection>
           }
           
         </View>

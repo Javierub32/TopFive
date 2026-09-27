@@ -65,7 +65,7 @@ export default function ActivityItem({
     CANCION: { color: colors.ground5, icon: ScalableMusicIcon, resourceType: 'cancion', tipoRecurso: 'MUSICA' },
   };
 
-  const { liked, setLiked } = useLike(
+  const { liked, likeCount, setLiked } = useLike(
     item.recurso_id ? parseInt(item.recurso_id, 10) : undefined,
     categoryMap[item.tipo_contenido].tipoRecurso
   );

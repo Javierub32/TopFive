@@ -75,7 +75,7 @@ export const CommentItem = ({ comment, onDelete }: Props) => {
   return (
     <TouchableOpacity
       activeOpacity={onDelete ? 0.7 : 1}
-      className="flex-row gap-3 rounded-xl p-3"
+      className="flex-row gap-3 rounded-2xl p-3"
       style={{ backgroundColor: colors.surfaceButton }}
       onLongPress={onDelete ? handleCommentLongPress : undefined}>
       <TouchableOpacity activeOpacity={0.7} onPress={handleUserPress}>

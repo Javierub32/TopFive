@@ -36,23 +36,34 @@ export const SocialSection = ({ resourceId, resourceType, focusComment = false, 
         currentUserId,
     } = useComments(resourceId, resourceType);
 
-    
+    const { liked, likeCount, setLiked } = useLike(
+        resourceId,
+        resourceType
+    );
 
     return (
         <View className="mt-8 gap-1">
-            <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
+            <View className="flex-row items-center justify-between">
+                <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
                     {commentCount}{' '}{t('forms.comment')}
-            </AppText>
-                <CommentSetter
-                    comment={comment}
-                    setComment={setComment}
-                    onSend={sendComment}
-                    sending={sending}
-                    autoFocus={focusComment}
-                    scrollRef={scrollRef}
+                </AppText>
+                <LikeSetter
+                    likeCount={likeCount}
+                    liked={liked} 
+                    setLiked={setLiked}
                 />
+            </View>
             
-                <SeparatorLine className="my-3" />
+            <CommentSetter
+                comment={comment}
+                setComment={setComment}
+                onSend={sendComment}
+                sending={sending}
+                autoFocus={focusComment}
+                scrollRef={scrollRef}
+            />
+        
+            <SeparatorLine className="my-3" />
             
             <View className="mt-2 gap-2">
                 {/* ActivityIndicator = Carga de comentarios, el circulito */}
