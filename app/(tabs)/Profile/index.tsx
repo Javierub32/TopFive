@@ -30,7 +30,7 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useAuth } from 'context/AuthContext';
 import { useTopFive } from '@/Profile/hooks/useTopFive';
 import { DiaryPreview } from '@/Profile/components/DiaryPreview';
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
@@ -75,7 +75,12 @@ export default function ProfileScreen() {
   const safeIndex = index === -1 ? 0 : index;
 
   const [editTopFiveModalVisible, setEditTopFiveModalVisible] = useState(false);
-  const { topFiveItems, loading: topFiveLoading, saveCompleteTopFive, handlePress } = useTopFive(userData?.id || '');
+  const {
+    topFiveItems,
+    loading: topFiveLoading,
+    saveCompleteTopFive,
+    handlePress,
+  } = useTopFive(userData?.id || '');
 
   const handleIndexChange = (i: number) => {
     setIsChanging(true);
@@ -139,7 +144,6 @@ export default function ProfileScreen() {
               selectedYear={selectedYear}
               setSelectedYear={setSelectedYear}
             />
-			
           </>
         )}
       </Animated.View>
@@ -214,9 +218,11 @@ export default function ProfileScreen() {
 
           {userData?.id && <TopFiveSelector userId={userData.id} />}
 
-		  {userData?.id && <DiaryPreview userId={userData.id}/>}
-          <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18, marginBottom: 20 }}>
-            {(t('profile.statistics'))}
+          {userData?.id && <DiaryPreview userId={userData.id} />}
+          <AppText
+            className="font-bold"
+            style={{ color: colors.primaryText, fontSize: 18, marginBottom: 20 }}>
+            {t('profile.statistics')}
           </AppText>
           {/* TabView implementado para poder deslizar horizontalmente */}
           <TabView
