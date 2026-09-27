@@ -291,5 +291,5 @@ export const ReorderIcon = (props) => <RNMaterialCommunityIcons name="reorder-ho
 export const ScalableWatchLaterIcon = (props) => <ScalableMaterialCommunityIcons name="clock-plus-outline" size={24} color="black" {...props}/>
 export const WatchLaterIcon = (props) => <RNMaterialCommunityIcons name="clock-plus-outline" size={24} color="black" {...props}/>
 
-export const ScalableCommentIcon = (props) => <ScalableMaterialCommunityIcons name="comment-text-multiple-outline" size={24} color="black" {...props}/>
-export const CommentIcon = (props) => <RNMaterialCommunityIcons name="comment-text-multiple-outline" size={24} color="black" {...props}/>
+export const ScalableCommentIcon = (props) => <RNMaterialCommunityIcons name="message-text-outline" size={24} color="black" {...props}/>
+export const CommentIcon = (props) => <RNMaterialCommunityIcons name="message-text-outline" size={24} color="black" {...props}/>
