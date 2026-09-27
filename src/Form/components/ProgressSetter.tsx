@@ -118,6 +118,8 @@ export const ProgressSetter = ({
     );
   }
 
+  const inputValue = progress === 0 || progress === '0' || !progress ? '' : progress.toString();
+
   return (
     type && (
       <View className="px-4 pt-2">
