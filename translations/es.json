@@ -26,7 +26,8 @@
     "colour": "Color",
     "obtain": "Obtener",
     "update": "Actualizar",
-    "edit": "Editar"
+    "edit": "Editar",
+    "retry": "Reintentar"
   },
   "status": {
     "title": "Estado",
@@ -654,9 +655,15 @@
     "duplicateResource": "Este recurso ya está en tu TopFive. Elige otro recurso o elimina primero el existente.",
     "addToTopFiveError": "No se pudo añadir el recurso a tu TopFive. Inténtalo de nuevo."
   },
-  "layout": {
+    "layout": {
     "updateAvailableTitle": "Actualización disponible",
-    "updateAvailableDescription": "Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades."
+    "updateAvailableDescription": "Hay una nueva versión de la aplicación disponible. Por favor, actualízala para seguir disfrutando de todas las novedades.",
+    "startupErrorTitle": "No se pudo comprobar la aplicación",
+    "startupErrorDescription": "Comprueba tu conexión e inténtalo de nuevo.",
+    "maintenanceTitle": "Estamos en mantenimiento",
+    "maintenanceDescription": "Vuelve a intentarlo más tarde.",
+    "updateRequiredTitle": "Actualización obligatoria",
+    "updateRequiredDescription": "Instala la versión {{version}} o posterior para continuar."
   },
   "components": {
     "errorAddToList": "No se pudo añadir a la lista.",

@@ -26,7 +26,8 @@
     "colour": "Color",
     "obtain": "Obtain",
     "update": "Update",
-    "edit": "Edit"
+    "edit": "Edit",
+    "retry": "Retry"
   },
   "status": {
     "title": "Status",
@@ -658,7 +659,13 @@
   },
   "layout": {
     "updateAvailableTitle": "Update available",
-    "updateAvailableDescription": "There is a new version of the application available. Please update it to continue enjoying all the latest features."
+    "updateAvailableDescription": "There is a new version of the application available. Please update it to continue enjoying all the latest features.",
+    "startupErrorTitle": "Could not check the app",
+    "startupErrorDescription": "Check your connection and try again.",
+    "maintenanceTitle": "Under maintenance",
+    "maintenanceDescription": "Please try again later.",
+    "updateRequiredTitle": "Update required",
+    "updateRequiredDescription": "Install version {{version}} or later to continue."
   },
   "components": {
     "errorAddToList": "Could not add to list.",
