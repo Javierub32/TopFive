@@ -1,38 +1,90 @@
 // app/details/list/index.tsx
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { useCollection } from 'context/CollectionContext';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useListsDetails } from '@/Collection/hooks/useListsDetails';
 import { Screen } from 'components/Screen';
 import { ReturnButton } from 'components/ReturnButton';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { CollectionStructure } from 'components/CollectionStructure';
 import { useTheme } from 'context/ThemeContext';
-import { ScalableMaterialCommunityIcons } from 'components/Icons';
+import { ScalableEditIcon, ScalableMaterialCommunityIcons, ScalablePlusIcon, ScalableReorderIcon, ScalableTrashIcon } from 'components/Icons';
 import { ResourceType } from 'hooks/useResource';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { DeleteResourceButton } from '@/Details/components/DeleteResourceButton';
+import { useLists } from '@/Collection/hooks/useLists';
+import { useNotification } from 'context/NotificationContext';
 
 export default function ListDetails() {
-  const { categoriaActual, handleItemPress, handleLongPress, selectedItems, clearSelectedItems } =
+  const { handleItemPress, handleLongPress, selectedItems, clearSelectedItems } =
     useCollection();
   const { listData } = useLocalSearchParams<{ listData: any }>();
   const parsedListData = listData ? JSON.parse(listData) : null;
+  const listaCategory: ResourceType = (parsedListData?.tipo?.toLowerCase() as ResourceType) || 'pelicula';
   const { loading, data, handleLoadMore, removeMultipleFromList } = useListsDetails(
-    categoriaActual,
+    listaCategory,
     String(parsedListData?.id!)
   );
   const { colors } = useTheme();
   const { t } = useTranslation();
+  const [menuListasAbierto, setMenuListasAbierto] = useState(false);
+  const { showNotification, hideNotification } = useNotification();
+  const { deleteList } = useLists(parsedListData?.tipo);
 
   useEffect(() => {
     return () => {
       clearSelectedItems();
     };
   }, []);
-
+  const handleEditList = () => {
+    router.push({
+      pathname: '/form/list',
+      params: { listData: JSON.stringify(parsedListData) },
+    });
+  };
+  const handleOrderList = () => {
+    router.push({
+      pathname: '/details/list/ReorderList',
+      params: { listId: parsedListData?.id, listType: parsedListData?.tipo, listName: parsedListData?.nombre },
+    });
+  };
+  const handleAddList = () => {
+    router.push({
+      pathname: '/form/item',
+      params: { listId: parsedListData?.id, category: parsedListData?.tipo, listName: parsedListData?.nombre },
+    });
+  };
+  const handleDeleteList = () => {
+    if (parsedListData) {
+      showNotification({
+        title: t('list.deleteListNotification.title'),
+        description: t('list.deleteListNotification.description'),
+        leftButtonText: t('common.cancel'),
+        rightButtonText: t('common.confirm'),
+        isChoice: true,
+        delete: true,
+        success: false,
+        onLeftPress: () => hideNotification(),
+        onRightPress: async () => {
+          hideNotification();
+          await deleteList(parsedListData.id);
+          setMenuListasAbierto(false);
+          showNotification({
+            title: t('list.deleteListNotification.confirmationTitle'),
+            description: t('list.deleteListNotification.confirmationDescription', {
+              listName: parsedListData.nombre,
+            }),
+            isChoice: false,
+            delete: false,
+            success: true,
+          });
+          router.back();
+        },
+      });
+    }
+  };
   const hasSelection = selectedItems && selectedItems.length > 0;
 
   const handleDelete = async () => {
@@ -46,7 +98,7 @@ export default function ListDetails() {
         <ReturnButton
           title={t('forms.lists.listDetails')}
           route="/(tabs)/Lists"
-          params={{ initialResource: categoriaActual as ResourceType }}
+          params={{ initialResource: listaCategory }}
           selection={hasSelection}
         />
         <LoadingIndicator />
@@ -61,19 +113,90 @@ export default function ListDetails() {
           <ReturnButton
             title={t('forms.lists.listDetails')}
             route="/(tabs)/Lists"
-            params={{ initialResource: categoriaActual as ResourceType }}
+            params={{ initialResource: listaCategory }}
             selection={hasSelection}
           />
         </View>
+        <View className="flex-row items-center gap-2">
+          {hasSelection && (
+            <DeleteResourceButton
+              resources={selectedItems}
+              type={listaCategory}
+              onCustomDelete={handleDelete}
+              isList={true}
+            />
+          )}
+          <TouchableOpacity
+            className="p-1"
+            onPress={(e) => {
+              e.stopPropagation(); // Evita que pase a la tarjeta y abra los detalles
+              setMenuListasAbierto(!menuListasAbierto);
+            }}>
+            <ScalableMaterialCommunityIcons
+              name={menuListasAbierto ? 'close' : 'dots-horizontal'}
+              size={24}
+              color={colors.secondaryText}
+            />
+          </TouchableOpacity>
+          {menuListasAbierto && (
+            <View
+              className="w-30 absolute right-0 top-10 z-50 overflow-hidden rounded-lg border-l-2 shadow-xl"
+              style={{ borderColor: colors.borderButton, backgroundColor: colors.surfaceButton }}>
+              <TouchableOpacity
+                className="flex-row items-center border-b px-4 py-2"
+                style={{ borderColor: `${colors.secondaryText}4D` }}
+                onPress={() => {
+                  handleEditList();
+                  setMenuListasAbierto(false);
+                }}>
+                <ScalableEditIcon style={{ marginRight: 8 }} color={colors.primaryText} />
+                <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
+                  {t('list.editList')}
+                </AppText>
+              </TouchableOpacity>
 
-        {hasSelection && (
-          <DeleteResourceButton
-            resources={selectedItems}
-            type={categoriaActual as ResourceType}
-            onCustomDelete={handleDelete}
-            isList={true}
-          />
-        )}
+              <TouchableOpacity
+                className="flex-row items-center border-b px-4 py-2"
+                style={{ borderColor: `${colors.secondaryText}4D` }}
+                onPress={() => {
+                  setMenuListasAbierto(false);
+                  handleAddList();
+                }}>
+                <ScalablePlusIcon style={{ marginRight: 8 }} color={colors.primaryText} />
+                <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
+                  {t('list.addToList')}
+                </AppText>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                className="flex-row items-center border-b px-4 py-2"
+                style={{ borderColor: `${colors.secondaryText}4D` }}
+                onPress={() => {
+                  setMenuListasAbierto(false);
+                  handleOrderList();
+                }}>
+                <ScalableReorderIcon style={{ marginRight: 8 }} color={colors.primaryText} />
+                <AppText style={{ color: colors.primaryText, fontSize: 14 }}>
+                  {t('list.orderList')}
+                </AppText>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                className="flex-row items-center px-4 py-2"
+                style={{ borderColor: `${colors.secondaryText}4D` }}
+                onPress={() => {
+                  setMenuListasAbierto(false);
+                  handleDeleteList();
+                }}>
+                <ScalableTrashIcon style={{ marginRight: 8 }} color={colors.error} />
+                <AppText style={{ color: colors.error, fontSize: 14 }}>
+                  {t('list.deleteList')}
+                </AppText>
+              </TouchableOpacity>
+
+            </View>
+          )}
+        </View>
       </View>
 
       {/* CABECERA DE LA LISTA */}
@@ -118,9 +241,9 @@ export default function ListDetails() {
       <View className="mt-2 flex-1 px-5 ">
         <CollectionStructure
           data={data}
-          categoriaActual={categoriaActual}
-          handleItemPress={(item: any) => handleItemPress(item, categoriaActual, 'list')}
-          handleLongPress={(item: any) => handleLongPress(item, categoriaActual, 'list')}
+          categoriaActual={listaCategory}
+          handleItemPress={(item: any) => handleItemPress(item, listaCategory, 'list')}
+          handleLongPress={(item: any) => handleLongPress(item, listaCategory, 'list')}
           handleSearchPagination={handleLoadMore}
           showStatus={true}
           loading={loading}
