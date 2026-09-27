@@ -42,6 +42,7 @@ export default function GameDetail() {
 
   const isOwner = gameResource?.usuarioId === user?.id;
   const isPending = gameResource?.estado === 'PENDIENTE';
+  const isCompleted = gameResource?.estado === 'COMPLETADO';
 
   const displayUsername = (gameResource as any)?.username;
   const displayAvatarUrl = (gameResource as any)?.avatar_url;
@@ -107,12 +108,15 @@ export default function GameDetail() {
             </View>
           )}
 
-          <CommentSection
-            resourceId={gameResource.id}
-            resourceType={gameResource.tiporecurso}
-            focusComment={focus === 'comment'}
-            scrollRef={scrollRef}
-          ></CommentSection>
+          {isCompleted && 
+            <CommentSection
+              resourceId={gameResource.id}
+              resourceType={gameResource.tiporecurso}
+              focusComment={focus === 'comment'}
+              scrollRef={scrollRef}
+            ></CommentSection>
+          }
+          
         </View>
         {!isPending && (
           <View className="flex-1">

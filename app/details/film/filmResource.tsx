@@ -41,6 +41,7 @@ export default function FilmDetail() {
 
   const isOwner = filmResource?.usuarioId === user?.id;
   const isPending = filmResource?.estado === 'PENDIENTE';
+  const isCompleted = filmResource?.estado === 'COMPLETADO';
   
   // username y avatar
   const displayUsername = (filmResource as any)?.username;
@@ -97,12 +98,15 @@ export default function FilmDetail() {
             </View>
           )}
 
-          <CommentSection
-            resourceId={filmResource.id}
-            resourceType={filmResource.tiporecurso}
-            focusComment={focus === 'comment'}
-            scrollRef={scrollRef}
-          ></CommentSection>
+          {isCompleted &&
+            <CommentSection
+              resourceId={filmResource.id}
+              resourceType={filmResource.tiporecurso}
+              focusComment={focus === 'comment'}
+              scrollRef={scrollRef}
+            ></CommentSection>
+          }
+          
         </View>
         {!isPending && (
           <View className="flex-1">

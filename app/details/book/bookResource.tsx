@@ -112,12 +112,15 @@ export default function BookDetail() {
 
           <TimeCard resource={bookResource} />
 
-          <CommentSection
-            resourceId={bookResource.id}
-            resourceType={bookResource.tiporecurso}
-            focusComment={focus === 'comment'}
-            scrollRef={scrollRef}
-          ></CommentSection>
+          {isCompleted && 
+            <CommentSection
+              resourceId={bookResource.id}
+              resourceType={bookResource.tiporecurso}
+              focusComment={focus === 'comment'}
+              scrollRef={scrollRef}
+            ></CommentSection>
+          }
+          
         </View>
         {!isPending && (
           <View className="flex-1">

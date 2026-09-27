@@ -43,6 +43,7 @@ export default function SongDetail() {
   const isOwner = songResource?.usuarioId === user?.id;
 
   const isPending = songResource?.estado === 'PENDIENTE';
+  const isCompleted = songResource?.estado === 'COMPLETADO';
 
   const displayUsername = (songResource as any)?.username;
   const displayAvatarUrl = (songResource as any)?.avatar_url;
@@ -96,12 +97,15 @@ export default function SongDetail() {
             </View>
           )}
 
-          <CommentSection
-            resourceId={songResource.id}
-            resourceType={songResource.tiporecurso}
-            focusComment={focus === 'comment'}
-            scrollRef={scrollRef}
-          ></CommentSection>
+          {isCompleted && 
+            <CommentSection
+              resourceId={songResource.id}
+              resourceType={songResource.tiporecurso}
+              focusComment={focus === 'comment'}
+              scrollRef={scrollRef}
+            ></CommentSection>
+          }
+          
         </View>
         {!isPending && (
           <View className="flex-1">

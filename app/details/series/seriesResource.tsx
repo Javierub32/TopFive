@@ -107,12 +107,15 @@ export default function SeriesDetail() {
             </View>
           )}
 
-          <CommentSection
-            resourceId={seriesResource.id}
-            resourceType={seriesResource.tiporecurso}
-            focusComment={focus === 'comment'}
-            scrollRef={scrollRef}
-          ></CommentSection>
+          {isCompleted && 
+            <CommentSection
+              resourceId={seriesResource.id}
+              resourceType={seriesResource.tiporecurso}
+              focusComment={focus === 'comment'}
+              scrollRef={scrollRef}
+            ></CommentSection>
+          }
+          
         </View>
         {isPending && (
           <View className="flex-1">
