@@ -11,100 +11,100 @@ import { useLike } from '../hooks/useLike';
 import { LikeSetter } from 'src/Form/components/LikeSetter';
 
 interface Props {
-    resourceId?: number;
-    resourceType?: string;
-    focusComment?: boolean;
-    scrollRef?: RefObject<ScrollView | null>;
+  resourceId?: number;
+  resourceType?: string;
+  focusComment?: boolean;
+  scrollRef?: RefObject<ScrollView | null>;
 }
 
-export const SocialSection = ({ resourceId, resourceType, focusComment = false, scrollRef }: Props) => {
-    const [comment, setComment] = useState('');
+export const SocialSection = ({
+  resourceId,
+  resourceType,
+  focusComment = false,
+  scrollRef,
+}: Props) => {
+  const [comment, setComment] = useState('');
 
-    const { colors } = useTheme();
-    const { t } = useTranslation();
-    const {
-        comments,
-        commentCount,
-        loading,
-        loadingMore,
-        hasMore,
-        isError,
-        handleLoadMore,
-        sendComment,
-        sending,
-        deleteComment,
-        currentUserId,
-    } = useComments(resourceId, resourceType);
+  const { colors } = useTheme();
+  const { t } = useTranslation();
+  const {
+    comments,
+    commentCount,
+    loading,
+    loadingMore,
+    hasMore,
+    isError,
+    handleLoadMore,
+    sendComment,
+    sending,
+    deleteComment,
+    currentUserId,
+  } = useComments(resourceId, resourceType);
 
-    const { liked, likeCount, setLiked } = useLike(
-        resourceId,
-        resourceType
-    );
+  const { liked, likeCount, setLiked, isPending } = useLike(resourceId, resourceType);
 
-    return (
-        <View className="mt-8 gap-1">
-            <View className="flex-row items-center justify-between">
-                <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
-                    {commentCount}{' '}{t('forms.comment')}
-                </AppText>
-                <LikeSetter
-                    likeCount={likeCount}
-                    liked={liked} 
-                    setLiked={setLiked}
-                />
-            </View>
-            
-            <CommentSetter
-                comment={comment}
-                setComment={setComment}
-                onSend={sendComment}
-                sending={sending}
-                autoFocus={focusComment}
-                scrollRef={scrollRef}
+  return (
+    <View className="mt-8 gap-1">
+      <View className="flex-row items-center justify-between">
+        <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
+          {commentCount} {t('forms.comment')}
+        </AppText>
+        <LikeSetter likeCount={likeCount} liked={liked} setLiked={setLiked} disabled={isPending} />
+      </View>
+
+      <CommentSetter
+        comment={comment}
+        setComment={setComment}
+        onSend={sendComment}
+        sending={sending}
+        autoFocus={focusComment}
+        scrollRef={scrollRef}
+      />
+
+      <SeparatorLine className="my-3" />
+
+      <View className="mt-2 gap-2">
+        {/* ActivityIndicator = Carga de comentarios, el circulito */}
+        {loading ? (
+          <ActivityIndicator color={colors.primary} className="py-4" />
+        ) : isError ? (
+          <AppText className="py-4 text-center" style={{ color: colors.error, fontSize: 14 }}>
+            {t('forms.commentsLoadingError')}
+          </AppText>
+        ) : comments.length === 0 ? (
+          <AppText
+            className="py-4 text-center"
+            style={{ color: colors.secondaryText, fontSize: 14 }}>
+            {t('forms.noComments')}
+          </AppText>
+        ) : (
+          comments.map((item) => (
+            <CommentItem
+              key={item.id}
+              comment={item}
+              onDelete={item.user_id === currentUserId ? deleteComment : undefined}
             />
-        
-            <SeparatorLine className="my-3" />
-            
-            <View className="mt-2 gap-2">
-                {/* ActivityIndicator = Carga de comentarios, el circulito */}
-                {loading ? (
-                    <ActivityIndicator color={colors.primary} className="py-4" />
-                ) : isError ? (
-                    <AppText className="py-4 text-center" style={{ color: colors.error, fontSize: 14 }}>
-                        {t('forms.commentsLoadingError')}
-                    </AppText>
-                ) : comments.length === 0 ? (
-                    <AppText className="py-4 text-center" style={{ color: colors.secondaryText, fontSize: 14 }}>
-                        {t('forms.noComments')}
-                    </AppText>
-                ) : (
-                    comments.map((item) => (
-                        <CommentItem
-                            key={item.id}
-                            comment={item}
-                            onDelete={item.user_id === currentUserId ? deleteComment : undefined}
-                        />
-                    ))
-                )}
+          ))
+        )}
 
-                {hasMore && (
-                    <TouchableOpacity
-                        onPress={handleLoadMore}
-                        disabled={loadingMore}
-                        activeOpacity={0.7}
-                        className="items-center py-3">
-                        {loadingMore ? (
-                            <ActivityIndicator color={colors.primary} />
-                        ) : (
-                            <AppText className="font-semibold" style={{ color: colors.primary, fontSize: 14 }}>
-                                {t('forms.loadMoreComments')}
-                            </AppText>
-                        )}
-                    </TouchableOpacity>
-                )}
+        {hasMore && (
+          <TouchableOpacity
+            onPress={handleLoadMore}
+            disabled={loadingMore}
+            activeOpacity={0.7}
+            className="items-center py-3">
+            {loadingMore ? (
+              <ActivityIndicator color={colors.primary} />
+            ) : (
+              <AppText className="font-semibold" style={{ color: colors.primary, fontSize: 14 }}>
+                {t('forms.loadMoreComments')}
+              </AppText>
+            )}
+          </TouchableOpacity>
+        )}
 
-                <View className="h-32" />
-            </View>
-        </View>
-    );
+        <View className="h-32" />
+      </View>
+    </View>
+  );
 };

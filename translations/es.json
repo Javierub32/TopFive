@@ -170,91 +170,6 @@
       "title": "¡Bienvenido!",
       "description": "Sesión iniciada correctamente."
     },
-"forms": {
-        "updatingError": "Error al actualizar.",
-        "savingError": "Error al guardar.",
-        "updatingSuccessDescription": "Has actualizado {{titulo}} en tu colección.",
-        "savingSuccessDescription": "Has añadido {{titulo}} a tu colección.",
-        "book":{
-            "invalidPages": "Número de páginas no válido.",
-            "invalidPagesDescription": "El número de páginas no puede ser mayor a 3031. Por favor, ingresa un número válido.",
-            "updatingErrorDescription": "Hubo un problema al actualizar el libro. Inténtalo de nuevo.",
-            "thisBook": "este libro",
-            "alreadyInCollection": "Este libro ya está en tu colección.",
-            "savingErrorDescription": "Hubo un problema al guardar el libro. Inténtalo de nuevo.",
-            "theBook": "el libro",
-            "bookDetails": "Detalles del libro"
-        },
-        "film": {
-            "updatingErrorDescription": "Hubo un problema al actualizar la película. Inténtalo de nuevo.",
-            "thisFilm": "esta película",
-            "alreadyInCollection": "Esta película ya está en tu colección.",
-            "savingErrorDescription": "Hubo un problema al guardar la película. Inténtalo de nuevo.",
-            "theFilm": "la película",
-            "filmDetails": "Detalles de la película"
-        },
-        "game": {
-            "updatingErrorDescription": "Hubo un problema al actualizar el videojuego. Inténtalo de nuevo.",
-            "thisGame": "este videojuego",
-            "alreadyInCollection": "Este videojuego ya está en tu colección.",
-            "savingErrorDescription": "Hubo un problema al guardar el videojuego. Inténtalo de nuevo.",
-            "theGame": "el videojuego",
-            "gameDetails": "Detalles del videojuego"
-        },
-        "serie": {
-            "updatingErrorDescription": "Hubo un problema al actualizar la serie. Inténtalo de nuevo.",
-            "alreadyInCollection": "Esta serie ya está en tu colección.",
-            "savingErrorDescription": "Hubo un problema al guardar la serie. Inténtalo de nuevo.",
-            "theSerie": "la serie",
-            "serieDetails": "Detalles de la serie"
-        },
-        "albums": {
-            "updatingErrorDescription": "Hubo un problema al actualizar el álbum. Inténtalo de nuevo.",
-            "alreadyInCollection": "Este álbum ya está en tu colección.",
-            "savingErrorDescription": "Hubo un problema al guardar el álbum. Inténtalo de nuevo.",
-            "theAlbum": "el álbum",
-            "albumDetails": "Detalles del álbum"
-        },
-        "addToList": "Añadir a {{listName}}",
-        "list": "lista",
-        "lists": {
-            "listNameCantBeEmpty": "El nombre de la lista no puede estar vacío.",
-            "listHasBeenUpdated": "La lista {{listName}} ha sido actualizado exitosamente.",
-            "listLoadingError": "No se pudieron cargar los detalles de la lista. Por favor, inténtalo de nuevo.",
-            "updateList": "Actualiza tu lista",
-            "createList": "Crea tu lista",
-            "listName": "Nombre de la lista",
-            "listNamePlaceholder": "Ej: Películas imprescindibles",
-            "description": "Descripción",
-            "descriptionPlaceholder": "Describe el contenido de esta lista...",
-            "listDetails": "Detalles de la lista"
-        },
-        "ready": "Listo",
-        "lastTime": "Última vez",
-        "noDate": "Sin fecha",
-        "clearDate": "Limpiar fecha",
-        "startingDate": "Fecha Inicio",
-        "endingDate": "Fecha Fin",
-        "hoursPlayedPlaceholder": "Horas jugadas...",
-        "pagesReadedPlaceholder": "Páginas leídas...",
-        "currentSeason": "Temporada Actual",
-        "currentEpisode": "Episodio Actual",
-        "reviewPlaceholder": "Escribe tu opinión...",
-        "views": "Vistas",
-        "comment":"comentarios",
-        "commentPlaceholder": "Añade un comentario...",
-        "noComments": "No hay comentarios todavía",
-        "loadMoreComments": "Ver más comentarios",
-        "commentsLoadingError": "Error al cargar los comentarios",
-        "deleteComment": {
-            "title": "Confirmar eliminación",
-            "description": "¿Estás seguro de que deseas eliminar este comentario?",
-            "successTitle": "Comentario eliminado",
-            "resourceDeletedDescription": "Has eliminado el comentario exitosamente.",
-            "failedToDelete": "No se pudo eliminar el comentario. Inténtalo de nuevo más tarde."
-        }
-       
-    },
     "email": {
       "title": "Correo electrónico",
       "placeholder": "tu@correo.com"
@@ -306,6 +221,90 @@
       "newPassword": "Nueva contraseña",
       "confirmPassword": "Confirmar contraseña",
       "changePassword": "Cambiar contraseña"
+    }
+  },
+  "forms": {
+    "updatingError": "Error al actualizar.",
+    "savingError": "Error al guardar.",
+    "updatingSuccessDescription": "Has actualizado {{titulo}} en tu colección.",
+    "savingSuccessDescription": "Has añadido {{titulo}} a tu colección.",
+    "book":{
+        "invalidPages": "Número de páginas no válido.",
+        "invalidPagesDescription": "El número de páginas no puede ser mayor a 3031. Por favor, ingresa un número válido.",
+        "updatingErrorDescription": "Hubo un problema al actualizar el libro. Inténtalo de nuevo.",
+        "thisBook": "este libro",
+        "alreadyInCollection": "Este libro ya está en tu colección.",
+        "savingErrorDescription": "Hubo un problema al guardar el libro. Inténtalo de nuevo.",
+        "theBook": "el libro",
+        "bookDetails": "Detalles del libro"
+    },
+    "film": {
+        "updatingErrorDescription": "Hubo un problema al actualizar la película. Inténtalo de nuevo.",
+        "thisFilm": "esta película",
+        "alreadyInCollection": "Esta película ya está en tu colección.",
+        "savingErrorDescription": "Hubo un problema al guardar la película. Inténtalo de nuevo.",
+        "theFilm": "la película",
+        "filmDetails": "Detalles de la película"
+    },
+    "game": {
+        "updatingErrorDescription": "Hubo un problema al actualizar el videojuego. Inténtalo de nuevo.",
+        "thisGame": "este videojuego",
+        "alreadyInCollection": "Este videojuego ya está en tu colección.",
+        "savingErrorDescription": "Hubo un problema al guardar el videojuego. Inténtalo de nuevo.",
+        "theGame": "el videojuego",
+        "gameDetails": "Detalles del videojuego"
+    },
+    "serie": {
+        "updatingErrorDescription": "Hubo un problema al actualizar la serie. Inténtalo de nuevo.",
+        "alreadyInCollection": "Esta serie ya está en tu colección.",
+        "savingErrorDescription": "Hubo un problema al guardar la serie. Inténtalo de nuevo.",
+        "theSerie": "la serie",
+        "serieDetails": "Detalles de la serie"
+    },
+    "albums": {
+        "updatingErrorDescription": "Hubo un problema al actualizar el álbum. Inténtalo de nuevo.",
+        "alreadyInCollection": "Este álbum ya está en tu colección.",
+        "savingErrorDescription": "Hubo un problema al guardar el álbum. Inténtalo de nuevo.",
+        "theAlbum": "el álbum",
+        "albumDetails": "Detalles del álbum"
+    },
+    "addToList": "Añadir a {{listName}}",
+    "list": "lista",
+    "lists": {
+        "listNameCantBeEmpty": "El nombre de la lista no puede estar vacío.",
+        "listHasBeenUpdated": "La lista {{listName}} ha sido actualizado exitosamente.",
+        "listLoadingError": "No se pudieron cargar los detalles de la lista. Por favor, inténtalo de nuevo.",
+        "updateList": "Actualiza tu lista",
+        "createList": "Crea tu lista",
+        "listName": "Nombre de la lista",
+        "listNamePlaceholder": "Ej: Películas imprescindibles",
+        "description": "Descripción",
+        "descriptionPlaceholder": "Describe el contenido de esta lista...",
+        "listDetails": "Detalles de la lista"
+    },
+    "ready": "Listo",
+    "lastTime": "Última vez",
+    "noDate": "Sin fecha",
+    "clearDate": "Limpiar fecha",
+    "startingDate": "Fecha Inicio",
+    "endingDate": "Fecha Fin",
+    "hoursPlayedPlaceholder": "Horas jugadas...",
+    "pagesReadedPlaceholder": "Páginas leídas...",
+    "currentSeason": "Temporada Actual",
+    "currentEpisode": "Episodio Actual",
+    "reviewPlaceholder": "Escribe tu opinión...",
+    "views": "Vistas",
+    "comment":"comentarios",
+    "commentPlaceholder": "Añade un comentario...",
+    "noComments": "No hay comentarios todavía",
+    "loadMoreComments": "Ver más comentarios",
+    "commentsLoadingError": "Error al cargar los comentarios",
+    "deleteComment": {
+        "title": "Confirmar eliminación",
+        "description": "¿Estás seguro de que deseas eliminar este comentario?",
+        "successTitle": "Comentario eliminado",
+        "resourceDeletedDescription": "Has eliminado el comentario exitosamente.",
+        "failedToDelete": "No se pudo eliminar el comentario. Inténtalo de nuevo más tarde."
     }
   },
   "search": {
@@ -560,78 +559,6 @@
     "userDetails": "Detalles del usuario",
     "user": "Usuario",
     "resourceAlreadyInCollection": "Este contenido ya está en tu colección. ¿Quieres editarlo?"
-  },
-  "forms": {
-    "updatingError": "Error al actualizar.",
-    "savingError": "Error al guardar.",
-    "updatingSuccessDescription": "Has actualizado {{titulo}} en tu colección.",
-    "savingSuccessDescription": "Has añadido {{titulo}} a tu colección.",
-    "book": {
-      "invalidPages": "Número de páginas no válido.",
-      "invalidPagesDescription": "El número de páginas no puede ser mayor a 3031. Por favor, ingresa un número válido.",
-      "updatingErrorDescription": "Hubo un problema al actualizar el libro. Inténtalo de nuevo.",
-      "thisBook": "este libro",
-      "alreadyInCollection": "Este libro ya está en tu colección.",
-      "savingErrorDescription": "Hubo un problema al guardar el libro. Inténtalo de nuevo.",
-      "theBook": "el libro",
-      "bookDetails": "Detalles del libro"
-    },
-    "film": {
-      "updatingErrorDescription": "Hubo un problema al actualizar la película. Inténtalo de nuevo.",
-      "thisFilm": "esta película",
-      "alreadyInCollection": "Esta película ya está en tu colección.",
-      "savingErrorDescription": "Hubo un problema al guardar la película. Inténtalo de nuevo.",
-      "theFilm": "la película",
-      "filmDetails": "Detalles de la película"
-    },
-    "game": {
-      "updatingErrorDescription": "Hubo un problema al actualizar el videojuego. Inténtalo de nuevo.",
-      "thisGame": "este videojuego",
-      "alreadyInCollection": "Este videojuego ya está en tu colección.",
-      "savingErrorDescription": "Hubo un problema al guardar el videojuego. Inténtalo de nuevo.",
-      "theGame": "el videojuego",
-      "gameDetails": "Detalles del videojuego"
-    },
-    "serie": {
-      "updatingErrorDescription": "Hubo un problema al actualizar la serie. Inténtalo de nuevo.",
-      "alreadyInCollection": "Esta serie ya está en tu colección.",
-      "savingErrorDescription": "Hubo un problema al guardar la serie. Inténtalo de nuevo.",
-      "serieDetails": "Detalles de la serie",
-      "theSerie": "la serie"
-    },
-    "albums": {
-      "updatingErrorDescription": "Hubo un problema al actualizar el álbum. Inténtalo de nuevo.",
-      "alreadyInCollection": "Este álbum ya está en tu colección.",
-      "savingErrorDescription": "Hubo un problema al guardar el álbum. Inténtalo de nuevo.",
-      "albumDetails": "Detalles del álbum",
-      "theAlbum": "el álbum"
-    },
-    "addToList": "Añadir a {{listName}}",
-    "list": "lista",
-    "lists": {
-      "listNameCantBeEmpty": "El nombre de la lista no puede estar vacío.",
-      "listHasBeenUpdated": "La lista {{listName}} ha sido actualizado exitosamente.",
-      "listLoadingError": "No se pudieron cargar los detalles de la lista. Por favor, inténtalo de nuevo.",
-      "updateList": "Actualiza tu lista",
-      "createList": "Crea tu lista",
-      "listName": "Nombre de la lista",
-      "listNamePlaceholder": "Ej: Películas imprescindibles",
-      "description": "Descripción",
-      "descriptionPlaceholder": "Describe el contenido de esta lista...",
-      "listDetails": "Detalles de la lista"
-    },
-    "ready": "Listo",
-    "lastTime": "Última vez",
-    "noDate": "Sin fecha",
-    "clearDate": "Limpiar fecha",
-    "startingDate": "Fecha Inicio",
-    "endingDate": "Fecha Fin",
-    "hoursPlayedPlaceholder": "Horas jugadas...",
-    "pagesReadedPlaceholder": "Páginas leídas...",
-    "currentSeason": "Temporada Actual",
-    "currentEpisode": "Episodio Actual",
-    "reviewPlaceholder": "Escribe tu opinión...",
-    "views": "Vistas"
   },
   "frameSelector": {
     "title": "Selecciona foto y marco",

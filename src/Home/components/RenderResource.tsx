@@ -10,7 +10,15 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Activity } from '../hooks/useActivity';
-import { CommentIcon, ScalableBookIcon, ScalableFilmIcon, ScalableGameIcon, ScalableMusicIcon, ScalableShowIcon, WatchLaterIcon } from 'components/Icons';
+import {
+  CommentIcon,
+  ScalableBookIcon,
+  ScalableFilmIcon,
+  ScalableGameIcon,
+  ScalableMusicIcon,
+  ScalableShowIcon,
+  WatchLaterIcon,
+} from 'components/Icons';
 import { router } from 'expo-router';
 import { ResourceType } from 'hooks/useResource';
 import { useState } from 'react';
@@ -18,10 +26,9 @@ import { AppText } from 'components/AppText';
 import RenderHtml from 'react-native-render-html';
 import { useFontSize } from 'context/FontSizeContext';
 import { useTranslation } from 'react-i18next';
-import { useAddToCollection } from "../hooks/useAddToCollection";
+import { useAddToCollection } from '../hooks/useAddToCollection';
 import { LikeSetter } from 'src/Form/components/LikeSetter';
 import { useLike } from 'src/Details/hooks/useLike';
-import { violet } from "tailwindcss/colors";
 
 const ICON_SIZE = 20;
 
@@ -36,7 +43,14 @@ export default function ActivityItem({
   const { width } = useWindowDimensions();
   const { fontSizeMultiplier } = useFontSize();
   const { t } = useTranslation();
-  const { watchLaterBook, watchLaterSerie, watchLaterFilm, watchLaterGame, watchLaterAlbum, loading: isSaving } = useAddToCollection();
+  const {
+    watchLaterBook,
+    watchLaterSerie,
+    watchLaterFilm,
+    watchLaterGame,
+    watchLaterAlbum,
+    loading: isSaving,
+  } = useAddToCollection();
 
   const getRelativeTime = (date: string | Date) => {
     const now = new Date();
@@ -57,15 +71,43 @@ export default function ActivityItem({
     return then.toLocaleDateString(); // Si es más de una semana, mostrar fecha completa
   };
 
-  const categoryMap: Record<string, { color: any; icon: any; resourceType: ResourceType; tipoRecurso: string }> = {
-    LIBRO: { color: colors.ground1, icon: ScalableBookIcon, resourceType: 'libro', tipoRecurso: 'LIBRO' },
-    PELICULA: { color: colors.ground2, icon: ScalableFilmIcon, resourceType: 'pelicula', tipoRecurso: 'AUDIOVISUAL' },
-    SERIE: { color: colors.ground3, icon: ScalableShowIcon, resourceType: 'serie', tipoRecurso: 'AUDIOVISUAL' },
-    VIDEOJUEGO: { color: colors.ground4, icon: ScalableGameIcon, resourceType: 'videojuego', tipoRecurso: 'VIDEOJUEGO' },
-    CANCION: { color: colors.ground5, icon: ScalableMusicIcon, resourceType: 'cancion', tipoRecurso: 'MUSICA' },
+  const categoryMap: Record<
+    string,
+    { color: any; icon: any; resourceType: ResourceType; tipoRecurso: string }
+  > = {
+    LIBRO: {
+      color: colors.ground1,
+      icon: ScalableBookIcon,
+      resourceType: 'libro',
+      tipoRecurso: 'LIBRO',
+    },
+    PELICULA: {
+      color: colors.ground2,
+      icon: ScalableFilmIcon,
+      resourceType: 'pelicula',
+      tipoRecurso: 'AUDIOVISUAL',
+    },
+    SERIE: {
+      color: colors.ground3,
+      icon: ScalableShowIcon,
+      resourceType: 'serie',
+      tipoRecurso: 'AUDIOVISUAL',
+    },
+    VIDEOJUEGO: {
+      color: colors.ground4,
+      icon: ScalableGameIcon,
+      resourceType: 'videojuego',
+      tipoRecurso: 'VIDEOJUEGO',
+    },
+    CANCION: {
+      color: colors.ground5,
+      icon: ScalableMusicIcon,
+      resourceType: 'cancion',
+      tipoRecurso: 'MUSICA',
+    },
   };
 
-  const { liked, likeCount, setLiked } = useLike(
+  const { liked, likeCount, setLiked, isPending } = useLike(
     item.recurso_id ? parseInt(item.recurso_id, 10) : undefined,
     categoryMap[item.tipo_contenido].tipoRecurso
   );
@@ -108,29 +150,29 @@ export default function ActivityItem({
 
   const handleWatchLater = () => {
     if (item.idapi == null) {
-      return
+      return;
     }
 
-    switch(item.tipo_contenido) {
-      case 'LIBRO': 
-        return void watchLaterBook(item.idapi)
-      case 'PELICULA': 
-        return void watchLaterFilm(item.idapi)
-      case 'SERIE': 
-        return void watchLaterSerie(item.idapi)
-      case 'CANCION': 
-        return void watchLaterAlbum(item.idapi)
-      case 'VIDEOJUEGO': 
-        return void watchLaterGame(item.idapi)
+    switch (item.tipo_contenido) {
+      case 'LIBRO':
+        return void watchLaterBook(item.idapi);
+      case 'PELICULA':
+        return void watchLaterFilm(item.idapi);
+      case 'SERIE':
+        return void watchLaterSerie(item.idapi);
+      case 'CANCION':
+        return void watchLaterAlbum(item.idapi);
+      case 'VIDEOJUEGO':
+        return void watchLaterGame(item.idapi);
       default:
-        return
+        return;
     }
-  }
+  };
 
   return (
     <TouchableOpacity
       activeOpacity={0.7}
-	    onPress={() => onPress()}
+      onPress={() => onPress()}
       className=" mb-4 overflow-hidden rounded-2xl shadow-xl"
       style={{ borderWidth: 0, borderColor: colors.borderButton }}>
       {/* Imagen de fonde */}
@@ -258,7 +300,9 @@ export default function ActivityItem({
         </LinearGradient>
 
         {/* Header: Usuario e info */}
-        <View className="flex-row items-center justify-between p-4 align-middle" style={{ backgroundColor: colors.surfaceButton }}>
+        <View
+          className="flex-row items-center justify-between p-4 align-middle"
+          style={{ backgroundColor: colors.surfaceButton }}>
           <View className="flex-row items-center gap-3">
             {item.avatar_url ? (
               <TouchableOpacity
@@ -316,42 +360,39 @@ export default function ActivityItem({
             </View>
           </View>
           <View className="flex-row items-center justify-end">
-
             <Pressable
               onPress={(event) => {
                 event.stopPropagation();
                 handleWatchLater();
               }}
-              disabled = {isSaving}
+              disabled={isSaving}
               className="ml-2">
-                <WatchLaterIcon 
-                  size={ICON_SIZE}
-                  color={isSaving ? colors.secondaryText : colors.primaryText}
-                  style={{padding:4}} />
+              <WatchLaterIcon
+                size={ICON_SIZE}
+                color={isSaving ? colors.secondaryText : colors.primaryText}
+                style={{ padding: 4 }}
+              />
             </Pressable>
 
             <Pressable
-            onPress={(event) => {
-              event.stopPropagation();
-              onPress({ focus: 'comment' });
-            }}
-            className="ml-2 rounded-full"
-            style={({ pressed }) => ({
-              backgroundColor: pressed ? `${colors.primary}1A` : 'transparent',
-            })}>
-            {({ pressed }) => (
-              <CommentIcon
-                color={pressed ? colors.secondaryText : colors.primaryText}
-                style={{ padding: 4 }}
-                size={ICON_SIZE}
-              />
-            )}
+              onPress={(event) => {
+                event.stopPropagation();
+                onPress({ focus: 'comment' });
+              }}
+              className="ml-2 rounded-full"
+              style={({ pressed }) => ({
+                backgroundColor: pressed ? `${colors.primary}1A` : 'transparent',
+              })}>
+              {({ pressed }) => (
+                <CommentIcon
+                  color={pressed ? colors.secondaryText : colors.primaryText}
+                  style={{ padding: 4 }}
+                  size={ICON_SIZE}
+                />
+              )}
             </Pressable>
 
-            <LikeSetter 
-              liked={liked} 
-              setLiked={setLiked} 
-              size={ICON_SIZE}/>
+            <LikeSetter liked={liked} setLiked={setLiked} size={ICON_SIZE} disabled={isPending} />
           </View>
         </View>
       </ImageBackground>
