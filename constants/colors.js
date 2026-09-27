@@ -97,11 +97,11 @@ const COMMON_COLORS = {
     statsLabelColor: '79, 87, 99',  // gris oscuro utilizado para las etiquetas de la barra de la gráfica (en la implementación se añade opacidad)
 
     //Colores para el selector de contenido
-    ground1: '#10B981',
-    ground2: '#3B82F6',
-    ground3: '#E11D48',
-    ground4: '#F59E0B',
-    ground5: '#8B5CF6',
+    ground1: '#10B981', //libros
+    ground2: '#3B82F6', //películas
+    ground3: '#E11D48', //series
+    ground4: '#F59E0B', //videojuegos
+    ground5: '#8B5CF6', //albums
     ...COMMON_COLORS
   };
 

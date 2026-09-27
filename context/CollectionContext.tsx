@@ -217,6 +217,10 @@ export const CollectionProvider = ({ children }: any) => {
     queryClient.invalidateQueries({
       queryKey: queryKeys.topFiveSelector(user.id, typeToRefresh),
     });
+
+    queryClient.invalidateQueries({
+      queryKey: queryKeys.diary(user.id),
+    });
   };
 
   const navigateToGrid = (title: any, state: any, category: any) => {
@@ -255,12 +259,12 @@ export const CollectionProvider = ({ children }: any) => {
     }
   };
 
-  const handleLongPress = (item: any, categoria?: ResourceType, from?: string) => {  
-      setSelectedItems([item]);
-  }
+  const handleLongPress = (item: any, categoria?: ResourceType, from?: string) => {
+    setSelectedItems([item]);
+  };
   const clearSelectedItems = () => {
     setSelectedItems([]);
-  }
+  };
 
   return (
     <CollectionContext.Provider

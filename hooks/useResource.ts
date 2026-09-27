@@ -215,15 +215,9 @@ export const useResource = () => {
         await supabase.rpc('decrement_review_count', { user_id: user.id });
       }
       await Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: queryKeys.collectionOverview(user.id, tipoRecurso),
-        }),
-        queryClient.invalidateQueries({
-          queryKey: queryKeys.collectionGroupPrefix(user.id, tipoRecurso),
-        }),
-        queryClient.invalidateQueries({
-          queryKey: queryKeys.resourcesPrefix(user.id, tipoRecurso),
-        }),
+        queryClient.invalidateQueries({queryKey: queryKeys.collectionOverview(user.id, tipoRecurso)}),
+        queryClient.invalidateQueries({queryKey: queryKeys.collectionGroupPrefix(user.id, tipoRecurso)}),
+        queryClient.invalidateQueries({queryKey: queryKeys.resourcesPrefix(user.id, tipoRecurso),}),
         queryClient.invalidateQueries({ queryKey: queryKeys.listsPrefix() }),
         queryClient.invalidateQueries({ queryKey: queryKeys.profile(user.id) }),
         queryClient.invalidateQueries({ queryKey: queryKeys.publicProfilePrefix() }),
@@ -231,6 +225,7 @@ export const useResource = () => {
         queryClient.invalidateQueries({ queryKey: queryKeys.profileTotalPrefix(user.id) }),
         queryClient.invalidateQueries({ queryKey: queryKeys.topFive(user.id) }),
         queryClient.invalidateQueries({ queryKey: queryKeys.topFiveSelectorPrefix(user.id) }),
+		queryClient.invalidateQueries({queryKey: queryKeys.diary(user.id),}),
       ]);
       return data;
     } catch (error) {

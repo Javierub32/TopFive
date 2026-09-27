@@ -21,6 +21,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFontSize } from 'context/FontSizeContext';
 import { AppText } from 'components/AppText';
 import { supabase } from 'lib/supabase';
+import { normalizeLocale } from 'lib/locale';
+
 export default function SettingsScreen() {
   const { signOut, deleteAccount, user } = useAuth();
 
@@ -36,16 +38,15 @@ export default function SettingsScreen() {
   const { t, i18n } = useTranslation();
 
   const changeLanguage = async (lng: string) => {
-    await i18n.changeLanguage(lng); // Cambia el idioma en tiempo real
-    await AsyncStorage.setItem('user_language_preference', lng); // Lo guarda para la próxima vez
+    const normalizedLng = normalizeLocale(lng);
 
-    if(user?.id){
-      try{
-        await supabase
-          .from('usuario')
-          .update({language: lng})
-          .eq('id', user.id);
-      } catch(err){
+    await i18n.changeLanguage(normalizedLng); // Cambia el idioma en tiempo real
+    await AsyncStorage.setItem('user_language_preference', normalizedLng); // Lo guarda para la próxima vez
+
+    if (user?.id) {
+      try {
+        await supabase.from('usuario').update({ language: normalizedLng }).eq('id', user.id);
+      } catch (err) {
         console.error('Error guardando idioma en Supabase:', err);
       }
     }
@@ -152,7 +153,9 @@ export default function SettingsScreen() {
         <View className="mb-14 flex-1 p-4">
           <View className="flex-1 gap-4">
             <View>
-              <AppText className="mb-1 p-1 font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
+              <AppText
+                className="mb-1 p-1 font-bold"
+                style={{ color: colors.primaryText, fontSize: 20 }}>
                 {t('settings.personalization.title')}
               </AppText>
               <View
@@ -203,7 +206,11 @@ export default function SettingsScreen() {
                           borderColor: themePreference === 'dark' ? colors.accent : 'transparent',
                         }}
                         onPress={() => changeTheme('dark')}>
-                        <ScalableMaterialIcons name="dark-mode" size={24} color={colors.primaryText} />
+                        <ScalableMaterialIcons
+                          name="dark-mode"
+                          size={24}
+                          color={colors.primaryText}
+                        />
                         <AppText
                           className="text-center text-sm"
                           style={{ color: colors.primaryText, fontSize: 16 }}>
@@ -218,7 +225,11 @@ export default function SettingsScreen() {
                           borderColor: themePreference === 'light' ? colors.accent : 'transparent',
                         }}
                         onPress={() => changeTheme('light')}>
-                        <ScalableMaterialIcons name="light-mode" size={24} color={colors.primaryText} />
+                        <ScalableMaterialIcons
+                          name="light-mode"
+                          size={24}
+                          color={colors.primaryText}
+                        />
                         <AppText
                           className="text-center text-sm"
                           style={{ color: colors.primaryText, fontSize: 16 }}>
@@ -266,8 +277,8 @@ export default function SettingsScreen() {
                   {showLangOptions && (
                     <View className="mt-2 flex-row justify-between gap-2">
                       {[
-                        { id: 'es', label: 'ES', region: 'ES' },
-                        { id: 'en', label: 'EN', region: 'US' },
+                        { id: 'es-ES', label: 'ES', region: 'ES' },
+                        { id: 'en-US', label: 'EN', region: 'US' },
                         { id: 'en-GB', label: 'EN', region: 'UK' },
                       ].map((lang) => (
                         <TouchableOpacity
@@ -276,9 +287,11 @@ export default function SettingsScreen() {
                           style={{
                             backgroundColor: colors.background,
                             borderWidth: 2,
-                            borderColor: 
-                              i18n.language === lang.id || (i18n.language.startsWith(lang.id) && !(i18n.language === 'en-GB' && lang.id === 'en')) 
-                                ? colors.accent 
+                            borderColor:
+                              i18n.language === lang.id ||
+                              (i18n.language.startsWith(lang.id) &&
+                                !(i18n.language === 'en-GB' && lang.id === 'en'))
+                                ? colors.accent
                                 : 'transparent',
                           }}
                           onPress={() => changeLanguage(lang.id)}>
@@ -351,7 +364,9 @@ export default function SettingsScreen() {
             </View>
 
             <View>
-                <AppText className="mb-1 p-1 font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
+              <AppText
+                className="mb-1 p-1 font-bold"
+                style={{ color: colors.primaryText, fontSize: 20 }}>
                 {t('settings.account.title')}
               </AppText>
               <View
@@ -377,7 +392,11 @@ export default function SettingsScreen() {
                     activeOpacity={0.4}
                     onPress={handleCloseSession}>
                     <View className="flex-row items-center justify-start gap-2">
-                      <ScalableIonicons name="log-out-outline" size={24} color={colors.primaryText} />
+                      <ScalableIonicons
+                        name="log-out-outline"
+                        size={24}
+                        color={colors.primaryText}
+                      />
                       <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                         {t('settings.account.logOut.title')}
                       </AppText>
@@ -400,7 +419,9 @@ export default function SettingsScreen() {
             </View>
 
             <View>
-              <AppText className="mb-1 p-1 font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
+              <AppText
+                className="mb-1 p-1 font-bold"
+                style={{ color: colors.primaryText, fontSize: 20 }}>
                 {t('settings.legal.title')}
               </AppText>
               <View
@@ -458,7 +479,11 @@ export default function SettingsScreen() {
                     Linking.openURL('https://topfive-politica-privacidad.vercel.app/')
                   }>
                   <View className="flex-row items-center justify-start gap-2">
-                    <ScalableFontAwesome name="check-circle-o" size={24} color={colors.primaryText} />
+                    <ScalableFontAwesome
+                      name="check-circle-o"
+                      size={24}
+                      color={colors.primaryText}
+                    />
                     <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
                       {t('settings.legal.privacy')}
                     </AppText>
@@ -480,8 +505,14 @@ export default function SettingsScreen() {
                       activeOpacity={0.4}
                       onPress={handleRevokeConsent}>
                       <View className="flex-row items-center justify-start gap-2">
-                        <ScalableMaterialIcons name="security" size={24} color={colors.primaryText} />
-                        <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
+                        <ScalableMaterialIcons
+                          name="security"
+                          size={24}
+                          color={colors.primaryText}
+                        />
+                        <AppText
+                          className="font-bold"
+                          style={{ color: colors.primaryText, fontSize: 18 }}>
                           {t('settings.legal.adsPriv')}
                         </AppText>
                       </View>

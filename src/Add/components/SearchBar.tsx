@@ -1,4 +1,4 @@
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
 import { ScalableMaterialCommunityIcons, ScalableSearchIcon } from 'components/Icons';
 import { ResourceType } from 'hooks/useResource';
 import { useTheme } from 'context/ThemeContext';
@@ -103,7 +103,10 @@ export const SearchBar = ({
                 borderBottomColor: colors.accent,
                 backgroundColor: selectedCategory === opcion ? colors.accent : 'transparent',
               }}
-              onPress={() => onCategoryChange(opcion)}>
+              onPress={() => {
+                onCategoryChange(opcion);
+                setMenuAbierto(false);
+              }}>
               <AppText
                 className="text-base"
                 style={{

@@ -11,9 +11,10 @@ interface User {
 interface UserResultItemProps {
   item: User;
   onPress?: () => void;
+  actionText?: string;
 }
 
-export function UserResultItem({ item, onPress }: UserResultItemProps) {
+export function UserResultItem({ item, onPress, actionText }: UserResultItemProps) {
   const { colors } = useTheme();
   return (
     <TouchableOpacity
@@ -39,11 +40,14 @@ export function UserResultItem({ item, onPress }: UserResultItemProps) {
 
       {/* Información del usuario */}
       <View className="flex-1">
-        <AppText className="text-base font-semibold" style={{ color: colors.primaryText, fontSize: 16 }}>
-          {item.username}
+        <AppText className="text-base" style={{ color: colors.primaryText, fontSize: 16 }}>
+          <AppText className="font-bold">{item.username}</AppText>
+          {actionText && (
+            <AppText className="font-normal"> {actionText}</AppText>
+          )}
         </AppText>
         {item.description && (
-          <AppText style={{ color: colors.secondaryText, fontSize: 14 }} numberOfLines={3}>
+          <AppText style={{ color: colors.secondaryText, fontSize: 12 }} numberOfLines={3}>
             {item.description}
           </AppText>
         )}

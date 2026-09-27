@@ -1,6 +1,4 @@
-import { t } from 'i18next';
 import { supabase } from 'lib/supabase';
-import { Platform } from 'react-native';
 
 export const notificationServices = {
   async fetchNotifications(userId: string, from: number, to: number) {
@@ -46,39 +44,6 @@ export const notificationServices = {
       .eq('follower_id', followerId);
 
     if (error) throw error;
-
-    try {
-      if (Platform.OS === 'web') return data;
-
-      const [myUserRes, followerRes] = await Promise.all([
-        supabase.from('usuario').select('username').eq('id', followingId).single(),
-        supabase.from('usuario').select('push_token').eq('id', followerId).single(),
-      ]);
-
-      const myUsername = myUserRes.data?.username || 'Alguien';
-      const pushToken = followerRes.data?.push_token;
-
-      // Si el usuario tiene token de notificaciones, enviamos el Push a través de Expo
-      if (pushToken) {
-        await fetch('https://exp.host/--/api/v2/push/send', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Accept-encoding': 'gzip, deflate',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            to: pushToken,
-            sound: 'default',
-            title: t('notifications.requestAccepted'),
-            body: t('notifications.requestAcceptedDescription', { username: myUsername }),
-            data: { type: 'follow_accepted', userId: followingId },
-          }),
-        });
-      }
-    } catch (err) {
-      console.error('Error enviando notificación push:', err);
-    }
 
     return data;
   },

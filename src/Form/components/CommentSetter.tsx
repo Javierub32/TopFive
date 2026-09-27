@@ -85,7 +85,7 @@ export const CommentSetter = ({ comment, setComment, onSend, sending = false, au
             onFocus={scrollIfKeyboardVisible}
             onContentSizeChange={scrollIfKeyboardVisible}
             maxLength={MAX_LENGTH}
-            placeholder={t('forms.commentPlaceholder')}
+            placeholder={t('login.forms.commentPlaceholder')}
             placeholderTextColor={colors.placeholderText}
             value={comment}
             onChangeText={setComment}

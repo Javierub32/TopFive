@@ -12,6 +12,7 @@ import { ThemedStatusBar } from 'components/ThemedStatusBar';
 import { SearchPlaceholder } from '@/Add/components/SearchPlaceholder';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function AddScreen() {
   const {
@@ -34,6 +35,9 @@ export default function AddScreen() {
 
   const { colors } = useTheme();
   const { t } = useTranslation();
+
+  const insets = useSafeAreaInsets();
+  const tabBarHeight = 52 + insets.bottom;
 
   const showRecentContent = !busqueda.trim() && !hasSearched && recentSearches.length > 0;
 
@@ -81,7 +85,7 @@ export default function AddScreen() {
                 keyExtractor={(item) => `${item.category}-${item.id}`}
                 keyboardShouldPersistTaps="handled"
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 40 }}
+                contentContainerStyle={{ paddingBottom: 40 + tabBarHeight }}
                 renderItem={({ item }) => (
                   <View className="flex-row items-center">
                     <View className="flex-1">
