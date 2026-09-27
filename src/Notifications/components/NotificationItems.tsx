@@ -48,7 +48,8 @@ export function NotificationItem({
       {/* Avatar e información del usuario (clickeable) */}
       <View className="flex-1">
         <UserResultItem
-          item={{ ...user, username: `${user.username} ${notificationText}` }}
+          item={user}
+          actionText={`${notificationText}`}
           onPress={onUserPress}
         />
       </View>

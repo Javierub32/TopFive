@@ -26,7 +26,9 @@
     "colour": "Color",
     "obtain": "Obtain",
     "update": "Update",
-    "edit": "Edit"
+    "edit": "Edit",
+    "activate": "Activate",
+    "deactivate": "Disable"
   },
   "status": {
     "title": "Status",
@@ -683,7 +685,7 @@
   },
   "diary": {
     "title": "Diary",
-    "empty": "No items",
+    "empty": "This user has no recent activity",
     "noImage": "No image",
     "profileTitle": "Recent activity"
   }
