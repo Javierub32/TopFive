@@ -4,11 +4,12 @@ import { TouchableOpacity } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withSequence, withTiming } from "react-native-reanimated";
 
 interface Props {
-    favorite: any;
-    setFavorite: any;
+    liked: boolean;
+    setLiked: (liked: boolean) => void;
+    size?: number;
 }
 
-export const FavoriteSetter = ({favorite, setFavorite} : Props) => {
+export const LikeSetter = ({liked, setLiked, size = 24} : Props) => {
     const { colors } = useTheme();
     const scale = useSharedValue(1);
 
@@ -17,7 +18,7 @@ export const FavoriteSetter = ({favorite, setFavorite} : Props) => {
     }));
 
     const handlePress = () => {
-        setFavorite(!favorite);
+        setLiked(!liked);
         scale.value = withSequence(
           withTiming(1.5, { duration: 200 }),
           withTiming(1, { duration: 200 })
@@ -28,13 +29,12 @@ export const FavoriteSetter = ({favorite, setFavorite} : Props) => {
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={handlePress}
-      className="items-center rounded-full p-2"
-      style={{ backgroundColor: `${colors.favorite}1A` }}>
+      className="items-center p-2">
       <Animated.View style={animatedStyle}>
-        {favorite ? (
-          <ScalableFavoriteIcon size={24} />
+        {liked ? (
+          <ScalableFavoriteIcon size={size}/>
         ) : (
-          <ScalableNonFavoriteIcon size={24} />
+          <ScalableNonFavoriteIcon size={size} color={colors.primaryText} />
         )}
       </Animated.View>
     </TouchableOpacity>
