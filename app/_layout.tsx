@@ -1,7 +1,7 @@
 import '../global.css';
 import '../i18n';
 import 'react-native-gesture-handler';
-import { SplashScreen, Stack, useRouter, useSegments } from 'expo-router';
+import { Redirect, SplashScreen, Stack, useRouter, useSegments } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { AppState, View, Linking, Platform } from 'react-native';
@@ -192,7 +192,7 @@ function InitialLayout() {
     }
   }, [appIsReady, loading]);
 
-  useEffect(() => {
+ useEffect(() => {
     if (loading || !appIsReady) return;
 
     const inAuthGroup = segments[0] === '(auth)';
@@ -206,12 +206,17 @@ function InitialLayout() {
       // Redirigir a Home si intenta entrar a login/registro (AuthGroup)
       // O si está en la raíz (segments.length === 0)
       if (inAuthGroup || (segments.length as number) === 0) {
-        router.replace('/(tabs)/Home');
+        
+        if (Platform.OS !== 'web') {
+          router.replace('/(tabs)/Home');
+        }else {
+          router.replace('/(auth)/login'); 
+        }
+        
       }
     } else {
       // NO hay usuario:
       // Redirigir a Login si NO está ya en el grupo de autenticación.
-      // (Esto cubre cualquier ruta protegida y la raíz)
       if (!inAuthGroup) {
         router.replace('/(auth)/login');
       }
