@@ -28,6 +28,8 @@
     "update": "Update",
     "edit": "Edit",
     "retry": "Retry"
+    "activate": "Activate",
+    "deactivate": "Disable"
   },
   "status": {
     "title": "Status",
@@ -243,7 +245,14 @@
         "commentPlaceholder": "Write a comment...",
         "noComments": "No comments yet",
         "loadMoreComments": "Load more comments",
-        "commentsLoadingError": "Error loading comments"
+        "commentsLoadingError": "Error loading comments",
+        "deleteComment": {
+            "title": "Confirm deletion",
+            "description": "Are you sure you want to delete this comment?",
+            "successTitle": "Comment deleted",
+            "resourceDeletedDescription": "You have successfully deleted the comment.",
+            "failedToDelete": "Could not delete the comment. Please try again later."
+        }
        
     },
     "email": {
@@ -688,7 +697,7 @@
   },
   "diary": {
     "title": "Diary",
-    "empty": "No items",
+    "empty": "This user has no recent activity",
     "noImage": "No image",
     "profileTitle": "Recent activity"
   }

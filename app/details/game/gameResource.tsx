@@ -15,7 +15,7 @@ import { AdBanner } from 'components/AdBanner';
 import { ResourceHeader } from '@/Details/components/ResourceHeader';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
-import { CommentSection } from '@/Details/components/CommentSection';
+import { SocialSection } from '@/Details/components/SocialSection';
 import { useRef } from 'react';
 
 export default function GameDetail() {
@@ -42,6 +42,8 @@ export default function GameDetail() {
 
   const isOwner = gameResource?.usuarioId === user?.id;
   const isPending = gameResource?.estado === 'PENDIENTE';
+  const isCompleted = gameResource?.estado === 'COMPLETADO';
+  const hasHours = Number(gameResource?.horasJugadas) > 0;
 
   const displayUsername = (gameResource as any)?.username;
   const displayAvatarUrl = (gameResource as any)?.avatar_url;
@@ -94,8 +96,8 @@ export default function GameDetail() {
                   <RatingCard rating={gameResource.calificacion} />
                 )}
                 <ProgressCard
-                  progress={gameResource.horasJugadas}
-                  unit={t('details.progressUnits.videogames')}
+                  progress={ hasHours ? gameResource.horasJugadas : '-'}
+                  unit={hasHours ? t('details.progressUnits.videogames') : " "}
                 />
               </View>
               <ReviewCard review={gameResource.reseña}  username={displayUsername} avatarUrl={displayAvatarUrl} />
@@ -107,12 +109,15 @@ export default function GameDetail() {
             </View>
           )}
 
-          <CommentSection
-            resourceId={gameResource.id}
-            resourceType={gameResource.tiporecurso}
-            focusComment={focus === 'comment'}
-            scrollRef={scrollRef}
-          ></CommentSection>
+          {isCompleted && 
+            <SocialSection
+              resourceId={gameResource.id}
+              resourceType={gameResource.tiporecurso}
+              focusComment={focus === 'comment'}
+              scrollRef={scrollRef}
+            ></SocialSection>
+          }
+          
         </View>
         {!isPending && (
           <View className="flex-1">

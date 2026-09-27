@@ -58,4 +58,14 @@ export const commentServices = {
 
     if (error) throw error;
   },
+
+  async deleteComment(commentId: number, userId: string) {
+    const { error } = await supabase
+      .from(COMMENTS_TABLE)
+      .delete()
+      .eq('id', commentId)
+      .eq('user_id', userId);
+
+    if (error) throw error;
+  },
 };

@@ -54,5 +54,7 @@ export const queryKeys = {
   frames: (userId?: string | null) => ['frames', userId] as const,
   comments: (resourceId?: number | null, resourceType?: string | null) =>
     ['comments', resourceType, resourceId] as const,
+  like: (userId?: string | null, resourceId?: number | null, resourceType?: string | null) =>
+    ['like', userId, resourceType, resourceId] as const,
   diary: (userId?: string | null) => ['diary', userId] as const,
 };

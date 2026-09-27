@@ -14,7 +14,7 @@ import { AdBanner } from 'components/AdBanner';
 import { ResourceHeader } from '@/Details/components/ResourceHeader';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
-import { CommentSection } from '@/Details/components/CommentSection';
+import { SocialSection } from '@/Details/components/SocialSection';
 import { useRef } from 'react';
 
 export default function FilmDetail() {
@@ -41,6 +41,7 @@ export default function FilmDetail() {
 
   const isOwner = filmResource?.usuarioId === user?.id;
   const isPending = filmResource?.estado === 'PENDIENTE';
+  const isCompleted = filmResource?.estado === 'COMPLETADO';
   
   // username y avatar
   const displayUsername = (filmResource as any)?.username;
@@ -97,12 +98,15 @@ export default function FilmDetail() {
             </View>
           )}
 
-          <CommentSection
-            resourceId={filmResource.id}
-            resourceType={filmResource.tiporecurso}
-            focusComment={focus === 'comment'}
-            scrollRef={scrollRef}
-          ></CommentSection>
+          {isCompleted &&
+            <SocialSection
+              resourceId={filmResource.id}
+              resourceType={filmResource.tiporecurso}
+              focusComment={focus === 'comment'}
+              scrollRef={scrollRef}
+            ></SocialSection>
+          }
+          
         </View>
         {!isPending && (
           <View className="flex-1">

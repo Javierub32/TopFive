@@ -15,7 +15,7 @@ import { ResourceHeader } from '@/Details/components/ResourceHeader';
 import { useTheme } from 'context/ThemeContext';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
-import { CommentSection } from '@/Details/components/CommentSection';
+import { SocialSection } from '@/Details/components/SocialSection';
 import { useRef } from 'react';
 
 export default function SongDetail() {
@@ -43,6 +43,7 @@ export default function SongDetail() {
   const isOwner = songResource?.usuarioId === user?.id;
 
   const isPending = songResource?.estado === 'PENDIENTE';
+  const isCompleted = songResource?.estado === 'COMPLETADO';
 
   const displayUsername = (songResource as any)?.username;
   const displayAvatarUrl = (songResource as any)?.avatar_url;
@@ -96,12 +97,15 @@ export default function SongDetail() {
             </View>
           )}
 
-          <CommentSection
-            resourceId={songResource.id}
-            resourceType={songResource.tiporecurso}
-            focusComment={focus === 'comment'}
-            scrollRef={scrollRef}
-          ></CommentSection>
+          {isCompleted && 
+            <SocialSection
+              resourceId={songResource.id}
+              resourceType={songResource.tiporecurso}
+              focusComment={focus === 'comment'}
+              scrollRef={scrollRef}
+            ></SocialSection>
+          }
+          
         </View>
         {!isPending && (
           <View className="flex-1">
