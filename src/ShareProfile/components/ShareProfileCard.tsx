@@ -5,11 +5,10 @@ import { TopFiveItem } from 'src/Profile/services/topFiveServices';
 import { useTheme } from 'context/ThemeContext';
 import { ScalableRatingStarIcon } from 'components/Icons';
 import { useTranslation } from 'react-i18next';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface Props {
   username: string;
-  avatarUrl: string | null;
-  frame: string;
   topFiveItems: TopFiveItem[];
 }
 
@@ -43,10 +42,8 @@ export const ShareProfileCard = forwardRef<View, Props>(function ShareProfileCar
               borderRadius: 8,
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: '#FFFFFF33',
-            }}>
-            <AppText>Sin elemento</AppText>
-          </View>
+              backgroundColor: colors.surfaceButton,
+            }}></View>
         )}
       </View>
     );
@@ -65,6 +62,20 @@ export const ShareProfileCard = forwardRef<View, Props>(function ShareProfileCar
         alignItems: 'center',
         justifyContent: 'center',
       }}>
+      <LinearGradient
+        colors={['#00587c', '#1b7589', '#369b99', '#52c4a6', '#69ecb6']}
+        locations={[0, 0.25, 0.5, 0.75, 1]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+        }}
+      />
+
       <View
         style={{
           width: '100%',
@@ -74,7 +85,7 @@ export const ShareProfileCard = forwardRef<View, Props>(function ShareProfileCar
           paddingVertical: 24,
           alignItems: 'center',
           justifyContent: 'space-between',
-          backgroundColor: `${colors.background}CC`,
+          backgroundColor: `${colors.background}B3`,
         }}>
         <View style={{ gap: 8 }}>
           <AppText style={{ color: colors.primaryText, fontWeight: 'bold', fontSize: 30 }}>

@@ -9,8 +9,6 @@ import { useAppVersion } from '../hooks/useAppVersion';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { SplashScreen } from 'expo-router';
 
-
-
 type StartupGateMessageProps = {
   title: string;
   description: string;
@@ -18,7 +16,12 @@ type StartupGateMessageProps = {
   onPress?: () => void;
 };
 
-const StartupGateMessage = ({ title, description, buttonLabel, onPress}: StartupGateMessageProps) => {
+const StartupGateMessage = ({
+  title,
+  description,
+  buttonLabel,
+  onPress,
+}: StartupGateMessageProps) => {
   const { colors } = useTheme();
 
   return (
@@ -26,15 +29,11 @@ const StartupGateMessage = ({ title, description, buttonLabel, onPress}: Startup
       <View className="flex-1 items-center justify-center px-6">
         <AppText
           className="mb-3 text-center font-bold"
-          style={{ color: colors.primaryText, fontSize: 24 }}
-        >
+          style={{ color: colors.primaryText, fontSize: 24 }}>
           {title}
         </AppText>
 
-        <AppText
-          className="text-center"
-          style={{ color: colors.secondaryText, fontSize: 16 }}
-        >
+        <AppText className="text-center" style={{ color: colors.secondaryText, fontSize: 16 }}>
           {description}
         </AppText>
 
@@ -42,12 +41,10 @@ const StartupGateMessage = ({ title, description, buttonLabel, onPress}: Startup
           <TouchableOpacity
             className="mt-6 rounded-xl px-5 py-3"
             style={{ backgroundColor: colors.surfaceButton }}
-            onPress={onPress}
-          >
+            onPress={onPress}>
             <AppText
               className="text-center font-bold"
-              style={{ color: colors.accent, fontSize: 16 }}
-            >
+              style={{ color: colors.accent, fontSize: 16 }}>
               {buttonLabel}
             </AppText>
           </TouchableOpacity>
@@ -59,37 +56,23 @@ const StartupGateMessage = ({ title, description, buttonLabel, onPress}: Startup
 
 export const StartupGate = ({ children }: PropsWithChildren) => {
   const { t, i18n } = useTranslation();
-  const {
-    appVersion,
-    isFetching,
-    error,
-    refetch,
-    compareVersions,
-  } = useAppVersion({ refetchOnMount: 'always' });
+  const { appVersion, isLoading, error, refetch, compareVersions } = useAppVersion({
+    refetchOnMount: 'always',
+  });
   const isAndroid = Platform.OS === 'android';
-  const installedVersion =
-    Constants.expoConfig?.version ??
-    Constants.nativeAppVersion ??
-    '1.0.0';
-  const minimumVersion = isAndroid
-    ? appVersion?.min_version_android
-    : appVersion?.min_version;
+  const installedVersion = Constants.expoConfig?.version ?? Constants.nativeAppVersion ?? '1.0.0';
+  const minimumVersion = isAndroid ? appVersion?.min_version_android : appVersion?.min_version;
   const language = i18n.resolvedLanguage ?? i18n.language;
-  const maintenanceMessage =
-    language.toLowerCase().startsWith('es')
-      ? appVersion?.maintenance_message_es
-      : appVersion?.maintenance_message_en;
+  const maintenanceMessage = language.toLowerCase().startsWith('es')
+    ? appVersion?.maintenance_message_es
+    : appVersion?.maintenance_message_en;
   const mustUpdate = Boolean(
-    minimumVersion &&
-      compareVersions(installedVersion, minimumVersion) < 0,
+    minimumVersion && compareVersions(installedVersion, minimumVersion) < 0
   );
   const shouldHideSplash =
     Platform.OS !== 'web' &&
-    !isFetching &&
-    (Boolean(error) ||
-      !appVersion ||
-      Boolean(appVersion.maintenance_enabled) ||
-      mustUpdate);
+    !isLoading &&
+    (Boolean(error) || !appVersion || Boolean(appVersion.maintenance_enabled) || mustUpdate);
 
   useEffect(() => {
     if (shouldHideSplash) {
@@ -103,7 +86,7 @@ export const StartupGate = ({ children }: PropsWithChildren) => {
     return <>{children}</>;
   }
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <Screen>
         <LoadingIndicator />
@@ -126,9 +109,7 @@ export const StartupGate = ({ children }: PropsWithChildren) => {
     return (
       <StartupGateMessage
         title={t('layout.maintenanceTitle')}
-        description={
-          maintenanceMessage ?? t('layout.maintenanceDescription')
-        }
+        description={maintenanceMessage ?? t('layout.maintenanceDescription')}
       />
     );
   }

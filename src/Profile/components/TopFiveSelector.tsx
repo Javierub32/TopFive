@@ -14,8 +14,10 @@ import DraggableFlatList, {
 } from 'react-native-draggable-flatlist';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useShareProfile } from '@/ShareProfile/hooks/useShareProfile';
+import { ShareProfileCard } from 'src/ShareProfile/components/ShareProfileCard';
 
-export const TopFiveSelector = ({ userId }: { userId: string }) => {
+export const TopFiveSelector = ({ userId, username }: { userId: string; username: string }) => {
   const slots = Array.from({ length: 5 });
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -36,6 +38,13 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [localSlots, setLocalSlots] = useState<any[]>([]);
   const [showOptionsMenu, setShowOptionsMenu] = useState(false);
+  const [shareRequested, setShareRequested] = useState(false);
+  const [cardReady, setCardReady] = useState(false);
+
+  const cardRef = useRef<View | null>(null);
+  const shareStartedRef = useRef(false);
+
+  const { shareProfile } = useShareProfile();
 
   const router = useRouter();
   const params = useLocalSearchParams<{
@@ -123,6 +132,33 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
       }
     }
   }, [params.addedItem, params.targetPosition, params.addedItemType, topFiveItems]);
+
+  useEffect(() => {
+    if (!shareRequested || !cardReady || shareStartedRef.current) {
+      return;
+    }
+
+    shareStartedRef.current = true;
+
+    const shareTopFive = async () => {
+      try {
+        const imageUrls = topFiveItems
+          .map((item) => item.resourceData?.contenido?.imagenUrl)
+          .filter(Boolean) as string[];
+
+        await Promise.all(imageUrls.map((url) => Image.prefetch(url)));
+
+        await shareProfile(cardRef);
+      } catch (error) {
+        console.error('Error compartiendo el TopFive:', error);
+      } finally {
+        shareStartedRef.current = false;
+        setShareRequested(false);
+      }
+    };
+
+    void shareTopFive();
+  }, [shareRequested, cardReady, topFiveItems, shareProfile]);
 
   const handleLocalRemove = (position: number) => {
     setLocalSlots((prev) =>
@@ -260,12 +296,7 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
                       className="flex-row items-center px-4 py-3"
                       onPress={() => {
                         setShowOptionsMenu(false);
-                        router.push({
-                          pathname: '/shareProfile',
-                          params: {
-                            autoShare: 'true',
-                          },
-                        });
+                        setShareRequested(true);
                       }}>
                       <ScalableMaterialCommunityIcons
                         name="share-variant"
@@ -388,6 +419,19 @@ export const TopFiveSelector = ({ userId }: { userId: string }) => {
           handleCategorySelect(category, isEditing ? '/(tabs)/Profile' : '')
         }
       />
+
+      <View
+        pointerEvents="none"
+        onLayout={() => setCardReady(true)}
+        style={{
+          position: 'absolute',
+          left: -10000,
+          top: 0,
+          width: 360,
+          height: 640,
+        }}>
+        <ShareProfileCard ref={cardRef} username={username} topFiveItems={topFiveItems} />
+      </View>
     </View>
   );
 };
