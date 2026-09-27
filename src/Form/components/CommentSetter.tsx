@@ -20,7 +20,14 @@ interface Props {
   scrollRef?: RefObject<ScrollView | null>;
 }
 
-export const CommentSetter = ({ comment, setComment, onSend, sending = false, autoFocus = false, scrollRef }: Props) => {
+export const CommentSetter = ({
+  comment,
+  setComment,
+  onSend,
+  sending = false,
+  autoFocus = false,
+  scrollRef,
+}: Props) => {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const inputRef = useRef<TextInput>(null);
@@ -35,7 +42,10 @@ export const CommentSetter = ({ comment, setComment, onSend, sending = false, au
     nativeScroll.measureInWindow((_x, svTop, _w, svHeight) => {
       const visibleHeight = Math.min(svTop + svHeight, keyboardTop) - svTop;
       containerRef.current?.measureLayout(content, (_cx, cy, _cw, ch) => {
-        scrollView.scrollTo({ y: Math.max(0, cy + ch + KEYBOARD_MARGIN - visibleHeight), animated: true });
+        scrollView.scrollTo({
+          y: Math.max(0, cy + ch + KEYBOARD_MARGIN - visibleHeight),
+          animated: true,
+        });
       });
     });
   };
@@ -85,7 +95,7 @@ export const CommentSetter = ({ comment, setComment, onSend, sending = false, au
             onFocus={scrollIfKeyboardVisible}
             onContentSizeChange={scrollIfKeyboardVisible}
             maxLength={MAX_LENGTH}
-            placeholder={t('login.forms.commentPlaceholder')}
+            placeholder={t('forms.commentPlaceholder')}
             placeholderTextColor={colors.placeholderText}
             value={comment}
             onChangeText={setComment}

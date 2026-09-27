@@ -2,12 +2,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from 'context/AuthContext';
 import { queryKeys } from '@/query/queryKeys';
 import { LikeStatus, likeServices } from '../services/likeServices';
+import { useRef } from 'react';
 
 export const useLike = (resourceId?: number, resourceType?: string) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const enabled = resourceId != null && !!resourceType && !!user;
   const key = queryKeys.like(user?.id, resourceId, resourceType);
+  const requestInFlightRef = useRef(false);
 
   const { data } = useQuery({
     queryKey: key,
@@ -30,6 +32,7 @@ export const useLike = (resourceId?: number, resourceType?: string) => {
         if (old?.liked === value) return old;
         return { liked: value, count: Math.max(count + (value ? 1 : -1), 0) };
       });
+    
 
       return { previous };
     },
@@ -37,10 +40,16 @@ export const useLike = (resourceId?: number, resourceType?: string) => {
       console.error('Error toggling like:', err);
       if (context?.previous) queryClient.setQueryData(key, context.previous);
     },
+    onSettled: () => {
+      requestInFlightRef.current = false;
+      queryClient.invalidateQueries({ queryKey: key });
+    },
   });
 
   const setLiked = (value: boolean) => {
-    if (!enabled || likeMutation.isPending) return;
+    if (!enabled || requestInFlightRef.current) return;
+
+    requestInFlightRef.current = true;
     likeMutation.mutate(value);
   };
 
@@ -48,5 +57,6 @@ export const useLike = (resourceId?: number, resourceType?: string) => {
     liked: data?.liked ?? false,
     likeCount: data?.count ?? 0,
     setLiked,
+    isPending: likeMutation.isPending,
   };
 };

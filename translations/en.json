@@ -170,91 +170,6 @@
       "title": "Welcome!",
       "description": "You have been logged in successfully."
     },
-"forms": {
-        "updatingError": "Error updating.",
-        "savingError": "Error saving.",
-        "updatingSuccessDescription": "You have updated {{titulo}} in your collection.",
-        "savingSuccessDescription": "You have added {{titulo}} to your collection.",
-        "book":{
-            "invalidPages": "Invalid number of pages.",
-            "invalidPagesDescription": "The number of pages cannot be greater than 3031. Please enter a valid number.",
-            "updatingErrorDescription": "There was a problem updating the book. Please try again.",
-            "thisBook": "this book",
-            "alreadyInCollection": "This book is already in your collection.",
-            "savingErrorDescription": "There was a problem saving the book. Please try again.",
-            "theBook": "the book",
-            "bookDetails": "Book details"
-        },
-        "film": {
-            "updatingErrorDescription": "There was a problem updating the movie. Please try again.",
-            "thisFilm": "this movie",
-            "alreadyInCollection": "This movie is already in your collection.",
-            "savingErrorDescription": "There was a problem saving the movie. Please try again.",
-            "theFilm": "the movie",
-            "filmDetails": "Movie details"
-        },
-        "game": {
-            "updatingErrorDescription": "There was a problem updating the game. Please try again.",
-            "thisGame": "this game",
-            "alreadyInCollection": "This game is already in your collection.",
-            "savingErrorDescription": "There was a problem saving the game. Please try again.",
-            "theGame": "the game",
-            "gameDetails": "Game details"
-        },
-        "serie": {
-            "updatingErrorDescription": "There was a problem updating the series. Please try again.",
-            "alreadyInCollection": "This series is already in your collection.",
-            "savingErrorDescription": "There was a problem saving the series. Please try again.",
-            "theSerie": "the series",            
-            "serieDetails": "Series details"
-        },
-        "albums": {
-            "updatingErrorDescription": "There was a problem updating the album. Please try again.",
-            "alreadyInCollection": "This album is already in your collection.",
-            "savingErrorDescription": "There was a problem saving the album. Please try again.",
-            "theAlbum": "the album",
-            "albumDetails": "Album details"
-        },
-        "addToList": "Add to {{listName}}",
-        "list": "list",
-        "lists": {
-            "listNameCantBeEmpty": "The list name cannot be empty.",
-            "listHasBeenUpdated": "The list {{listName}} has been updated successfully.",
-            "listLoadingError": "Could not load the list details. Please try again.",
-            "updateList": "Update your list",
-            "createList": "Create your list",
-            "listName": "List name",
-            "listNamePlaceholder": "E.g.: Essential movies",
-            "description": "Description",
-            "descriptionPlaceholder": "Describe the content of this list...",
-            "listDetails": "List details",
-            "onThisList": "on this list"
-        },
-        "ready": "Ready",
-        "lastTime": "Last time",
-        "noDate": "No date",
-        "clearDate": "Clear date",
-        "startingDate": "Starting date",
-        "endingDate": "Ending date",
-        "hoursPlayedPlaceholder": "Hours played...",
-        "pagesReadedPlaceholder": "Pages read...",
-        "currentSeason": "Current season",
-        "currentEpisode": "Current episode",
-        "reviewPlaceholder": "Write your opinion...",
-        "views": "Views",
-        "comment":"comments",
-        "commentPlaceholder": "Write a comment...",
-        "noComments": "No comments yet",
-        "loadMoreComments": "Load more comments",
-        "commentsLoadingError": "Error loading comments",
-        "deleteComment": {
-            "title": "Confirm deletion",
-            "description": "Are you sure you want to delete this comment?",
-            "successTitle": "Comment deleted",
-            "resourceDeletedDescription": "You have successfully deleted the comment.",
-            "failedToDelete": "Could not delete the comment. Please try again later."
-        }
-    },
     "email": {
       "title": "Email",
       "placeholder": "you@email.com"
@@ -306,6 +221,91 @@
       "newPassword": "New password",
       "confirmPassword": "Confirm password",
       "changePassword": "Change password"
+    }
+  },
+  "forms": {
+    "updatingError": "Error updating.",
+    "savingError": "Error saving.",
+    "updatingSuccessDescription": "You have updated {{titulo}} in your collection.",
+    "savingSuccessDescription": "You have added {{titulo}} to your collection.",
+    "book":{
+        "invalidPages": "Invalid number of pages.",
+        "invalidPagesDescription": "The number of pages cannot be greater than 3031. Please enter a valid number.",
+        "updatingErrorDescription": "There was a problem updating the book. Please try again.",
+        "thisBook": "this book",
+        "alreadyInCollection": "This book is already in your collection.",
+        "savingErrorDescription": "There was a problem saving the book. Please try again.",
+        "theBook": "the book",
+        "bookDetails": "Book details"
+    },
+    "film": {
+        "updatingErrorDescription": "There was a problem updating the movie. Please try again.",
+        "thisFilm": "this movie",
+        "alreadyInCollection": "This movie is already in your collection.",
+        "savingErrorDescription": "There was a problem saving the movie. Please try again.",
+        "theFilm": "the movie",
+        "filmDetails": "Movie details"
+    },
+    "game": {
+        "updatingErrorDescription": "There was a problem updating the game. Please try again.",
+        "thisGame": "this game",
+        "alreadyInCollection": "This game is already in your collection.",
+        "savingErrorDescription": "There was a problem saving the game. Please try again.",
+        "theGame": "the game",
+        "gameDetails": "Game details"
+    },
+    "serie": {
+        "updatingErrorDescription": "There was a problem updating the series. Please try again.",
+        "alreadyInCollection": "This series is already in your collection.",
+        "savingErrorDescription": "There was a problem saving the series. Please try again.",
+        "theSerie": "the series",            
+        "serieDetails": "Series details"
+    },
+    "albums": {
+        "updatingErrorDescription": "There was a problem updating the album. Please try again.",
+        "alreadyInCollection": "This album is already in your collection.",
+        "savingErrorDescription": "There was a problem saving the album. Please try again.",
+        "theAlbum": "the album",
+        "albumDetails": "Album details"
+    },
+    "addToList": "Add to {{listName}}",
+    "list": "list",
+    "lists": {
+        "listNameCantBeEmpty": "The list name cannot be empty.",
+        "listHasBeenUpdated": "The list {{listName}} has been updated successfully.",
+        "listLoadingError": "Could not load the list details. Please try again.",
+        "updateList": "Update your list",
+        "createList": "Create your list",
+        "listName": "List name",
+        "listNamePlaceholder": "E.g.: Essential movies",
+        "description": "Description",
+        "descriptionPlaceholder": "Describe the content of this list...",
+        "listDetails": "List details",
+        "onThisList": "on this list"
+    },
+    "ready": "Ready",
+    "lastTime": "Last time",
+    "noDate": "No date",
+    "clearDate": "Clear date",
+    "startingDate": "Starting date",
+    "endingDate": "Ending date",
+    "hoursPlayedPlaceholder": "Hours played...",
+    "pagesReadedPlaceholder": "Pages read...",
+    "currentSeason": "Current season",
+    "currentEpisode": "Current episode",
+    "reviewPlaceholder": "Write your opinion...",
+    "views": "Views",
+    "comment":"comments",
+    "commentPlaceholder": "Write a comment...",
+    "noComments": "No comments yet",
+    "loadMoreComments": "Load more comments",
+    "commentsLoadingError": "Error loading comments",
+    "deleteComment": {
+        "title": "Confirm deletion",
+        "description": "Are you sure you want to delete this comment?",
+        "successTitle": "Comment deleted",
+        "resourceDeletedDescription": "You have successfully deleted the comment.",
+        "failedToDelete": "Could not delete the comment. Please try again later."
     }
   },
   "search": {
@@ -561,79 +561,6 @@
     "userDetails": "User details",
     "user": "User",
     "resourceAlreadyInCollection": "This content is already in your collection. Do you want to edit it?"
-  },
-  "forms": {
-    "updatingError": "Error updating.",
-    "savingError": "Error saving.",
-    "updatingSuccessDescription": "You have updated {{titulo}} in your collection.",
-    "savingSuccessDescription": "You have added {{titulo}} to your collection.",
-    "book": {
-      "invalidPages": "Invalid number of pages.",
-      "invalidPagesDescription": "The number of pages cannot be greater than 3031. Please enter a valid number.",
-      "updatingErrorDescription": "There was a problem updating the book. Please try again.",
-      "thisBook": "this book",
-      "alreadyInCollection": "This book is already in your collection.",
-      "savingErrorDescription": "There was a problem saving the book. Please try again.",
-      "theBook": "the book",
-      "bookDetails": "Book details"
-    },
-    "film": {
-      "updatingErrorDescription": "There was a problem updating the movie. Please try again.",
-      "thisFilm": "this movie",
-      "alreadyInCollection": "This movie is already in your collection.",
-      "savingErrorDescription": "There was a problem saving the movie. Please try again.",
-      "theFilm": "the movie",
-      "filmDetails": "Movie details"
-    },
-    "game": {
-      "updatingErrorDescription": "There was a problem updating the game. Please try again.",
-      "thisGame": "this game",
-      "alreadyInCollection": "This game is already in your collection.",
-      "savingErrorDescription": "There was a problem saving the game. Please try again.",
-      "theGame": "the game",
-      "gameDetails": "Game details"
-    },
-    "serie": {
-      "updatingErrorDescription": "There was a problem updating the series. Please try again.",
-      "alreadyInCollection": "This series is already in your collection.",
-      "savingErrorDescription": "There was a problem saving the series. Please try again.",
-      "serieDetails": "Series details",
-      "theSerie": "the series"
-    },
-    "albums": {
-      "updatingErrorDescription": "There was a problem updating the album. Please try again.",
-      "alreadyInCollection": "This album is already in your collection.",
-      "savingErrorDescription": "There was a problem saving the album. Please try again.",
-      "albumDetails": "Album details",
-      "theAlbum": "the album"
-    },
-    "addToList": "Add to {{listName}}",
-    "list": "list",
-    "lists": {
-      "listNameCantBeEmpty": "The list name cannot be empty.",
-      "listHasBeenUpdated": "The list {{listName}} has been updated successfully.",
-      "listLoadingError": "Could not load the list details. Please try again.",
-      "updateList": "Update your list",
-      "createList": "Create your list",
-      "listName": "List name",
-      "listNamePlaceholder": "E.g.: Essential movies",
-      "description": "Description",
-      "descriptionPlaceholder": "Describe the content of this list...",
-      "listDetails": "List details",
-      "onThisList": "on this list"
-    },
-    "ready": "Ready",
-    "lastTime": "Last time",
-    "noDate": "No date",
-    "clearDate": "Clear date",
-    "startingDate": "Starting date",
-    "endingDate": "Ending date",
-    "hoursPlayedPlaceholder": "Hours played...",
-    "pagesReadedPlaceholder": "Pages read...",
-    "currentSeason": "Current season",
-    "currentEpisode": "Current episode",
-    "reviewPlaceholder": "Write your opinion...",
-    "views": "Views"
   },
   "frameSelector": {
     "title": "Choose photo and frame",
