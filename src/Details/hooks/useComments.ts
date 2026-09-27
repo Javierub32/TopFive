@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { InfiniteData, useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from 'context/AuthContext';
 import { queryKeys } from '@/query/queryKeys';
 import { Comment, commentServices } from '../services/commentServices';
@@ -60,6 +60,39 @@ export const useComments = (resourceId?: number, resourceType?: string) => {
     await addCommentMutation.mutateAsync(content);
   };
 
+  const deleteCommentMutation = useMutation({
+    mutationFn: (commentId: number) => commentServices.deleteComment(commentId, user!.id),
+    onMutate: async (commentId: number) => {
+      const key = queryKeys.comments(resourceId, resourceType);
+      await queryClient.cancelQueries({ queryKey: key });
+      const previous = queryClient.getQueryData<InfiniteData<CommentsPage>>(key);
+
+      queryClient.setQueryData<InfiniteData<CommentsPage>>(key, (old) =>
+        old
+          ? {
+              ...old,
+              pages: old.pages.map((page) => ({
+                ...page,
+                items: page.items.filter((c) => c.id !== commentId),
+                total: Math.max(page.total - 1, 0),
+              })),
+            }
+          : old
+      );
+
+      return { previous };
+    },
+    onError: (_err, _commentId, context) => {
+      if (context?.previous)
+        queryClient.setQueryData(queryKeys.comments(resourceId, resourceType), context.previous);
+    },
+  });
+
+  const deleteComment = async (commentId: number) => {
+    if (!enabled || !user) return;
+    await deleteCommentMutation.mutateAsync(commentId);
+  };
+
   return {
     comments,
     commentCount,
@@ -70,5 +103,7 @@ export const useComments = (resourceId?: number, resourceType?: string) => {
     handleLoadMore,
     sendComment,
     sending: addCommentMutation.isPending,
+    deleteComment,
+    currentUserId: user?.id,
   };
 };

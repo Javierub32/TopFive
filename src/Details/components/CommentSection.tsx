@@ -30,6 +30,8 @@ export const CommentSection = ({ resourceId, resourceType, focusComment = false,
         handleLoadMore,
         sendComment,
         sending,
+        deleteComment,
+        currentUserId,
     } = useComments(resourceId, resourceType);
 
     return (
@@ -61,7 +63,13 @@ export const CommentSection = ({ resourceId, resourceType, focusComment = false,
                         {t('forms.noComments')}
                     </AppText>
                 ) : (
-                    comments.map((item) => <CommentItem key={item.id} comment={item} />)
+                    comments.map((item) => (
+                        <CommentItem
+                            key={item.id}
+                            comment={item}
+                            onDelete={item.user_id === currentUserId ? deleteComment : undefined}
+                        />
+                    ))
                 )}
 
                 {hasMore && (
