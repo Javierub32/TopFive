@@ -381,6 +381,7 @@
     "shareMessage": "Check out my profile on TopFive!\n{{url}}",
     "shareUserMessage": "Check out this profile on TopFive!\n{{url}}",
     "shareTopFive": "Share my TopFive",
+    "shareImageError": "An error ocurred while sharing the TopFive. Please, try it again later.",
     "user": "User",
     "reviews": "Reviews",
     "selectYear": "Select year",
