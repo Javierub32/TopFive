@@ -16,7 +16,7 @@ import { AdBanner } from 'components/AdBanner';
 import { ResourceHeader } from '@/Details/components/ResourceHeader';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
-import { CommentSection } from '@/Details/components/CommentSection';
+import { SocialSection } from '@/Details/components/SocialSection';
 import { useRef } from 'react';
 
 export default function SeriesDetail() {
@@ -107,12 +107,15 @@ export default function SeriesDetail() {
             </View>
           )}
 
-          <CommentSection
-            resourceId={seriesResource.id}
-            resourceType={seriesResource.tiporecurso}
-            focusComment={focus === 'comment'}
-            scrollRef={scrollRef}
-          ></CommentSection>
+          {isCompleted && 
+            <SocialSection
+              resourceId={seriesResource.id}
+              resourceType={seriesResource.tiporecurso}
+              focusComment={focus === 'comment'}
+              scrollRef={scrollRef}
+            ></SocialSection>
+          }
+          
         </View>
         {isPending && (
           <View className="flex-1">

@@ -1,17 +1,20 @@
-import { Image, TouchableOpacity, View } from 'react-native';
+import { GestureResponderEvent, Image, TouchableOpacity, View } from 'react-native';
 import { router } from 'expo-router';
 import { useTheme } from 'context/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { AppText } from 'components/AppText';
 import { Comment } from '../services/commentServices';
+import { useNotification } from 'context/NotificationContext';
 
 interface Props {
   comment: Comment;
+  onDelete?: (commentId: number) => Promise<void>;
 }
 
-export const CommentItem = ({ comment }: Props) => {
+export const CommentItem = ({ comment, onDelete }: Props) => {
   const { colors } = useTheme();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const { showNotification, hideNotification } = useNotification();
 
   const username = comment.author?.username ?? '';
   const avatarUrl = comment.author?.avatar_url;
@@ -22,7 +25,8 @@ export const CommentItem = ({ comment }: Props) => {
     year: 'numeric',
   });
 
-  const handleUserPress = () => {
+  const handleUserPress = (e: GestureResponderEvent) => {
+    e.stopPropagation();
     if (username) {
       router.push({
         pathname: 'details/user/',
@@ -31,8 +35,49 @@ export const CommentItem = ({ comment }: Props) => {
     }
   };
 
+  const handleCommentLongPress = (e: GestureResponderEvent) => {
+    e.stopPropagation();
+    if (!onDelete) return;
+    showNotification({
+      title: t('forms.deleteComment.title'),
+      description: t('forms.deleteComment.description'),
+      isChoice: true,
+      delete: true,
+      success: false,
+      leftButtonText: t('common.cancel'),
+      rightButtonText: t('common.delete'),
+      highlightRight: true,
+      onLeftPress: () => hideNotification(),
+      onRightPress: async () => {
+        hideNotification();
+        try {
+          await onDelete(comment.id);
+          showNotification({
+            title: t('forms.deleteComment.successTitle'),
+            description: t('forms.deleteComment.resourceDeletedDescription'),
+            isChoice: false,
+            delete: false,
+            success: true,
+          });
+        } catch {
+          showNotification({
+            title: t('common.error'),
+            description: t('forms.deleteComment.failedToDelete'),
+            isChoice: false,
+            delete: false,
+            success: false,
+          });
+        }
+      },
+    });
+  };
+
   return (
-    <View className="flex-row gap-3 rounded-xl p-3" style={{ backgroundColor: colors.surfaceButton }}>
+    <TouchableOpacity
+      activeOpacity={onDelete ? 0.7 : 1}
+      className="flex-row gap-3 rounded-2xl p-3"
+      style={{ backgroundColor: colors.surfaceButton }}
+      onLongPress={onDelete ? handleCommentLongPress : undefined}>
       <TouchableOpacity activeOpacity={0.7} onPress={handleUserPress}>
         {avatarUrl ? (
           <Image source={{ uri: avatarUrl }} className="h-9 w-9 rounded-full" />
@@ -58,6 +103,6 @@ export const CommentItem = ({ comment }: Props) => {
         </View>
         <AppText style={{ color: colors.secondaryText, fontSize: 14 }}>{comment.content}</AppText>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };

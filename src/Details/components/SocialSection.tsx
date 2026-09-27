@@ -36,23 +36,34 @@ export const SocialSection = ({ resourceId, resourceType, focusComment = false, 
         currentUserId,
     } = useComments(resourceId, resourceType);
 
-    
+    const { liked, likeCount, setLiked } = useLike(
+        resourceId,
+        resourceType
+    );
 
     return (
         <View className="mt-8 gap-1">
-            <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
-                    {commentCount}{' '}{t('login.forms.comment')}
-            </AppText>
-                <CommentSetter
-                    comment={comment}
-                    setComment={setComment}
-                    onSend={sendComment}
-                    sending={sending}
-                    autoFocus={focusComment}
-                    scrollRef={scrollRef}
+            <View className="flex-row items-center justify-between">
+                <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
+                    {commentCount}{' '}{t('forms.comment')}
+                </AppText>
+                <LikeSetter
+                    likeCount={likeCount}
+                    liked={liked} 
+                    setLiked={setLiked}
                 />
+            </View>
             
-                <SeparatorLine className="my-3" />
+            <CommentSetter
+                comment={comment}
+                setComment={setComment}
+                onSend={sendComment}
+                sending={sending}
+                autoFocus={focusComment}
+                scrollRef={scrollRef}
+            />
+        
+            <SeparatorLine className="my-3" />
             
             <View className="mt-2 gap-2">
                 {/* ActivityIndicator = Carga de comentarios, el circulito */}
@@ -60,11 +71,11 @@ export const SocialSection = ({ resourceId, resourceType, focusComment = false, 
                     <ActivityIndicator color={colors.primary} className="py-4" />
                 ) : isError ? (
                     <AppText className="py-4 text-center" style={{ color: colors.error, fontSize: 14 }}>
-                        {t('login.forms.commentsLoadingError')}
+                        {t('forms.commentsLoadingError')}
                     </AppText>
                 ) : comments.length === 0 ? (
                     <AppText className="py-4 text-center" style={{ color: colors.secondaryText, fontSize: 14 }}>
-                        {t('login.forms.noComments')}
+                        {t('forms.noComments')}
                     </AppText>
                 ) : (
                     comments.map((item) => (
@@ -86,7 +97,7 @@ export const SocialSection = ({ resourceId, resourceType, focusComment = false, 
                             <ActivityIndicator color={colors.primary} />
                         ) : (
                             <AppText className="font-semibold" style={{ color: colors.primary, fontSize: 14 }}>
-                                {t('login.forms.loadMoreComments')}
+                                {t('forms.loadMoreComments')}
                             </AppText>
                         )}
                     </TouchableOpacity>

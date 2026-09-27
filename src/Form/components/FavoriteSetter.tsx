@@ -1,7 +1,7 @@
 import { ScalableFavoriteIcon, ScalableNonFavoriteIcon } from "components/Icons";
 import { useTheme } from "context/ThemeContext"
-import { useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity } from "react-native";
+import Animated, { useAnimatedStyle, useSharedValue, withSequence, withTiming } from "react-native-reanimated";
 
 interface Props {
     favorite: any;
@@ -10,12 +10,18 @@ interface Props {
 
 export const FavoriteSetter = ({favorite, setFavorite} : Props) => {
     const { colors } = useTheme();
-    const [isAnimate, setIsAnimate] = useState(false);
+    const scale = useSharedValue(1);
+
+    const animatedStyle = useAnimatedStyle(() => ({
+      transform: [{ scale: scale.value }],
+    }));
 
     const handlePress = () => {
         setFavorite(!favorite);
-        setIsAnimate(true);
-        setTimeout(() => setIsAnimate(false), 200);
+        scale.value = withSequence(
+          withTiming(1.5, { duration: 200 }),
+          withTiming(1, { duration: 200 })
+        );
     }
 
     return (
@@ -24,16 +30,13 @@ export const FavoriteSetter = ({favorite, setFavorite} : Props) => {
       onPress={handlePress}
       className="items-center rounded-full p-2"
       style={{ backgroundColor: `${colors.favorite}1A` }}>
-      <View
-        className={`transition-all duration-200 ease-out ${
-          isAnimate ? 'scale-150' : 'scale-100'
-        }`}>
+      <Animated.View style={animatedStyle}>
         {favorite ? (
           <ScalableFavoriteIcon size={24} />
         ) : (
           <ScalableNonFavoriteIcon size={24} />
         )}
-      </View>
+      </Animated.View>
     </TouchableOpacity>
   );
 };

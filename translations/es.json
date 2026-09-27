@@ -244,7 +244,14 @@
         "commentPlaceholder": "Añade un comentario...",
         "noComments": "No hay comentarios todavía",
         "loadMoreComments": "Ver más comentarios",
-        "commentsLoadingError": "Error al cargar los comentarios"
+        "commentsLoadingError": "Error al cargar los comentarios",
+        "deleteComment": {
+            "title": "Confirmar eliminación",
+            "description": "¿Estás seguro de que deseas eliminar este comentario?",
+            "successTitle": "Comentario eliminado",
+            "resourceDeletedDescription": "Has eliminado el comentario exitosamente.",
+            "failedToDelete": "No se pudo eliminar el comentario. Inténtalo de nuevo más tarde."
+        }
        
     },
     "email": {

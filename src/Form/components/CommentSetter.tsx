@@ -77,7 +77,7 @@ export const CommentSetter = ({ comment, setComment, onSend, sending = false, au
   return (
     <View ref={containerRef} className="mt-2">
       <View
-        className="flex-row items-end overflow-hidden rounded-xl p-2"
+        className="flex-row items-end overflow-hidden rounded-2xl p-2"
         style={{ backgroundColor: colors.surfaceButton }}>
         <View className="flex-1">
           <AppTextInput

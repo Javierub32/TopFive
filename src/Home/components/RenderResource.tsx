@@ -19,7 +19,11 @@ import RenderHtml from 'react-native-render-html';
 import { useFontSize } from 'context/FontSizeContext';
 import { useTranslation } from 'react-i18next';
 import { useAddToCollection } from "../hooks/useAddToCollection";
+import { LikeSetter } from 'src/Form/components/LikeSetter';
+import { useLike } from 'src/Details/hooks/useLike';
 import { violet } from "tailwindcss/colors";
+
+const ICON_SIZE = 20;
 
 export default function ActivityItem({
   item,
@@ -43,7 +47,7 @@ export default function ActivityItem({
     const minutes = Math.floor(diffInSeconds / 60);
     //if (minutes < 60) return minutes === 1 ? `Hace 1 minuto` : `Hace ${minutes} minutos`;
     const hours = Math.floor(minutes / 60);
-    //if (hours < 24) return hours === 1 ? `Hace 1 hora` : `Hace ${hours} horas`;
+    //if (hours < 24) return hours === 1 ?renderRes `Hace 1 hora` : `Hace ${hours} horas`;
     if (hours < 24) return t('home.renderResource.today'); //CUANDO FUNCIONE BIEN DESCOMENTAR LAS DE ARRIBA Y BORRAR ESTA LINEA
     const days = Math.floor(hours / 24);
     if (days < 7)
@@ -53,13 +57,18 @@ export default function ActivityItem({
     return then.toLocaleDateString(); // Si es más de una semana, mostrar fecha completa
   };
 
-  const categoryMap: Record<string, { color: any; icon: any; resourceType: ResourceType }> = {
-    LIBRO: { color: colors.ground1, icon: ScalableBookIcon, resourceType: 'libro' },
-    PELICULA: { color: colors.ground2, icon: ScalableFilmIcon, resourceType: 'pelicula' },
-    SERIE: { color: colors.ground3, icon: ScalableShowIcon, resourceType: 'serie' },
-    VIDEOJUEGO: { color: colors.ground4, icon: ScalableGameIcon, resourceType: 'videojuego' },
-    CANCION: { color: colors.ground5, icon: ScalableMusicIcon, resourceType: 'cancion' },
+  const categoryMap: Record<string, { color: any; icon: any; resourceType: ResourceType; tipoRecurso: string }> = {
+    LIBRO: { color: colors.ground1, icon: ScalableBookIcon, resourceType: 'libro', tipoRecurso: 'LIBRO' },
+    PELICULA: { color: colors.ground2, icon: ScalableFilmIcon, resourceType: 'pelicula', tipoRecurso: 'AUDIOVISUAL' },
+    SERIE: { color: colors.ground3, icon: ScalableShowIcon, resourceType: 'serie', tipoRecurso: 'AUDIOVISUAL' },
+    VIDEOJUEGO: { color: colors.ground4, icon: ScalableGameIcon, resourceType: 'videojuego', tipoRecurso: 'VIDEOJUEGO' },
+    CANCION: { color: colors.ground5, icon: ScalableMusicIcon, resourceType: 'cancion', tipoRecurso: 'MUSICA' },
   };
+
+  const { liked, likeCount, setLiked } = useLike(
+    item.recurso_id ? parseInt(item.recurso_id, 10) : undefined,
+    categoryMap[item.tipo_contenido].tipoRecurso
+  );
 
   const rating = item.calificacion || 0;
 
@@ -307,6 +316,7 @@ export default function ActivityItem({
             </View>
           </View>
           <View className="flex-row items-center justify-end">
+
             <Pressable
               onPress={(event) => {
                 event.stopPropagation();
@@ -314,9 +324,12 @@ export default function ActivityItem({
               }}
               disabled = {isSaving}
               className="ml-2">
-                <WatchLaterIcon color={isSaving ? colors.secondaryText : colors.primaryText}
-                style={{padding:4}} />
+                <WatchLaterIcon 
+                  size={ICON_SIZE}
+                  color={isSaving ? colors.secondaryText : colors.primaryText}
+                  style={{padding:4}} />
             </Pressable>
+
             <Pressable
             onPress={(event) => {
               event.stopPropagation();
@@ -330,9 +343,15 @@ export default function ActivityItem({
               <CommentIcon
                 color={pressed ? colors.secondaryText : colors.primaryText}
                 style={{ padding: 4 }}
+                size={ICON_SIZE}
               />
             )}
-          </Pressable>
+            </Pressable>
+
+            <LikeSetter 
+              liked={liked} 
+              setLiked={setLiked} 
+              size={ICON_SIZE}/>
           </View>
         </View>
       </ImageBackground>
