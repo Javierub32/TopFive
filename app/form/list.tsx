@@ -15,12 +15,13 @@ import { AppTextInput } from 'components/AppTextInput';
 import { useTranslation } from 'react-i18next';
 export default function ListForm() {
   const { colors } = useTheme();
-  const { categoriaActual, setIsSearchVisible } = useCollection();
-  const { createList, updateList } = useLists(categoriaActual);
+  const { setIsSearchVisible } = useCollection();
   const [loading, setLoading] = useState(false);
   const { listData } = useLocalSearchParams();
   const editando = !!listData;
   const listToEdit = editando ? JSON.parse(listData as string) : null;
+  const listaCategory: ResourceType = (listToEdit?.tipo?.toLowerCase() as ResourceType) || 'pelicula';
+  const { createList, updateList } = useLists(listaCategory);
   const { t } = useTranslation();
 
   //Colores que se pueden elegir para las listas
@@ -107,7 +108,7 @@ export default function ListForm() {
           formData.description,
           formData.icon,
           formData.color,
-          categoriaActual as ResourceType
+          listaCategory
         );
       }
     } catch (error) {
@@ -137,7 +138,7 @@ export default function ListForm() {
             route="/(tabs)/Lists"
             title={editando ? t('forms.lists.updateList') : t('forms.lists.createList')}
             style={' '}
-            params={{ initialResource: categoriaActual as ResourceType }}
+            params={{ initialResource: listaCategory }}
           />
         </View>
         <View className="mb-4 items-center justify-center py-4">
