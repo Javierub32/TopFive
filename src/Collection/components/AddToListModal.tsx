@@ -10,14 +10,22 @@ import { useState, useEffect } from 'react';
 import { listServices, CollectionType } from '@/Collection/services/listServices';
 
 const categoryMap: Record<string, CollectionType> = {
-  'pelicula': 'PELICULA',
-  'serie': 'SERIE',
-  'videojuego': 'VIDEOJUEGO',
-  'libro': 'LIBRO',
-  'cancion': 'MUSICA',
+  pelicula: 'PELICULA',
+  serie: 'SERIE',
+  videojuego: 'VIDEOJUEGO',
+  libro: 'LIBRO',
+  cancion: 'MUSICA',
 };
 
-export function AddToListModal({ visible, onClose, resourceCategory, resourceId, itemIds = [], isMultiple, onSelect }: any) {
+export function AddToListModal({
+  visible,
+  onClose,
+  resourceCategory,
+  resourceId,
+  itemIds = [],
+  isMultiple,
+  onSelect,
+}: any) {
   const { colors } = useTheme();
   const { lists, loading } = useLists(resourceCategory);
   const { t } = useTranslation();
@@ -35,7 +43,10 @@ export function AddToListModal({ visible, onClose, resourceCategory, resourceId,
             exactType = resourceCategory === 'serie' ? 'SERIE' : 'PELICULA';
           }
 
-          const ids = await listServices.getListContainingItem(itemIds[0], exactType as CollectionType);
+          const ids = await listServices.getListContainingItem(
+            itemIds[0],
+            exactType as CollectionType
+          );
           setSavedListIds(ids);
         } catch (error) {
           console.error('Error al verificar las listas guardadas:', error);
@@ -71,18 +82,25 @@ export function AddToListModal({ visible, onClose, resourceCategory, resourceId,
             numberOfLines={1}>
             {list.nombre}
           </AppText>
-          <AppText className="text-xs" style={{ color: colors.secondaryText, fontSize: 14 }} numberOfLines={1}>
+          <AppText
+            className="text-xs"
+            style={{ color: colors.secondaryText, fontSize: 14 }}
+            numberOfLines={1}>
             {list.descripcion || t('common.noDescription')}
           </AppText>
         </View>
       </View>
-      <ScalableIonicons name={isSaved ? "bookmark" : "bookmark-outline"} size={24} color={colors.secondaryText} />
+      <ScalableIonicons
+        name={isSaved ? 'bookmark' : 'bookmark-outline'}
+        size={24}
+        color={colors.secondaryText}
+      />
     </TouchableOpacity>
   );
 
   const handleSelect = (listId: String, listType: CollectionType) => {
     onSelect(listId, listType, itemIds);
-  }
+  };
 
   const getCategoryName = (category: string) => {
     switch (category) {
@@ -135,7 +153,8 @@ export function AddToListModal({ visible, onClose, resourceCategory, resourceId,
                   onSelect={handleSelect}
                   colors={colors}
                   t={t}
-                  isSaved={!isMultiple && savedListIds.includes(item.id)} />
+                  isSaved={!isMultiple && savedListIds.includes(item.id)}
+                />
               )}
               contentContainerStyle={{ paddingBottom: 20 }}
               ListEmptyComponent={() => (
@@ -151,7 +170,9 @@ export function AddToListModal({ visible, onClose, resourceCategory, resourceId,
                       onClose();
                       router.push('/form/list');
                     }}>
-                    <AppText style={{ color: colors.primary, fontSize: 14 }}>Crear nueva lista</AppText>
+                    <AppText style={{ color: colors.primary, fontSize: 14 }}>
+                      {t('list.createNewList')}
+                    </AppText>
                   </TouchableOpacity>
                 </View>
               )}

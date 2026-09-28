@@ -40,9 +40,15 @@ export const useLike = (resourceId?: number, resourceType?: string) => {
       console.error('Error toggling like:', err);
       if (context?.previous) queryClient.setQueryData(key, context.previous);
     },
-    onSettled: () => {
+    onSettled: async () => {
       requestInFlightRef.current = false;
-      queryClient.invalidateQueries({ queryKey: key });
+
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: key }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.likeUsers(resourceId, resourceType),
+        }),
+      ]);
     },
   });
 

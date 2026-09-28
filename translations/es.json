@@ -559,7 +559,10 @@
     "totalReadingTime": "Tiempo total de lectura",
     "userDetails": "Detalles del usuario",
     "user": "Usuario",
-    "resourceAlreadyInCollection": "Este contenido ya está en tu colección. ¿Quieres editarlo?"
+    "resourceAlreadyInCollection": "Este contenido ya está en tu colección. ¿Quieres editarlo?",
+    "likedBy": "Me gustas",
+    "noLikes": "Sin me gustas",
+    "noLikesDescription": "Nadie ha dado me gusta a este contenido todavía."
   },
   "frameSelector": {
     "title": "Selecciona foto y marco",

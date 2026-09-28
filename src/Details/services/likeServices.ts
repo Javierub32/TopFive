@@ -7,6 +7,12 @@ export interface LikeStatus {
   count: number;
 }
 
+export interface LikeUser {
+  id: string;
+  username: string;
+  avatar_url: string | null;
+}
+
 export const likeServices = {
   async fetchLikeStatus(
     userId: string,
@@ -52,5 +58,37 @@ export const likeServices = {
       .eq('resource_type', resourceType);
 
     if (error) throw error;
+  },
+
+  async fetchUsersWhoLiked(resourceId: number, resourceType: string): Promise<LikeUser[]> {
+    const { data, error } = await supabase
+      .from(LIKES_TABLE)
+      .select(
+        `
+      user_id,
+      user:usuario!like_user_id_fkey (
+        id,
+        username,
+        avatar_url
+      )
+    `
+      )
+      .eq('resource_id', resourceId)
+      .eq('resource_type', resourceType)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    return (data ?? []).flatMap((item: any) => {
+      if (!item.user) return [];
+
+      return [
+        {
+          id: item.user_id,
+          username: item.user.username,
+          avatar_url: item.user.avatar_url ?? null,
+        },
+      ];
+    });
   },
 };

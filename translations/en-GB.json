@@ -559,7 +559,10 @@
     "totalReadingTime": "Total reading time",
     "userDetails": "User details",
     "user": "User",
-    "resourceAlreadyInCollection": "This content is already in your collection. Do you want to edit it?"
+    "resourceAlreadyInCollection": "This content is already in your collection. Do you want to edit it?",
+    "likedBy": "Liked by",
+    "noLikes": "No likes",
+    "noLikesDescription": "No one has liked this content yet."
   },
   "frameSelector": {
     "title": "Choose photo and frame",

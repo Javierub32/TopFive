@@ -1,7 +1,7 @@
 import { ScalableFavoriteIcon, ScalableNonFavoriteIcon } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { TouchableOpacity, View } from 'react-native';
-import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -16,9 +16,17 @@ interface Props {
   likeCount?: number;
   size?: number;
   disabled?: boolean;
+  onLongPress?: () => void;
 }
 
-export const LikeSetter = ({ liked, setLiked, likeCount, size = 24, disabled = false }: Props) => {
+export const LikeSetter = ({
+  liked,
+  setLiked,
+  likeCount,
+  size = 24,
+  disabled = false,
+  onLongPress,
+}: Props) => {
   const { colors } = useTheme();
   const scale = useSharedValue(1);
   const showCount = typeof likeCount === 'number';
@@ -29,7 +37,7 @@ export const LikeSetter = ({ liked, setLiked, likeCount, size = 24, disabled = f
 
   const handlePress = () => {
     if (disabled) return;
-    impactAsync(ImpactFeedbackStyle.Light)
+    impactAsync(ImpactFeedbackStyle.Light);
 
     setLiked(!liked);
 
@@ -49,6 +57,7 @@ export const LikeSetter = ({ liked, setLiked, likeCount, size = 24, disabled = f
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={handlePress}
+        onLongPress={onLongPress}
         disabled={disabled}
         className="items-center p-2">
         <Animated.View style={animatedStyle}>

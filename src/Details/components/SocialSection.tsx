@@ -9,6 +9,7 @@ import { CommentItem } from './CommentItem';
 import { SeparatorLine } from 'components/SeparatorLine';
 import { useLike } from '../hooks/useLike';
 import { LikeSetter } from 'src/Form/components/LikeSetter';
+import { LikeUsersModal } from './LikeUsersModal';
 
 interface Props {
   resourceId?: number;
@@ -24,6 +25,7 @@ export const SocialSection = ({
   scrollRef,
 }: Props) => {
   const [comment, setComment] = useState('');
+  const [showLikeUsers, setShowLikeUsers] = useState(false);
 
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -45,11 +47,25 @@ export const SocialSection = ({
 
   return (
     <View className="mt-8 gap-1">
+      {showLikeUsers && (
+        <LikeUsersModal
+          visible={showLikeUsers}
+          onClose={() => setShowLikeUsers(false)}
+          resourceId={resourceId}
+          resourceType={resourceType}
+        />
+      )}
       <View className="flex-row items-center justify-between">
         <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 20 }}>
           {commentCount} {t('forms.comment')}
         </AppText>
-        <LikeSetter likeCount={likeCount} liked={liked} setLiked={setLiked} disabled={isPending} />
+        <LikeSetter
+          likeCount={likeCount}
+          liked={liked}
+          setLiked={setLiked}
+          disabled={isPending}
+          onLongPress={() => setShowLikeUsers(true)}
+        />
       </View>
 
       <CommentSetter
