@@ -99,11 +99,21 @@ const renderItem = ({
   const titulo = item.titulo.slice(0, 70) + (item.titulo.length > 70 ? ' ...' : '');
   const hasReview = item.comentario !== null && item.comentario !== '';
 
+  const colorMap: Record<string, string> = {
+    LIBRO: colors.ground1,
+    PELICULA: colors.ground2,
+    SERIE: colors.ground3,
+    VIDEOJUEGO: colors.ground4,
+    CANCION: colors.ground5,
+  };
+
   return (
     <View
-      className="mb-3 flex-row p-3.5 rounded-2xl shadow-sm"
+      className="mb-3 flex-row rounded-2xl p-3.5 shadow-sm"
       style={{
         backgroundColor: colors.surfaceButton || '#1e293b',
+        borderLeftWidth: 2,
+        borderLeftColor: colorMap[item.tipo_contenido] || 'transparent',
         borderWidth: 0,
         borderColor: `${colors.borderButton || colors.primary}33`,
       }}>
