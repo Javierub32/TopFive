@@ -17,7 +17,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useShareProfile } from '@/ShareProfile/hooks/useShareProfile';
 import { ShareProfileCard } from 'src/ShareProfile/components/ShareProfileCard';
 
-export const TopFiveSelector = ({ userId, username }: { userId: string; username: string }) => {
+export const TopFiveSelector = ({ userId, username }: { userId: string; username?: string }) => {
   const slots = Array.from({ length: 5 });
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -134,7 +134,7 @@ export const TopFiveSelector = ({ userId, username }: { userId: string; username
   }, [params.addedItem, params.targetPosition, params.addedItemType, topFiveItems]);
 
   useEffect(() => {
-    if (!shareRequested || !cardReady || shareStartedRef.current) {
+    if (!shareRequested || !username || !cardReady || shareStartedRef.current) {
       return;
     }
 
@@ -419,19 +419,20 @@ export const TopFiveSelector = ({ userId, username }: { userId: string; username
           handleCategorySelect(category, isEditing ? '/(tabs)/Profile' : '')
         }
       />
-
-      <View
-        pointerEvents="none"
-        onLayout={() => setCardReady(true)}
-        style={{
-          position: 'absolute',
-          left: -10000,
-          top: 0,
-          width: 360,
-          height: 640,
-        }}>
-        <ShareProfileCard ref={cardRef} username={username} topFiveItems={topFiveItems} />
-      </View>
+      {username && (
+        <View
+          pointerEvents="none"
+          onLayout={() => setCardReady(true)}
+          style={{
+            position: 'absolute',
+            left: -10000,
+            top: 0,
+            width: 360,
+            height: 640,
+          }}>
+          <ShareProfileCard ref={cardRef} username={username} topFiveItems={topFiveItems} />
+        </View>
+      )}
     </View>
   );
 };
