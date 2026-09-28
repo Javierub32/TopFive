@@ -1,4 +1,4 @@
-import { View, RefreshControl } from 'react-native';
+import { View, RefreshControl, DeviceEventEmitter } from 'react-native';
 import { useTheme } from 'context/ThemeContext';
 import { useForYou } from '@/Home/hooks/useForYou'; // o useActivity
 import ActivityItem from '@/Home/components/RenderResource';
@@ -8,15 +8,26 @@ import { NativeAdCard } from 'components/NativeAdCard';
 import { AppText } from 'components/AppText';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import { useTranslation } from 'react-i18next';
+import { useEffect, useRef } from 'react';
 
 export default function ForYouFeed() {
   const { colors } = useTheme();
   const { activities, loading, handleLoadMore, handleItemPress, refreshing, refreshForYou } = useForYou();
   const { t } = useTranslation();
-  if (loading && activities.length === 0 ) return <LoadingIndicator />;
+  const listRef = useRef<any>(null);
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener('scrollToTopHome', () => {
+      if (listRef.current) {
+        listRef.current.scrollToOffset({ offset: 0, animated: true });
+      }
+    });
+    return () => subscription.remove();
+  }, []);
 
+  if (loading && activities.length === 0 ) return <LoadingIndicator />;
   return (
     <Tabs.FlatList
+      ref={listRef}
       data={activities}
       keyExtractor={(item: any, index: number) =>
         [item.usuarioId, item.tipo_contenido, item.recurso_id, index].join('-')

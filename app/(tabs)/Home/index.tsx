@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, BackHandler } from 'react-native';
+import { View, TouchableOpacity, BackHandler, ScrollView } from 'react-native';
 import { router, useFocusEffect, useNavigation } from 'expo-router';
 import { Screen } from 'components/Screen';
 import { useTheme } from 'context/ThemeContext';
@@ -24,6 +24,7 @@ function CollapsibleHeader() {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const { top } = useHeaderMeasurements();
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const animatedHeaderStyle = useAnimatedStyle(() => {
     const currentTop = top?.value ?? 0;

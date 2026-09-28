@@ -13,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "@/query/queryKeys";
 import { userService } from "@/Profile/services/profileService";
 import { Platform } from 'react-native';
+import { DeviceEventEmitter } from 'react-native';
 
 export default function TabLayout() {
   if (Platform.OS === 'web') {
@@ -32,24 +33,24 @@ export default function TabLayout() {
     enabled: !!user?.id,
   })
 
-  const {width} = useWindowDimensions();
+  const { width } = useWindowDimensions();
   const tabBarHeight = 52 + insets.bottom;
 
-  const centerX = width /2;
+  const centerX = width / 2;
   const notchHalfWidth = 48;
   const notchDepth = 42;
 
   const notchPath = [
-  'M 0 0',
-  `H ${centerX - notchHalfWidth}`,
-  `C ${centerX - notchHalfWidth + 18} 0`,
-  `${centerX - notchHalfWidth + 18} ${notchDepth}`,
-  `${centerX} ${notchDepth}`,
-  `C ${centerX + notchHalfWidth - 18} ${notchDepth}`,
-  `${centerX + notchHalfWidth - 18} 0`,
-  `${centerX + notchHalfWidth} 0`,
-  `H ${width} V ${tabBarHeight} H 0 Z`,
-].join(' ');
+    'M 0 0',
+    `H ${centerX - notchHalfWidth}`,
+    `C ${centerX - notchHalfWidth + 18} 0`,
+    `${centerX - notchHalfWidth + 18} ${notchDepth}`,
+    `${centerX} ${notchDepth}`,
+    `C ${centerX + notchHalfWidth - 18} ${notchDepth}`,
+    `${centerX + notchHalfWidth - 18} 0`,
+    `${centerX + notchHalfWidth} 0`,
+    `H ${width} V ${tabBarHeight} H 0 Z`,
+  ].join(' ');
 
   return (
     <>
@@ -93,22 +94,27 @@ export default function TabLayout() {
             fontSize: 12,
           },
         }}>
-      <Tabs.Screen
-        name="Home/index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, size }) => <ScalableHomeIcon color={color} size={28} />,
-        }}
-		listeners={{ tabPress: () => clearContentSearch() }}
-      />
-      <Tabs.Screen
-        name="Lists/index"
-        options={{
-          title: 'List',
-          tabBarIcon: ({ color, size }) => <ScalableListIcon color={color} size={30} />,
-        }}
-		listeners={{ tabPress: () => clearContentSearch() }}
-      />
+        <Tabs.Screen
+          name="Home/index"
+          options={{
+            title: 'Home',
+            tabBarIcon: ({ color, size }) => <ScalableHomeIcon color={color} size={28} />,
+          }}
+          listeners={{
+            tabPress: () => {
+              clearContentSearch();
+              DeviceEventEmitter.emit('scrollToTopHome');
+            }
+          }}
+        />
+        <Tabs.Screen
+          name="Lists/index"
+          options={{
+            title: 'List',
+            tabBarIcon: ({ color, size }) => <ScalableListIcon color={color} size={30} />,
+          }}
+          listeners={{ tabPress: () => clearContentSearch() }}
+        />
         <Tabs.Screen
           name="Add/index"
           options={{
@@ -125,19 +131,19 @@ export default function TabLayout() {
                   alignItems: "center",
                   justifyContent: "center",
                   ...Platform.select({
-                  web: {
-                    boxShadow: '0px -4px 34px rgba(0, 0, 0, 0.8)',
-                  },
-                  ios: {
-                    shadowColor: '#000',
-                    shadowOffset: { width: 0, height: 0 },
-                    shadowOpacity: 0.8,
-                    shadowRadius: 10,
-                  },
-                  android: {
-                    elevation: 10,
-                  }
-                })
+                    web: {
+                      boxShadow: '0px -4px 34px rgba(0, 0, 0, 0.8)',
+                    },
+                    ios: {
+                      shadowColor: '#000',
+                      shadowOffset: { width: 0, height: 0 },
+                      shadowOpacity: 0.8,
+                      shadowRadius: 10,
+                    },
+                    android: {
+                      elevation: 10,
+                    }
+                  })
                 }}>
                 <AddIcon
                   color={colors.primaryText}
@@ -154,31 +160,31 @@ export default function TabLayout() {
             },
           }}
         />
-      
-      <Tabs.Screen
-        name="Collection/index"
-        options={{
-          title: 'Collection',
-          tabBarIcon: ({ color, size }) => <ScalableCardsIcon color={color} size={26} />,
-        }}
-		listeners={{ tabPress: () => clearContentSearch() }}
-      />
-      <Tabs.Screen
-        name="Profile/index"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ color, size }) => profile?.avatar_url ? (
-            <View style={{padding: 2, borderRadius: 20, backgroundColor: color}}>
-              <Image source={{uri: profile.avatar_url}}
-              style={{width: 26, height: 26, borderRadius: 13}}
-              resizeMode="cover"/>
-            </View>
-            
-          ) : <ScalableUserIcon color={color} size={26} />,
-        }}
-		listeners={{ tabPress: () => clearContentSearch() }}
-      />
-    </Tabs>
+
+        <Tabs.Screen
+          name="Collection/index"
+          options={{
+            title: 'Collection',
+            tabBarIcon: ({ color, size }) => <ScalableCardsIcon color={color} size={26} />,
+          }}
+          listeners={{ tabPress: () => clearContentSearch() }}
+        />
+        <Tabs.Screen
+          name="Profile/index"
+          options={{
+            title: 'Profile',
+            tabBarIcon: ({ color, size }) => profile?.avatar_url ? (
+              <View style={{ padding: 2, borderRadius: 20, backgroundColor: color }}>
+                <Image source={{ uri: profile.avatar_url }}
+                  style={{ width: 26, height: 26, borderRadius: 13 }}
+                  resizeMode="cover" />
+              </View>
+
+            ) : <ScalableUserIcon color={color} size={26} />,
+          }}
+          listeners={{ tabPress: () => clearContentSearch() }}
+        />
+      </Tabs>
     </>
   );
 }
