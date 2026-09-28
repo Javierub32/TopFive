@@ -57,4 +57,6 @@ export const queryKeys = {
   like: (userId?: string | null, resourceId?: number | null, resourceType?: string | null) =>
     ['like', userId, resourceType, resourceId] as const,
   diary: (userId?: string | null) => ['diary', userId] as const,
+  likeUsers: (resourceId?: number | null, resourceType?: string | null) =>
+    ['like-users', resourceType, resourceId] as const,
 };
