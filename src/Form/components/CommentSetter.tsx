@@ -5,6 +5,7 @@ import { AppTextInput } from 'components/AppTextInput';
 import { useTranslation } from 'react-i18next';
 import { SendIcon } from 'components/Icons';
 import { RefObject, useEffect, useRef } from 'react';
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics';
 
 const MAX_LENGTH = 250;
 const KEYBOARD_MARGIN = 30;
@@ -76,6 +77,7 @@ export const CommentSetter = ({
   const handleSend = async () => {
     if (!canSend) return;
     try {
+      impactAsync(ImpactFeedbackStyle.Light)
       await onSend?.(trimmedComment);
       setComment('');
     } catch (error) {

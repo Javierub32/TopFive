@@ -29,6 +29,8 @@ import { AdBanner } from 'components/AdBanner';
 import { FallbackCover } from 'components/FallbackCover';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+import { notificationAsync, NotificationFeedbackType } from 'expo-haptics';
+
 
 export default function GameForm() {
   const { gameData, item, from } = useLocalSearchParams();
@@ -78,6 +80,7 @@ export default function GameForm() {
 
     setLoading(true);
     try {
+      notificationAsync(NotificationFeedbackType.Success)
       if (editando) {
         // Actualizar el recurso existente
         const { data: updatedData, error: updateError } = await supabase

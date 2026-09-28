@@ -30,6 +30,7 @@ import { useNotification } from 'context/NotificationContext';
 import { useAuth } from 'context/AuthContext';
 import { supabase } from 'lib/supabase';
 import { DiaryPreview } from '@/Profile/components/DiaryPreview';
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics';
 
 export default function UserDetailsScreen() {
   const { colors } = useTheme();
@@ -131,6 +132,7 @@ export default function UserDetailsScreen() {
 
   const handleToggleAlerts = () => {
     const newState = !alertsEnabled;
+    impactAsync(ImpactFeedbackStyle.Light)
 
     if (newState) {
       // Notificación para ACTIVAR

@@ -7,6 +7,7 @@ import { useNotification } from 'context/NotificationContext';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/query/queryKeys';
+import { impactAsync, ImpactFeedbackStyle, notificationAsync, NotificationFeedbackType } from 'expo-haptics';
 
 export const useTopFive = (userId: string) => {
   const { user } = useAuth();
@@ -43,6 +44,7 @@ export const useTopFive = (userId: string) => {
 
   const saveCompleteTopFive = async (slots: { position: number; item: any | null }[]) => {
     try {
+      notificationAsync(NotificationFeedbackType.Success)
       await topFiveService.saveCompleteTopFive(userId, slots);
       // Invalidamos la caché para que cuando el usuario vuelva a ver su perfil se refresque
       await queryClient.invalidateQueries({ queryKey: queryKeys.topFive(userId) });

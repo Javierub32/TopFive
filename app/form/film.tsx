@@ -28,6 +28,8 @@ import { ScalableMaterialCommunityIcons } from 'components/Icons';
 import { FallbackCover } from 'components/FallbackCover';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+import { notificationAsync, NotificationFeedbackType } from 'expo-haptics';
+
 
 export default function FilmForm() {
   const { filmData, item, from } = useLocalSearchParams();
@@ -69,6 +71,7 @@ export default function FilmForm() {
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      notificationAsync(NotificationFeedbackType.Success)
       if (editando) {
         // Actualizar el recurso existente
         const { data: updatedData, error: updateError } = await supabase

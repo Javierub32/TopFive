@@ -29,6 +29,7 @@ import { useTranslation } from 'react-i18next';
 import { useAddToCollection } from '../hooks/useAddToCollection';
 import { LikeSetter } from 'src/Form/components/LikeSetter';
 import { useLike } from 'src/Details/hooks/useLike';
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics';
 
 const ICON_SIZE = 20;
 
@@ -152,6 +153,7 @@ export default function ActivityItem({
     if (item.idapi == null) {
       return;
     }
+    impactAsync(ImpactFeedbackStyle.Light)
 
     switch (item.tipo_contenido) {
       case 'LIBRO':
@@ -377,6 +379,7 @@ export default function ActivityItem({
             <Pressable
               onPress={(event) => {
                 event.stopPropagation();
+                impactAsync(ImpactFeedbackStyle.Light)
                 onPress({ focus: 'comment' });
               }}
               className="ml-2 rounded-full"

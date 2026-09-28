@@ -5,6 +5,7 @@ import { ResourceType, useResource } from 'hooks/useResource';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/query/queryKeys';
 import { useFocusEffect } from 'expo-router';
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics';
 
 export interface User {
   id: string;
@@ -147,6 +148,7 @@ export const useUser = (username: string) => {
   const handleFollow = async (userIdToFollow?: string | any) => {
     if (!user) return;
     try {
+      impactAsync(ImpactFeedbackStyle.Light)
       await followMutation.mutateAsync(userIdToFollow);
     } catch (error) {
       console.error('Error requesting follow:', error);
