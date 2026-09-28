@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { AppText } from 'components/AppText';
 import { Comment } from '../services/commentServices';
 import { useNotification } from 'context/NotificationContext';
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics';
 
 interface Props {
   comment: Comment;
@@ -38,6 +39,7 @@ export const CommentItem = ({ comment, onDelete }: Props) => {
   const handleCommentLongPress = (e: GestureResponderEvent) => {
     e.stopPropagation();
     if (!onDelete) return;
+    impactAsync(ImpactFeedbackStyle.Medium)
     showNotification({
       title: t('forms.deleteComment.title'),
       description: t('forms.deleteComment.description'),

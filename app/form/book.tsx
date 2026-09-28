@@ -29,6 +29,8 @@ import { FallbackCover } from 'components/FallbackCover';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
 import { Book } from 'app/types/Content';
+import { notificationAsync, NotificationFeedbackType } from 'expo-haptics';
+
 
 /* Se ha eliminado una interfaz que definía el tipo Book de manera local
 donde id y autorId eran tipo number | null en vez de string | null */
@@ -88,6 +90,7 @@ export default function BookForm() {
 
     setLoading(true);
     try {
+      notificationAsync(NotificationFeedbackType.Success)
       if (editando) {
         // Si se está editando, actualizar el recurso existente
         const { data: updatedData, error: updateError } = await supabase

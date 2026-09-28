@@ -13,6 +13,7 @@ import { RewardedAd, RewardedAdEventType, AdEventType, TestIds } from 'lib/rewar
 import { UserAvatar } from '@/User/components/UserAvatar';
 import { useProfile } from '@/Profile/hooks/useProfile';
 import { useTranslation } from 'react-i18next';
+import { notificationAsync, NotificationFeedbackType } from 'expo-haptics';
 const availableFrames = [
   'none',
   'libro',
@@ -124,6 +125,7 @@ export default function FrameSelectorScreen() {
   const handleActionButton = () => {
     if (userOwnsFrame) {
       handleSaveFrame(selectedFrame);
+      notificationAsync(NotificationFeedbackType.Success)
     } else {
       // Lógica para mostrar el anuncio
       if (Platform.OS === 'web') {

@@ -29,6 +29,7 @@ import { AdBanner } from 'components/AdBanner';
 import { FallbackCover } from 'components/FallbackCover';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+import { notificationAsync, NotificationFeedbackType } from 'expo-haptics';
 
 export default function SeriesForm() {
   const { seriesData, item, from } = useLocalSearchParams();
@@ -85,6 +86,7 @@ export default function SeriesForm() {
 
     setLoading(true);
     try {
+      notificationAsync(NotificationFeedbackType.Success)
       if (isEditing) {
         // Modo edición: actualizar el recurso existente
         const { data: updatedData, error: updateError } = await supabase

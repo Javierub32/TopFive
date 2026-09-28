@@ -27,6 +27,7 @@ import { FallbackCover } from 'components/FallbackCover';
 import { ScalableMaterialCommunityIcons } from 'components/Icons';
 import { AppText } from 'components/AppText';
 import { useTranslation } from 'react-i18next';
+import { notificationAsync, NotificationFeedbackType } from 'expo-haptics';
 
 export default function SongForm() {
   const { songData, item, from } = useLocalSearchParams();
@@ -65,6 +66,7 @@ export default function SongForm() {
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      notificationAsync(NotificationFeedbackType.Success)
       if (editando) {
         // Modo edición: actualizar el recurso existente
         const { data: updatedData, error: updateError } = await supabase

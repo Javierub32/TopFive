@@ -1,6 +1,7 @@
 import { ScalableFavoriteIcon, ScalableNonFavoriteIcon } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { TouchableOpacity, View } from 'react-native';
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -28,6 +29,7 @@ export const LikeSetter = ({ liked, setLiked, likeCount, size = 24, disabled = f
 
   const handlePress = () => {
     if (disabled) return;
+    impactAsync(ImpactFeedbackStyle.Light)
 
     setLiked(!liked);
 

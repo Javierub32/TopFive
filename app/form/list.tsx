@@ -13,6 +13,8 @@ import { useNotification } from 'context/NotificationContext';
 import { AppText } from 'components/AppText';
 import { AppTextInput } from 'components/AppTextInput';
 import { useTranslation } from 'react-i18next';
+import { notificationAsync, NotificationFeedbackType } from 'expo-haptics';
+
 export default function ListForm() {
   const { colors } = useTheme();
   const { categoriaActual, setIsSearchVisible } = useCollection();
@@ -77,6 +79,7 @@ export default function ListForm() {
 
     setLoading(true);
     try {
+      notificationAsync(NotificationFeedbackType.Success)
       if (editando) {
         await updateList(
           listToEdit.id,
