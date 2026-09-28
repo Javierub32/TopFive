@@ -60,12 +60,12 @@ export default function UserDetailsScreen() {
   const profilePublic = userData?.is_private === false;
   const canViewStats = isFollowing || profilePublic;
 
-  const [alertsEnabled, setAlertsEnabled] = useState(false);  /* alertas de reviews */
+  const [alertsEnabled, setAlertsEnabled] = useState(false); /* alertas de reviews */
   useEffect(() => {
-    if(userData?.alerts_enabled !== undefined){
+    if (userData?.alerts_enabled !== undefined) {
       setAlertsEnabled(userData?.alerts_enabled);
     }
-  }, [userData?.alerts_enabled])
+  }, [userData?.alerts_enabled]);
 
   const getPath = () => {
     if (from === 'home') return 'back';
@@ -129,7 +129,7 @@ export default function UserDetailsScreen() {
     });
   };
 
-const handleToggleAlerts = () => {
+  const handleToggleAlerts = () => {
     const newState = !alertsEnabled;
 
     if (newState) {
@@ -140,7 +140,7 @@ const handleToggleAlerts = () => {
         isChoice: true,
         leftButtonText: t('common.cancel', 'Cancelar'),
         rightButtonText: t('common.activate', 'Activar'),
-        success: true, 
+        success: true,
         delete: false,
         onLeftPress: () => hideNotification(),
         onRightPress: async () => {
@@ -157,12 +157,14 @@ const handleToggleAlerts = () => {
       // Notificación para DESACTIVAR
       showNotification({
         title: t('profile.alerts.deactivateChoiceTitle', { username: userData?.username || '' }),
-        description: t('profile.alerts.deactivateChoiceDesc', { username: userData?.username || '' }),
+        description: t('profile.alerts.deactivateChoiceDesc', {
+          username: userData?.username || '',
+        }),
         isChoice: true,
         leftButtonText: t('common.cancel', 'Cancelar'),
         rightButtonText: t('common.deactivate', 'Desactivar'),
         success: false,
-        delete: true, 
+        delete: true,
         onLeftPress: () => hideNotification(),
         onRightPress: async () => {
           hideNotification();
@@ -176,7 +178,6 @@ const handleToggleAlerts = () => {
       });
     }
   };
-
 
   const renderScene = ({ route: tabRoute }: any) => {
     if (isChanging || tabRoute.key !== selectedCategory) {
@@ -216,7 +217,6 @@ const handleToggleAlerts = () => {
               selectedYear={selectedYear}
               setSelectedYear={setSelectedYear}
             />
-
           </>
         )}
       </Animated.View>
@@ -234,15 +234,14 @@ const handleToggleAlerts = () => {
 
   return (
     <Screen>
-      <View className='relative justify-content'>
+      <View className="justify-content relative">
         <ReturnButton route={route} title={userData?.username || t('details.userDetails')} />
         {isFollowing && (
-          <View className='absolute right-4 top-0 bottom-0 justify-center pt-3'>
+          <View className="absolute bottom-0 right-4 top-0 justify-center pt-3">
             <TouchableOpacity
-              onPress={handleToggleAlerts} 
+              onPress={handleToggleAlerts}
               activeOpacity={0.5}
-              className='p-2 rounded-full'
-            >
+              className="rounded-full p-2">
               <ScalableMaterialCommunityIcons
                 name={alertsEnabled ? 'bell-check' : 'bell-outline'}
                 size={20}
@@ -275,18 +274,16 @@ const handleToggleAlerts = () => {
               frame={userData?.frame || 'none'}
             />
           </ProfileData>
-          {!isFollowing && !profilePublic
-            && (
-              <FollowButton
-                isFollowed={userData?.following_status === 'accepted' || false}
-                isRequested={userData?.is_requested || false}
-                handleFollow={handleFollow}
-                cancelRequest={cancelRequest}
-              />
-            )
-          }
+          {!isFollowing && !profilePublic && (
+            <FollowButton
+              isFollowed={userData?.following_status === 'accepted' || false}
+              isRequested={userData?.is_requested || false}
+              handleFollow={handleFollow}
+              cancelRequest={cancelRequest}
+            />
+          )}
 
-          {(canViewStats) && userData?.id && (
+          {canViewStats && userData?.id && (
             <>
               <View className="mt-6 flex-row gap-x-2">
                 {(() => {
@@ -307,7 +304,7 @@ const handleToggleAlerts = () => {
                     );
                   }
                   // Si no se sigue al usuario o es un perfil privado
-                  if (!userData?.following_status ) {
+                  if (!userData?.following_status) {
                     return (
                       <TouchableOpacity
                         className="flex-1 items-center justify-center rounded-xl px-3 py-2"
@@ -322,24 +319,23 @@ const handleToggleAlerts = () => {
                       </TouchableOpacity>
                     );
                   }
-                  if(userData?.following_status === 'accepted') {
-                  return (
-                    // Si se sigue al usuario
-                    <TouchableOpacity
-                      className="flex-1 items-center justify-center rounded-xl px-3 py-2"
-                      style={{ backgroundColor: `${colors.accent}33` }}
-                      activeOpacity={0.4}
-                      onPress={handleUnfollowPress}>
-                      <AppText
-                        className="text-base font-semibold"
-                        style={{ fontSize: 14, color: colors.primaryText }}>
-                        {t('profile.deleteFollowing.title')}
-                      </AppText>
-                    </TouchableOpacity>
-                  );
-                }
+                  if (userData?.following_status === 'accepted') {
+                    return (
+                      // Si se sigue al usuario
+                      <TouchableOpacity
+                        className="flex-1 items-center justify-center rounded-xl px-3 py-2"
+                        style={{ backgroundColor: `${colors.accent}33` }}
+                        activeOpacity={0.4}
+                        onPress={handleUnfollowPress}>
+                        <AppText
+                          className="text-base font-semibold"
+                          style={{ fontSize: 14, color: colors.primaryText }}>
+                          {t('profile.deleteFollowing.title')}
+                        </AppText>
+                      </TouchableOpacity>
+                    );
+                  }
                 })()}
-
 
                 <TouchableOpacity
                   className="flex-1 items-center justify-center rounded-xl px-3 py-2"
@@ -354,14 +350,15 @@ const handleToggleAlerts = () => {
                 </TouchableOpacity>
               </View>
 
-              <TopFiveSelector userId={userData.id} />
+              <TopFiveSelector userId={userData.id} username={userData.username} />
 
-			  <DiaryPreview userId={userData.id} />
-                
+              <DiaryPreview userId={userData.id} />
 
-              <View >
-                <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18, marginBottom: 20 }}>
-                  {(t('profile.statistics'))}
+              <View>
+                <AppText
+                  className="font-bold"
+                  style={{ color: colors.primaryText, fontSize: 18, marginBottom: 20 }}>
+                  {t('profile.statistics')}
                 </AppText>
                 <TabView
                   navigationState={{ index: safeIndex, routes }}
@@ -383,36 +380,36 @@ const handleToggleAlerts = () => {
               </View>
             </>
           )}
-          {(!canViewStats) && (
-
-            <View className='flex-1 items-center justify-center py-20'>
-                  {/* Contenedor del Icono  */}
-                  <View
-                    className="mb-6 h-32 w-32 items-center justify-center rounded-full"
-                    style={{ backgroundColor: `${colors.primaryText}1A` }}>
-                    <View
-                      className="h-28 w-28 items-center justify-center rounded-full"
-                      style={{ backgroundColor: colors.secondary }}>
-                      <ScalableLockIcon size={80} color={colors.primaryText} />
-                    </View>
-                  </View>
-            
-                  {/* Texto Principal (Nombre de la categoría) */}
-                  <AppText
-                    className="mb-3 text-center font-bold"
-                    style={{ color: colors.primaryText, fontSize: 28 }}>
-                    {t('profile.privateProfile.title')}
-                  </AppText>
-            
-                  {/* Texto Secundario (Instrucciones) */}
-                  <AppText className="px-4 text-center" style={{ color: colors.secondaryText, fontSize: 14 }}>
-                    {t('profile.privateProfile.description')}
-                  </AppText>
+          {!canViewStats && (
+            <View className="flex-1 items-center justify-center py-20">
+              {/* Contenedor del Icono  */}
+              <View
+                className="mb-6 h-32 w-32 items-center justify-center rounded-full"
+                style={{ backgroundColor: `${colors.primaryText}1A` }}>
+                <View
+                  className="h-28 w-28 items-center justify-center rounded-full"
+                  style={{ backgroundColor: colors.secondary }}>
+                  <ScalableLockIcon size={80} color={colors.primaryText} />
                 </View>
+              </View>
 
+              {/* Texto Principal (Nombre de la categoría) */}
+              <AppText
+                className="mb-3 text-center font-bold"
+                style={{ color: colors.primaryText, fontSize: 28 }}>
+                {t('profile.privateProfile.title')}
+              </AppText>
+
+              {/* Texto Secundario (Instrucciones) */}
+              <AppText
+                className="px-4 text-center"
+                style={{ color: colors.secondaryText, fontSize: 14 }}>
+                {t('profile.privateProfile.description')}
+              </AppText>
+            </View>
           )}
         </View>
       </ScrollView>
-    </Screen >
+    </Screen>
   );
 }

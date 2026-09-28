@@ -78,8 +78,6 @@ export default function ShareProfileScreen() {
         <ShareProfileCard
           ref={cardRef}
           username={userData.username}
-          avatarUrl={userData.avatar_url || null}
-          frame={userData.frame || 'none'}
           topFiveItems={topFiveItems}
         />
       </View>

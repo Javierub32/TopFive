@@ -32,7 +32,11 @@ function InitialLayout() {
   const [appIsReady, setAppIsReady] = useState(false);
   const { showNotification, hideNotification, visible, config } = useNotification();
   const { t } = useTranslation();
-  const { appVersion, error: appVersionError, compareVersions } = useAppVersion({refetchOnMount: false});
+  const {
+    appVersion,
+    error: appVersionError,
+    compareVersions,
+  } = useAppVersion({ refetchOnMount: false });
   const notifiedAppVersionRef = useRef<string | null>(null);
   const previousSessionUserIdRef = useRef<string | null>(null);
 
@@ -47,7 +51,13 @@ function InitialLayout() {
         /inactive|background/.test(previousAppState) && nextAppState === 'active';
 
       if (returnedToApp) {
-        queryClient.invalidateQueries();
+        queryClient.invalidateQueries({
+          predicate: (query) => {
+            const rootKey = query.queryKey[0];
+
+            return rootKey !== 'app-version' && rootKey !== 'topFive' && rootKey !== 'profile';
+          },
+        });
       }
 
       previousAppState = nextAppState;
@@ -181,7 +191,7 @@ function InitialLayout() {
     }
   }, [appIsReady, loading]);
 
- useEffect(() => {
+  useEffect(() => {
     if (loading || !appIsReady) return;
 
     const inAuthGroup = segments[0] === '(auth)';
@@ -195,13 +205,11 @@ function InitialLayout() {
       // Redirigir a Home si intenta entrar a login/registro (AuthGroup)
       // O si está en la raíz (segments.length === 0)
       if (inAuthGroup || (segments.length as number) === 0) {
-        
         if (Platform.OS !== 'web') {
           router.replace('/(tabs)/Home');
-        }else {
-          router.replace('/(auth)/login'); 
+        } else {
+          router.replace('/(auth)/login');
         }
-        
       }
     } else {
       // NO hay usuario:
@@ -246,10 +254,10 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <QueryClientProvider client={queryClient}>
-		 <FontSizeProvider>
-              <ThemeProvider>
-        <StartupGate>
-          <AuthProvider>
+        <FontSizeProvider>
+          <ThemeProvider>
+            <StartupGate>
+              <AuthProvider>
                 <CollectionProvider>
                   <NotificationProvider>
                     <SearchProvider>
@@ -257,10 +265,10 @@ export default function RootLayout() {
                     </SearchProvider>
                   </NotificationProvider>
                 </CollectionProvider>
-          </AuthProvider>
-        </StartupGate>
-		  </ThemeProvider>
-  </FontSizeProvider>
+              </AuthProvider>
+            </StartupGate>
+          </ThemeProvider>
+        </FontSizeProvider>
       </QueryClientProvider>
     </GestureHandlerRootView>
   );

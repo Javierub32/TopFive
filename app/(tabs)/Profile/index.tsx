@@ -216,7 +216,7 @@ export default function ProfileScreen() {
             </TouchableOpacity>
           </View>
 
-          {userData?.id && <TopFiveSelector userId={userData.id} />}
+          {userData?.id && <TopFiveSelector userId={userData.id} username={userData.username} />}
 
           {userData?.id && <DiaryPreview userId={userData.id} />}
           <AppText
