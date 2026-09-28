@@ -28,7 +28,7 @@ export default function SeriesDetail() {
 
   const getPath = () => {
     if (from === 'profile') return '/(tabs)/Profile';
-    if (from === 'user' || from === 'list' || from === 'group' || from === 'home') return 'back';
+    if (from === 'user' || from === 'list' || from === 'group' || from === 'home' || from === 'diary') return 'back';
     return '/(tabs)/Collection';
   };
   const path = getPath();
