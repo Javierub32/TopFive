@@ -92,12 +92,12 @@ export default function DiaryScreen() {
 const renderHeader = ({ section, colors }: { section: { title: string }; colors: any }) => {
   return (
     <View
-      className="px-5 py-3 mb-2"
+      className="mb-2 px-5 py-3"
       style={{
         backgroundColor: colors.background,
       }}>
       <AppText
-        className="tracking-widest font-bold"
+        className="font-bold tracking-widest"
         style={{ color: colors.primaryText, fontSize: 15 }}>
         {section.title.toLocaleUpperCase()}
       </AppText>
@@ -126,11 +126,21 @@ const renderItem = ({
       )
     : null;
 
+  const colorMap: Record<string, string> = {
+    LIBRO: colors.ground1,
+    PELICULA: colors.ground2,
+    SERIE: colors.ground3,
+    VIDEOJUEGO: colors.ground4,
+    CANCION: colors.ground5,
+  };
+
   return (
     <View
-      className="mx-4 mb-3 flex-row p-3.5 rounded-2xl shadow-sm"
+      className="mx-4 mb-3 flex-row rounded-2xl p-3.5 shadow-sm"
       style={{
         backgroundColor: colors.surfaceButton || '#1e293b',
+        borderLeftWidth: 2,
+        borderLeftColor: colorMap[item.tipo_contenido] || 'transparent',
         borderWidth: 0,
         borderColor: `${colors.borderButton || colors.primary}33`,
       }}>
