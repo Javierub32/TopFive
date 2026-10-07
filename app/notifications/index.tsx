@@ -2,8 +2,8 @@ import { FlatList, View } from 'react-native';
 
 import { Screen } from 'components/Screen';
 import { ReturnButton } from 'components/ReturnButton';
-import { useNotification } from '@/Notifications/hooks/useNotification';
-import { NotificationItem } from '@/Notifications/components/NotificationItems';
+import { useNotificationList } from '@/Notifications/hooks/useNotificationList';
+import { NotificationItem } from '@/Notifications/components/NotificationItem';
 import { LoadingIndicator } from 'components/LoadingIndicator';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useTheme } from 'context/ThemeContext';
@@ -20,7 +20,8 @@ export default function NotificationsScreen() {
     refreshing,
     handleAcceptNotification,
     handleDeclineNotification,
-  } = useNotification();
+    openResourceNotification,
+  } = useNotificationList();
   const { from } = useLocalSearchParams();
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -42,26 +43,23 @@ export default function NotificationsScreen() {
       <FlatList
         data={notifications}
         className="px-3"
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.key}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <NotificationItem
-            user={item.user}
-            status={item.status}
-            myFollowStatus={item.myFollowStatus}
-            handleAccept={() =>
-              handleAcceptNotification(item.id, item.follower_id, item.following_id)
+            notification={item}
+            onAccept={(n) => handleAcceptNotification(String(n.id), n.follower_id, n.following_id)}
+            onDecline={(n) =>
+              handleDeclineNotification(String(n.id), n.follower_id, n.following_id)
             }
-            handleDecline={() =>
-              handleDeclineNotification(item.id, item.follower_id, item.following_id)
-            }
-            onUserPress={() =>
+            onFollowBack={(n) => handleFollow(n.follower_id)}
+            onUserPress={(n) =>
               router.push({
                 pathname: 'details/user/',
-                params: { username: item.user.username },
+                params: { username: n.user.username },
               })
             }
-            followBack={() => handleFollow(item.follower_id)}
+            onResourcePress={openResourceNotification}
           />
         )}
         onEndReached={fetchNotifications}
