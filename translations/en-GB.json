@@ -582,7 +582,9 @@
     "followingRequest": "has requested to follow you",
     "followingConfirmation": "has started following you",
     "pending": "Pending",
-    "followBack": "Follow back"
+    "followBack": "Follow back",
+    "resourceLike": "You have new likes on your review of {{resource}}",
+    "resourceComment": "You have new comments on your review of {{resource}}"
   },
   "topFiveSelector": {
     "confirmSelection": "Confirm selection",
