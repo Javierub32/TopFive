@@ -8,6 +8,7 @@ export interface ListInfo {
   descripcion: string | null;
   icono: string | null;
   color: string | null;
+  etiquetada: boolean;
   tipo: CollectionType;
   totalElementos: number;
   previewImagenes: string[];
@@ -20,6 +21,7 @@ export const listServices = {
     descripcion: string | null,
     icono: string | null,
     color: string | null,
+    etiquetada: boolean,
     tipo: CollectionType
   ) {
     const { data, error } = await supabase
@@ -30,6 +32,7 @@ export const listServices = {
         descripcion: descripcion,
         icono: icono,
         color: color,
+        etiquetada: etiquetada,
         tipo_contenido: tipo,
       })
       .select()
@@ -45,7 +48,8 @@ export const listServices = {
     nombre: string,
     descripcion: string | null,
     icono: string | null,
-    color: string | null
+    color: string | null,
+    etiquetada: boolean
   ) {
     const { data, error } = await supabase
       .from('recursocoleccion')
@@ -54,6 +58,7 @@ export const listServices = {
         descripcion: descripcion,
         icono: icono,
         color: color,
+        etiquetada: etiquetada,
       })
       .eq('id', listId)
       .eq('usuarioid', userId)
@@ -266,7 +271,7 @@ export const listServices = {
     // Obtenemos la info base de las listas del usuario.
     const { data: listsData, error: listsError } = await supabase
       .from('recursocoleccion')
-      .select('id, nombrecoleccion, descripcion, icono, color, tipo_contenido')
+      .select('id, nombrecoleccion, descripcion, icono, color, etiquetada, tipo_contenido')
       .eq('usuarioid', userId)
       .eq('tipo_contenido', listType)
       .range(from, to)
@@ -320,6 +325,7 @@ export const listServices = {
         descripcion: list.descripcion,
         icono: list.icono,
         color: list.color,
+        etiquetada: list.etiquetada,
         tipo: list.tipo_contenido as CollectionType,
         totalElementos: itemsResponse.count || 0,
         previewImagenes: previewImages,

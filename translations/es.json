@@ -280,7 +280,9 @@
         "listNamePlaceholder": "Ej: Películas imprescindibles",
         "description": "Descripción",
         "descriptionPlaceholder": "Describe el contenido de esta lista...",
-        "listDetails": "Detalles de la lista"
+        "listDetails": "Detalles de la lista",
+        "labeled": "Etiquetada",
+        "labeledDescription": "Los contenidos de la lista mostrarán si están completados, pendientes o en curso"
     },
     "ready": "Listo",
     "lastTime": "Última vez",

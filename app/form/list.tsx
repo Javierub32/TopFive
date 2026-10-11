@@ -1,4 +1,4 @@
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Switch } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Screen } from 'components/Screen';
 import { ScalableFontAwesome5, ScalableMaterialCommunityIcons } from 'components/Icons';
@@ -8,6 +8,7 @@ import { useCollection } from 'context/CollectionContext';
 import { useLists } from '@/Collection/hooks/useLists';
 import { ReturnButton } from 'components/ReturnButton';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ResourceType } from 'hooks/useResource';
 import { useNotification } from 'context/NotificationContext';
 import { AppText } from 'components/AppText';
@@ -17,6 +18,7 @@ import { notificationAsync, NotificationFeedbackType } from 'expo-haptics';
 
 export default function ListForm() {
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
   const { setIsSearchVisible } = useCollection();
   const [loading, setLoading] = useState(false);
   const { listData } = useLocalSearchParams();
@@ -61,6 +63,7 @@ export default function ListForm() {
     icon: listToEdit?.icono || 'cloud',
     color: listToEdit?.color || iconoColors.map((c) => c.value)[0],
     category: '',
+    labeled: listToEdit?.etiquetada ?? true,
   });
 
   const { showNotification } = useNotification();
@@ -87,7 +90,8 @@ export default function ListForm() {
           formData.name,
           formData.description,
           formData.icon,
-          formData.color
+          formData.color,
+          formData.labeled,
         );
         //Alert.alert('Lista actualizada', `La lista "${formData.name}" ha sido actualizada exitosamente.`);
         router.replace({
@@ -111,6 +115,7 @@ export default function ListForm() {
           formData.description,
           formData.icon,
           formData.color,
+          formData.labeled,
           listaCategory
         );
       }
@@ -135,7 +140,10 @@ export default function ListForm() {
   return (
     <Screen>
       <StatusBar style="light" />
-      <ScrollView className="flex-1 px-4 pt-2">
+      <ScrollView
+        className="flex-1 px-4 pt-2"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: insets.bottom + 24 }}>
         <View className="flex-1 flex-row items-center">
           <ReturnButton
             route="/(tabs)/Lists"
@@ -243,6 +251,29 @@ export default function ListForm() {
             ))}
           </View>
         </View>
+        
+        {/* Toggle para etiquetada */}
+        <View
+          className="mb-6 flex-row items-center justify-between rounded-xl px-4 py-4"
+          style={{ backgroundColor: colors.tabBarBackgroundColor }}>
+          <View className="mr-4 flex-1">
+            <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 18 }}>
+              {t('forms.lists.labeled')}
+            </AppText>
+            <AppText className="mt-1" style={{ color: colors.secondaryText, fontSize: 13 }}>
+              {t('forms.lists.labeledDescription')}
+            </AppText>
+          </View>
+          <Switch
+            value={formData.labeled}
+            onValueChange={(value) => setFormData({ ...formData, labeled: value })}
+            trackColor={{ false: colors.placeholderText, true: colors.primary }}
+            thumbColor={colors.primaryText}
+            ios_backgroundColor={colors.placeholderText}
+            style={{ transform: [{ scaleX: 1.05 }, { scaleY: 1.05 }] }}
+          />
+        </View>
+
         <TouchableOpacity
           onPress={() => {
             handleSubmit();
