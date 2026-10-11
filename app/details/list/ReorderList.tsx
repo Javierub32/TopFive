@@ -109,7 +109,7 @@ export default function ReorderListScreen() {
                     activeOpacity={0.9}
                     className="mb-3 flex-row items-center overflow-hidden rounded-xl p-3 shadow-sm"
                     style={{
-                      backgroundColor: isActive ? colors.accent : colors.primaryBackground,
+                      backgroundColor: isActive ? colors.accent : colors.tabBarBackgroundColor,
                       elevation: isActive ? 5 : 0,
                     }}>
                     <View className="w-8 items-center justify-center">
