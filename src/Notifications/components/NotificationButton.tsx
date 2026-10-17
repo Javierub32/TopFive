@@ -7,7 +7,7 @@ import { useAuth } from 'context/AuthContext';
 import { AppText } from 'components/AppText';
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@/query/queryKeys';
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 interface NotificationProps {
   from: string;
 }
@@ -17,18 +17,25 @@ export const NotificationButton = (props: NotificationProps) => {
   const { user } = useAuth();
   const { data: notificationCount = 0, refetch } = useQuery({
     queryKey: queryKeys.notificationCount(user?.id),
-    queryFn: () => notificationServices.countPendingNotifications(user!.id),
+    queryFn: () => notificationServices.countUnreadNotifications(user!.id),
     enabled: !!user?.id,
     staleTime: 0,
     refetchOnMount: 'always',
     gcTime: 1000 * 60 * 30,
   });
 
+  /* Igual que en la lista: refetchOnMount cubre el montaje, así que refetchear también en
+     el primer foco pediría el contador dos veces. */
+  const hasFocusedOnce = useRef(false);
+
   useFocusEffect(
     useCallback(() => {
-      if (user?.id) {
+      if (!user?.id) return;
+
+      if (hasFocusedOnce.current) {
         refetch();
       }
+      hasFocusedOnce.current = true;
     }, [refetch, user?.id])
   );
 

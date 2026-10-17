@@ -1,0 +1,102 @@
+import { User } from '@/User/hooks/useUser';
+import { ScalableAcceptIcon, ScalableCancelIcon } from 'components/Icons';
+import { TouchableOpacity, View } from 'react-native';
+import { useTheme } from 'context/ThemeContext';
+import { useState } from 'react';
+import { AppText } from 'components/AppText';
+import { useTranslation } from 'react-i18next';
+import { NotificationItemLayout } from './NotificationItemLayout';
+import { FollowStatus } from '../types/notification';
+
+interface NotificationSocialItemProps {
+  user: User;
+  status: 'pending' | 'accepted';
+  myFollowStatus?: FollowStatus;
+  handleAccept: () => void;
+  handleDecline: () => void;
+  onUserPress?: () => void;
+  followBack: () => void;
+}
+
+export function NotificationSocialItem({
+  user,
+  status,
+  myFollowStatus = 'none',
+  handleAccept,
+  handleDecline,
+  onUserPress,
+  followBack,
+}: NotificationSocialItemProps) {
+  const { colors } = useTheme();
+  const [localFollowRequested, setLocalFollowRequested] = useState(false);
+
+  const isPendingFollow = myFollowStatus === 'pending' || localFollowRequested;
+  const isAlreadyFollowing = myFollowStatus === 'accepted';
+
+  const { t } = useTranslation();
+
+  const onFollowBackPress = () => {
+    setLocalFollowRequested(true);
+    followBack();
+  };
+
+  const notificationText =
+    status === 'pending'
+      ? t('notifications.followingRequest')
+      : t('notifications.followingConfirmation');
+
+  const actions =
+    /*Caso en el que un usuario solicita seguirte*/
+    status === 'pending' ? (
+      <View className="flex-row">
+        <TouchableOpacity
+          onPress={handleDecline}
+          className="mr-3 h-10 w-10 items-center justify-center rounded-full"
+          style={{ backgroundColor: colors.surfaceButton }}
+          activeOpacity={0.7}>
+          <ScalableCancelIcon />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleAccept}
+          className="mr-1 h-10 w-10 items-center justify-center rounded-full"
+          style={{ backgroundColor: `${colors.success}99` }}
+          activeOpacity={0.7}>
+          <ScalableAcceptIcon />
+        </TouchableOpacity>
+      </View>
+    ) : (
+      //Casos en los que tras aceptar, da botón de seguir de vuelta y pendiente, o nada si ya se sigue al usuario
+      !isAlreadyFollowing && (
+        <TouchableOpacity
+          onPress={onFollowBackPress}
+          disabled={isPendingFollow}
+          className="mr-1 h-10 items-center justify-center rounded-xl px-4"
+          style={{
+            backgroundColor: isPendingFollow ? `${colors.secondary}20` : colors.accent,
+          }}
+          activeOpacity={0.7}>
+          <AppText
+            className="font-medium"
+            style={{ color: isPendingFollow ? colors.secondaryText : 'white', fontSize: 12 }}>
+            {isPendingFollow ? t('notifications.pending') : t('notifications.followBack')}
+          </AppText>
+        </TouchableOpacity>
+      )
+    );
+
+  return (
+    <NotificationItemLayout
+      imageUrl={user.avatar_url}
+      imageFallback={
+        <AppText className="font-bold" style={{ color: colors.secondaryText, fontSize: 14 }}>
+          {user.username.charAt(0).toUpperCase()}
+        </AppText>
+      }
+      highlight={user.username}
+      textAfter={` ${notificationText}`}
+      subtitle={user.description}
+      onPress={onUserPress}
+      actions={actions}
+    />
+  );
+}
