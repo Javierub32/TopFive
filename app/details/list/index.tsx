@@ -31,7 +31,7 @@ export default function ListDetails() {
   const { t } = useTranslation();
   const [menuListasAbierto, setMenuListasAbierto] = useState(false);
   const { showNotification, hideNotification } = useNotification();
-  const { deleteList } = useLists(parsedListData?.tipo);
+  const { deleteList } = useLists(listaCategory);
 
   useEffect(() => {
     return () => {
@@ -245,7 +245,7 @@ export default function ListDetails() {
           handleItemPress={(item: any) => handleItemPress(item, listaCategory, 'list')}
           handleLongPress={(item: any) => handleLongPress(item, listaCategory, 'list')}
           handleSearchPagination={handleLoadMore}
-          showStatus={true}
+          showStatus={parsedListData?.etiquetada || false}
           loading={loading}
         />
       </View>

@@ -75,12 +75,14 @@ export const useLists = (categoriaActual: ResourceType) => {
       descripcion,
       icono,
       color,
+      etiquetada,
     }: {
       nombre: string;
       descripcion: string | null;
       icono: string | null;
       color: string | null;
-    }) => listServices.createList(user.id, nombre, descripcion, icono, color, collectionType),
+      etiquetada: boolean;
+    }) => listServices.createList(user.id, nombre, descripcion, icono, color, etiquetada, collectionType),
     onSuccess: invalidateLists,
   });
 
@@ -91,13 +93,15 @@ export const useLists = (categoriaActual: ResourceType) => {
       descripcion,
       icono,
       color,
+      etiquetada,
     }: {
       listId: string;
       nombre: string;
       descripcion: string | null;
       icono: string | null;
       color: string | null;
-    }) => listServices.updateList(user.id, listId, nombre, descripcion, icono, color),
+      etiquetada: boolean;
+    }) => listServices.updateList(user.id, listId, nombre, descripcion, icono, color, etiquetada),
     onSuccess: invalidateLists,
   });
 
@@ -111,10 +115,11 @@ export const useLists = (categoriaActual: ResourceType) => {
     descripcion: string | null,
     icono: string | null,
     color: string | null,
+    etiquetada: boolean,
     tipo: string
   ) => {
     try {
-      await createListMutation.mutateAsync({ nombre, descripcion, icono, color });
+      await createListMutation.mutateAsync({ nombre, descripcion, icono, color, etiquetada });
       router.back();
       setTimeout(() => {
         showNotification({
@@ -147,10 +152,11 @@ export const useLists = (categoriaActual: ResourceType) => {
     nombre: string,
     descripcion: string | null,
     icono: string | null,
-    color: string | null
+    color: string | null,
+    etiquetada: boolean
   ) => {
     try {
-      await updateListMutation.mutateAsync({ listId, nombre, descripcion, icono, color });
+      await updateListMutation.mutateAsync({ listId, nombre, descripcion, icono, color, etiquetada });
     } catch (error) {
       console.error('Error updating list:', error);
     }

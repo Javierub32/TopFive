@@ -280,7 +280,11 @@
         "listNamePlaceholder": "E.g.: Essential films",
         "description": "Description",
         "descriptionPlaceholder": "Describe the content of this list...",
-        "listDetails": "List details"
+        "listDetails": "List details",
+        "onThisList": "on this list",
+        "labeled": "Labeled",
+        "labeledDescription": "The contents of the list will show whether they are completed, pending, or in progress"
+    
     },
     "ready": "Ready",
     "lastTime": "Last time",
