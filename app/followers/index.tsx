@@ -59,7 +59,7 @@ export default function FollowersScreen() {
 
   return (
     <Screen>
-      <ReturnButton route="/(tabs)/Profile" title={username || ''} />
+      <ReturnButton route="back" title={username || ''} />
 
       <TabView
         navigationState={{ index, routes }}
