@@ -182,15 +182,19 @@ const renderItem = ({
 
         <View className="mt-2 flex-row flex-wrap items-center">
           <View className="flex-row gap-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <FontAwesome5
-                key={star}
-                name={rating === star - 0.5 ? 'star-half-alt' : 'star'}
-                size={13}
-                color={rating >= star - 0.5 ? colors.rating : colors.placeholderText}
-                solid={rating >= star - 0.5}
-              />
-            ))}
+            {rating !== 0 && (
+              <>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <FontAwesome5
+                    key={star}
+                    name={rating === star - 0.5 ? 'star-half-alt' : 'star'}
+                    size={13}
+                    color={rating >= star - 0.5 ? colors.rating : colors.placeholderText}
+                    solid={rating >= star - 0.5}
+                  />
+                ))}
+              </>
+            )}
           </View>
 
           {hasReview && (
