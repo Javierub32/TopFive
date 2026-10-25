@@ -197,7 +197,7 @@ export const DateSetter = ({
             <AppText
               className="font-bold uppercase tracking-widest"
               style={{ color: colors.markerText, fontSize: 14 }}>
-              Fecha Fin
+              {t('forms.endingDate')}
             </AppText>
           </View>
           <View className="flex-row justify-center">
