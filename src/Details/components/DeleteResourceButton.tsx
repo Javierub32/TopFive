@@ -20,9 +20,10 @@ interface Props {
   type: ResourceType;
   onCustomDelete?: () => Promise<void> | void; 
   isList?: boolean;
+  returnRoute?: string;
 }
 
-export const DeleteResourceButton = ({ resource, resources, type, onCustomDelete, isList }: Props) => {
+export const DeleteResourceButton = ({ resource, resources, type, onCustomDelete, isList, returnRoute }: Props) => {
   const { colors } = useTheme();
   const { borrarRecurso } = useResource();
   const { refreshData } = useCollection();
@@ -101,10 +102,14 @@ const categoryKey = categoryTranslationMap[type];
           refreshData(type);
         } else if (resource) {
           await borrarRecurso(resource.id, type, resource.estado);
-          router.replace({
-            pathname: '/Collection',
-            params: { initialResource: type as ResourceType },
-          });
+          if (returnRoute === 'back') {
+            router.back();
+          } else {
+            router.replace({
+              pathname: '/Collection',
+              params: { initialResource: type as ResourceType },
+            });
+          }
           refreshData(type);
         }
 
