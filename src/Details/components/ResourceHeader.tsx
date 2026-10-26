@@ -108,7 +108,7 @@ export const ResourceHeader = ({ imageUrl, returnRoute, resource, type, isOwner,
             {isOwner && (
               <View className="flex-row">
                 <EditResourceButton resource={resource} type={type} from={from} />
-                <DeleteResourceButton resource={resource} type={type} />
+                <DeleteResourceButton resource={resource} type={type} returnRoute={returnRoute} />
               </View>
             )}
           </View>
