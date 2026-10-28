@@ -24,7 +24,7 @@ export interface User {
 
 type ProfileResult =
   | { access: 'visible'; user: User }
-  | { access: 'blocked_by_me' | 'blocked_me' };
+  | { access: 'blocked_by_me' | 'blocked_me'; userId: string };
 
 // Estructura inicial de estadísticas
 const INITIAL_CATEGORY_DATA = {
@@ -52,6 +52,8 @@ export const useUser = (username: string) => {
 
   const [selectedCategory, setSelectedCategory] = useState<ResourceType>('pelicula');
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
+  const [isBlocking, setIsBlocking] = useState(false);
+  const [isUnblocking, setIsUnblocking] = useState(false);
 
   const {
     data: profileResult,
@@ -67,7 +69,7 @@ export const useUser = (username: string) => {
 
       if (user?.id && user.id !== userId) {
         const blockState = await userService.getBlockState(user.id, userId);
-        if (blockState) return { access: blockState };
+        if (blockState) return { access: blockState, userId };
       }
 
       const profile = await userService.fetchUserById(userId, user?.id ?? userId);
@@ -84,6 +86,8 @@ export const useUser = (username: string) => {
 
   const profileAccess = profileResult?.access ?? null;
   const userData = profileResult?.access === 'visible' ? profileResult.user : null;
+  const profileTargetUserId =
+    profileResult?.access === 'visible' ? profileResult.user.id : profileResult?.userId;
 
   useFocusEffect(
     useCallback(() => {
@@ -134,6 +138,55 @@ export const useUser = (username: string) => {
       queryClient.invalidateQueries({ queryKey: ['followers'] }),
       queryClient.invalidateQueries({ queryKey: ['following'] }),
     ]);
+  };
+
+  const invalidateBlockData = async (targetUserId: string) => {
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: queryKeys.blockState(user?.id, targetUserId) }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.publicProfilePrefix() }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.commentsPrefix() }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.profileStatsPrefix(targetUserId) }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.profileTotalPrefix(targetUserId) }),
+      queryClient.invalidateQueries({ queryKey: ['followers'] }),
+      queryClient.invalidateQueries({ queryKey: ['following'] }),
+    ]);
+  };
+
+  const blockUser = async (targetUserId: string) => {
+    if (!user?.id) throw new Error('Debes iniciar sesión para bloquear usuarios');
+
+    setIsBlocking(true);
+    try {
+      await userService.blockUser(user.id, targetUserId);
+      queryClient.setQueriesData<ProfileResult>(
+        { queryKey: queryKeys.publicProfilePrefix() },
+        (profile) =>
+          profile?.access === 'visible' && profile.user.id === targetUserId
+            ? { access: 'blocked_by_me', userId: targetUserId }
+            : profile
+      );
+    } finally {
+      try {
+        await invalidateBlockData(targetUserId);
+      } finally {
+        setIsBlocking(false);
+      }
+    }
+  };
+
+  const unblockUser = async (targetUserId: string) => {
+    if (!user?.id) throw new Error('Debes iniciar sesión para desbloquear usuarios');
+
+    setIsUnblocking(true);
+    try {
+      await userService.unblockUser(user.id, targetUserId);
+    } finally {
+      try {
+        await invalidateBlockData(targetUserId);
+      } finally {
+        setIsUnblocking(false);
+      }
+    }
   };
 
   const followMutation = useMutation({
@@ -210,6 +263,11 @@ export const useUser = (username: string) => {
   return {
     userData,
     profileAccess,
+    profileTargetUserId,
+    blockUser,
+    unblockUser,
+    isBlocking,
+    isUnblocking,
     loading: isLoading || followMutation.isPending || cancelRequestMutation.isPending,
     refreshing: isFetching || statsFetching || totalFetching,
     refreshUserData,

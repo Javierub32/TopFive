@@ -6,9 +6,10 @@ export const queryKeys = {
   publicProfile: (username?: string | null, viewerId?: string | null) =>
     ['profile', 'public', username, viewerId] as const,
   blockState: (userId?: string | null, targetUserId?: string | null) =>
-  ['user-block-state', userId, targetUserId] as const,
+    ['user-block-state', userId, targetUserId] as const,
+  commentsPrefix: () => ['comments'] as const,
   comments: (resourceId?: number | null, resourceType?: string | null, viewerId?: string | null) =>
-  ['comments', resourceType, resourceId, viewerId] as const,
+    ['comments', resourceType, resourceId, viewerId] as const,
   publicProfilePrefix: () => ['profile', 'public'] as const,
   profileStats: (userId?: string | null, type?: ResourceType, year?: number) =>
     ['profile', 'stats', userId, type, year] as const,
