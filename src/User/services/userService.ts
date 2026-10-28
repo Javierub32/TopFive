@@ -37,7 +37,7 @@ export const userService = {
 			...user,
 			frame: (user as any).frame?.codigo || 'none',
 			is_requested: !!relationship, // true si existe, false si es null
-			following_status: relationship?.status || null, // 'pending', 'accepted' o null
+			following_status: relationship?.status || null, // 'pending', 'accepted', 'blocked' o null
 			alerts_enabled: relationship?.alerts_enabled, //Alertas de reviews
 			profile_type: user.is_private ? 'private' : 'public', // Añadimos el tipo de perfil
 		};
@@ -73,6 +73,64 @@ export const userService = {
 			.eq('following_id', targetUserId);
 		if (error) throw error;
 		return data;
+	},
+
+	async blockUser(userId:string, targetUserId:string){
+		//Creamos el estado de bloqueo de usuario
+		const {data, error} = await supabase
+			.from('relationships')
+			.upsert({ 
+				follower_id: userId,
+				following_id: targetUserId,
+				status: 'blocked' 
+			})
+
+		if (error) throw error;
+		//en el caso de que tengan relacion (seguimiento o pendiente) se elimina
+		await supabase
+			.from('relationships')
+			.delete()
+			.eq('follower_id', targetUserId)
+			.eq('following_id', userId)
+		
+		return data;
+	},
+
+	async unblockUser(userId:string, targetUserId:string){
+		const {data, error} = await supabase
+			.from('relationships')
+			.delete()
+			.eq('follower_id', userId)
+			.eq('following_id', targetUserId);
+
+		if (error) throw error;
+		return data;
+	},
+
+	async getBlockState(userId: string, targetUserId: string){
+		const [outgoing, incoming] = await Promise.all([
+			supabase
+				.from('relationships')
+				.select('status')
+				.eq('follower_id', userId)
+				.eq('following_id', targetUserId)
+				.maybeSingle(),
+			supabase
+				.from('relationships')
+				.select('status')
+				.eq('follower_id', targetUserId)
+				.eq('following_id', userId)
+				.maybeSingle()
+		]);
+
+		 if (outgoing.data?.status === 'blocked') {
+    return 'blocked_by_me';
+  }
+
+	if (incoming.data?.status === 'blocked') {
+    return 'blocked_me';
+	}
+		return null;
 	},
 
 	async checkEmail(email: string) {
