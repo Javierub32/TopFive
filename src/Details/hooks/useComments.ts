@@ -2,6 +2,7 @@ import { InfiniteData, useInfiniteQuery, useMutation, useQueryClient } from '@ta
 import { useAuth } from 'context/AuthContext';
 import { queryKeys } from '@/query/queryKeys';
 import { Comment, commentServices } from '../services/commentServices';
+import { useUser } from '@/User/hooks/useUser';
 
 const PAGE_SIZE = 10;
 
@@ -14,11 +15,12 @@ interface CommentsPage {
 export const useComments = (resourceId?: number, resourceType?: string) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const { blockUser: blockUserMutation, isBlocking } = useUser('');
   const enabled = resourceId != null && !!resourceType;
 
   const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage, isError } =
     useInfiniteQuery({
-      queryKey: queryKeys.comments(resourceId, resourceType),
+      queryKey: queryKeys.comments(resourceId, resourceType, user?.id),
       queryFn: async ({ pageParam = 0 }): Promise<CommentsPage> => {
         const from = pageParam * PAGE_SIZE;
         const to = from + PAGE_SIZE - 1;
@@ -26,7 +28,8 @@ export const useComments = (resourceId?: number, resourceType?: string) => {
           resourceId!,
           resourceType!,
           from,
-          to
+          to,
+          user?.id
         );
 
         return {
@@ -52,7 +55,9 @@ export const useComments = (resourceId?: number, resourceType?: string) => {
     mutationFn: (content: string) =>
       commentServices.addComment(user!.id, resourceId!, resourceType!, content),
     onSuccess: () =>
-      queryClient.resetQueries({ queryKey: queryKeys.comments(resourceId, resourceType) }),
+      queryClient.resetQueries({
+        queryKey: queryKeys.comments(resourceId, resourceType, user?.id),
+      }),
   });
 
   const sendComment = async (content: string) => {
@@ -63,7 +68,7 @@ export const useComments = (resourceId?: number, resourceType?: string) => {
   const deleteCommentMutation = useMutation({
     mutationFn: (commentId: number) => commentServices.deleteComment(commentId, user!.id),
     onMutate: async (commentId: number) => {
-      const key = queryKeys.comments(resourceId, resourceType);
+      const key = queryKeys.comments(resourceId, resourceType, user?.id);
       await queryClient.cancelQueries({ queryKey: key });
       const previous = queryClient.getQueryData<InfiniteData<CommentsPage>>(key);
 
@@ -84,13 +89,21 @@ export const useComments = (resourceId?: number, resourceType?: string) => {
     },
     onError: (_err, _commentId, context) => {
       if (context?.previous)
-        queryClient.setQueryData(queryKeys.comments(resourceId, resourceType), context.previous);
+        queryClient.setQueryData(
+          queryKeys.comments(resourceId, resourceType, user?.id),
+          context.previous
+        );
     },
   });
 
   const deleteComment = async (commentId: number) => {
     if (!enabled || !user) return;
     await deleteCommentMutation.mutateAsync(commentId);
+  };
+
+  const blockCommentAuthor = async (targetUserId: string) => {
+    if (!user) return;
+    await blockUserMutation(targetUserId);
   };
 
   return {
@@ -104,6 +117,8 @@ export const useComments = (resourceId?: number, resourceType?: string) => {
     sendComment,
     sending: addCommentMutation.isPending,
     deleteComment,
+    blockCommentAuthor,
+    blockingUser: isBlocking,
     currentUserId: user?.id,
   };
 };

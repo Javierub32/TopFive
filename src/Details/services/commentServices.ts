@@ -1,4 +1,5 @@
 import { supabase } from 'lib/supabase';
+import { userService } from '@/User/services/userService';
 
 const COMMENTS_TABLE = 'comentario';
 const CONTENT_COLUMN = 'content';
@@ -18,8 +19,16 @@ export interface Comment {
 }
 
 export const commentServices = {
-  async fetchComments(resourceId: number, resourceType: string, from: number, to: number) {
-    const { data, error, count } = await supabase
+  async fetchComments(
+    resourceId: number,
+    resourceType: string,
+    from: number,
+    to: number,
+    viewerId?: string
+  ) {
+    const blockedUserIds = viewerId ? await userService.getBlockedUserIds(viewerId) : [];
+
+    let commentsQuery = supabase
       .from(COMMENTS_TABLE)
       .select(
         `
@@ -38,7 +47,13 @@ export const commentServices = {
         { count: 'exact' }
       )
       .eq('resource_id', resourceId)
-      .eq('resource_type', resourceType)
+      .eq('resource_type', resourceType);
+
+    if (blockedUserIds.length > 0) {
+      commentsQuery = commentsQuery.not('user_id', 'in', `(${blockedUserIds.join(',')})`);
+    }
+
+    const { data, error, count } = await commentsQuery
       .order('created_at', { ascending: false })
       .order('id', { ascending: false })
       .range(from, to);
