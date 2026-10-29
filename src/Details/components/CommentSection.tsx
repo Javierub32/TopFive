@@ -36,6 +36,7 @@ export const SocialSection = ({
     sendComment,
     sending,
     deleteComment,
+    blockCommentAuthor,
     currentUserId,
   } = useComments(resourceId, resourceType);
 
@@ -75,6 +76,9 @@ export const SocialSection = ({
               key={item.id}
               comment={item}
               onDelete={item.user_id === currentUserId ? deleteComment : undefined}
+              onBlock={
+                currentUserId && item.user_id !== currentUserId ? blockCommentAuthor : undefined
+              }
             />
           ))
         )}

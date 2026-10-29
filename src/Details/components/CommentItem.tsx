@@ -10,9 +10,10 @@ import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics';
 interface Props {
   comment: Comment;
   onDelete?: (commentId: number) => Promise<void>;
+  onBlock?: (userId: string) => Promise<void>;
 }
 
-export const CommentItem = ({ comment, onDelete }: Props) => {
+export const CommentItem = ({ comment, onDelete, onBlock }: Props) => {
   const { colors } = useTheme();
   const { t, i18n } = useTranslation();
   const { showNotification, hideNotification } = useNotification();
@@ -38,8 +39,47 @@ export const CommentItem = ({ comment, onDelete }: Props) => {
 
   const handleCommentLongPress = (e: GestureResponderEvent) => {
     e.stopPropagation();
+    if (!onDelete && !onBlock) return;
+    impactAsync(ImpactFeedbackStyle.Medium);
+
+    if (onBlock) {
+      showNotification({
+        title: t('profile.blockUser.title', { username }),
+        description: t('profile.blockUser.description', { username }),
+        isChoice: true,
+        delete: true,
+        success: false,
+        leftButtonText: t('common.cancel'),
+        rightButtonText: t('profile.blockUser.action'),
+        highlightRight: true,
+        onLeftPress: () => hideNotification(),
+        onRightPress: async () => {
+          hideNotification();
+          try {
+            await onBlock(comment.user_id);
+            showNotification({
+              title: t('profile.blockUser.successTitle'),
+              description: t('profile.blockUser.successDescription', { username }),
+              isChoice: false,
+              delete: false,
+              success: true,
+            });
+          } catch {
+            showNotification({
+              title: t('common.error'),
+              description: t('profile.blockUser.errorDescription', { username }),
+              isChoice: false,
+              delete: false,
+              success: false,
+            });
+          }
+        },
+      });
+      return;
+    }
+
     if (!onDelete) return;
-    impactAsync(ImpactFeedbackStyle.Medium)
+
     showNotification({
       title: t('forms.deleteComment.title'),
       description: t('forms.deleteComment.description'),
@@ -76,10 +116,10 @@ export const CommentItem = ({ comment, onDelete }: Props) => {
 
   return (
     <TouchableOpacity
-      activeOpacity={onDelete ? 0.7 : 1}
+      activeOpacity={onDelete || onBlock ? 0.7 : 1}
       className="flex-row gap-3 rounded-2xl p-3"
       style={{ backgroundColor: colors.surfaceButton }}
-      onLongPress={onDelete ? handleCommentLongPress : undefined}>
+      onLongPress={onDelete || onBlock ? handleCommentLongPress : undefined}>
       <TouchableOpacity activeOpacity={0.7} onPress={handleUserPress}>
         {avatarUrl ? (
           <Image source={{ uri: avatarUrl }} className="h-9 w-9 rounded-full" />
