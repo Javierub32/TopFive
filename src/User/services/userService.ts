@@ -44,6 +44,30 @@ export const userService = {
 		};
 	},
 
+	async fetchBlockedProfileData(userId: string) {
+		const { data, error } = await supabase
+			.from('usuario')
+			.select(
+				'id, username, description, avatar_url, followers_count, following_count, reviews_count, frame!fk_usuario_frame_id(codigo)'
+			)
+			.eq('id', userId)
+			.maybeSingle();
+
+		if (error) throw error;
+		if (!data) throw new Error('User not found');
+
+		return {
+			id: data.id,
+			username: data.username,
+			description: data.description,
+			avatar_url: data.avatar_url,
+			followers_count: data.followers_count,
+			following_count: data.following_count,
+			reviews_count: data.reviews_count,
+			frame: (data as any).frame?.codigo || 'none',
+		};
+	},
+
 	async requestFollow(userId: string, targetUserId: string) {
 		const blockState = await userService.getBlockState(userId, targetUserId);
 		if (blockState) throw new Error('No se puede seguir a un usuario bloqueado');

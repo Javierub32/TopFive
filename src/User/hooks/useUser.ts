@@ -24,7 +24,21 @@ export interface User {
 
 type ProfileResult =
   | { access: 'visible'; user: User }
-  | { access: 'blocked_by_me' | 'blocked_me'; userId: string };
+  | {
+      access: 'blocked_by_me' | 'blocked_me';
+      userId: string;
+      profileData: Pick<
+        User,
+        | 'id'
+        | 'username'
+        | 'description'
+        | 'avatar_url'
+        | 'followers_count'
+        | 'following_count'
+        | 'reviews_count'
+        | 'frame'
+      >;
+    };
 
 // Estructura inicial de estadísticas
 const INITIAL_CATEGORY_DATA = {
@@ -69,7 +83,10 @@ export const useUser = (username: string) => {
 
       if (user?.id && user.id !== userId) {
         const blockState = await userService.getBlockState(user.id, userId);
-        if (blockState) return { access: blockState, userId };
+        if (blockState) {
+          const profileData = await userService.fetchBlockedProfileData(userId);
+          return { access: blockState, userId, profileData };
+        }
       }
 
       const profile = await userService.fetchUserById(userId, user?.id ?? userId);
@@ -88,6 +105,8 @@ export const useUser = (username: string) => {
   const userData = profileResult?.access === 'visible' ? profileResult.user : null;
   const profileTargetUserId =
     profileResult?.access === 'visible' ? profileResult.user.id : profileResult?.userId;
+  const blockedProfileData =
+    profileResult && profileResult.access !== 'visible' ? profileResult.profileData : null;
 
   useFocusEffect(
     useCallback(() => {
@@ -162,7 +181,20 @@ export const useUser = (username: string) => {
         { queryKey: queryKeys.publicProfilePrefix() },
         (profile) =>
           profile?.access === 'visible' && profile.user.id === targetUserId
-            ? { access: 'blocked_by_me', userId: targetUserId }
+            ? {
+                access: 'blocked_by_me',
+                userId: targetUserId,
+                profileData: {
+                  id: profile.user.id,
+                  username: profile.user.username,
+                  description: profile.user.description,
+                  avatar_url: profile.user.avatar_url,
+                  followers_count: profile.user.followers_count,
+                  following_count: profile.user.following_count,
+                  reviews_count: profile.user.reviews_count,
+                  frame: profile.user.frame,
+                },
+              }
             : profile
       );
     } finally {
@@ -264,6 +296,7 @@ export const useUser = (username: string) => {
     userData,
     profileAccess,
     profileTargetUserId,
+    blockedProfileData,
     blockUser,
     unblockUser,
     isBlocking,
