@@ -28,24 +28,32 @@ import { AppText } from 'components/AppText';
 import { useTheme } from 'context/ThemeContext';
 import { useNotification } from 'context/NotificationContext';
 import { useAuth } from 'context/AuthContext';
-import { supabase } from 'lib/supabase';
 import { DiaryPreview } from '@/Profile/components/DiaryPreview';
 import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics';
 
 export default function UserDetailsScreen() {
   const { colors } = useTheme();
   const { username, from } = useLocalSearchParams();
+  const profileUsername = Array.isArray(username) ? username[0] : username || '';
   const { t } = useTranslation();
   const layout = useWindowDimensions();
   const [isChanging, setIsChanging] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const { showNotification, hideNotification } = useNotification();
-  const { session } = useAuth();
+  const { user } = useAuth();
 
   const {
     loading,
     userData,
+    profileAccess,
+    profileTargetUserId,
+    blockedProfileData,
     handleFollow,
     cancelRequest,
+    blockUser,
+    unblockUser,
+    isBlocking,
+    isUnblocking,
     handleToggleAlertsDB,
     selectedCategory,
     setSelectedCategory,
@@ -55,11 +63,14 @@ export default function UserDetailsScreen() {
     statsLoading,
     refreshing,
     refreshUserData,
-  } = useUser(username as string);
+  } = useUser(profileUsername);
 
   const isFollowing = userData?.following_status === 'accepted';
   const profilePublic = userData?.is_private === false;
   const canViewStats = isFollowing || profilePublic;
+  const canBlockProfile = !!user?.id && !!userData?.id && userData.id !== user.id;
+  const isBlockedProfile = profileAccess === 'blocked_me' || profileAccess === 'blocked_by_me';
+  const profileToDisplay = userData || blockedProfileData;
 
   const [alertsEnabled, setAlertsEnabled] = useState(false); /* alertas de reviews */
   useEffect(() => {
@@ -126,6 +137,89 @@ export default function UserDetailsScreen() {
       onRightPress: () => {
         hideNotification();
         cancelRequest();
+      },
+    });
+  };
+
+  const handleBlockPress = (targetUserId: string) => {
+    if (!user?.id || targetUserId === user.id) return;
+
+    showNotification({
+      title: t('profile.blockUser.title', { username: userData?.username || profileUsername }),
+      description: t('profile.blockUser.description', {
+        username: userData?.username || profileUsername,
+      }),
+      isChoice: true,
+      delete: true,
+      success: false,
+      leftButtonText: t('common.cancel'),
+      rightButtonText: t('profile.blockUser.action'),
+      highlightRight: true,
+      onLeftPress: () => hideNotification(),
+      onRightPress: async () => {
+        hideNotification();
+        try {
+          await blockUser(targetUserId);
+          showNotification({
+            title: t('profile.blockUser.successTitle'),
+            description: t('profile.blockUser.successDescription', {
+              username: userData?.username || profileUsername,
+            }),
+            isChoice: false,
+            delete: false,
+            success: true,
+          });
+        } catch {
+          showNotification({
+            title: t('common.error'),
+            description: t('profile.blockUser.errorDescription', {
+              username: userData?.username || profileUsername,
+            }),
+            isChoice: false,
+            delete: false,
+            success: false,
+          });
+        }
+      },
+    });
+  };
+
+  const handleUnblockPress = () => {
+    if (!profileTargetUserId) return;
+
+    showNotification({
+      title: t('profile.unblockUser.title', { username: profileUsername }),
+      description: t('profile.unblockUser.description', { username: profileUsername }),
+      isChoice: true,
+      delete: false,
+      success: false,
+      leftButtonText: t('common.cancel'),
+      rightButtonText: t('profile.unblockUser.action'),
+      onLeftPress: () => hideNotification(),
+      onRightPress: async () => {
+        hideNotification();
+        try {
+          await unblockUser(profileTargetUserId);
+          showNotification({
+            title: t('profile.unblockUser.successTitle'),
+            description: t('profile.unblockUser.successDescription', {
+              username: profileUsername,
+            }),
+            isChoice: false,
+            delete: false,
+            success: true,
+          });
+        } catch {
+          showNotification({
+            title: t('common.error'),
+            description: t('profile.unblockUser.errorDescription', {
+              username: profileUsername,
+            }),
+            isChoice: false,
+            delete: false,
+            success: false,
+          });
+        }
       },
     });
   };
@@ -236,10 +330,14 @@ export default function UserDetailsScreen() {
 
   return (
     <Screen>
-      <View className="justify-content relative">
-        <ReturnButton route={route} title={userData?.username || t('details.userDetails')} />
-        {isFollowing && (
-          <View className="absolute bottom-0 right-4 top-0 justify-center pt-3">
+      <View className="relative z-50 flex-row items-center px-4 pt-5 pb-2">
+        <ReturnButton
+          route={route}
+          title={profileToDisplay?.username || t('details.userDetails')}
+          style="flex-1 px-0 py-0 pr-2"
+        />
+        <View className="flex-row items-center gap-1">
+          {isFollowing && (
             <TouchableOpacity
               onPress={handleToggleAlerts}
               activeOpacity={0.5}
@@ -250,8 +348,50 @@ export default function UserDetailsScreen() {
                 color={colors.primaryText}
               />
             </TouchableOpacity>
-          </View>
-        )}
+          )}
+          {canBlockProfile && (
+            <View className="relative z-50">
+              <TouchableOpacity
+                className="p-1"
+                activeOpacity={0.7}
+                disabled={isBlocking}
+                onPress={(event) => {
+                  event.stopPropagation();
+                  setShowProfileMenu(!showProfileMenu);
+                }}>
+                <ScalableMaterialCommunityIcons
+                  name={showProfileMenu ? 'close' : 'dots-horizontal'}
+                  size={24}
+                  color={colors.secondaryText}
+                />
+              </TouchableOpacity>
+              {showProfileMenu && (
+                <View
+                  className="absolute right-0 top-10 z-50 overflow-hidden rounded-lg shadow-xl"
+                  style={{
+                    backgroundColor: colors.surfaceButton,
+                    minWidth: 160,
+                  }}>
+                  <TouchableOpacity
+                    className="flex-row items-center px-4 py-3"
+                    onPress={() => {
+                      setShowProfileMenu(false);
+                      if (userData?.id) handleBlockPress(userData.id);
+                    }}>
+                    <ScalableLockIcon
+                      size={20}
+                      color={colors.error}
+                      style={{ marginRight: 8 }}
+                    />
+                    <AppText style={{ color: colors.error, fontSize: 14 }}>
+                      {t('profile.blockUser.action')}
+                    </AppText>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          )}
+        </View>
       </View>
       <ScrollView
         className="flex-1"
@@ -265,18 +405,77 @@ export default function UserDetailsScreen() {
         }
         contentContainerStyle={{ paddingBottom: 20 }}>
         <View className="px-4 pb-6">
-          <ProfileData
-            username={userData?.username || t('details.user')}
-            followersCount={userData?.followers_count || 0}
-            followingCount={userData?.following_count || 0}
-            reviewsCount={userData?.reviews_count || 0}
-            description={userData?.description || ''}>
-            <UserAvatar
-              avatarUrl={userData?.avatar_url || null}
-              frame={userData?.frame || 'none'}
-            />
-          </ProfileData>
-          {!isFollowing && !profilePublic && (
+          {profileToDisplay && (
+            <ProfileData
+              username={profileToDisplay.username}
+              followersCount={profileToDisplay.followers_count || 0}
+              followingCount={profileToDisplay.following_count || 0}
+              reviewsCount={profileToDisplay.reviews_count || 0}
+              description={profileToDisplay.description || ''}
+              disableSocialNavigation={isBlockedProfile}>
+              <UserAvatar
+                avatarUrl={isBlockedProfile ? null : profileToDisplay.avatar_url || null}
+                frame={isBlockedProfile ? 'none' : profileToDisplay.frame || 'none'}
+              />
+            </ProfileData>
+          )}
+
+          {profileAccess === 'blocked_me' && (
+            <View className="flex-1 items-center justify-center py-20">
+              <View
+                className="mb-6 h-32 w-32 items-center justify-center rounded-full"
+                style={{ backgroundColor: `${colors.primaryText}1A` }}>
+                <View
+                  className="h-28 w-28 items-center justify-center rounded-full"
+                  style={{ backgroundColor: colors.secondary }}>
+                  <ScalableLockIcon size={80} color={colors.primaryText} />
+                </View>
+              </View>
+              <AppText
+                className="mb-3 text-center font-bold"
+                style={{ color: colors.primaryText, fontSize: 28 }}>
+                {t('profile.blockedProfile.unavailableTitle')}
+              </AppText>
+              <AppText className="px-4 text-center" style={{ color: colors.secondaryText, fontSize: 14 }}>
+                {t('profile.blockedProfile.unavailableDescription')}
+              </AppText>
+            </View>
+          )}
+
+          {profileAccess === 'blocked_by_me' && (
+            <View className="flex-1 items-center justify-center py-20">
+              <View
+                className="mb-6 h-32 w-32 items-center justify-center rounded-full"
+                style={{ backgroundColor: `${colors.primaryText}1A` }}>
+                <View
+                  className="h-28 w-28 items-center justify-center rounded-full"
+                  style={{ backgroundColor: colors.secondary }}>
+                  <ScalableLockIcon size={80} color={colors.primaryText} />
+                </View>
+              </View>
+              <AppText
+                className="mb-3 text-center font-bold"
+                style={{ color: colors.primaryText, fontSize: 28 }}>
+                {t('profile.blockedProfile.blockedTitle')}
+              </AppText>
+              <AppText
+                className="mb-6 px-4 text-center"
+                style={{ color: colors.secondaryText, fontSize: 14 }}>
+                {t('profile.blockedProfile.blockedDescription')}
+              </AppText>
+              <TouchableOpacity
+                onPress={handleUnblockPress}
+                disabled={isUnblocking}
+                className="items-center rounded-xl px-5 py-3"
+                style={{ backgroundColor: colors.accent }}>
+                <AppText className="font-semibold" style={{ color: colors.primaryText, fontSize: 14 }}>
+                  {t('profile.unblockUser.action')}
+                </AppText>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {!isBlockedProfile && !isFollowing && !profilePublic && (
             <FollowButton
               isFollowed={userData?.following_status === 'accepted' || false}
               isRequested={userData?.is_requested || false}
@@ -382,7 +581,7 @@ export default function UserDetailsScreen() {
               </View>
             </>
           )}
-          {!canViewStats && (
+          {!isBlockedProfile && !canViewStats && (
             <View className="flex-1 items-center justify-center py-20">
               {/* Contenedor del Icono  */}
               <View
