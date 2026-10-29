@@ -467,8 +467,8 @@ export default function UserDetailsScreen() {
                 onPress={handleUnblockPress}
                 disabled={isUnblocking}
                 className="items-center rounded-xl px-5 py-3"
-                style={{ backgroundColor: colors.accent }}>
-                <AppText className="font-semibold" style={{ color: colors.primaryText, fontSize: 14 }}>
+                style={{ backgroundColor: colors.surfaceButton }}>
+                <AppText className="font-bold" style={{ color: colors.primaryText, fontSize: 14 }}>
                   {t('profile.unblockUser.action')}
                 </AppText>
               </TouchableOpacity>
