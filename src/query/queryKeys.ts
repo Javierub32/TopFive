@@ -7,6 +7,7 @@ export const queryKeys = {
     ['profile', 'public', username, viewerId] as const,
   blockState: (userId?: string | null, targetUserId?: string | null) =>
     ['user-block-state', userId, targetUserId] as const,
+  blockedUserIds: (userId?: string | null) => ['blocked-user-ids', userId] as const,
   commentsPrefix: () => ['comments'] as const,
   comments: (resourceId?: number | null, resourceType?: string | null, viewerId?: string | null) =>
     ['comments', resourceType, resourceId, viewerId] as const,
@@ -37,6 +38,7 @@ export const queryKeys = {
   notificationCount: (userId?: string | null) => ['notifications', 'count', userId] as const,
   userSearch: (viewerId?: string | null, term?: string | null) =>
     ['search', 'users', viewerId, term] as const,
+  userSearchPrefix: (viewerId?: string | null) => ['search', 'users', viewerId] as const,
   contentSearch: (type?: ResourceType, term?: string | null) =>
     ['search', 'content', type, term] as const,
   lists: (userId?: string | null, type?: string | null) =>

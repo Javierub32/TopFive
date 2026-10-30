@@ -162,8 +162,10 @@ export const useUser = (username: string) => {
   const invalidateBlockData = async (targetUserId: string) => {
     await Promise.all([
       queryClient.invalidateQueries({ queryKey: queryKeys.blockState(user?.id, targetUserId) }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.blockedUserIds(user?.id) }),
       queryClient.invalidateQueries({ queryKey: queryKeys.publicProfilePrefix() }),
       queryClient.invalidateQueries({ queryKey: queryKeys.commentsPrefix() }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.userSearchPrefix(user?.id) }),
       queryClient.invalidateQueries({ queryKey: queryKeys.profileStatsPrefix(targetUserId) }),
       queryClient.invalidateQueries({ queryKey: queryKeys.profileTotalPrefix(targetUserId) }),
       queryClient.invalidateQueries({ queryKey: ['followers'] }),
