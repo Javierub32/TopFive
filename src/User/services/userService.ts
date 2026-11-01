@@ -1,5 +1,11 @@
 import { supabase } from 'lib/supabase';
 
+export interface BlockedUser {
+	id: string;
+	username: string;
+	avatar_url: string | null;
+}
+
 export const userService = {
 	async getUserIdByUsername(username: string): Promise<string | null> {
 		const { data, error } = await supabase
@@ -202,6 +208,21 @@ export const userService = {
 		if (error) throw error;
 
 		return (data ?? []).map((relationship) => relationship.following_id);
+	},
+
+	async getBlockedUsers(userId: string): Promise<BlockedUser[]> {
+		const blockedUserIds = await userService.getBlockedUserIdsByUser(userId);
+		if (blockedUserIds.length === 0) return [];
+
+		const { data, error } = await supabase
+			.from('usuario')
+			.select('id, username, avatar_url')
+			.in('id', blockedUserIds)
+			.order('username', { ascending: true });
+
+		if (error) throw error;
+
+		return data ?? [];
 	},
 
 	async checkEmail(email: string) {

@@ -9,6 +9,7 @@ import {
   ScalableIonicons,
   ScalableMaterialCommunityIcons,
   ScalableMaterialIcons,
+  ScalableBlockUserIcon,
 } from 'components/Icons';
 import { useTheme } from 'context/ThemeContext';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -27,7 +28,7 @@ export default function SettingsScreen() {
   const { signOut, deleteAccount, user } = useAuth();
 
   const { colors, changeTheme, themePreference } = useTheme();
-  const { username, description } = useLocalSearchParams();
+  const { username } = useLocalSearchParams();
   const { showNotification, hideNotification } = useNotification();
   const [showThemeOptions, setShowThemeOptions] = useState(false);
   const [showLangOptions, setShowLangOptions] = useState(false);
@@ -414,6 +415,36 @@ export default function SettingsScreen() {
                       {t('settings.account.deleteAccount.title')}
                     </AppText>
                   </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View>
+              <AppText
+                className="mb-1 p-1 font-bold"
+                style={{ color: colors.primaryText, fontSize: 20 }}>
+                {t('settings.privacy.title')}
+              </AppText>
+              <View
+                className="flex-col justify-center gap-2 rounded-2xl p-2"
+                style={{ backgroundColor: `${colors.accent}33` }}>
+                <TouchableOpacity
+                  className="w-full flex-row items-center justify-between gap-4 p-2"
+                  activeOpacity={0.4}
+                  onPress={() => router.push('/details/blockedUsers/blocked-users')}>
+                  <View className="flex-1 flex-row items-center justify-start gap-2">
+                    <ScalableBlockUserIcon />
+                    <View className="flex-1">
+                      <AppText style={{ color: colors.primaryText, fontSize: 18 }}>
+                        {t('settings.privacy.blockedUsers.title')}
+                      </AppText>
+                    </View>
+                  </View>
+                  <ScalableMaterialCommunityIcons
+                    name="chevron-right"
+                    size={20}
+                    color={colors.secondaryText}
+                  />
                 </TouchableOpacity>
               </View>
             </View>

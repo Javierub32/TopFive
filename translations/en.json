@@ -121,6 +121,15 @@
         }
       }
     },
+    "privacy": {
+      "title": "Privacy",
+      "blockedUsers": {
+        "title": "Blocked users",
+        "emptyTitle": "You haven't blocked anyone",
+        "emptyDescription": "Accounts you block will appear here.",
+        "loadError": "Couldn't load your blocked users."
+      }
+    },
     "legal": {
       "title": "Support and legal",
       "sendFeed": "Send feedback",

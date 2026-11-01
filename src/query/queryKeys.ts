@@ -8,6 +8,7 @@ export const queryKeys = {
   blockState: (userId?: string | null, targetUserId?: string | null) =>
     ['user-block-state', userId, targetUserId] as const,
   blockedUserIds: (userId?: string | null) => ['blocked-user-ids', userId] as const,
+  blockedUsers: (userId?: string | null) => ['blocked-users', userId] as const,
   commentsPrefix: () => ['comments'] as const,
   comments: (resourceId?: number | null, resourceType?: string | null, viewerId?: string | null) =>
     ['comments', resourceType, resourceId, viewerId] as const,

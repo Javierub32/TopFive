@@ -121,6 +121,15 @@
         }
       }
     },
+    "privacy": {
+      "title": "Privacidad",
+      "blockedUsers": {
+        "title": "Usuarios bloqueados",
+        "emptyTitle": "No has bloqueado a nadie",
+        "emptyDescription": "Las cuentas que bloquees aparecerán aquí.",
+        "loadError": "No se ha podido cargar la lista de usuarios bloqueados."
+      }
+    },
     "legal": {
       "title": "Soporte y legal",
       "sendFeed": "Enviar feedback",
