@@ -2,7 +2,6 @@ import { InfiniteData, useInfiniteQuery, useMutation, useQueryClient } from '@ta
 import { useAuth } from 'context/AuthContext';
 import { queryKeys } from '@/query/queryKeys';
 import { Comment, commentServices } from '../services/commentServices';
-import { useUser } from '@/User/hooks/useUser';
 
 const PAGE_SIZE = 10;
 
@@ -15,7 +14,6 @@ interface CommentsPage {
 export const useComments = (resourceId?: number, resourceType?: string) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const { blockUser: blockUserMutation, isBlocking } = useUser('');
   const enabled = resourceId != null && !!resourceType;
 
   const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage, isError } =
@@ -101,11 +99,6 @@ export const useComments = (resourceId?: number, resourceType?: string) => {
     await deleteCommentMutation.mutateAsync(commentId);
   };
 
-  const blockCommentAuthor = async (targetUserId: string) => {
-    if (!user) return;
-    await blockUserMutation(targetUserId);
-  };
-
   return {
     comments,
     commentCount,
@@ -117,8 +110,6 @@ export const useComments = (resourceId?: number, resourceType?: string) => {
     sendComment,
     sending: addCommentMutation.isPending,
     deleteComment,
-    blockCommentAuthor,
-    blockingUser: isBlocking,
     currentUserId: user?.id,
   };
 };

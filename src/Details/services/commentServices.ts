@@ -26,7 +26,7 @@ export const commentServices = {
     to: number,
     viewerId?: string
   ) {
-    const blockedUserIds = viewerId ? await userService.getBlockedUserIds(viewerId) : [];
+    const blockedUserIds = viewerId ? await userService.getBlockedUserIdsByUser(viewerId) : [];
 
     let commentsQuery = supabase
       .from(COMMENTS_TABLE)

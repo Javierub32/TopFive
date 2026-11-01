@@ -120,7 +120,7 @@ export const userService = {
 
 		if (error) throw error;
 
-		// Elimina la relación inversa de seguimiento, pero conserva un bloqueo independiente.
+		// En el caso de que se sigan, se elimina la relación
 		const { error: reverseDeleteError } = await supabase
 			.from('relationships')
 			.delete()
@@ -190,6 +190,18 @@ export const userService = {
 				)
 			)
 		);
+	},
+
+	async getBlockedUserIdsByUser(userId: string): Promise<string[]> {
+		const { data, error } = await supabase
+			.from('relationships')
+			.select('following_id')
+			.eq('follower_id', userId)
+			.eq('status', 'blocked');
+
+		if (error) throw error;
+
+		return (data ?? []).map((relationship) => relationship.following_id);
 	},
 
 	async checkEmail(email: string) {

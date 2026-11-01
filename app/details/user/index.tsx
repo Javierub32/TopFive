@@ -72,7 +72,7 @@ export default function UserDetailsScreen() {
   const isBlockedProfile = profileAccess === 'blocked_me' || profileAccess === 'blocked_by_me';
   const profileToDisplay = userData || blockedProfileData;
 
-  const [alertsEnabled, setAlertsEnabled] = useState(false); /* alertas de reviews */
+  const [alertsEnabled, setAlertsEnabled] = useState(false);
   useEffect(() => {
     if (userData?.alerts_enabled !== undefined) {
       setAlertsEnabled(userData?.alerts_enabled);
@@ -349,6 +349,7 @@ export default function UserDetailsScreen() {
               />
             </TouchableOpacity>
           )}
+          {/* Menú de opciones (bloqueo de usuario) */}
           {canBlockProfile && (
             <View className="relative z-50">
               <TouchableOpacity
@@ -359,6 +360,7 @@ export default function UserDetailsScreen() {
                   event.stopPropagation();
                   setShowProfileMenu(!showProfileMenu);
                 }}>
+
                 <ScalableMaterialCommunityIcons
                   name={showProfileMenu ? 'close' : 'dots-horizontal'}
                   size={24}
@@ -405,6 +407,7 @@ export default function UserDetailsScreen() {
         }
         contentContainerStyle={{ paddingBottom: 20 }}>
         <View className="px-4 pb-6">
+          {/* Datos del perfil si no está bloqueado */}
           {profileToDisplay && (
             <ProfileData
               username={profileToDisplay.username}
@@ -419,7 +422,7 @@ export default function UserDetailsScreen() {
               />
             </ProfileData>
           )}
-
+          {/* Datos del perfil si estoy bloqueado */}
           {profileAccess === 'blocked_me' && (
             <View className="flex-1 items-center justify-center py-20">
               <View
@@ -441,7 +444,7 @@ export default function UserDetailsScreen() {
               </AppText>
             </View>
           )}
-
+          {/* Datos del perfil si está bloqueado */}
           {profileAccess === 'blocked_by_me' && (
             <View className="flex-1 items-center justify-center py-20">
               <View
@@ -463,6 +466,7 @@ export default function UserDetailsScreen() {
                 style={{ color: colors.secondaryText, fontSize: 14 }}>
                 {t('profile.blockedProfile.blockedDescription')}
               </AppText>
+              {/* Botón de desbloqueo */}
               <TouchableOpacity
                 onPress={handleUnblockPress}
                 disabled={isUnblocking}
