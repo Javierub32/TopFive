@@ -15,12 +15,30 @@ export interface User {
   followers_count: number;
   following_count: number;
   is_requested: boolean;
-  following_status: 'pending' | 'accepted' | null;
+  following_status: 'pending' | 'accepted' | 'blocked' | null;
   alerts_enabled: boolean;
   frame: string;
   reviews_count: number;
   is_private: boolean;
 }
+
+type ProfileResult =
+  | { access: 'visible'; user: User }
+  | {
+      access: 'blocked_by_me' | 'blocked_me';
+      userId: string;
+      profileData: Pick<
+        User,
+        | 'id'
+        | 'username'
+        | 'description'
+        | 'avatar_url'
+        | 'followers_count'
+        | 'following_count'
+        | 'reviews_count'
+        | 'frame'
+      >;
+    };
 
 // Estructura inicial de estadísticas
 const INITIAL_CATEGORY_DATA = {
@@ -48,27 +66,47 @@ export const useUser = (username: string) => {
 
   const [selectedCategory, setSelectedCategory] = useState<ResourceType>('pelicula');
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
+  const [isBlocking, setIsBlocking] = useState(false);
+  const [isUnblocking, setIsUnblocking] = useState(false);
 
   const {
-    data: userData = null,
+    data: profileResult,
     isLoading,
     isFetching,
     refetch: refetchUser,
-  } = useQuery<User | null>({
+  } = useQuery<ProfileResult>({
     queryKey: queryKeys.publicProfile(username, user?.id),
-    queryFn: async () => {
-      if (!username) return null;
+    queryFn: async (): Promise<ProfileResult> => {
+      if (!username) throw new Error('Username is required');
       const userId = await userService.getUserIdByUsername(username);
       if (!userId) throw new Error('User not found');
-      const data = await userService.fetchUserById(userId, user?.id);
-      if (data?.id === user?.id) data.following_status = 'accepted';
-      return data;
+
+      if (user?.id && user.id !== userId) {
+        const blockState = await userService.getBlockState(user.id, userId);
+        if (blockState) {
+          const profileData = await userService.fetchBlockedProfileData(userId);
+          return { access: blockState, userId, profileData };
+        }
+      }
+
+      const profile = await userService.fetchUserById(userId, user?.id ?? userId);
+      const visibleProfile =
+        profile.id === user?.id ? { ...profile, following_status: 'accepted' as const } : profile;
+
+      return { access: 'visible', user: visibleProfile };
     },
     enabled: !!username,
     staleTime: 0,
     refetchOnMount: 'always',
     gcTime: 1000 * 60 * 60,
   });
+
+  const profileAccess = profileResult?.access ?? null;
+  const userData = profileResult?.access === 'visible' ? profileResult.user : null;
+  const profileTargetUserId =
+    profileResult?.access === 'visible' ? profileResult.user.id : profileResult?.userId;
+  const blockedProfileData =
+    profileResult && profileResult.access !== 'visible' ? profileResult.profileData : null;
 
   useFocusEffect(
     useCallback(() => {
@@ -81,7 +119,7 @@ export const useUser = (username: string) => {
   const { data: allTimeTotal = 0, refetch: refetchTotal, isFetching: totalFetching } = useQuery<number>({
     queryKey: queryKeys.profileTotal(userData?.id, selectedCategory),
     queryFn: () => fetchTotalResourceCount(selectedCategory, userData!.id),
-    enabled: !!userData?.id,
+    enabled: profileAccess === 'visible' && !!userData?.id,
     staleTime: 1000 * 60 * 10,
     gcTime: 1000 * 60 * 60,
   });
@@ -94,7 +132,7 @@ export const useUser = (username: string) => {
   } = useQuery<number[]>({
     queryKey: queryKeys.profileStats(userData?.id, selectedCategory, selectedYear),
     queryFn: () => fetchMonthlyStats(selectedCategory, selectedYear, userData!.id),
-    enabled: !!userData?.id,
+    enabled: profileAccess === 'visible' && !!userData?.id,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 60,
   });
@@ -119,6 +157,71 @@ export const useUser = (username: string) => {
       queryClient.invalidateQueries({ queryKey: ['followers'] }),
       queryClient.invalidateQueries({ queryKey: ['following'] }),
     ]);
+  };
+
+  const invalidateBlockData = async (targetUserId: string) => {
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: queryKeys.blockState(user?.id, targetUserId) }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.blockedUserIds(user?.id) }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.blockedUsers(user?.id) }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.publicProfilePrefix() }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.commentsPrefix() }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.userSearchPrefix(user?.id) }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.profileStatsPrefix(targetUserId) }),
+      queryClient.invalidateQueries({ queryKey: queryKeys.profileTotalPrefix(targetUserId) }),
+      queryClient.invalidateQueries({ queryKey: ['followers'] }),
+      queryClient.invalidateQueries({ queryKey: ['following'] }),
+    ]);
+  };
+
+  const blockUser = async (targetUserId: string) => {
+    if (!user?.id) throw new Error('Debes iniciar sesión para bloquear usuarios');
+
+    setIsBlocking(true);
+    try {
+      await userService.blockUser(user.id, targetUserId);
+      queryClient.setQueriesData<ProfileResult>(
+        { queryKey: queryKeys.publicProfilePrefix() },
+        (profile) =>
+          profile?.access === 'visible' && profile.user.id === targetUserId
+            ? {
+                access: 'blocked_by_me',
+                userId: targetUserId,
+                profileData: {
+                  id: profile.user.id,
+                  username: profile.user.username,
+                  description: profile.user.description,
+                  avatar_url: profile.user.avatar_url,
+                  followers_count: profile.user.followers_count,
+                  following_count: profile.user.following_count,
+                  reviews_count: profile.user.reviews_count,
+                  frame: profile.user.frame,
+                },
+              }
+            : profile
+      );
+    } finally {
+      try {
+        await invalidateBlockData(targetUserId);
+      } finally {
+        setIsBlocking(false);
+      }
+    }
+  };
+
+  const unblockUser = async (targetUserId: string) => {
+    if (!user?.id) throw new Error('Debes iniciar sesión para desbloquear usuarios');
+
+    setIsUnblocking(true);
+    try {
+      await userService.unblockUser(user.id, targetUserId);
+    } finally {
+      try {
+        await invalidateBlockData(targetUserId);
+      } finally {
+        setIsUnblocking(false);
+      }
+    }
   };
 
   const followMutation = useMutation({
@@ -194,6 +297,13 @@ export const useUser = (username: string) => {
 
   return {
     userData,
+    profileAccess,
+    profileTargetUserId,
+    blockedProfileData,
+    blockUser,
+    unblockUser,
+    isBlocking,
+    isUnblocking,
     loading: isLoading || followMutation.isPending || cancelRequestMutation.isPending,
     refreshing: isFetching || statsFetching || totalFetching,
     refreshUserData,

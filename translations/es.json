@@ -121,6 +121,15 @@
         }
       }
     },
+    "privacy": {
+      "title": "Privacidad",
+      "blockedUsers": {
+        "title": "Usuarios bloqueados",
+        "emptyTitle": "No has bloqueado a nadie",
+        "emptyDescription": "Las cuentas que bloquees aparecerán aquí.",
+        "loadError": "No se ha podido cargar la lista de usuarios bloqueados."
+      }
+    },
     "legal": {
       "title": "Soporte y legal",
       "sendFeed": "Enviar feedback",
@@ -478,6 +487,28 @@
     "privateProfile": {
       "title": "Perfil privado",
       "description": "Este perfil es privado. No puedes ver su contenido."
+    },
+    "blockUser": {
+      "action": "Bloquear",
+      "title": "Bloquear a {{username}}",
+      "description": "¿Quieres bloquear a {{username}}? No podrá ver tu perfil ni interactuar contigo.",
+      "successTitle": "Usuario bloqueado",
+      "successDescription": "Has bloqueado a {{username}}.",
+      "errorDescription": "No se pudo bloquear a {{username}}. Inténtalo de nuevo."
+    },
+    "unblockUser": {
+      "action": "Desbloquear",
+      "title": "Desbloquear a {{username}}",
+      "description": "¿Quieres desbloquear a {{username}}?",
+      "successTitle": "Usuario desbloqueado",
+      "successDescription": "Has desbloqueado a {{username}}.",
+      "errorDescription": "No se pudo desbloquear a {{username}}. Inténtalo de nuevo."
+    },
+    "blockedProfile": {
+      "blockedTitle": "Has bloqueado a este usuario",
+      "blockedDescription": "Desbloquéalo para volver a ver su perfil.",
+      "unavailableTitle": "Perfil no disponible",
+      "unavailableDescription": "No puedes ver este perfil."
     },
     "alerts": {
       "activateChoiceTitle": "Activar Notificaciones",

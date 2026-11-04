@@ -273,6 +273,11 @@ export const ListIcon = (props) => {
   return <RNMaterialCommunityIcons name="format-list-bulleted" size={24} color={colors.primaryText} {...props} />;
 };
 
+export const ScalableBlockUserIcon = (props) => {
+  const { colors } = useTheme();
+  return <ScalableMaterialCommunityIcons name="account-cancel-outline" size={24} color={colors.primaryText} {...props} />;
+}
+
 export const ScalableCrossIcon = (props) => <ScalableEntypo name="cross" size={24} color="black" {...props} />;
 export const CrossIcon = (props) => <RNEntypo name="cross" size={24} color="black" {...props} />;
 

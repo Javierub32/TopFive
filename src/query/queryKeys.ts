@@ -5,6 +5,13 @@ export const queryKeys = {
   profile: (userId?: string | null) => ['profile', userId] as const,
   publicProfile: (username?: string | null, viewerId?: string | null) =>
     ['profile', 'public', username, viewerId] as const,
+  blockState: (userId?: string | null, targetUserId?: string | null) =>
+    ['user-block-state', userId, targetUserId] as const,
+  blockedUserIds: (userId?: string | null) => ['blocked-user-ids', userId] as const,
+  blockedUsers: (userId?: string | null) => ['blocked-users', userId] as const,
+  commentsPrefix: () => ['comments'] as const,
+  comments: (resourceId?: number | null, resourceType?: string | null, viewerId?: string | null) =>
+    ['comments', resourceType, resourceId, viewerId] as const,
   publicProfilePrefix: () => ['profile', 'public'] as const,
   profileStats: (userId?: string | null, type?: ResourceType, year?: number) =>
     ['profile', 'stats', userId, type, year] as const,
@@ -32,6 +39,7 @@ export const queryKeys = {
   notificationCount: (userId?: string | null) => ['notifications', 'count', userId] as const,
   userSearch: (viewerId?: string | null, term?: string | null) =>
     ['search', 'users', viewerId, term] as const,
+  userSearchPrefix: (viewerId?: string | null) => ['search', 'users', viewerId] as const,
   contentSearch: (type?: ResourceType, term?: string | null) =>
     ['search', 'content', type, term] as const,
   lists: (userId?: string | null, type?: string | null) =>
@@ -52,8 +60,6 @@ export const queryKeys = {
   collectionGroup: (userId?: string | null, type?: ResourceType, state?: StateType) =>
     ['collection', 'group', userId, type, state] as const,
   frames: (userId?: string | null) => ['frames', userId] as const,
-  comments: (resourceId?: number | null, resourceType?: string | null) =>
-    ['comments', resourceType, resourceId] as const,
   like: (userId?: string | null, resourceId?: number | null, resourceType?: string | null) =>
     ['like', userId, resourceType, resourceId] as const,
   diary: (userId?: string | null) => ['diary', userId] as const,

@@ -121,6 +121,15 @@
         }
       }
     },
+    "privacy": {
+      "title": "Privacy",
+      "blockedUsers": {
+        "title": "Blocked users",
+        "emptyTitle": "You haven't blocked anyone",
+        "emptyDescription": "Accounts you block will appear here.",
+        "loadError": "Couldn't load your blocked users."
+      }
+    },
     "legal": {
       "title": "Support and legal",
       "sendFeed": "Send feedback",
@@ -480,6 +489,28 @@
     "privateProfile": {
       "title": "Private Profile",
       "description": "This profile is private. You cannot view its content."
+    },
+    "blockUser": {
+      "action": "Block",
+      "title": "Block {{username}}",
+      "description": "Do you want to block {{username}}? They will not be able to view your profile or interact with you.",
+      "successTitle": "User blocked",
+      "successDescription": "You blocked {{username}}.",
+      "errorDescription": "Could not block {{username}}. Please try again."
+    },
+    "unblockUser": {
+      "action": "Unblock",
+      "title": "Unblock {{username}}",
+      "description": "Do you want to unblock {{username}}?",
+      "successTitle": "User unblocked",
+      "successDescription": "You unblocked {{username}}.",
+      "errorDescription": "Could not unblock {{username}}. Please try again."
+    },
+    "blockedProfile": {
+      "blockedTitle": "You blocked this user",
+      "blockedDescription": "Unblock them to view their profile again.",
+      "unavailableTitle": "Profile unavailable",
+      "unavailableDescription": "You cannot view this profile."
     },
     "alerts": {
       "activateChoiceTitle": "Enable Notifications",

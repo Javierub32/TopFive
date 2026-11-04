@@ -18,7 +18,7 @@ export const useComments = (resourceId?: number, resourceType?: string) => {
 
   const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage, isError } =
     useInfiniteQuery({
-      queryKey: queryKeys.comments(resourceId, resourceType),
+      queryKey: queryKeys.comments(resourceId, resourceType, user?.id),
       queryFn: async ({ pageParam = 0 }): Promise<CommentsPage> => {
         const from = pageParam * PAGE_SIZE;
         const to = from + PAGE_SIZE - 1;
@@ -26,7 +26,8 @@ export const useComments = (resourceId?: number, resourceType?: string) => {
           resourceId!,
           resourceType!,
           from,
-          to
+          to,
+          user?.id
         );
 
         return {
@@ -52,7 +53,9 @@ export const useComments = (resourceId?: number, resourceType?: string) => {
     mutationFn: (content: string) =>
       commentServices.addComment(user!.id, resourceId!, resourceType!, content),
     onSuccess: () =>
-      queryClient.resetQueries({ queryKey: queryKeys.comments(resourceId, resourceType) }),
+      queryClient.resetQueries({
+        queryKey: queryKeys.comments(resourceId, resourceType, user?.id),
+      }),
   });
 
   const sendComment = async (content: string) => {
@@ -63,7 +66,7 @@ export const useComments = (resourceId?: number, resourceType?: string) => {
   const deleteCommentMutation = useMutation({
     mutationFn: (commentId: number) => commentServices.deleteComment(commentId, user!.id),
     onMutate: async (commentId: number) => {
-      const key = queryKeys.comments(resourceId, resourceType);
+      const key = queryKeys.comments(resourceId, resourceType, user?.id);
       await queryClient.cancelQueries({ queryKey: key });
       const previous = queryClient.getQueryData<InfiniteData<CommentsPage>>(key);
 
@@ -84,7 +87,10 @@ export const useComments = (resourceId?: number, resourceType?: string) => {
     },
     onError: (_err, _commentId, context) => {
       if (context?.previous)
-        queryClient.setQueryData(queryKeys.comments(resourceId, resourceType), context.previous);
+        queryClient.setQueryData(
+          queryKeys.comments(resourceId, resourceType, user?.id),
+          context.previous
+        );
     },
   });
 
